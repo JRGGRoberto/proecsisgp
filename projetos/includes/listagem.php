@@ -165,7 +165,7 @@
         <div class="col">
           <label>Linha de extensão</label>
           <select name="linh_ext" id="linh_ext" class="form-control form-control-sm">
-            <option value=""></option>
+            <option value="-1"></option>
             <?=$propOptions?>
           <select>
 
@@ -322,7 +322,7 @@ const getProjDados = async(id) => {
   const data = await fetch(`https://${location.host}/sis/api/proj.php?prj=${id}`)
     .then(resp => resp.json()).catch(error => false)
   if(!data) return;
-  printDel(data);
+  printDel(data);outline
   if(oper == 'del'){
     printDel(data);
   } else if(oper == 'sub'){
@@ -357,7 +357,7 @@ function writeNumber(elementId) {
     var titulo    = document.getElementById('titulo').value;
     var colegiado = document.getElementById('colegiado').value;
     var area      = document.getElementById('area').value;
-    var linh_ext     = document.getElementById('linh_ext').value;
+    var linh_ext  = document.getElementById('linh_ext').value;
 
     if((titulo.length > 0 ) | (colegiado.length > 0)| (area.length > 0)| (linh_ext.length > 0) ) {
 

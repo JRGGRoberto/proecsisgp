@@ -50,13 +50,8 @@
         <p>Tipo de Proposta: '. $ava->tipo_exten .'</p>
         <p>Área de extensão: '. $ava->area_extensao .'</p>
         <p>Linha de extensão: '. $ava->linha .'</p>
-        <p>'. $ava->form .'</p>
-
-
-        <a href="../forms/'. $ava->form .'.php?id=3442d0c9-464d-11ed-9793-0266ad9885af"><button class="btn btn-success float-right btn-sm mb-2">Editar</button></a>
-
+        <a href="../forms/'. $ava->form .'.php?id=3442d0c9-464d-11ed-9793-0266ad9885af"><button class="btn btn-success float-right btn-sm mb-2">Avaliar</button></a>
        
-        </ul>
       </div>
     </div>
   </div>';
@@ -177,15 +172,17 @@
 
 <script>
   const btnOpen = document.getElementById("excluir1");
-  const modal = document.querySelector("dialog")
+  const modal = document.querySelector("dialog");
+  const btnX = document.getElementById("limpar");
 
   btnOpen.onclick = function(){
     modal.showModa();
   }
 
 
-  document.getElementById('limpar').hidden = true;
+  
 
+  btnX.hidden = true;
   
   function showLimpar(){
     var nome      = document.getElementById('nome').value;
@@ -195,7 +192,7 @@
 
     if((nome.length > 0 ) | (campus.length > 0)| (centro.length > 0)| (colegiado.length > 0) ) {
 
-      document.getElementById('limpar').hidden = false;
+      btnX.hidden = true;
     }
   }
 

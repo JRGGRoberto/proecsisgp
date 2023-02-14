@@ -226,7 +226,7 @@
 
 <script>
   const btnOpen = document.getElementById("excluir1");
-  const modal = document.querySelector("dialog")
+  const modal = document.querySelector("dialog");
 
   btnOpen.onclick = function(){
     modal.showModal();
