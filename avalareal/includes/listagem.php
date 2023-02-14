@@ -2,56 +2,49 @@
   
   use \App\Entity\Colegiado;
   use \App\Session\Login;
-$user = Login::getUsuarioLogado();
+  $user = Login::getUsuarioLogado();
 
   require('../includes/msgAlert.php');
 
-
   $qnt1 = 0;
   $resultados = '<div id="accordion">';
-  foreach($professores as $prof){
+  foreach($avaliacoes as $ava){
     $qnt1++;
     $estiloD = '';
 
-    $colegNome = Colegiado::getRegistro($prof->id_colegiado);
-    if($prof->ativo == 0){
-      $estiloD = 'style="color: #721c24;
-      background-color: #f8d7da;
-      border-color: #f5c6cb;"';
-    } 
-
-    $func;
-    ($prof->cat_func == 'e') ? ($func = 'Efetivo') : ($func = 'Colaborador');
-    define('TITLE','Editar dados do professor');
     $resultados .=  '
 <div class="card mt-2">
-  <div class="card-header" '. $estiloD .'>
+  <div class="card-header">
      <div class="row">
-        <div class="col-sm-6"><a class="collapsed card-link" data-toggle="collapse" href="#p'. $prof->id .'">👤 '. $prof->nome .'</a></div>
-        <div class="col-sm-6"> '.$colegNome->nome.'</div>
+        <div class="col-sm-6"><a class="collapsed card-link" data-toggle="collapse" href="#p'. $ava->id_ava .'">📃 '. $ava->titulo .'</a></div>
+        <div class="col-sm-6"> Submetido para o colegidado de <span class="badge badge-success">'.$ava->colegiado.'</span></div>
      </div>
   </div>
-    <div id="p'. $prof->id .'" class="collapse" data-parent="#accordion">
+    <div id="p'. $ava->id_ava .'" class="collapse" data-parent="#accordion">
       <div class="card-body">
-        <p>Lattes: <a href="http://lattes.cnpq.br/'.$prof->lattes.'" target="_blank">http://lattes.cnpq.br/'.$prof->lattes.'</a></p>
-        <p>Email:  <a href="mailto:'.$prof->email.'">'.$prof->email.'</a></p>
-        <p>Telefone: <a href="tel:'.$prof->telefone.'">'.$prof->telefone.'</a></p> 
-        <p>Titulação: '.$prof->titulacao.'</p>
-        <p>'.$func.'</p>
+        <p>'. $ava->nome_prof .'</p>
+        <p>'. $ava->tipo_exten .'</p>
+        <p>'. $ava->area_extensao .'</p>
+        <p>'. $ava->linha .'</p>
+        <p>'. $ava->form .'</p>
+
         Alocado em:
         <ul class="breadcrumb p-1 mb-2"">
-          <li class="breadcrumb-item"><a href="#">'. $prof->campus.'</a></li>
-          <li class="breadcrumb-item"><a href="#">'. $prof->centros.'</a></li>
-          <li class="breadcrumb-item"><a href="#">'. $prof->colegiado.'</a></li>
-        </ul>';
-/// se for coordenador 
-        if ($acessoOk){
-           $resultados .=  
-        '<a href="editar.php?id='. $prof->id .'"><button class="btn btn-success float-right btn-sm mb-2">Editar</button></a>
-                                <button id="excluir1" data-target="#myModal" class="btn btn-danger float-right btn-sm mb-2  mr-2" disabled>🗑 Excluir</button>';
-        }
+          <li class="breadcrumb-item"><a href="#">a</a></li>
+          <li class="breadcrumb-item"><a href="#">2/a></li>
+          <li class="breadcrumb-item"><a href="#">3</a></li>
 
-     $resultados .=  '
+          <span class="badge badge-light">Processo<br>
+          <div class="btn-group">
+            <button type="button" class="btn btn-success" disabled></button>
+            <button type="button" class="btn btn-warning" disabled></button>
+            <button type="button" class="btn btn-secondary" disabled></button>
+            <button type="button" class="btn btn-secondary" disabled></button>
+            <button type="button" class="btn btn-secondary" disabled></button>
+            <button type="button" class="btn btn-secondary" disabled></button>
+        </span>
+
+        </ul>
       </div>
     </div>
   </div>';
@@ -70,7 +63,7 @@ $user = Login::getUsuarioLogado();
   //Paginação
   $paginacao = '';
   $paginas   = $obPagination->getPages();
-  $paginacao .= '<nav aria-label="Page navigation example">
+  $paginacao .= '<nav aria-label="Page navigation >
                   <ul class="pagination pagination-sm">'; 
   foreach($paginas as $key=>$pagina){
     $class = $pagina['atual'] ? 'page-item active': 'page-item';
@@ -88,7 +81,7 @@ $user = Login::getUsuarioLogado();
 
 ?>
 <main>
-  <h2 class="mt-0">Professores</h2>
+  <h2 class="mt-0">Avaliaçõs a serem realizadas</h2>
   
   <?=$msg?> 
 
@@ -113,21 +106,7 @@ $user = Login::getUsuarioLogado();
           <input type="text" name="centro" class="form-control form-control-sm" value="<?=$centro?>" id="centro" onChange="showLimpar();">
         </div>
 
-        <div class="col">
-          <label>Campus</label>
-          <select name="campus" class="form-control form-control-sm" id="campus" onChange="showLimpar();">
-            <option value=""></option>
-            <option value="Apucarana" <?= ($campus == "Apucarana")? "selected": "" ?>>Apucarana</option>
-            <option value="Campo Mourão" <?= ($campus == "Campo Mourão")? "selected": "" ?>>Campo Mourão</option>
-            <option value="Curitiba I (EMBAP)" <?= ($campus == "Curitiba I (EMBAP)")? "selected": "" ?>>Curitiba I (EMBAP)</option>
-            <option value="Curitiba II (FAP)" <?= ($campus == "Curitiba II (FAP)")? "selected": "" ?>>Curitiba II (FAP)</option>
-            <option value="Paranaguá" <?= ($campus == "Paranaguá")? "selected": "" ?>>Paranaguá</option>
-            <option value="Paranavaí" <?= ($campus == "Paranavaí")? "selected": "" ?>>Paranavaí</option>
-            <option value="União da Vitória" <?= ($campus == "União da Vitória")? "selected": "" ?>>União da Vitória</option>
-          </select>
-        </div>
-
-
+ 
         <div class="col-1 d-flex align-items-end">
           <button type="submit" class="btn btn-primary btn-sm mr-2">Filtrar</button>
           <a href="./" id="limpar"><span class="badge badge-primary">x</span></a>
@@ -150,9 +129,6 @@ $user = Login::getUsuarioLogado();
     <div class="row mt-2 align-bottom">
       <div class="col">
          <?=$paginacao?>
-      </div>
-      <div class="col" >
-      <a href="cadastrar.php"><button class="btn btn-success float-right btn-sm">Novo</button></a>
       </div>
     </div>
   </section>

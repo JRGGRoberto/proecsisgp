@@ -7,9 +7,6 @@ use \PDO;
 
 class Avaliar3{
 
-
-
-
   public $id;
   public $id_coord;
   public $id_proj;
