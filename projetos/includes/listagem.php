@@ -13,19 +13,38 @@
 
     is_null($proj->colegiado) ? $col = 'A definir' : $col = $proj->colegiado;
 
-    $progresso = '
-        <div class="progress">
-          <div class="progress-bar ${opts}progress-bar-striped progress-bar-animated" style="width:40%"></div>
-          <div class="progress-bar bg-warning" style="width:20%">Aguardando avaliação</div>
-        </div>
-    ';
+
+
+   /*****************/ 
+
+    $progresso = 
+    '<span class="badge badge-light">Processo<br>
+      <div class="btn-group">';
+   
+  for($i = 1; $i <= $proj->etapas; $i++){
+    if($i < $proj->fase_seq){
+      $cor = 'success';
+    } elseif ($i == $proj->fase_seq){
+      $cor = 'warning';
+    } else {
+      $cor = 'secondary';
+    }
+    $progresso .= '<button type="button" class="btn btn-'. $cor .'" disabled></button>';
+  }
+  $progresso .= 
+    '  </div>
+    </span>';
+
+   /*****************/ 
+
     
     $resultados .=  '
 <div class="card mt-2">
   <div class="card-header">
     <div class="row">
-        <div class="col-sm-6">📃 <strong>Título: </strong><a class="collapsed card-link" data-toggle="collapse" href="#p'. $proj->id .'"><strong>'. $proj->titulo .'</strong></a></div>
-        <div class="col-sm-6"><strong>Tipo de Proposta:</strong> '. $proj->tipo_exten .'</div>
+        <div class="col-sm-5">📃 <strong>Título: </strong><a class="collapsed card-link" data-toggle="collapse" href="#p'. $proj->id .'"><strong>'. $proj->titulo .'</strong></a></div>
+        <div class="col-sm-5"><strong>Tipo de Proposta:</strong> '. $proj->tipo_exten .'</div>
+        <div class="col-sm-2">'. $progresso .'</div>
     </div>
     <div class="row">
         <div class="col-sm"><strong>Enviado para o colegiado de:</strong> '.$col.'</div> 

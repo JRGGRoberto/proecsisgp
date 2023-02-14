@@ -11,39 +11,51 @@
   foreach($avaliacoes as $ava){
     $qnt1++;
     $estiloD = '';
+     
+    $progresso = 
+      '<span class="badge badge-light">Processo<br>
+        <div class="btn-group">';
+     
+    for($i = 1; $i <= $ava->etapas; $i++){
+      if($i < $ava->fase_seq){
+        $cor = 'success';
+      } elseif ($i == $ava->fase_seq){
+        $cor = 'warning';
+      } else {
+        $cor = 'secondary';
+      }
+      $progresso .= '<button type="button" class="btn btn-'. $cor .'" disabled></button>';
+    }
+    $progresso .= 
+      '  </div>
+      </span>';
+    /*------------------*/
 
     $resultados .=  '
 <div class="card mt-2">
   <div class="card-header">
      <div class="row">
-        <div class="col-sm-6"><a class="collapsed card-link" data-toggle="collapse" href="#p'. $ava->id_ava .'">📃 '. $ava->titulo .'</a></div>
-        <div class="col-sm-6"> Submetido para o colegidado de <span class="badge badge-success">'.$ava->colegiado.'</span></div>
+        <div class="col-sm-5"><a class="collapsed card-link" data-toggle="collapse" href="#p'. $ava->id_ava .'">📃 '. $ava->titulo .'</a></div>
+        <div class="col-sm-5">Submetido para o colegidado de <span class="badge badge-success">'.$ava->colegiado.'</span></div>
+        <div class="col-sm-2">
+           '. 
+           $progresso
+           .'
+        </div>
      </div>
   </div>
     <div id="p'. $ava->id_ava .'" class="collapse" data-parent="#accordion">
       <div class="card-body">
-        <p>'. $ava->nome_prof .'</p>
-        <p>'. $ava->tipo_exten .'</p>
-        <p>'. $ava->area_extensao .'</p>
-        <p>'. $ava->linha .'</p>
+        <p>Proponente: '. $ava->nome_prof .'</p>
+        <p>Tipo de Proposta: '. $ava->tipo_exten .'</p>
+        <p>Área de extensão: '. $ava->area_extensao .'</p>
+        <p>Linha de extensão: '. $ava->linha .'</p>
         <p>'. $ava->form .'</p>
 
-        Alocado em:
-        <ul class="breadcrumb p-1 mb-2"">
-          <li class="breadcrumb-item"><a href="#">a</a></li>
-          <li class="breadcrumb-item"><a href="#">2/a></li>
-          <li class="breadcrumb-item"><a href="#">3</a></li>
 
-          <span class="badge badge-light">Processo<br>
-          <div class="btn-group">
-            <button type="button" class="btn btn-success" disabled></button>
-            <button type="button" class="btn btn-warning" disabled></button>
-            <button type="button" class="btn btn-secondary" disabled></button>
-            <button type="button" class="btn btn-secondary" disabled></button>
-            <button type="button" class="btn btn-secondary" disabled></button>
-            <button type="button" class="btn btn-secondary" disabled></button>
-        </span>
+        <a href="../forms/'. $ava->form .'.php?id=3442d0c9-464d-11ed-9793-0266ad9885af"><button class="btn btn-success float-right btn-sm mb-2">Editar</button></a>
 
+       
         </ul>
       </div>
     </div>
