@@ -322,7 +322,7 @@ const getProjDados = async(id) => {
   const data = await fetch(`https://${location.host}/sis/api/proj.php?prj=${id}`)
     .then(resp => resp.json()).catch(error => false)
   if(!data) return;
-  printDel(data);outline
+  printDel(data);
   if(oper == 'del'){
     printDel(data);
   } else if(oper == 'sub'){

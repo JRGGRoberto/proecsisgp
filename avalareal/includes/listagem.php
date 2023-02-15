@@ -46,10 +46,47 @@
   </div>
     <div id="p'. $ava->id_ava .'" class="collapse" data-parent="#accordion">
       <div class="card-body">
-        <p>Proponente: '. $ava->nome_prof .'</p>
-        <p>Tipo de Proposta: '. $ava->tipo_exten .'</p>
-        <p>Área de extensão: '. $ava->area_extensao .'</p>
-        <p>Linha de extensão: '. $ava->linha .'</p>
+
+
+ <h5>Tipo de Proposta</h5>
+    <div class="form-group">
+        <input type="text" class="form-control" name="tp_proposta" value="'. $ava->tipo_exten .'" readonly>
+    </div>
+    
+
+  <h5>Identificação da Proposta</h5>
+   
+    <div class="form-group">
+      <label>Título</label>
+      <input type="text" class="form-control" name="coordNome" value="'.$ava->titulo.'" readonly="">
+    </div>
+    
+    <div class="form-group">
+      <label>Proponente</label>
+      <input type="text" class="form-control" name="coordNome" value="'. $ava->nome_prof .'" readonly="">
+    </div>
+    
+    <div class="form-group">
+      <label>Colegiado de Curso</label>
+      <input type="text" class="form-control" name="coordNome" value="'.$ava->colegiado.'" readonly="">
+    </div>
+    
+    <div class="row">
+    
+      <div class="col">
+        <div class="form-group">
+          <label for="area_extensao">Área de extensão</label>
+          <input type="text" class="form-control" value="'. $ava->area_extensao .'" readonly>
+        </div>
+      </div>
+    
+      <div class="col">
+        <div class="form-group">
+          <label for="linh_ext">Linha de  extensão</label>
+          <input type="text" class="form-control" value="'. $ava->linha .'" readonly>
+        </div>
+      </div>
+
         <a href="../forms/'. $ava->form .'.php?id=3442d0c9-464d-11ed-9793-0266ad9885af"><button class="btn btn-success float-right btn-sm mb-2">Avaliar</button></a>
        
       </div>
