@@ -89,7 +89,12 @@
         $resultados .=  
       '<hr>
       
-        Projeto postado para o colegiado de <span class="badge badge-success">'. $nomecol->nome . '</span>';
+        Projeto postado para o colegiado de <span class="badge badge-success">'. $nomecol->nome . '</span>
+        
+        <div class="d-flex flex-row-reverse ">
+          <a href="visualizar.php?id='. $proj->id . '&v='. $proj->ver . '"><button class="btn btn-success btn-sm mb-2">👀 Visualizar</button></a>
+        </div>';
+        
 
       }
 

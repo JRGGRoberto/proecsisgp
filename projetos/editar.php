@@ -3,11 +3,6 @@ require '../vendor/autoload.php';
 use \App\Session\Login;
 use \App\Entity\Projeto;
 
-
-ini_set('display_errors', 1);
-ini_set('display_startup_errors', 1);
-error_reporting(E_ALL);
-
 Login::requireLogin();
 $user = Login::getUsuarioLogado();
 
