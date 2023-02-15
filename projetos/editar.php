@@ -9,6 +9,7 @@ ini_set('display_startup_errors', 1);
 error_reporting(E_ALL);
 
 Login::requireLogin();
+$user = Login::getUsuarioLogado();
 
 
 
@@ -121,8 +122,6 @@ use \App\Entity\Professor;
 $obProfessor = Professor::getProfessor($obProjeto->id_prof);
 
 
-
-
 define('TITLE','Editar informações do projeto');
 
 //VALIDAÇÃO DO POST
@@ -177,6 +176,47 @@ if(isset( $_POST['titulo']) ) {
 
 
 include '../includes/header.php';
-include __DIR__.'/includes/formulario.php';
+
+// verifica se o usuário é dono do projeto
+if ($user['id'] == $obProjeto->id_prof){
+  if( $obProjeto->edt == 0){
+    echo '<div class="container">
+    <hr>
+    <div class="container p-3 my-3 bg-danger text-white rounded p-5">
+        <h1><span class="badge badge-light"> 🚧 </span> Atenção! </h1>
+  
+        
+        <hr>
+        <p><span class="badge badge-light"> 🚨 </span> Edição não permitida.</p>
+
+      </div>
+    </div>';
+  
+  } else {
+    include __DIR__.'/includes/formulario.php';
+  }
+} else {
+
+  echo '<div class="container">
+          <hr>
+          <div class="container p-3 my-3 bg-danger text-white rounded p-5">
+            <h1><span class="badge badge-light"> 🚧 </span> Atenção! </h1>
+  
+            
+            <hr>
+            <p><span class="badge badge-light"> 🚨 </span> Estais a tentar editar um projeto o qual não lhe pertence.</p>
+            <p><span class="badge badge-light"> 🚨 </span> Editar arquivo de terceiros sem autorização pode ser tipificado como crime.</p>
+            <p><span class="badge badge-light"> 🚨 </span> Além de não ser moral, também não é legal, quaisquer tentativas de burlar o sistema para isso será catalogado para auditoria e análise para tomada de decisões quanto a conduta de uso. </p>
+          </div>
+        ';
+
+  echo 'Evento log:  <br>';
+  echo 'User ID: '. $user['id'] .'<br>';
+  echo 'URI: '. $_SERVER["REQUEST_URI"].'<br>';
+  date_default_timezone_set("America/Sao_Paulo");
+  echo 'Data time: '.date("d-m-Y h:i:sa").'<br>';
+  echo '</div>';
+}
+
 include '../includes/footer.php';
 

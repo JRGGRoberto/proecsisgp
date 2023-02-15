@@ -39,6 +39,7 @@ class Projeto{
   public $data;
   public $outs_info;
   public $para_avaliar;
+  public $edt;
   public $created_at;
   public $updated_at;
   public $user;
@@ -228,6 +229,7 @@ class Projeto{
    */
   public function Submeter($para){
     $this->para_avaliar = $para;
+    $this->edt = 0;
     $this->atualizar();
 
     $sql = "
