@@ -122,7 +122,7 @@
       <div class="col">
         <div class="form-group">
           <label for="area_extensao">Área de extensão</label>
-          <select name="area_extensao" class="form-control">
+          <select name="area_extensao" class="form-control" readonly>
             <?=$area_ext_Opt?>
           </select>
         </div>
@@ -328,12 +328,17 @@
       <?=$anex?>
     </div>
 -->
-    
+<?php
+
+if ($jan <> 'sem') { ?>
+
     <div class="form-group">
       <button class="btn btn-success btn-sm float-right">Voltar</button>
     </div>
 
-
+<?php
+} 
+?>
     <div class="row">
       <div class="col">
         <div class="form-group">

@@ -1,26 +1,14 @@
 <?php
 require '../vendor/autoload.php';
+
 use \App\Session\Login;
 use \App\Entity\Projeto;
-
 Login::requireLogin();
 $user = Login::getUsuarioLogado();
 
 
-
 $mensagem = '';
-if(isset($_GET['status'])){
-  switch ($_GET['status']) {
-    case 'success':
-      $mensagem = '<div class="alert alert-success">Ação executada com sucesso!</div>';
-      break;
-
-    case 'error':
-      $mensagem = '<div class="alert alert-danger">Ação não executada!</div>';
-      break;
-  }
-}
-
+$jan = 'sem';
 
 //VALIDAÇÃO DO ID
 if(!isset($_GET['id'], $_GET['v'])){
@@ -29,7 +17,7 @@ if(!isset($_GET['id'], $_GET['v'])){
 }
 $id = $_GET['id'];
 $ver = $_GET['v'];
-
+$jan = $_GET['w'];
 
 //CONSULTA AO PROJETO
 $obProjeto = new Projeto();
@@ -37,11 +25,13 @@ $where = '(id, ver) = ("' .$id.'", '.$ver.') ';
 $obProjeto = Projeto::getRegistros($where);
 $obProjeto = $obProjeto[0];
 
+
 //VALIDAÇÃO DA TIPO
 if(!$obProjeto instanceof Projeto){
   header('location: ../index.php?status=error');
   exit;
 }
+
 
 use \App\Entity\Area_Cnpq;
 $areas_cnpq1 = Area_Cnpq::getRegistros($obProjeto->id);
@@ -97,8 +87,11 @@ $anex .= '</ul>';
 */
 
 
-define('TITLE','Editar informações do projeto');
-
-include '../includes/header.php';
+define('TITLE','Visualizar informações do projeto');
+if ($jan == 'sem') {
+   include '../includes/header.php';
+} else {
+  include '../includes/headers.php';
+}
 include __DIR__.'/includes/formreadonly.php';
 include '../includes/footer.php';

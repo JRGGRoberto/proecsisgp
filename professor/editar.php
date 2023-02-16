@@ -50,6 +50,9 @@ $msg = '?';
 if (strcmp($user['id'],$_GET['id'])===0){
   $acessoOk = true;
   $msg = 'user[id] == $_GET[id]';
+  $CAop = "<option value='".$Caeo->ca_id ."' readonly class='xpto3'>".$Caeo->campus .   "</option>";
+  $CEop = "<option value='".$Caeo->ce_id ."' readonly class='xpto3'>".$Caeo->centros .  "</option>";
+  $Coop = "<option value='".$Caeo->co_id ."' readonly class='xpto3'>".$Caeo->colegiado ."</option>";
 
 } elseif ($user['adm'] != 1){
   switch($user['niveln']){
@@ -88,8 +91,7 @@ if (strcmp($user['id'],$_GET['id'])===0){
         }, (onRejected) => { }
       )
       ';
-
-      
+     
       if ($user['ce_id'] == $obProfessor->ce_id ){
         $acessoOk = true;
 
