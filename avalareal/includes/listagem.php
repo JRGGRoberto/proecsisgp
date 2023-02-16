@@ -48,50 +48,61 @@
       <div class="card-body">
 
 
- <h5>Tipo de Proposta</h5>
-    <div class="form-group">
-        <input type="text" class="form-control" name="tp_proposta" value="'. $ava->tipo_exten .'" readonly>
-    </div>
-    
+        <h5>Tipo de Proposta</h5>
 
-  <h5>Identificação da Proposta</h5>
-   
-    <div class="form-group">
-      <label>Título</label>
-      <input type="text" class="form-control" name="coordNome" value="'.$ava->titulo.'" readonly="">
-    </div>
-    
-    <div class="form-group">
-      <label>Proponente</label>
-      <input type="text" class="form-control" name="coordNome" value="'. $ava->nome_prof .'" readonly="">
-    </div>
-    
-    <div class="form-group">
-      <label>Colegiado de Curso</label>
-      <input type="text" class="form-control" name="coordNome" value="'.$ava->colegiado.'" readonly="">
-    </div>
-    
-    <div class="row">
-    
-      <div class="col">
         <div class="form-group">
-          <label for="area_extensao">Área de extensão</label>
-          <input type="text" class="form-control" value="'. $ava->area_extensao .'" readonly>
+            <input type="text" class="form-control" name="tp_proposta" value="'. $ava->tipo_exten .'" readonly>
         </div>
-      </div>
-    
-      <div class="col">
+      
+  
+        <h5>Identificação da Proposta</h5>
+     
         <div class="form-group">
-          <label for="linh_ext">Linha de  extensão</label>
-          <input type="text" class="form-control" value="'. $ava->linha .'" readonly>
+          <label>Título</label>
+          <input type="text" class="form-control" name="coordNome" value="'.$ava->titulo.'" readonly="">
         </div>
-      </div>
-
-        <a href="../forms/'. $ava->form .'.php?id=3442d0c9-464d-11ed-9793-0266ad9885af"><button class="btn btn-success float-right btn-sm mb-2">Avaliar</button></a>
-       
+      
+        <div class="form-group">
+          <label>Proponente</label>
+          <input type="text" class="form-control" name="coordNome" value="'. $ava->nome_prof .'" readonly="">
+        </div>
+      
+        <div class="form-group">
+          <label>Colegiado de Curso</label>
+          <input type="text" class="form-control" name="coordNome" value="'.$ava->colegiado.'" readonly="">
+        </div>
+        
+        <div class="row">
+        
+          <div class="col">
+            <div class="form-group">
+              <label for="area_extensao">Área de extensão</label>
+              <input type="text" class="form-control" value="'. $ava->area_extensao .'" readonly>
+            </div>
+          </div>
+        
+          <div class="col">
+            <div class="form-group">
+              <label for="linh_ext">Linha de  extensão</label>
+              <input type="text" class="form-control" value="'. $ava->linh_ext .'" readonly>
+            </div>
+          </div>
+    
+        </div>    
+        <hr>
+          <div class="d-flex flex-row-reverse ">
+            <div class="p-1"></div>
+            <button id="sub'. $proj->id . 'v'. $proj->ver . '" class="btn btn-primary btn-sm mb-2" onclick="writeNumber(this)">📤 Avaliar</button>
+            <div class="p-1"></div>
+            <a href="../projetos/visualizar.php?id='. $ava->id_ava . '&v='. $ava->ver . '" target="_blank"><button class="btn btn-success btn-sm mb-2">👀 Visualizar</button></a>
+            <div class="p-1"></div>
+          </div>
+          
+          
       </div>
     </div>
-  </div>';
+           
+        </div>';
 
   }
   $resultados .= '</div>';
