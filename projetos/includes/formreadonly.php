@@ -1,10 +1,19 @@
 <main>
 
-  <section>
+<?php
+
+if ($jan != 0) { ?>
+
+<section>
     <a href="index.php">
       <button class="btn btn-success btn-sm float-right">Voltar</button>
     </a>
   </section>
+
+<?php
+} 
+?>
+
 
   <h2 class="mt-3"><?=TITLE?></h2>
 
@@ -330,7 +339,7 @@
 -->
 <?php
 
-if ($jan <> 'sem') { ?>
+if ($jan != 0) { ?>
 
     <div class="form-group">
       <button class="btn btn-success btn-sm float-right">Voltar</button>

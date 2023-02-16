@@ -88,10 +88,11 @@ $anex .= '</ul>';
 
 
 define('TITLE','Visualizar informações do projeto');
-if ($jan == 'sem') {
-   include '../includes/header.php';
-} else {
+
+if ($jan == 'nw') {
   include '../includes/headers.php';
+} else {
+  include '../includes/header.php';
 }
 include __DIR__.'/includes/formreadonly.php';
 include '../includes/footer.php';
