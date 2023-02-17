@@ -23,21 +23,21 @@ if ($jan != 0) { ?>
     
     <div class="form-group">
       <label>Coordenador</label>
-      <input type="text" class="form-control" name="coordNome" readonly value="<?=$obProjeto->nome_prof?>" readonly>
+      <input type="text" class="form-control" name="coordNome" value="<?=$obProjeto->nome_prof?>" readonly disabled>
     </div>
 
     <hr>
     <h4>Título</h4>
     <div class="form-group">
       <label>Título</label>
-      <input type="text" class="form-control" name="titulo" value="<?=$obProjeto->titulo?>"  readonly>
+      <input type="text" class="form-control" name="titulo" value="<?=$obProjeto->titulo?>"  readonly disabled>
     </div>
 
     <div class="row">
       <div class="col-3">
         <div class="form-group">
           <label>Proposta</label>
-          <select name="tipo_exten" class="form-control"  readonly>
+          <select name="tipo_exten" class="form-control"  readonly disabled>
             <?= $propOptions ?>
           </select>
         </div>
@@ -46,7 +46,7 @@ if ($jan != 0) { ?>
       <div class="col-1.5">
         <div class="form-group">
           <label>TIDE</label>
-          <select name="tide" class="form-control" readonly>
+          <select name="tide" class="form-control" readonly disabled>
             <option value="s" <?= ($obProjeto->tide=='s')? 'selected': ' ' ?> >Sim</option> 
             <option value="n" <?= ($obProjeto->tide=='n')? 'selected': ' ' ?> >Não</option>
           </select>
@@ -63,14 +63,14 @@ if ($jan != 0) { ?>
           <div class="col-3">
         <div class="form-group">
           <label>Início vigência</label>
-          <input type="date" name="vigen_ini" class="form-control" value="<?= substr ($obProjeto->vigen_ini,0, 10) ?>"  readonly>
+          <input type="date" name="vigen_ini" class="form-control" value="<?= substr ($obProjeto->vigen_ini,0, 10) ?>"  readonly disabled>
         </div>
       </div>
 
       <div class="col-3">
         <div class="form-group">
           <label>Fim vigência</label>
-          <input type="date" name="vigen_fim" class="form-control" value="<?= substr ($obProjeto->vigen_fim,0, 10) ?>"  readonly>
+          <input type="date" name="vigen_fim" class="form-control" value="<?= substr ($obProjeto->vigen_fim,0, 10) ?>"  readonly disabled>
         </div>
       </div>
      
@@ -78,14 +78,14 @@ if ($jan != 0) { ?>
       <div class="col">
         <div class="form-group">
           <label>Carga semanal (h)</label>
-          <input type="number"  min=0 max=44 class="form-control" name="ch_semanal" value="<?=$obProjeto->ch_semanal?>"  readonly>
+          <input type="number"  min=0 max=44 class="form-control" name="ch_semanal" value="<?=$obProjeto->ch_semanal?>"  readonly disabled>
         </div>
       </div>
 
       <div class="col">
         <div class="form-group">
           <label>Carga total (h)</label>
-          <input type="number"  min=0 max=1000 class="form-control" name="ch_total" value="<?= $obProjeto->ch_total ?>"  readonly>
+          <input type="number"  min=0 max=1000 class="form-control" name="ch_total" value="<?= $obProjeto->ch_total ?>"  readonly disabled>
         </div>
       </div>
 
@@ -99,7 +99,7 @@ if ($jan != 0) { ?>
       <div class="col">
         <div class="form-group">
           <label for="area_cnpq">Área de Conhecimento CNPQ</label>
-          <select name="area_cnpq" class="form-control"  readonly>
+          <select name="area_cnpq" class="form-control"  readonly disabled>
             <?=$selectAreaCNPQ?>
           </select>
         </div>
@@ -108,7 +108,7 @@ if ($jan != 0) { ?>
       <div class="col">
         <div class="form-group">
           <label for="area_tema1">Área Temática</label>
-          <select name="area_tema1" class="form-control" readonly>
+          <select name="area_tema1" class="form-control" readonly disabled>
             <?=$areaOptions?>
           </select>
         </div>
@@ -117,7 +117,7 @@ if ($jan != 0) { ?>
       <div class="col">
         <div class="form-group">
           <label for="area_tema2">Área Temática Secundária</label>
-          <select name="area_tema2" class="form-control" readonly>
+          <select name="area_tema2" class="form-control" readonly disabled>
           <?=$areaOptions2?>
           </select>
         </div>
@@ -131,7 +131,7 @@ if ($jan != 0) { ?>
       <div class="col">
         <div class="form-group">
           <label for="area_extensao">Área de extensão</label>
-          <select name="area_extensao" class="form-control" readonly>
+          <select name="area_extensao" class="form-control" readonly disabled>
             <?=$area_ext_Opt?>
           </select>
         </div>
@@ -141,7 +141,7 @@ if ($jan != 0) { ?>
       <div class="col">
         <div class="form-group">
           <label for="linh_ext">Linhas de  extensão</label>
-          <select name="linh_ext" class="form-control" readonly>
+          <select name="linh_ext" class="form-control" readonly disabled>
             <?=$area_ext_Opt?>
           </select>
         </div>
@@ -156,7 +156,7 @@ if ($jan != 0) { ?>
       <div class="col">
         <div class="form-group">
           <label for="resumo">Resumo do Projeto</label>
-          <textarea class="form-control" name="resumo" rows="10" readonly
+          <textarea class="form-control" name="resumo" rows="10" readonly disabled
           placeholder="Descrever o resumo da ação de extensão (no máximo 250 palavras), destacando sua relevância na perspectiva acadêmica e social, o público a que se destina e o resultado esperado. Este texto poderá ser publicado na homepage da PROEC, portanto, recomenda-se revisá-lo corretamente."
           ><?=$obProjeto->resumo?></textarea>
         </div>
@@ -170,7 +170,7 @@ if ($jan != 0) { ?>
       <div class="col">
         <div class="form-group">
           <label for="descricao">Problema e Justificativa</label>
-          <textarea class="form-control" name="descricao" rows="10" readonly
+          <textarea class="form-control" name="descricao" rows="10" readonly disabled
           placeholder="(Identificar o problema e justificaro projeto). 20 linhas máximo"
           ><?=$obProjeto->descricao?></textarea>
         </div>
@@ -182,7 +182,7 @@ if ($jan != 0) { ?>
       <div class="col">
         <div class="form-group">
           <label for="objetivos">Objetivo Geral e Objetivos Específicos</label>
-          <textarea class="form-control" name="objetivos" rows="10" readonly
+          <textarea class="form-control" name="objetivos" rows="10" readonly disabled
           placeholder="(O Objetivo Geral é a ação macro que se quer alcançar. E os Objetivos Específicos são as ações fracionadas, para se alcançar o Objetivo Geral). 10 linhas máximo."
           ><?=$obProjeto->objetivos?></textarea>
         </div>
@@ -193,7 +193,7 @@ if ($jan != 0) { ?>
       <div class="col">
         <div class="form-group">
           <label for="public_alvo">Publico Alvo</label>
-          <textarea class="form-control" name="public_alvo" rows="10" readonly
+          <textarea class="form-control" name="public_alvo" rows="10" readonly disabled
           placeholder="(Mencionar de forma sucinta os beneficiários e a(s) região(ões) de abrangência do projeto). 5 linhas máximo."
           ><?=$obProjeto->public_alvo?></textarea>
         </div>
@@ -204,7 +204,7 @@ if ($jan != 0) { ?>
       <div class="col">
         <div class="form-group">
           <label for="metodologia">Metodologia para Execução do Projeto</label>
-          <textarea class="form-control" name="metodologia" rows="10" readonly
+          <textarea class="form-control" name="metodologia" rows="10" readonly disabled
           placeholder="(Explicar os procedimentos necessários para a execução do projeto destacando o método, ou seja, a explicação do delineamento do estudo, amostra, procedimentos para a coleta de dados, bem como, o plano para a análise de dados). 20 linhas máximo."
           ><?=$obProjeto->metodologia?></textarea>
         </div>
@@ -215,7 +215,7 @@ if ($jan != 0) { ?>
       <div class="col">
         <div class="form-group">
           <label for="prodserv_espe">Produtos/Serviços Esperados</label>
-          <textarea class="form-control" name="prodserv_espe" rows="10" readonly
+          <textarea class="form-control" name="prodserv_espe" rows="10" readonly disabled
           placeholder="(Relacionar neste tópico os produtos, equipamentos, bens, serviços, patentes e/ou registros resultantes deste projeto). 10 linhas máximo"
           ><?=$obProjeto->prodserv_espe?></textarea>
         </div>
@@ -227,7 +227,7 @@ if ($jan != 0) { ?>
       <div class="col">
         <div class="form-group">
           <label for="contribuicao">Contribuição Científica, Tecnológica e de Inovação</label>
-          <textarea class="form-control" name="contribuicao" rows="10" readonly
+          <textarea class="form-control" name="contribuicao" rows="10" readonly disabled
           placeholder="(Identificar de que forma os resultados esperados do projeto contribuirão no cenário científico, tecnológicoe cultural  ). 10 linhas máximo"
           ><?=$obProjeto->contribuicao?></textarea>
         </div>
@@ -239,7 +239,7 @@ if ($jan != 0) { ?>
       <div class="col">
         <div class="form-group">
           <label for="contrap_nofinac">Contrapartida não Financeira da Instituição Proponente</label>
-          <textarea class="form-control" name="contrap_nofinac" rows="10" readonly
+          <textarea class="form-control" name="contrap_nofinac" rows="10" readonly disabled
           placeholder="(Descrever as ações não financeiras que serão suportadas no projeto pela Instituição Proponente) 10 linhas máximo"
           ><?=$obProjeto->contrap_nofinac?></textarea>
         </div>
@@ -251,7 +251,7 @@ if ($jan != 0) { ?>
       <div class="col">
         <div class="form-group">
           <label for="municipios_abr">Listar os Municípios Abrangidos pelo Projeto</label>
-          <textarea class="form-control" name="municipios_abr" rows="10"  readonly
+          <textarea class="form-control" name="municipios_abr" rows="10"  readonly disabled
           placeholder=""
           ><?=$obProjeto->municipios_abr?></textarea>
         </div>
@@ -289,7 +289,7 @@ if ($jan != 0) { ?>
       <div class="col-3">
         <div class="form-group">
           <label>Número de certificados previstos</label>
-          <input type="number"  min=0 max=200 class="form-control" default="0" name="n_cert_prev" value="<?= $obProjeto->n_cert_prev? $obProjeto->n_cert_prev : 0 ?>" readonly> 
+          <input type="number"  min=0 max=200 class="form-control" default="0" name="n_cert_prev" value="<?= $obProjeto->n_cert_prev? $obProjeto->n_cert_prev : 0 ?>" readonly disabled> 
         </div>
       </div>
       <div class="col"><br><br>0 para que não tenha emissão de certificados.
@@ -304,7 +304,7 @@ if ($jan != 0) { ?>
         <div class="form-group">
           <label for="outs_info">Outras informações que julgar importantes</label>
           <textarea class="form-control" name="outs_info" rows="10" 
-          placeholder=""  readonly
+          placeholder=""  readonly disabled
           ><?=$obProjeto->outs_info?></textarea>
         </div>
       </div>
@@ -322,7 +322,7 @@ if ($jan != 0) { ?>
       <div class="col-3">
         <div class="form-group">
           <label>Data</label>
-          <input type="date" name="data" class="form-control" id="dateAssing" value="<?= substr ($obProjeto->data, 0 ,10) ?>"  readonly>
+          <input type="date" name="data" class="form-control" id="dateAssing" value="<?= substr ($obProjeto->data, 0 ,10) ?>"  readonly disabled>
         </div>
       </div>
     </div>

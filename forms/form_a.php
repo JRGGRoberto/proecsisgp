@@ -8,7 +8,7 @@
           <h5>Tipo de Proposta</h5>
 
             <div class="form-group">
-                <input type="text" class="form-control" name="tp_proposta"  value="<?=$prj->tipo_exten?>" readonly>
+                <input type="text" class="form-control" name="tp_proposta"  value="<?=$prj->tipo_exten?>" disabled>
             </div>
             
         </li>
@@ -18,17 +18,17 @@
             
             <div class="form-group">
               <label>Título</label>
-              <input type="text" class="form-control" name="coordNome" value="<?=$prj->titulo?>" readonly>
+              <input type="text" class="form-control" name="coordNome" value="<?=$prj->titulo?>" disabled>
             </div>
             
             <div class="form-group">
               <label>Proponente</label>
-              <input type="text" class="form-control" name="coordNome" value="<?=$prj->nome_prof?>" readonly>
+              <input type="text" class="form-control" name="coordNome" value="<?=$prj->nome_prof?>" disabled>
             </div>
             
             <div class="form-group">
               <label>Colegiado de Curso</label>
-              <input type="text" class="form-control" name="coordNome" value="<?=$prj->colegiado?>" readonly>
+              <input type="text" class="form-control" name="coordNome" value="<?=$prj->colegiado?>" disabled>
             </div>
             
             <div class="row">
@@ -36,14 +36,14 @@
               <div class="col">
                 <div class="form-group">
                   <label for="area_extensao">Área de extensão</label>
-                  <input type="text" class="form-control"  value="<?=$prj->area_extensao?>" readonly>
+                  <input type="text" class="form-control"  value="<?=$prj->area_extensao?>" disabled>
                 </div>
               </div>
             
               <div class="col">
                 <div class="form-group">
                   <label for="linh_ext">Linha de  extensão</label>
-                  <input type="text" class="form-control"  value="<?=$prj->linh_ext?>" readonly>
+                  <input type="text" class="form-control"  value="<?=$prj->linh_ext?>" disabled>
                 </div>
               </div>
 
@@ -332,21 +332,34 @@
     <div class="form-group">
       <div class="row">
         <div class="col-3"><input type="text" class="form-control" name="tp_proposta"  value="Cidade"></div>
-        <div class="col-2"> <input type="date" class="form-control" name="" id="dateAssing" readonly> </div>
+        <div class="col-2"> <input type="date" class="form-control" name="" id="dateAssing" disabled> </div>
       </div>
 
       
     </div>
 
     <div class="form-group">
-      <input type="text" class="form-control" name="parecerista_nome"  value="<?=$parecerista_nome?>" readonly>
-      <?=$user->nome?>
+      <input type="text" class="form-control" name="parecerista_nome"  value="<?=$parecerista_nome?>" disabled>
+      <?=$cargo?>
     </div>
 
-    <div class="form-group">
+    <div class="form-group form-group d-flex justify-content-around">
       <a href="javascript: submitSolicAlterac()" class="btn btn-warning" >Solicitar alterações ↩️</a>
       <a href="javascript: submitSave()" class="btn btn-secondary" >Avaliar mais tarde ⌛</a>
       <a href="javascript: submitAprova()" class="btn btn-success" >✔️ Enviar para próxima instância</a>
+    </div>
+
+    <div class="form-group form-group d-flex justify-content-around">
+      <div class="col-4">
+        <p><span class="badge badge-warning">↩️</span><small> Ao Solicitar alterações, esta avalização fica anexa a esta versão e uma nova versão do projeto é disponibilizada ao proponente, para que este realiza as alterações necessárias e volte a submeter a uma nova avaliação.</small></p>
+      </div>
+      <div class="col-4">
+        <p><span class="badge badge-secondary">⌛</span><small> Os dados da avalização ficam salvos para outros acesso e alterações até que se chegue há um veredito.</small></p>
+      </div>
+      <div class="col-4">
+        <p><span class="badge badge-success">✔️</span><small> O projeto não necessita de alterações, esta completamente atentendo os requisitos e será avaliado para a próxima instância ou registro/publicação.</small></p>
+      </div>
+      
     </div>
     <input type="hidden" id="resultado" name="resultado">
   </form>
