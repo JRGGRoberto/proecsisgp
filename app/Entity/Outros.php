@@ -22,7 +22,6 @@ public static function hierCol($id){
 
 
 
-
 /*
 retorna vários valores 
 */
