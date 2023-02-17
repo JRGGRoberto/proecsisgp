@@ -341,9 +341,9 @@ if ($jan != 0) { ?>
 
 if ($jan != 0) { ?>
 
-    <div class="form-group">
+    <a href="index.php">
       <button class="btn btn-success btn-sm float-right">Voltar</button>
-    </div>
+    </a>
 
 <?php
 } 

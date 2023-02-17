@@ -46,8 +46,8 @@ class Avaliacoes{
    * @param  integer $id
    * @return 
    */
-  public static function getRegistro($id_proj, $resutado){
-    return (new Database('proj_avaliar'))->select('id_proj = '.$id_proj.'  and resutado = "'. $resutado. '"')
+  public static function getRegistro($id_ava){
+    return (new Database('proj_avaliar'))->select('id_ava =  "'. $id_ava. '"')
                                   ->fetchObject(self::class);
   }
 
@@ -77,7 +77,7 @@ class Avaliacoes{
    * Método responsável por cadastrar um novo Registro no banco
    * 
    *  A DESENVOLVER.... ?????COMO
-   * @return boolean
+   * --areturn boolean
    */
   public function cadastrar(){
     //DEFINIR A DATA

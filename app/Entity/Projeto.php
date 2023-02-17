@@ -180,7 +180,7 @@ class Projeto{
    * @return Projeto
    */
   public static function getProjeto($id, $ver){
-    return (new Database('projetos'))->select('(id, ver) = ("'.$id.'", '. $ver .')')
+    return (new Database('proj_inf'))->select('(id, ver) = ("'.$id.'", '. $ver .')')
                                   ->fetchObject(self::class);
   }
 

@@ -92,7 +92,7 @@
         <hr>
           <div class="d-flex flex-row-reverse ">
             <div class="p-1"></div>
-            <button id="sub'. $proj->id . 'v'. $proj->ver . '" class="btn btn-primary btn-sm mb-2" onclick="writeNumber(this)"> ⚖️ Avaliar</button>
+            <a href="../forms/index.php?i='. $ava->id_ava . '&p='. $ava->id_proj . '&v='. $ava->ver . '"><button class="btn btn-primary btn-sm mb-2"> ⚖️ Avaliar</button></a>
             <div class="p-1"></div>
             <a href="../projetos/visualizar.php?id='. $ava->id_proj . '&v='. $ava->ver . '&w=nw" target="_blank"><button class="btn btn-success btn-sm mb-2"> 👀 Visualizar</button></a>
             <div class="p-1"></div>

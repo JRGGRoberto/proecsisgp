@@ -340,7 +340,7 @@
 
     <div class="form-group">
       <input type="text" class="form-control" name="parecerista_nome"  value="<?=$parecerista_nome?>" readonly>
-      <?=$cargo?>
+      <?=$user->nome?>
     </div>
 
     <div class="form-group">
