@@ -331,16 +331,16 @@
 
     <div class="form-group">
       <div class="row">
-        <div class="col-3"><input type="text" class="form-control" name="tp_proposta"  value="Cidade"></div>
+        <div class="col-3"><input type="text" class="form-control" name="tp_proposta"  value="<?=$user['campus']?>"></div>
         <div class="col-2"> <input type="date" class="form-control" name="" id="dateAssing" disabled> </div>
       </div>
 
       
     </div>
-
+    
     <div class="form-group">
-      <input type="text" class="form-control" name="parecerista_nome"  value="<?=$parecerista_nome?>" disabled>
-      <?=$cargo?>
+      <input type="text" class="form-control" name="parecerista_nome"  value="<?=$user['nome']?> - <?=$user['nivel']?>" disabled>
+      
     </div>
 
     <div class="form-group form-group d-flex justify-content-around">

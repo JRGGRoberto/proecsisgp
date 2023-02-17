@@ -60,6 +60,6 @@ if(isset($_POST['nome'])){
 */
 
 include '../includes/header.php';
-echo $cima;
+echo $cima; 
 include './'. $avaliacao->form .'.php';
 include '../includes/footer.php';
