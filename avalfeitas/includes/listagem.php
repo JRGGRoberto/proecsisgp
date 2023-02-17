@@ -27,7 +27,7 @@
 
 ?>
 <main>
-  <h2 class="mt-0">Professores</h2>
+  <h2 class="mt-0">Avaliações realizadas</h2>
   
   <?=$msg?> 
 
