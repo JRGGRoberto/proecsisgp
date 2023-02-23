@@ -29,8 +29,10 @@ if(isset($_POST['resultado'])){
     echo $id_proj; echo '<BR>';
     echo $id_ava; echo '<BR>';
     echo $ver_proj; echo '<BR>';
+    $isTouch = isset($_POST['r3_1']);
+    var_dump($isTouch);
 
-    header('location: ../avalareal/index.php?status=success');
+    // header('location: ../avalareal/index.php?status=success');
     exit; 
   }
 }
