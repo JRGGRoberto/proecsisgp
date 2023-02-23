@@ -1,14 +1,15 @@
+
 <div class="container mt-4">
    <h3>ANEXO A - FORMULÁRIO PARA AVALIAÇÃO DE AÇÃO EXTENSIONISTA</h3>
    <h4>Divisão de Extensão e Cultura dos Campi</h4>
       
-  <form  name="myform">
-     <ol>
+  <form name="myform" id="myform" method="post" enctype="multipart/form-data">
+       <ol>
         <li class="mb-4">
           <h5>Tipo de Proposta</h5>
 
             <div class="form-group">
-                <input type="text" class="form-control" name="tp_proposta"  value="<?=$prj->tipo_exten?>" disabled>
+                <input type="text" class="form-control" name="tp_proposta"  value="<?=$prj->tipo_exten?>" readonly>
             </div>
             
         </li>
@@ -18,17 +19,17 @@
             
             <div class="form-group">
               <label>Título</label>
-              <input type="text" class="form-control" name="coordNome" value="<?=$prj->titulo?>" disabled>
+              <input type="text" class="form-control" name="titulo" value="<?=$prj->titulo?>" readonly>
             </div>
             
             <div class="form-group">
               <label>Proponente</label>
-              <input type="text" class="form-control" name="coordNome" value="<?=$prj->nome_prof?>" disabled>
+              <input type="text" class="form-control" name="coordNome" value="<?=$prj->nome_prof?>" readonly>
             </div>
             
             <div class="form-group">
               <label>Colegiado de Curso</label>
-              <input type="text" class="form-control" name="coordNome" value="<?=$prj->colegiado?>" disabled>
+              <input type="text" class="form-control" name="colegiado" value="<?=$prj->colegiado?>" readonly>
             </div>
             
             <div class="row">
@@ -36,14 +37,14 @@
               <div class="col">
                 <div class="form-group">
                   <label for="area_extensao">Área de extensão</label>
-                  <input type="text" class="form-control"  value="<?=$prj->area_extensao?>" disabled>
+                  <input type="text" class="form-control"  name="area_exten" value="<?=$prj->area_extensao?>" readonly>
                 </div>
               </div>
             
               <div class="col">
                 <div class="form-group">
                   <label for="linh_ext">Linha de  extensão</label>
-                  <input type="text" class="form-control"  value="<?=$prj->linh_ext?>" disabled>
+                  <input type="text" class="form-control"  value="<?=$prj->linh_ext?>" readonly>
                 </div>
               </div>
 
@@ -329,14 +330,14 @@
     <div class="form-group">
       <div class="row">
         <div class="col-3"><input type="text" class="form-control" name="cideade"  value="<?=$user['campus']?>"></div>
-        <div class="col-2"> <input type="date" class="form-control" name="" id="dateAssing" disabled> </div>
+        <div class="col-2"> <input type="date" class="form-control" name="dateAssing" id="dateAssing" readonly> </div>
       </div>
     </div>
     
     <div class="form-group">
-      <input type="text" class="form-control" name="parecerista_nome"  value="<?=$user['nome']?> - <?=$user['nivel']?>" disabled>
+      <input type="text" class="form-control" name="parecerista_nome"  value="<?=$user['nome']?> - <?=$user['nivel']?>" readonly>
     </div>
-
+<p> </p><hr><p> </p>
     <div class="form-group form-group d-flex justify-content-around">
       <a href="javascript: submitSolicAlterac()" class="btn btn-warning" >Solicitar alterações ↩️</a>
       <a href="javascript: submitSave()" class="btn btn-secondary" >Avaliar mais tarde ⌛</a>
@@ -361,7 +362,7 @@
 </div>
 
 <script>
-  
+
 document.getElementById("dateAssing").valueAsDate = new Date();
 
 function submitSolicAlterac()

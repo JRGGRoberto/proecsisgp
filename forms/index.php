@@ -46,18 +46,7 @@ $cima = '<hr>
 Etapa '. $avaliacao->fase_seq. ' de '. $avaliacao->etapas. '
 <a href="../projetos/visualizar.php?id='. $avaliacao->id_proj . '&v='. $avaliacao->ver . '&w=nw" target="_blank"><button class="btn btn-success btn-sm mb-2 float-right" > 👀 Visualizar</button></a>';
 
-/*
-//VALIDAÇÃO DO POST
-if(isset($_POST['nome'])){
-     $obProfessor->nome = $_POST['nome'];
-     $obProfessor->cpf = $_POST['cpf'];
-     $obProfessor->id_colegiado = $_POST['id_colegiado'];
-     $obProfessor->atualizar();
-     header('location: index.php?status=success');
-     exit;
-}
-
-*/
+include './'. $avaliacao->form .'_val.php';
 
 include '../includes/header.php';
 echo $cima; 
