@@ -289,7 +289,6 @@
                   <input type="radio" class="form-check-input" id="radio1" name="r4_5" value="sim"> Sim
                 </label>
               </div>
-              
               <div class="form-check-inline">
                 <label class="form-check-label" for="radio2">
                   <input type="radio" class="form-check-input" id="radio2" name="r4_5" value="nao"> Não
@@ -305,42 +304,37 @@
           <div class="row">
             <div class="col">
               <div class="form-group">
-                <textarea class="form-control" name="contrap_nofinac" rows="10" 
+                <textarea class="form-control" name="sol_adq" rows="10" 
                 placeholder="(Descrever as ações não financeiras que serão suportadas no projeto pela Instituição Proponente) 10 linhas máximo"></textarea>
                 (O prazo para devolução da proposta com adequações segue o previsto no Regulamento de Extensão – Resolução 042/2022 – CEPE/UNESPAR)
               </div>
             </div>
           </div>
         </li>
-
 
         <li class="mb-4">
           <h5>Parecer</h5>
           <div class="row">
             <div class="col">
               <div class="form-group">
-                <textarea class="form-control" name="contrap_nofinac" rows="10" 
+                <textarea class="form-control" name="parecer" rows="10" 
                 placeholder="(Descrever as ações não financeiras que serão suportadas no projeto pela Instituição Proponente) 10 linhas máximo"></textarea>
                 (O prazo para devolução da proposta com adequações segue o previsto no Regulamento de Extensão – Resolução 042/2022 – CEPE/UNESPAR)
               </div>
             </div>
           </div>
         </li>
-
     </ol>
 
     <div class="form-group">
       <div class="row">
-        <div class="col-3"><input type="text" class="form-control" name="tp_proposta"  value="<?=$user['campus']?>"></div>
+        <div class="col-3"><input type="text" class="form-control" name="cideade"  value="<?=$user['campus']?>"></div>
         <div class="col-2"> <input type="date" class="form-control" name="" id="dateAssing" disabled> </div>
       </div>
-
-      
     </div>
     
     <div class="form-group">
       <input type="text" class="form-control" name="parecerista_nome"  value="<?=$user['nome']?> - <?=$user['nivel']?>" disabled>
-      
     </div>
 
     <div class="form-group form-group d-flex justify-content-around">
@@ -367,8 +361,8 @@
 </div>
 
 <script>
-  document.getElementById("dateAssing").valueAsDate = new Date();
-
+  
+document.getElementById("dateAssing").valueAsDate = new Date();
 
 function submitSolicAlterac()
 {
