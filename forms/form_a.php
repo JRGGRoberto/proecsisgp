@@ -60,13 +60,13 @@
                     <div class="col">
                         <div class="form-check-inline">
                             <label class="form-check-label" for="radio1">
-                              <input type="radio" class="form-check-input" id="radio1" name="r3_1" value="sim"> Sim
+                              <input type="radio" class="form-check-input" id="radio1" name="r3_1" value="1" <?=$form->r3_1 == '1'? "checked" : "" ?>> Sim
                             </label>
                           </div>
                           
                           <div class="form-check-inline">
                             <label class="form-check-label" for="radio2">
-                              <input type="radio" class="form-check-input" id="radio2" name="r3_1" value="nao"> Não
+                              <input type="radio" class="form-check-input" id="radio2" name="r3_1" value="0" <?=$form->r3_1 == '0'? "checked" : "" ?>> Não
                             </label>
                           </div>
                     </div>
@@ -77,13 +77,13 @@
                     <div class="col">
                         <div class="form-check-inline">
                             <label class="form-check-label" for="radio1">
-                              <input type="radio" class="form-check-input" id="radio1" name="r3_2" value="sim"> Sim
+                              <input type="radio" class="form-check-input" id="radio1" name="r3_2" value="1" <?=$form->r3_2 == '1'? "checked" : "" ?>> Sim
                             </label>
                           </div>
                           
                           <div class="form-check-inline">
                             <label class="form-check-label" for="radio2">
-                              <input type="radio" class="form-check-input" id="radio2" name="r3_2" value="nao"> Não
+                              <input type="radio" class="form-check-input" id="radio2" name="r3_2" value="0" <?=$form->r3_2 == '0'? "checked" : "" ?>> Não
                             </label>
                           </div>
                     </div>
@@ -94,13 +94,13 @@
                     <div class="col">
                         <div class="form-check-inline">
                             <label class="form-check-label" for="radio1">
-                              <input type="radio" class="form-check-input" id="radio1" name="r3_3" value="sim"> Sim
+                              <input type="radio" class="form-check-input" id="radio1" name="r3_3" value="1" <?=$form->r3_3 == '1'? "checked" : "" ?>> Sim
                             </label>
                           </div>
                           
                           <div class="form-check-inline">
                             <label class="form-check-label" for="radio2">
-                              <input type="radio" class="form-check-input" id="radio2" name="r3_3" value="nao"> Não
+                              <input type="radio" class="form-check-input" id="radio2" name="r3_3" value="0" <?=$form->r3_3 == '0'? "checked" : "" ?>> Não
                             </label>
                           </div>
                     </div>
@@ -111,13 +111,13 @@
                     <div class="col">
                         <div class="form-check-inline">
                             <label class="form-check-label" for="radio1">
-                              <input type="radio" class="form-check-input" id="radio1" name="r3_4" value="sim"> Sim
+                              <input type="radio" class="form-check-input" id="radio1" name="r3_4" value="1" <?=$form->r3_4 == '1'? "checked" : "" ?>> Sim
                             </label>
                           </div>
                           
                           <div class="form-check-inline">
                             <label class="form-check-label" for="radio2">
-                              <input type="radio" class="form-check-input" id="radio2" name="r3_4" value="nao"> Não
+                              <input type="radio" class="form-check-input" id="radio2" name="r3_4" value="0" <?=$form->r3_4 == '0'? "checked" : "" ?>> Não
                             </label>
                           </div>
                     </div>
@@ -128,13 +128,13 @@
                     <div class="col">
                         <div class="form-check-inline">
                             <label class="form-check-label" for="radio1">
-                              <input type="radio" class="form-check-input" id="radio1" name="r3_5" value="sim"> Sim
+                              <input type="radio" class="form-check-input" id="radio1" name="r3_5" value="1" <?=$form->r3_5 == '1'? "checked" : "" ?>> Sim
                             </label>
                           </div>
                           
                           <div class="form-check-inline">
                             <label class="form-check-label" for="radio2">
-                              <input type="radio" class="form-check-input" id="radio2" name="r3_5" value="nao"> Não
+                              <input type="radio" class="form-check-input" id="radio2" name="r3_5" value="0" <?=$form->r3_5 == '0'? "checked" : "" ?>> Não
                             </label>
                           </div>
                     </div>
@@ -145,13 +145,13 @@
                     <div class="col">
                         <div class="form-check-inline">
                             <label class="form-check-label" for="radio1">
-                              <input type="radio" class="form-check-input" id="radio1" name="r3_6" value="sim"> Sim
+                              <input type="radio" class="form-check-input" id="radio1" name="r3_6" value="1" <?=$form->r3_6 == '1'? "checked" : "" ?>> Sim
                             </label>
                           </div>
                           
                           <div class="form-check-inline">
                             <label class="form-check-label" for="radio2">
-                              <input type="radio" class="form-check-input" id="radio2" name="r3_6" value="nao"> Não
+                              <input type="radio" class="form-check-input" id="radio2" name="r3_6" value="0" <?=$form->r3_6 == '0'? "checked" : "" ?>> Não
                             </label>
                           </div>
                     </div>
@@ -162,13 +162,13 @@
                     <div class="col">
                         <div class="form-check-inline">
                             <label class="form-check-label" for="radio1">
-                              <input type="radio" class="form-check-input" id="radio1" name="r3_7" value="sim"> Sim
+                              <input type="radio" class="form-check-input" id="radio1" name="r3_7" value="1" <?=$form->r3_7 == '1'? "checked" : "" ?>> Sim
                             </label>
                           </div>
                           
                           <div class="form-check-inline">
                             <label class="form-check-label" for="radio2">
-                              <input type="radio" class="form-check-input" id="radio2" name="r3_7" value="nao"> Não
+                              <input type="radio" class="form-check-input" id="radio2" name="r3_7" value="0" <?=$form->r3_7 == '0'? "checked" : "" ?>> Não
                             </label>
                           </div>
                     </div>
@@ -201,13 +201,13 @@
             <div class="col-2">
               <div class="form-check-inline">
                 <label class="form-check-label" for="radio1">
-                  <input type="radio" class="form-check-input" id="radio1" name="r4_1" value="sim"> Sim
+                  <input type="radio" class="form-check-input" id="radio1" name="r4_1" value="1" <?=$form->r4_1 == '1'? "checked" : "" ?>> Sim
                 </label>
               </div>
               
               <div class="form-check-inline">
                 <label class="form-check-label" for="radio2">
-                  <input type="radio" class="form-check-input" id="radio2" name="r4_1" value="nao"> Não
+                  <input type="radio" class="form-check-input" id="radio2" name="r4_1" value="0" <?=$form->r4_1 == '0'? "checked" : "" ?>> Não
                 </label>
               </div>
             </div>
@@ -224,13 +224,13 @@
               <div class="col-2">
                 <div class="form-check-inline">
                   <label class="form-check-label" for="radio1">
-                    <input type="radio" class="form-check-input" id="radio1" name="r4_2" value="sim"> Sim
+                    <input type="radio" class="form-check-input" id="radio1" name="r4_2" value="1" <?=$form->r4_2 == '1'? "checked" : "" ?>> Sim
                   </label>
                 </div>
                 
                 <div class="form-check-inline">
                   <label class="form-check-label" for="radio2">
-                    <input type="radio" class="form-check-input" id="radio2" name="r4_2" value="nao"> Não
+                    <input type="radio" class="form-check-input" id="radio2" name="r4_2" value="0" <?=$form->r4_2 == '0'? "checked" : "" ?>> Não
                   </label>
                 </div>
             </div>
@@ -246,13 +246,13 @@
               <div class="col-2">
               <div class="form-check-inline">
                 <label class="form-check-label" for="radio1">
-                  <input type="radio" class="form-check-input" id="radio1" name="r4_3" value="sim"> Sim
+                  <input type="radio" class="form-check-input" id="radio1" name="r4_3" value="1" <?=$form->r4_3 == '1'? "checked" : "" ?>> Sim
                 </label>
               </div>
               
               <div class="form-check-inline">
                 <label class="form-check-label" for="radio2">
-                  <input type="radio" class="form-check-input" id="radio2" name="r4_3" value="nao"> Não
+                  <input type="radio" class="form-check-input" id="radio2" name="r4_3" value="0" <?=$form->r4_3 == '0'? "checked" : "" ?>> Não
                 </label>
               </div>
             </div>
@@ -267,13 +267,13 @@
               <div class="col-2">
               <div class="form-check-inline">
                 <label class="form-check-label" for="radio1">
-                  <input type="radio" class="form-check-input" id="radio1" name="r4_4" value="sim"> Sim
+                  <input type="radio" class="form-check-input" id="radio1" name="r4_4" value="1" <?=$form->r4_4 == '1'? "checked" : "" ?>> Sim
                 </label>
               </div>
               
               <div class="form-check-inline">
                 <label class="form-check-label" for="radio2">
-                  <input type="radio" class="form-check-input" id="radio2" name="r4_4" value="nao"> Não
+                  <input type="radio" class="form-check-input" id="radio2" name="r4_4" value="0" <?=$form->r4_4 == '0'? "checked" : "" ?>> Não
                 </label>
               </div>
             </div>
@@ -287,12 +287,12 @@
               <div class="col-2">
               <div class="form-check-inline">
                 <label class="form-check-label" for="radio1">
-                  <input type="radio" class="form-check-input" id="radio1" name="r4_5" value="sim"> Sim
+                  <input type="radio" class="form-check-input" id="radio1" name="r4_5" value="1" <?=$form->r4_5 == '1'? "checked" : "" ?>> Sim
                 </label>
               </div>
               <div class="form-check-inline">
                 <label class="form-check-label" for="radio2">
-                  <input type="radio" class="form-check-input" id="radio2" name="r4_5" value="nao"> Não
+                  <input type="radio" class="form-check-input" id="radio2" name="r4_5" value="0" <?=$form->r4_5 == '0'? "checked" : "" ?>> Não
                 </label>
               </div>
             </div>
@@ -305,8 +305,8 @@
           <div class="row">
             <div class="col">
               <div class="form-group">
-                <textarea class="form-control" name="sol_adq" rows="10" 
-                placeholder="(Descrever as ações não financeiras que serão suportadas no projeto pela Instituição Proponente) 10 linhas máximo"></textarea>
+                <textarea class="form-control" name="solicitacoes" rows="10" 
+                placeholder="(Descrever as ações não financeiras que serão suportadas no projeto pela Instituição Proponente) 10 linhas máximo"><?=$form->solicitacoes?></textarea>
                 (O prazo para devolução da proposta com adequações segue o previsto no Regulamento de Extensão – Resolução 042/2022 – CEPE/UNESPAR)
               </div>
             </div>
@@ -319,7 +319,7 @@
             <div class="col">
               <div class="form-group">
                 <textarea class="form-control" name="parecer" rows="10" 
-                placeholder="(Descrever as ações não financeiras que serão suportadas no projeto pela Instituição Proponente) 10 linhas máximo"></textarea>
+                placeholder="(Descrever as ações não financeiras que serão suportadas no projeto pela Instituição Proponente) 10 linhas máximo"><?=$form->parecer?></textarea>
                 (O prazo para devolução da proposta com adequações segue o previsto no Regulamento de Extensão – Resolução 042/2022 – CEPE/UNESPAR)
               </div>
             </div>
@@ -329,13 +329,13 @@
 
     <div class="form-group">
       <div class="row">
-        <div class="col-3"><input type="text" class="form-control" name="cideade"  value="<?=$user['campus']?>"></div>
+        <div class="col-3"><input type="text" class="form-control" name="cidade"  value="<?=$user['campus']?>"></div>
         <div class="col-2"> <input type="date" class="form-control" name="dateAssing" id="dateAssing" readonly> </div>
       </div>
     </div>
     
     <div class="form-group">
-      <input type="text" class="form-control" name="parecerista_nome"  value="<?=$user['nome']?> - <?=$user['nivel']?>" readonly>
+      <input type="text" class="form-control" name="whosigns"  value="<?=$user['nome']?> - <?=$user['nivel']?>" readonly>
     </div>
 <p> </p><hr><p> </p>
     <div class="form-group form-group d-flex justify-content-around">
@@ -368,7 +368,7 @@ document.getElementById("dateAssing").valueAsDate = new Date();
 function submitSolicAlterac()
 {
   const name = document.getElementById('resultado');
-  name.value = 'rejeitado';
+  name.value = '0';
   document.myform.submit();
 }
 
@@ -382,7 +382,7 @@ function submitSave()
 function submitAprova()
 {
   const name = document.getElementById('resultado');
-  name.value = 'aprovado';
+  name.value = '1';
   document.myform.submit();
 }
 </script>
