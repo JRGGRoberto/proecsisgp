@@ -5,18 +5,11 @@ use \App\Entity\Avaliacoes;
 use \App\Entity\Form_a;
 $form = Form_a::getRegistro($_GET['p'], $_GET['v']);
 
-
-echo 'Id P: '. $_GET['p'] . '  versão: '. $_GET['v'];;
-echo 'Buscando<pre>';
-print_r($form);
-echo '</pre>';
-
-
-
-if(is_null($form)) {
+$cad = false;
+if(!$form) {
   $form = new Form_a();
+  $cad = true;
 }
-
 
 //VALIDAÇÃO DO POST
 if(isset($_POST['resultado'])){
@@ -45,17 +38,16 @@ if(isset($_POST['resultado'])){
     $form->whosigns = $_POST['whosigns'];
     $form->dateAssing = $_POST['dateAssing'];
     $form->resultado  = $_POST['resultado'];
-    $form->$user  = $_POST['u'];
+    $form->$user  = $_POST['a'];
 
-    echo '<pre>';
-    print_r($form);
-    echo '</pre>';
-
-
-
-    $form->salvar();
+    // $form->salvar();
+    if($cad){
+      $form->cadastrar();
+    } else {
+      $form->atualizar();
+    }
   
-   // header('location: ../avalareal/index.php?status=success');
+    header('location: ../avalareal/index.php?status=success');
     exit; 
   }
 }

@@ -87,7 +87,7 @@ class Projeto{
                                        'data' => $this->data,
                                        'outs_info' => $this->outs_info,
                                        'para_avaliar' => -1,
-                                      // 'created_at' => $this->created_at,
+                                       'created_at' => date("Y-m-d H:i:s"),
                                       // 'updated_at' => date("Y-m-d H:i:s"),
                                        'user' => $this->user
                                     ]);

@@ -73,13 +73,21 @@
 
         ';
 
+//Btn Submeter ou 
+      $btnSub;        
+      if($proj->para_avaliar < 0){
+        $btnSub = '<button id="sub'. $proj->id . 'v'. $proj->ver . '" class="btn btn-primary btn-sm mb-2" onclick="writeNumber(this)">📤 Submeter</button>';
+      }else {
+        $btnSub = '<button id="sub'. $proj->id . 'v'. $proj->ver . '" class="btn btn-primary btn-sm mb-2" onclick="writeNumber(this)">📤 Enviar alterações</button>';
+      }
 
-       if ($proj->para_avaliar < 0){
+
+       if ($proj->edt == 1){
          $resultados .=  
       '<hr>
-        <div class="d-flex flex-row-reverse ">
-          <button id="sub'. $proj->id . 'v'. $proj->ver . '" class="btn btn-primary btn-sm mb-2" onclick="writeNumber(this)">📤 Submeter</button>
-          <div class="p-1"></div>
+        <div class="d-flex flex-row-reverse ">'  
+        . $btnSub .   
+      '    <div class="p-1"></div>
           <button id="del'. $proj->id . 'v'. $proj->ver . '" class="btn btn-danger  btn-sm mb-2" onclick="writeNumber(this)">🗑 Excluir</button>
           <div class="p-1"></div>
           <a href="editar.php?id='. $proj->id . '&v='. $proj->ver . '"><button class="btn btn-success btn-sm mb-2">📄 Editar</button></a>

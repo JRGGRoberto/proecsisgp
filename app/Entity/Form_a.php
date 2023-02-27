@@ -42,102 +42,80 @@ class Form_a{
   * @return Form_a
   */
   public static function getRegistro($id_proj, $ver_proj){
-
-
-    return (new Database('form_a'))->select('(id_proj, ver_proj)  = ("'.$id_proj.'", "'.$ver_proj.'")')
+    return (new Database('form_a'))->select(  '(id_proj, ver_proj)  = ("'.$id_proj.'", "'.$ver_proj.'")'  )
                                   ->fetchObject(self::class);
   }
 
-  /**
-  * Método responsável por cadastrar / atualizar registro
-  * @return boolean
-  */
-  public function salvar(){ 
-    $sql = "
-    INSERT INTO form_a ( 
-      id_proj,
-      ver_proj,
-      id_avaliacao,
-      id_avaliador,
-      r3_1,
-      r3_2,
-      r3_3,
-      r3_4,
-      r3_5,
-      r3_6,
-      r3_7,
-      r4_1,
-      r4_2,
-      r4_3,
-      r4_4,
-      r4_5,
-      solicitacoes,
-      parecer,
-      cidade,
-      whosigns,
-      dateAssing,
-      resultado,
-      
-      user
-    ) VALUES (
-      '$this->id_proj',
-      '$this->ver_proj',
-      '$this->id_avaliacao',
-      '$this->id_avaliador',
-      $this->r3_1,
-      $this->r3_2,
-      $this->r3_3,
-      $this->r3_4,
-      $this->r3_5,
-      $this->r3_6,
-      $this->r3_7,
-      $this->r4_1,
-      $this->r4_2,
-      $this->r4_3,
-      $this->r4_4,
-      $this->r4_5,
-      '$this->solicitacoes',
-      '$this->parecer',
-      '$this->cidade',
-      '$this->whosigns',
-      '$this->dateAssing',
-      '$this->resultado',
-     
-      '$this->user'
-    ) ON DUPLICATE KEY UPDATE 
-      id_avaliacao = '$this->id_avaliacao',
-      id_avaliador = '$this->id_avaliador',
-      r3_1 = $this->r3_1,
-      r3_2 = $this->r3_2,
-      r3_3 = $this->r3_3,
-      r3_4 = $this->r3_4,
-      r3_5 = $this->r3_5,
-      r3_6 = $this->r3_6,
-      r3_7 = $this->r3_7,
-      r4_1 = $this->r4_1,
-      r4_2 = $this->r4_2,
-      r4_3 = $this->r4_3,
-      r4_4 = $this->r4_4,
-      r4_5 = $this->r4_5,
-      solicitacoes = '$this->solicitacoes',
-      parecer = '$this->parecer',
-      cidade = '$this->cidade',
-      whosigns = '$this->whosigns',
-      dateAssing = $this->dateAssing,
-      resultado = '$this->resultado',
-      
-      user = '$this->user'
-    ";
 
 
-    echo $sql;
+  public function cadastrar(){
+    //DEFINIR A DATA
+    // $this->data = date('Y-m-d H:i:s');
+    $obDatabase = new Database('form_a');
+    $obDatabase->insert([
+                          'id_proj'      => $this->id_proj,
+                          'ver_proj'     => $this->ver_proj,
+                          'id_avaliacao'     => $this->id_avaliacao,
+                          'id_avaliador'     => $this->id_avaliador,
+                          'r3_1'     => $this->r3_1,
+                          'r3_2'     => $this->r3_2,
+                          'r3_3'     => $this->r3_3,
+                          'r3_4'     => $this->r3_4,
+                          'r3_5'     => $this->r3_5,
+                          'r3_6'     => $this->r3_6,
+                          'r3_7'     => $this->r3_7,
+                          'r4_1'     => $this->r4_1,
+                          'r4_2'     => $this->r4_2,
+                          'r4_3'     => $this->r4_3,
+                          'r4_4'     => $this->r4_4,
+                          'r4_5'     => $this->r4_5,
+                          'solicitacoes'     => $this->solicitacoes,
+                          'parecer'      => $this->parecer,
+                          'cidade'       => $this->cidade,
+                          'whosigns'     => $this->whosigns,
+                          'dateAssing'   => date("Y-m-d H:i:s"),
+                          'resultado'    => $this->resultado,
+                          'created_at'   => date("Y-m-d H:i:s"),
+//                        'updated_at'   => $this->updated_at,
+                          'user'         => $this->user
+                       ]);
 
-    $a = new Database();
-    $a->execute($sql);
-
+    //RETORNAR SUCESSO
     return true;
-      // ->fetchAll(PDO::FETCH_CLASS,self::class);
   }
 
+  
+    /**
+   * Método responsável por atualizar a Registro no banco
+   * @return boolean
+   */
+
+   public function atualizar(){
+    return (new Database('form_a'))->update('(id_proj, ver_proj) = ("'.$this->id_proj.'", '.$this->ver_proj.' )',
+                                            [
+                                               'id_avaliacao'     => $this->id_avaliacao,
+                                               'id_avaliador'     => $this->id_avaliador,
+                                               'r3_1'     => $this->r3_1,
+                                               'r3_2'     => $this->r3_2,
+                                               'r3_3'     => $this->r3_3,
+                                               'r3_4'     => $this->r3_4,
+                                               'r3_5'     => $this->r3_5,
+                                               'r3_6'     => $this->r3_6,
+                                               'r3_7'     => $this->r3_7,
+                                               'r4_1'     => $this->r4_1,
+                                               'r4_2'     => $this->r4_2,
+                                               'r4_3'     => $this->r4_3,
+                                               'r4_4'     => $this->r4_4,
+                                               'r4_5'     => $this->r4_5,
+                                               'solicitacoes'     => $this->solicitacoes,
+                                               'parecer'      => $this->parecer,
+                                               'cidade'       => $this->cidade,
+                                               'whosigns'     => $this->whosigns,
+                                               'dateAssing'   => date("Y-m-d H:i:s"),
+                                               'resultado'    => $this->resultado,
+                                               'updated_at' => date("Y-m-d H:i:s"),
+                                               'user'       => $this->user
+                                            ]);
+  }
 
 }
