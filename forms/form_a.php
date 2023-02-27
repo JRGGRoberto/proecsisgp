@@ -306,7 +306,7 @@
             <div class="col">
               <div class="form-group">
                 <textarea class="form-control" name="solicitacoes" rows="10" 
-                placeholder="(Descrever as ações não financeiras que serão suportadas no projeto pela Instituição Proponente) 10 linhas máximo"><?=$form->solicitacoes?></textarea>
+                placeholder="(Descrever quais adequações devem ser realizadas para que o projeto ultrapasse esta etapa) 10 linhas máximo"><?=$form->solicitacoes?></textarea>
                 (O prazo para devolução da proposta com adequações segue o previsto no Regulamento de Extensão – Resolução 042/2022 – CEPE/UNESPAR)
               </div>
             </div>
@@ -319,7 +319,7 @@
             <div class="col">
               <div class="form-group">
                 <textarea class="form-control" name="parecer" rows="10" 
-                placeholder="(Descrever as ações não financeiras que serão suportadas no projeto pela Instituição Proponente) 10 linhas máximo"><?=$form->parecer?></textarea>
+                placeholder="(Informar o parecer do projeto) 10 linhas máximo"><?=$form->parecer?></textarea>
                 (O prazo para devolução da proposta com adequações segue o previsto no Regulamento de Extensão – Resolução 042/2022 – CEPE/UNESPAR)
               </div>
             </div>
@@ -357,6 +357,8 @@
       
     </div>
     <input type="hidden" id="resultado" name="resultado">
+    <input type="hidden" name="a" value="<?=$user['id']?>">
+    <input type="hidden" name="u" value="<?=$user['id']?>">
   </form>
 
 </div>
