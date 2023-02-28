@@ -49,7 +49,6 @@ class Projeto{
    * @return boolean
    */
   public function cadastrar(){
-
     //INSERIR PROJETO NO BANCO
     $obDatabase = new Database('projetos');
     $newId = exec('uuidgen -r');
@@ -180,7 +179,7 @@ class Projeto{
    * @return Projeto
    */
   public static function getProjeto($id, $ver){
-    return (new Database('proj_inf'))->select('(id, ver) = ("'.$id.'", '. $ver .')')
+    return (new Database('projetos'))->select('(id, ver) = ("'.$id.'", '. $ver .')')
                                   ->fetchObject(self::class);
   }
 
@@ -190,8 +189,8 @@ class Projeto{
    * @param  integer $id
    * @return Projeto
    */
-  public static function getProjetoView($id){
-    return (new Database('proj_inf'))->select('id = "'.$id.'"')
+  public static function getProjetoView($id, $ver){
+    return (new Database('proj_inf'))->select('(id, ver) = ("'. $id .'", '. $ver .')')
                                   ->fetchObject(self::class);
   }
 
@@ -246,6 +245,22 @@ class Projeto{
     return true;
       // ->fetchAll(PDO::FETCH_CLASS,self::class);
   }
+
+
+
+  /**
+   * Método responsável por buscar uma Projeto com base em seu ID e Versão
+   * @param  integer $id
+   * @return Projeto
+   */
+  public static function novaVersao($id, $ver){
+    return (new Database('projetos'))->select('(id, ver) = ("'.$id.'", '. $ver .')')
+                                  ->fetchObject(self::class);
+  }
+
+
+ 
+
 
 } 
 

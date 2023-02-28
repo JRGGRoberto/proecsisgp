@@ -109,7 +109,7 @@ if(isset($_POST['titulo']))
 
 //  $obProjeto->regra    =  '6204ba97-7f1a-499e-a17d-118d305bf7e4';
   $obProjeto->ver    =  $_POST['ver'];
-  $obProjeto->area_cnpq    =  $_POST['area_cnpq'];
+  $obProjeto->area_cnpq    =  $_POST['area_cnpq'];  $id_proj  = $obProjeto->cadastrar();
   $obProjeto->area_tema1   =  $_POST['area_tema1'];
   $obProjeto->area_tema2   =  $_POST['area_tema2'];
   $obProjeto->area_extensao = $_POST['area_extensao'];

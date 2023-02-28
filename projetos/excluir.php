@@ -13,7 +13,8 @@ $user = Login::getUsuarioLogado();
 
 //VALIDAÇÃO DO ID
 if(!isset($_GET['id'], $_GET['v'])){
-   header('location: index.php?status=error');
+   echo "get id get v";
+  header('location: index.php?status=error');
   exit;
 }
 
@@ -23,6 +24,7 @@ $obProjeto = Projeto::getProjeto($_GET['id'], 0);
 
 //VALIDAÇÃO DA Campus
 if(!$obProjeto instanceof Projeto){
+  echo 'Não é uma instancia do projeto';
   header('location: index.php?status=error');
   exit;
 }
@@ -38,7 +40,7 @@ if($obProjeto->created_at != $_GET['v']){
 //VALIDANDO SE O DONO DO PROJETO É  USUÁRIO
 if($obProjeto->id_prof != $user['id']){
   echo 'tentando trapassear.... NÃO ÉS O DONO DO PROJETO!!!';
-  header('location: index.php?status=error');
+ // header('location: index.php?status=error');
   exit;
 }
 

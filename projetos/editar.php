@@ -1,12 +1,15 @@
 <?php
 require '../vendor/autoload.php';
+
+ini_set('display_errors', 1);
+ini_set('display_startup_errors', 1);
+error_reporting(E_ALL);
+
 use \App\Session\Login;
 use \App\Entity\Projeto;
 
 Login::requireLogin();
 $user = Login::getUsuarioLogado();
-
-
 
 $mensagem = '';
 if(isset($_GET['status'])){
@@ -33,9 +36,7 @@ $ver = $_GET['v'];
 
 //CONSULTA AO PROJETO
 $obProjeto = new Projeto();
-$where = '(id, ver) = ("' .$id.'", '.$ver.') ';
-$obProjeto = Projeto::getRegistros($where);
-$obProjeto = $obProjeto[0];
+$obProjeto = Projeto::getProjeto($id, $ver);
 
 //VALIDAÇÃO DA TIPO
 if(!$obProjeto instanceof Projeto){
@@ -113,8 +114,14 @@ $anex .= '</ul>';
 
 use \App\Entity\Professor;
 
-//CONSULTA AO PROFESSOR
+/*CONSULTA AO PROFESSOR
 $obProfessor = Professor::getProfessor($obProjeto->id_prof);
+echo '<pre>';
+print_r($obProjeto);
+echo '<hr>';
+print_r($obProfessor);
+echo '</pre>';
+*/
 
 
 define('TITLE','Editar informações do projeto');
@@ -123,7 +130,7 @@ define('TITLE','Editar informações do projeto');
 if(isset( $_POST['titulo']) ) {
 
   // $obProjeto->id           =  $_POST['id'];
-  $obProjeto->id_prof      =  $obProfessor['id'];
+  //$obProjeto->id_prof      =  $obProfessor['id'];
   $obProjeto->tipo_exten   =  $_POST['tipo_exten'];
   $obProjeto->titulo       =  $_POST['titulo'];
   $obProjeto->tide         =  $_POST['tide'];
@@ -151,10 +158,10 @@ if(isset( $_POST['titulo']) ) {
   $obProjeto->outs_info       =  $_POST['outs_info'];
   //$obProjeto->para_avaliar    =  $_POST['para_avaliar'];
   $obProjeto->updated_at = date("Y-m-d H:i:s");
-  $obProjeto->user = $x['id'];
+  $obProjeto->user = $user['id'];
   
   $obProjeto->atualizar();
-  $arqs = $_POST['anexos'];
+/*  $arqs = $_POST['anexos'];
 
   foreach($arqs as $arq){
     $dados = Arquivo::getArquivo($arq);
@@ -163,10 +170,11 @@ if(isset( $_POST['titulo']) ) {
     $dados->user = $obProjeto->user;
     $dados->atualizar();
   }
-
-  
+*/
   header('location: ./index.php?status=success');
   exit;
+  
+  
 }
 
 
@@ -199,9 +207,7 @@ if ($user['id'] == $obProjeto->id_prof){
   
             
             <hr>
-            <p><span class="badge badge-light"> 🚨 </span> Estais a tentar editar um projeto o qual não lhe pertence.</p>
-            <p><span class="badge badge-light"> 🚨 </span> Editar arquivo de terceiros sem autorização pode ser tipificado como crime.</p>
-            <p><span class="badge badge-light"> 🚨 </span> Além de não ser moral, também não é legal, quaisquer tentativas de burlar o sistema para isso será catalogado para auditoria e análise para tomada de decisões quanto a conduta de uso. </p>
+            <p><span class="badge badge-light"> 🚨 </span> Operação não permitida.</p>
           </div>
         ';
 

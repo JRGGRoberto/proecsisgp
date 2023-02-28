@@ -166,6 +166,9 @@ if(isset($_POST['nome'])){
   $obProfessor->id_colegiado = $_POST['id_colegiado'];
   $obProfessor->cat_func = $_POST['cat_func'];
   $obProfessor->ativo = $_POST['ativo'];
+  if ($obProfessor->niveln> 0){
+    $obProfessor->ativo = 1;
+  }
   $obProfessor->adm = $_POST['adm'];
   $obProfessor->updated_at =  date('Y-m-d H:i:s');
   $obProfessor->user = $_POST['user'];

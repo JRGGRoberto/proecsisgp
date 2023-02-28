@@ -40,7 +40,7 @@ if ($avaliacao->ver != $ver_proj){
     exit;
 }
 
-$prj = Projeto::getProjeto($avaliacao->id_proj, $avaliacao->ver);
+$prj = Projeto::getProjetoView($avaliacao->id_proj, $avaliacao->ver);
 
 $cima = '<hr>
 Etapa '. $avaliacao->fase_seq. ' de '. $avaliacao->etapas. '
