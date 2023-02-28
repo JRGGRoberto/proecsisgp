@@ -317,13 +317,12 @@ function printSubAlt(data){
         </div>
   `;
   modalFooter.innerHTML = data.innerHTML = `
-          
           <form method="post" action="submeter.php?">
               <input type="hidden" name="modIDprj"   value="${data.id}">
               <input type="hidden" name="selecOpt"   value="" id="selecOpt">
               <input type="hidden" name="modVerPrj"  value="${data.ver}">
               <input type="hidden" name="modCreated" value="${data.created_at}">
-              <button type="submit" class="btn btn-primary btn-sm mb-2" id="btnSubmit" disabled>📤 Submeter</button>
+              <button type="submit" class="btn btn-primary btn-sm mb-2" id="btnSubmitN">📤 Submeter nova versão</button>
           </form>                    
           <button type="button" class="btn btn-secondary btn-sm mb-2" data-dismiss="modal">Fechar</button>
   `;

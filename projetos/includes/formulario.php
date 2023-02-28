@@ -322,7 +322,7 @@
       </div>
     </div>
     
-
+<!--
 
     <div class="form-group">
       <h4>Anexos</h4>
@@ -330,7 +330,7 @@
       <iframe src="../upload/upload.php" frameborder="0" scrolling="no"></iframe>
       <?=$anex?>
     </div>
-
+-->
     
     <div class="form-group">
       <input type="submit" name="enviar" class="btn btn-success" value="Salvar">

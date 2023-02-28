@@ -1,5 +1,6 @@
 <?php
 use \App\Entity\Avaliacoes;
+use \App\Entity\Projeto;
 
 
 use \App\Entity\Form_a;
@@ -40,11 +41,30 @@ if(isset($_POST['resultado'])){
     $form->resultado  = $_POST['resultado'];
     $form->$user  = $_POST['a'];
 
-    // $form->salvar();
     if($cad){
       $form->cadastrar();
     } else {
       $form->atualizar();
+    }
+    
+    switch($form->resultado) {
+      case 'a':
+        echo "One";
+        break;
+      case 'r':
+        echo 'atualiza campo em Avaliações (resultado = r)
+              cria nova versão do projeto';
+              $ava1->resultado = 'r';
+
+              $proj = Projeto::getProjeto($id_proj, $ver_proj);
+              $proj->novaVersao();
+            
+
+
+        break;
+      case 'e':
+        echo "Salvo para futuro converencia";
+        break;
     }
   
     header('location: ../avalareal/index.php?status=success');
