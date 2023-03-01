@@ -22,7 +22,7 @@ $id_ava  = $_GET['i'];
 $id_proj = $_GET['p'];
 $ver_proj = $_GET['v'];
 
-$avaliacao = Avaliacoes::getRegistro($id_ava);
+$avaliacao = Avaliacoes::getRegistroView($id_ava);
 
 if ($avaliacao->id_user != $user['id']){
   header('location: ../avalareal/index.php?status=error');

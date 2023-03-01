@@ -10,14 +10,15 @@ class Avaliacoes{
   public $id;
   public $id_proj;
   public $ver;
-  public $regra;
+  public $regra_def;
   public $fase_seq;
   public $tp_instancia;
   public $id_instancia;
   public $resultado;
   public $updated_at;
   public $user;
-  
+
+
   /**
    * Método responsável por obter as registros do banco de dados
    * @param  string $where
@@ -46,7 +47,17 @@ class Avaliacoes{
    * @param  integer $id
    * @return 
    */
-  public static function getRegistro($id_ava){
+  public static function getRegistro($id){
+    return (new Database('avaliacoes'))->select('id =  "'. $id. '"')
+                                  ->fetchObject(self::class);
+  }
+
+  /**
+   * Método responsável por buscar um Registro com base em seu ID
+   * @param  integer $id
+   * @return 
+   */
+  public static function getRegistroView($id_ava){
     return (new Database('proj_avaliar'))->select('id_ava =  "'. $id_ava. '"')
                                   ->fetchObject(self::class);
   }
@@ -65,12 +76,12 @@ class Avaliacoes{
    * @return boolean
    */
   public function atualizar(){
-    return (new Database('avaliacoes'))->update('id = '.$this->id,[                                                          
-                                                                'id_instancia' => $this->id_instancia,
-                                                                'resultado' => $this->resultado,
-                                                                'updated_at' => date("Y-m-d H:i:s"),
-                                                                'user' => $this->user 
-                                                               ]);
+    return (new Database('avaliacoes'))->update('id = "'.$this->id.'"',[                                                          
+                                                          'id_instancia' => $this->id_instancia,
+                                                          'resultado' => $this->resultado,
+                                                          'updated_at' => date("Y-m-d H:i:s"),
+                                                          'user' => $this->user 
+                                                         ]);
   }
 
   /**

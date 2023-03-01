@@ -39,6 +39,7 @@ class Projeto{
   public $data;
   public $outs_info;
   public $para_avaliar;
+  public $last_result;
   public $edt;
   public $created_at;
   public $updated_at;
@@ -55,6 +56,8 @@ class Projeto{
     is_null($this->ver) ? $this->ver = 0 : $this->ver;
     is_null($this->id) ? $ida  = $newId : $ida = $this->id;
     is_null($this->edt) ? $edt = 1 : $edt = $this->edt;
+    is_null($this->para_avaliar) ? $aval = -1 : $aval = $this->para_avaliar;
+    
     
     //$this->id = 
     $obDatabase->insert([
@@ -90,7 +93,8 @@ class Projeto{
                            'data' => $this->data,
                            'edt' => $edt,
                            'outs_info' => $this->outs_info,
-                           'para_avaliar' => -1,
+                           'para_avaliar' => $aval,
+                           'last_result' => $this->last_result,
                            'created_at' => date("Y-m-d H:i:s"),
                           // 'updated_at' => date("Y-m-d H:i:s"),
                            'user' => $this->user
@@ -138,6 +142,7 @@ class Projeto{
                                        'edt' => $this->edt,
                                        'outs_info' => $this->outs_info,
                                        'para_avaliar' => $this->para_avaliar,
+                                       'last_result' => $this->last_result,
                                       // 'created_at' => $this->created_at,
                                        'updated_at' => date("Y-m-d H:i:s"),
                                        'user' => $this->user
@@ -239,13 +244,13 @@ class Projeto{
     $this->atualizar();
 
     $sql = "
-              insert into 
-                avaliacoes (id, id_proj, ver, regra_def, fase_seq, tp_instancia, id_instancia)
-              select * 
-              from to_avaliar 
-              where 
-                id_proj = '". $this->id ."' and
-                fase_seq = (select IFNULL(max(fase_seq), 1)   from avaliacoes a where id_proj  = '". $this->id ."')";
+          insert into 
+            avaliacoes (id, id_proj, ver, regra_def, fase_seq, tp_instancia, id_instancia)
+          select * 
+          from to_avaliar 
+          where 
+            id_proj = '". $this->id ."' and
+            fase_seq = (select IFNULL(max(fase_seq), 1)   from avaliacoes a where id_proj  = '". $this->id ."')";
                 
     $a = new Database(); 
     $a->execute($sql);
@@ -253,14 +258,13 @@ class Projeto{
       // ->fetchAll(PDO::FETCH_CLASS,self::class);
   }
 
-
-
   /**
    * Método responsável por buscar uma Projeto com base em seu ID e Versão
    * @param  integer $id
    * @return Projeto
    */
   public function novaVersao(){
+    $this->last_result = 'r';
     $this->edt = 1;
     $this->ver = $this->ver  + 1 ;
     $this->cadastrar();

@@ -1,4 +1,11 @@
 <?php
+
+require '../vendor/autoload.php';
+
+ini_set('display_errors', '1');
+ini_set('display_startup_errors', '1');
+error_reporting(E_ALL);
+
 use \App\Entity\Avaliacoes;
 use \App\Entity\Projeto;
 
@@ -14,8 +21,13 @@ if(!$form) {
 
 //VALIDAÇÃO DO POST
 if(isset($_POST['resultado'])){
-  $id_ava1  = $_GET['i'];
-  $ava1 = Avaliacoes::getRegistro($id_ava1);
+
+  $ava1 = Avaliacoes::getRegistro($_GET['i']);
+  echo '<pre>';
+  print_r($ava1);
+  echo 'id..: '. $ava1->id;
+  echo '</pre>';
+
   if(($ava1->id_proj == $id_proj) and ($ava1->ver == $ver_proj)) {
     $form->id_proj = $id_proj;
     $form->ver_proj = $ver_proj;
@@ -39,7 +51,7 @@ if(isset($_POST['resultado'])){
     $form->whosigns = $_POST['whosigns'];
     $form->dateAssing = $_POST['dateAssing'];
     $form->resultado  = $_POST['resultado'];
-    $form->$user  = $_POST['a'];
+    //$form->$user  = $_POST['a'];
 
     if($cad){
       $form->cadastrar();
@@ -49,23 +61,29 @@ if(isset($_POST['resultado'])){
     
     switch($form->resultado) {
       case 'a':
-        echo "One";
+        $ava1->resultado = 'a';
+        $ava1->atualizar();
+        /*
+        Verificar se a sequencia atual é < que a Maxima [ select max(fase_seq) from to_avaliar where id_proj = '21df3ce6-3d0e-47c0-b979-ba86f6c4a7f7'  ]
+        Se for menor inserir valor em Avaliações se não - nada a fazer.
+
+        */
+
         break;
       case 'r':
         echo 'atualiza campo em Avaliações (resultado = r)
-              cria nova versão do projeto';
-              $ava1->resultado = 'r';
-
-              $proj = Projeto::getProjeto($id_proj, $ver_proj);
-              $proj->novaVersao();
-            
-
-
+        cria nova versão do projeto';
+        $ava1->resultado = 'r';
+        $ava1->atualizar();
+        $proj = Projeto::getProjeto($id_proj, $ver_proj);
+        $proj->novaVersao();
         break;
       case 'e':
         echo "Salvo para futuro converencia";
         break;
     }
+
+    
   
     header('location: ../avalareal/index.php?status=success');
     exit; 
