@@ -20,10 +20,10 @@
       if($i < $ava->fase_seq){
         $cor = 'success';
       } elseif ($i == $ava->fase_seq){
-        if($ava->resultado == 'e') {
-          $cor = 'warning';
-        } else {
+        if($ava->resultado == 'r') {
           $cor = 'danger';
+        } else {
+          $cor = 'warning';
         }
       } else {
         $cor = 'secondary';
