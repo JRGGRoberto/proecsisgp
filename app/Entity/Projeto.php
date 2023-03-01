@@ -244,9 +244,9 @@ class Projeto{
     $this->atualizar();
 
     $sql = "
-          insert into 
-            avaliacoes (id, id_proj, ver, regra_def, fase_seq, tp_instancia, id_instancia)
-          select * 
+          insert into
+             avaliacoes ( id, id_proj, ver, regra_def, fase_seq, tp_instancia, id_instancia, resultado )
+             select id, id_proj, ver, regra_def, fase_seq, tp_avaliador, id_instancia, if(last_result='n', 'e', last_result)  
           from to_avaliar 
           where 
             id_proj = '". $this->id ."' and
