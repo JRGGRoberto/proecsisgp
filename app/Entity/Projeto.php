@@ -53,16 +53,16 @@ class Projeto{
     //INSERIR PROJETO NO BANCO
     $obDatabase = new Database('projetos');
     $newId = exec('uuidgen -r');
-    is_null($this->ver) ? $this->ver = 0 : $this->ver;
+    is_null($this->ver) ? $v = 0 : $v = $this->ver;
     is_null($this->id) ? $ida  = $newId : $ida = $this->id;
     is_null($this->edt) ? $edt = 1 : $edt = $this->edt;
     is_null($this->para_avaliar) ? $aval = -1 : $aval = $this->para_avaliar;
-    
+    is_null($this->last_result) ? $lr = 'n' : $lr = $this->last_result;
     
     //$this->id = 
     $obDatabase->insert([
                            'id' => $ida,
-                           'ver' =>   $this->ver,
+                           'ver' =>   $v,
                            'regras' =>  "6204ba97-7f1a-499e-a17d-118d305bf7e4", //$this->regras,
                            'id_prof' => $this->id_prof,
                            'nome_prof' => $this->nome_prof,

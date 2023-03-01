@@ -84,8 +84,7 @@ foreach($sendColegiado as $co){
 use  \App\Entity\Arquivo;
 
 //VALIDAÇÃO DO POST
-if(isset($_POST['titulo']))
-{
+if(isset($_POST['titulo'])){
   $obProjeto->id_prof      =  $user['id'];
   $obProjeto->nome_prof    =  $user['nome'];
   $obProjeto->tipo_exten   =  $_POST['tipo_exten'];
@@ -109,7 +108,7 @@ if(isset($_POST['titulo']))
 
 //  $obProjeto->regra    =  '6204ba97-7f1a-499e-a17d-118d305bf7e4';
   $obProjeto->ver    =  $_POST['ver'];
-  $obProjeto->area_cnpq    =  $_POST['area_cnpq'];  $id_proj  = $obProjeto->cadastrar();
+  $obProjeto->area_cnpq    =  $_POST['area_cnpq'];  
   $obProjeto->area_tema1   =  $_POST['area_tema1'];
   $obProjeto->area_tema2   =  $_POST['area_tema2'];
   $obProjeto->area_extensao = $_POST['area_extensao'];
@@ -132,8 +131,8 @@ if(isset($_POST['titulo']))
  // 'updated_at' => date("Y-m-d H:i:s"),
   $obProjeto->user = $user['id'];
 
-  $id_proj  = $obProjeto->cadastrar();
-  $arqs = $_POST['anexos'];
+  $obProjeto->cadastrar();
+ /* $arqs = $_POST['anexos'];
 
   foreach($arqs as $arq){
     $dados = Arquivo::getArquivo($arq);
@@ -141,7 +140,7 @@ if(isset($_POST['titulo']))
     $dados->id_tab = $id_proj ;
     $dados->user = $user['id'];
     $dados->atualizar();
-  }
+  } */
 
   //$municios->atualiza($id_proj, $_POST['id_munic']);
 

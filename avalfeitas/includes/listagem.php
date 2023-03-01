@@ -22,7 +22,7 @@
       } elseif ($i == $ava->fase_seq){
         if($ava->resultado == 'e') {
           $cor = 'warning';
-        } else{
+        } else {
           $cor = 'danger';
         }
       } else {
