@@ -237,7 +237,6 @@ class Projeto{
    * Método responsável por cadastrar um novo Registro no banco
    * @return boolean
    */
-  
   public function Submeter($para){
     $this->para_avaliar = $para;
     $this->edt = 0;
@@ -271,4 +270,43 @@ class Projeto{
     return true;
   }
 
+
+    /**
+   * Método responsável por cadastrar um novo Registro no banco
+   * @return boolean
+   */
+  public function nextLevel(){
+    $this->last_result = 'a';
+    $this->atualizar();
+
+    $sql = "
+    insert into 
+      avaliacoes ( 
+        id, id_proj, ver, regra_def, fase_seq, tp_instancia, id_instancia, resultado )
+    select 
+        id, id_proj, ver, regra_def, fase_seq, tp_avaliador, id_instancia, if(last_result='n', 'e', last_result) 
+    from to_avaliar 
+    where 
+       id_proj = '". $this->id ."' and
+       fase_seq = (select 
+                     IFNULL(max(fase_seq), 0) +
+                     (
+                        SELECT 
+                          if(max(am.fase_seq) < max(ta.fase_seq), 1, 0) soma
+                        FROM avaliacoes am
+                           inner join to_avaliar ta on (am.id_proj, am.ver ) = (ta.id_proj, ta.ver)
+                        WHERE 
+                          am.id_proj = ta.id_proj
+                     )
+                   from avaliacoes a where a.id_proj  = '". $this->id ."
+                  )
+    ";
+                
+    $a = new Database(); 
+    $a->execute($sql);
+    return true;
+      // ->fetchAll(PDO::FETCH_CLASS,self::class);
+  }
+
 } 
+

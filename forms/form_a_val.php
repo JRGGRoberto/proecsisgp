@@ -2,10 +2,6 @@
 
 require '../vendor/autoload.php';
 
-ini_set('display_errors', '1');
-ini_set('display_startup_errors', '1');
-error_reporting(E_ALL);
-
 use \App\Entity\Avaliacoes;
 use \App\Entity\Projeto;
 
@@ -63,28 +59,26 @@ if(isset($_POST['resultado'])){
       case 'a':
         $ava1->resultado = 'a';
         $ava1->atualizar();
-        /*
-        Verificar se a sequencia atual é < que a Maxima [ select max(fase_seq) from to_avaliar where id_proj = '21df3ce6-3d0e-47c0-b979-ba86f6c4a7f7'  ]
-        Se for menor inserir valor em Avaliações se não - nada a fazer.
-
-        */
+        $proj = Projeto::getProjeto($id_proj, $ver_proj);
+        $proj->last_result = 'a';
+        $proj->atualizar();
+        $proj->nextLevel();
 
         break;
       case 'r':
-        echo 'atualiza campo em Avaliações (resultado = r)
-        cria nova versão do projeto';
         $ava1->resultado = 'r';
         $ava1->atualizar();
+        echo '<br>Ok<br>';
         $proj = Projeto::getProjeto($id_proj, $ver_proj);
+        echo '<br>Ok2<br>';
         $proj->novaVersao();
+        echo '<br>Ok3<br>';
         break;
       case 'e':
         echo "Salvo para futuro converencia";
         break;
     }
 
-    
-  
     header('location: ../avalareal/index.php?status=success');
     exit; 
   }

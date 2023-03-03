@@ -155,6 +155,7 @@ if(isset( $_POST['titulo']) ) {
   //$obProjeto->para_avaliar    =  $_POST['para_avaliar'];
   $obProjeto->updated_at = date("Y-m-d H:i:s");
   $obProjeto->user = $user['id'];
+  $obProjeto->last_result = 'n';
   
   $obProjeto->atualizar();
 /*  $arqs = $_POST['anexos'];

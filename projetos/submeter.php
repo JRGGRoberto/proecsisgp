@@ -11,6 +11,8 @@ Login::requireLogin();
 
 $user = Login::getUsuarioLogado();
 
+
+
 //VALIDAÇÃO DO ID
 if(!isset($_POST['modIDprj'], $_POST['modVerPrj'], $_POST['selecOpt'], $_POST['modCreated'])){
    header('location: index.php?status=error');

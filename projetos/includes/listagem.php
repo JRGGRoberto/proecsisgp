@@ -25,7 +25,11 @@
     if($i < $proj->fase_seq){
       $cor = 'success';
     } elseif ($i == $proj->fase_seq){
-      $cor = 'warning';
+      if($proj->last_result == 'r'){
+        $cor = 'danger';
+      }else{
+        $cor = 'warning';
+      }
     } else {
       $cor = 'secondary';
     }
@@ -72,7 +76,7 @@
         <p>'. $proj->objetivos  .'</p>
 
         ';
-
+       $verAnt = $proj->ver - 1;
 //Btn Submeter ou 
       $btnSub;        
       if($proj->para_avaliar < 0){
@@ -81,11 +85,17 @@
          <div class="p-1"></div>
          <button id="del'. $proj->id . 'v'. $proj->ver . '" class="btn btn-danger  btn-sm mb-2" onclick="writeNumber(this)">🗑 Excluir</button>';
       }else {
-        $btnSub = '<button id="Alt'. $proj->id . 'v'. $proj->ver . '" class="btn btn-primary btn-sm mb-2" onclick="writeNumber(this)">📤 Enviar alterações</button>';
+        if($proj->last_result == 'r'){
+          $btnSub = '<a href="../forms/form_av.php?p='. $proj->id .'&v='. $verAnt .'"><button class="btn btn-danger btn-sm mb-2" >📑 Informações de adequações</button></a>';
+        } else {
+          $btnSub = '<button id="Alt'. $proj->id . 'v'. $proj->ver . '" class="btn btn-primary btn-sm mb-2" onclick="writeNumber(this)">📤 Enviar alterações</button>';
+        }
       }
 
+      
 
-       if ($proj->edt == 1){
+
+      if ($proj->edt == 1){
          $resultados .=  
       '<hr>
         <div class="d-flex flex-row-reverse ">'  
@@ -104,7 +114,6 @@
         <div class="d-flex flex-row-reverse ">
           <a href="visualizar.php?id='. $proj->id . '&v='. $proj->ver . '&w=1"><button class="btn btn-success btn-sm mb-2">👀 Visualizar</button></a>
         </div>';
-        
 
       }
 
@@ -146,9 +155,6 @@
   ';
 
 ?>
-
-
-
 
 
 <main>
@@ -319,7 +325,7 @@ function printSubAlt(data){
   modalFooter.innerHTML = data.innerHTML = `
           <form method="post" action="submeter.php?">
               <input type="hidden" name="modIDprj"   value="${data.id}">
-              <input type="hidden" name="selecOpt"   value="" id="selecOpt">
+              <input type="hidden" name="selecOpt"   value="${data.para_avaliar}" id="selecOpt">
               <input type="hidden" name="modVerPrj"  value="${data.ver}">
               <input type="hidden" name="modCreated" value="${data.created_at}">
               <button type="submit" class="btn btn-primary btn-sm mb-2" id="btnSubmitN">📤 Submeter nova versão</button>
