@@ -22,14 +22,14 @@
       <div class="btn-group">';
    
   for($i = 1; $i <= $proj->etapas; $i++){
-    if($i < $proj->fase_seq){
-      $cor = 'success';
-    } elseif ($i == $proj->fase_seq){
+    if ($i == $proj->fase_seq){
       if($proj->last_result == 'r'){
         $cor = 'danger';
       }else{
         $cor = 'warning';
       }
+    } elseif ($i < $proj->fase_seq){
+      $cor = 'success';
     } else {
       $cor = 'secondary';
     }
