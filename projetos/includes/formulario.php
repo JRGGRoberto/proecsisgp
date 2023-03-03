@@ -25,7 +25,7 @@
     <h4>Título</h4>
     <div class="form-group">
       <label>Título</label>
-      <input type="text" class="form-control" name="titulo" value="<?=$obProjeto->titulo?>" required>
+      <input type="text" class="form-control" required name="titulo" value="<?=$obProjeto->titulo?>" >
     </div>
 
     <div class="row">
