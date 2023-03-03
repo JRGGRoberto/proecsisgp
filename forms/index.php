@@ -18,6 +18,7 @@ if(!isset($_GET['i'], $_GET['p'], $_GET['v'])){
   header('location: ../avalareal/index.php?status=error');
   exit;
 }
+
 $id_ava  = $_GET['i'];
 $id_proj = $_GET['p'];
 $ver_proj = $_GET['v'];

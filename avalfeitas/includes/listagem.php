@@ -96,7 +96,7 @@
         <hr>
           <div class="d-flex flex-row-reverse ">
             <div class="p-1"></div>
-            <a href="../forms/'. $ava->form .'/vista.php?p='. $ava->id_proj . '&v='. $ava->ver . '"><button class="btn btn-primary btn-sm mb-2"> ⚖️ Ver avaliação</button></a>
+            <a href="../forms/'. $ava->form .'/vista.php?p='. $ava->id_proj . '&v='. $ava->ver . '" target="_blank"><button class="btn btn-primary btn-sm mb-2"> ⚖️ Ver avaliação</button></a>
             <div class="p-1"></div>
             <a href="../projetos/visualizar.php?id='. $ava->id_proj . '&v='. $ava->ver . '&w=nw" target="_blank"><button class="btn btn-success btn-sm mb-2"> 👀 Visualizar</button></a>
             <div class="p-1"></div>

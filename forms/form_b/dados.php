@@ -57,14 +57,17 @@ if(isset($_POST['resultado'])){
         $proj = Projeto::getProjeto($id_proj, $ver_proj);
         $proj->last_result = 'a';
         $proj->atualizar();
-        $proj->nextLevel(); //verfificar
+        $proj->nextLevel();
 
         break;
       case 'r':
         $ava1->resultado = 'r';
         $ava1->atualizar();
+        echo '<br>Ok<br>';
         $proj = Projeto::getProjeto($id_proj, $ver_proj);
+        echo '<br>Ok2<br>';
         $proj->novaVersao();
+        echo '<br>Ok3<br>';
         break;
       case 'e':
         echo "Salvo para futuro converencia";
