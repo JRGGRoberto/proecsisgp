@@ -307,6 +307,3 @@ class Projeto{
     return true;
       // ->fetchAll(PDO::FETCH_CLASS,self::class);
   }
-
-} 
-
