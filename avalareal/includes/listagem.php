@@ -20,11 +20,7 @@
       if($i < $ava->fase_seq){
         $cor = 'success';
       } elseif ($i == $ava->fase_seq){
-        if($ava->resultado == 'r') {
-          $cor = 'danger';
-        } else {
-          $cor = 'warning';
-        }
+        $cor = 'warning';
       } else {
         $cor = 'secondary';
       }
@@ -96,7 +92,7 @@
         <hr>
           <div class="d-flex flex-row-reverse ">
             <div class="p-1"></div>
-            <a href="../forms/'. $ava->form .'/vista.php?p='. $ava->id_proj . '&v='. $ava->ver . '"><button class="btn btn-primary btn-sm mb-2"> ⚖️ Ver avaliação</button></a>
+            <a href="../forms/index.php?i='. $ava->id_ava . '&p='. $ava->id_proj . '&v='. $ava->ver . '"><button class="btn btn-primary btn-sm mb-2"> ⚖️ Avaliar</button></a>
             <div class="p-1"></div>
             <a href="../projetos/visualizar.php?id='. $ava->id_proj . '&v='. $ava->ver . '&w=nw" target="_blank"><button class="btn btn-success btn-sm mb-2"> 👀 Visualizar</button></a>
             <div class="p-1"></div>
@@ -140,7 +136,7 @@
 
 ?>
 <main>
-  <h2 class="mt-0">Avaliaçõs realizadas</h2>
+  <h2 class="mt-0">Avaliaçõs a serem realizadas</h2>
   
   <?=$msg?> 
 

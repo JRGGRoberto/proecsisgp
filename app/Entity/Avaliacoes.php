@@ -12,6 +12,7 @@ class Avaliacoes{
   public $ver;
   public $regra_def;
   public $fase_seq;
+  public $form;
   public $tp_instancia;
   public $id_instancia;
   public $resultado;
@@ -86,7 +87,7 @@ class Avaliacoes{
 
   /**
    * Método responsável por cadastrar um novo Registro no banco
-   * 
+   * NÃO UTILIZAR!!!
    *  A DESENVOLVER.... ?????COMO
    * --areturn boolean
    */

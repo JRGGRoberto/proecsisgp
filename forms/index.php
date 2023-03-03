@@ -46,9 +46,10 @@ $cima = '<hr>
 Etapa '. $avaliacao->fase_seq. ' de '. $avaliacao->etapas. '
 <a href="../projetos/visualizar.php?id='. $avaliacao->id_proj . '&v='. $avaliacao->ver . '&w=nw" target="_blank"><button class="btn btn-success btn-sm mb-2 float-right" > 👀 Visualizar</button></a>';
 
-include './'. $avaliacao->form .'_val.php';
+include './'. $avaliacao->form .'/dados.php';
 
 include '../includes/header.php';
 echo $cima; 
-include './'. $avaliacao->form .'.php';
+include './'. $avaliacao->form .'/form.php';
+
 include '../includes/footer.php';

@@ -21,9 +21,8 @@ $jan = $_GET['w'];
 
 //CONSULTA AO PROJETO
 $obProjeto = new Projeto();
-$where = '(id, ver) = ("' .$id.'", '.$ver.') ';
-$obProjeto = Projeto::getRegistros($where);
-$obProjeto = $obProjeto[0];
+$obProjeto = Projeto::getProjeto($id, $ver);
+
 
 
 //VALIDAÇÃO DA TIPO

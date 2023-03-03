@@ -337,7 +337,7 @@
     <div class="form-group">
       <input type="text" class="form-control" name="whosigns"  value="<?=$user['nome']?> - <?=$user['nivel']?>" readonly>
     </div>
-<p> </p><hr><p> </p>
+      <p> </p><hr><p> </p>
     <div class="form-group form-group d-flex justify-content-around">
       <a href="javascript: submitSolicAlterac()" class="btn btn-warning" >Solicitar alterações ↩️</a>
       <a href="javascript: submitSave()" class="btn btn-secondary" >Avaliar mais tarde ⌛</a>

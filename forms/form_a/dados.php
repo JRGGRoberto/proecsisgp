@@ -5,7 +5,6 @@ require '../vendor/autoload.php';
 use \App\Entity\Avaliacoes;
 use \App\Entity\Projeto;
 
-
 use \App\Entity\Form_a;
 $form = Form_a::getRegistro($_GET['p'], $_GET['v']);
 
@@ -19,10 +18,6 @@ if(!$form) {
 if(isset($_POST['resultado'])){
 
   $ava1 = Avaliacoes::getRegistro($_GET['i']);
-  echo '<pre>';
-  print_r($ava1);
-  echo 'id..: '. $ava1->id;
-  echo '</pre>';
 
   if(($ava1->id_proj == $id_proj) and ($ava1->ver == $ver_proj)) {
     $form->id_proj = $id_proj;
