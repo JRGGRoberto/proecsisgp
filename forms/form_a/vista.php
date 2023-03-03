@@ -224,7 +224,7 @@ include '../../includes/headers.php';
     <div class="form-group">
       <div class="row">
         <div class="col-3"><input type="text" class="form-control" name="cidade"  value="<?=$form->cidade?>" readonly></div>
-        <div class="col-2"> <input type="date" class="form-control" name="dateAssing" id="dateAssing" readonly value="<?=$form->dateAssing?>"> </div>
+        <div class="col-2"> <input type="date" class="form-control" name="dateAssing" id="dateAssing" readonly value="<?=substr($form->dateAssing,0,10)?>"> </div>
       </div>
     </div>
     <div class="form-group">
