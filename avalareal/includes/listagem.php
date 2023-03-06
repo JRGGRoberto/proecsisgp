@@ -11,11 +11,17 @@
   foreach($avaliacoes as $ava){
     $qnt1++;
     $estiloD = '';
-     
-    $progresso = 
-      '<span class="badge badge-light">Processo<br>
+
+    if($ava->ver == 0) {
+      $progresso = '<span class="badge badge-info">Versão inicial</span>';
+    } else {
+      $progresso = '<span class="badge badge-info">'.($ava->ver + 1).'° versão</span>'; 
+    }
+    
+    /*  
+      '<span class="badge badge-light">Versão <br>
         <div class="btn-group">';
-     
+   /*  
     for($i = 1; $i <= $ava->etapas; $i++){
       if($i < $ava->fase_seq){
         $cor = 'success';
@@ -25,10 +31,10 @@
         $cor = 'secondary';
       }
       $progresso .= '<button type="button" class="btn btn-'. $cor .'" disabled></button>';
-    }
+    } 
     $progresso .= 
       '  </div>
-      </span>';
+      </span>';*/
     /*------------------*/
 
     $resultados .=  '

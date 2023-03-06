@@ -3,6 +3,7 @@
   require('../includes/msgAlert.php');
 
   use \App\Entity\Colegiado;
+  use \App\Entity\Avaliacoes;
 
   $qnt1 = 0;
   $col;
@@ -76,6 +77,7 @@
         <p>'. $proj->objetivos  .'</p>
 
         ';
+
        $verAnt = $proj->ver - 1;
 //Btn Submeter ou 
       $btnSub;        
@@ -93,7 +95,7 @@
       }
 
       
-
+   
 
       if ($proj->edt == 1){
          $resultados .=  
@@ -106,10 +108,41 @@
         </div>';
       } else {
         $nomecol = Colegiado::getRegistro($proj->para_avaliar);
+
+   $where = 'id_proj = "'. $proj->id. '" and ver < '. $proj->ver;
+   $order = "ver desc";
+   $ListaVerAnts = Avaliacoes::getRegistros($where, $order, null);
+   $LastV = 
+   '<table class="table table-bordered table-sm">
+    <thead class="thead-dark">
+      <tr>
+        <th>Projecto</th>
+        <th>Avaliação</th>
+      </tr>
+    </thead>
+    <tbody>';
+    $a =0;
+    foreach($ListaVerAnts as $la){
+      $a++;
+      $LastV .=
+      '<tr>
+        <td><a href="../projetos/visualizar.php?id='. $proj->id. '&v='. $la->ver . '&w=nw" target="_blank">Projeto v. '.($la->ver +1).'</a></td>
+        <td><a href="../forms/'. $la->form .'/vista.php?p='. $proj->id.  '&v='. $la->ver . '" target="_blank">Avaliação ref# v. '.($la->ver +1).'</a></td>
+       </tr>';
+    }
+    $LastV .=
+    '</tbody>
+  </table>';
+
+  if($a==0){
+    $LastV = '';
+  }
+  
+
         $resultados .=  
       '<hr>
-      
-        Projeto postado para o colegiado de <span class="badge badge-success">'. $nomecol->nome . '</span>
+        
+        Projeto postado para o colegiado de <span class="badge badge-success">'. $nomecol->nome . '</span> '. $LastV .'
         
         <div class="d-flex flex-row-reverse ">
           <a href="visualizar.php?id='. $proj->id . '&v='. $proj->ver . '&w=1"><button class="btn btn-success btn-sm mb-2">👀 Visualizar</button></a>

@@ -15,9 +15,9 @@
 
     if($ava->resultado == 'r'){
       $cor = 'warning';
-      $progresso =  '<span class="badge badge-warning">Pedido de revisão</span>';
+      $progresso =  '<span class="badge badge-warning"> ↩️ Solicitação de revisão</span>';
     } elseif ($ava->resultado == 'a'){
-      $progresso =  '<span class="badge badge-success">Favoravel</span>';
+      $progresso =  '<span class="badge badge-success"> 🆗 Favorável</span>';
       $cor = 'success';
     } else {
       $progresso =  '<span class="badge badge-danger">Error</span>';
@@ -27,7 +27,7 @@
     /*------------------*/
     $titulo = $ava->titulo;
     if($ava->ver >0 ){
-      $titulo .= ' [Versão: '.$ava->ver.']';
+      $titulo .= ' [Versão: '.($ava->ver + 1).']';
     }
 
     $resultados .=  '
