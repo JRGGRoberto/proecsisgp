@@ -57,7 +57,7 @@ if(isset($_POST['resultado'])){
         $proj = Projeto::getProjeto($id_proj, $ver_proj);
         $proj->last_result = 'a';
         $proj->atualizar();
-        $proj->nextLevel(); //verfificar
+        $proj->nextLevel(); 
 
         break;
       case 'r':

@@ -118,7 +118,7 @@
   //Paginação
   $paginacao = '';
   $paginas   = $obPagination->getPages();
-  $paginacao .= '<nav aria-label="Page navigation >
+  $paginacao .= '<nav aria-label="Page navigation">
                   <ul class="pagination pagination-sm">'; 
   foreach($paginas as $key=>$pagina){
     $class = $pagina['atual'] ? 'page-item active': 'page-item';

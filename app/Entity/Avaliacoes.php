@@ -91,6 +91,7 @@ class Avaliacoes{
    *  A DESENVOLVER.... ?????COMO
    * --areturn boolean
    */
+  /*
   public function cadastrar(){
     //DEFINIR A DATA
     // $this->data = date('Y-m-d H:i:s');
@@ -108,6 +109,6 @@ class Avaliacoes{
     //RETORNAR SUCESSO
     return $this->id;
   }
-
+*/
 
 }

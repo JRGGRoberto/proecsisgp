@@ -7,109 +7,58 @@
   require('../includes/msgAlert.php');
 
   $qnt1 = 0;
-  $resultados = '<div id="accordion">';
+  $resultados = '';
   foreach($avaliacoes as $ava){
     $qnt1++;
     $estiloD = '';
-     
-    $progresso = 
-      '<span class="badge badge-light">Processo<br>
-        <div class="btn-group">';
-     
-    for($i = 1; $i <= $ava->etapas; $i++){
-      if($i < $ava->fase_seq){
-        $cor = 'success';
-      } elseif ($i == $ava->fase_seq){
-        if($ava->resultado == 'r') {
-          $cor = 'danger';
-        } else {
-          $cor = 'warning';
-        }
-      } else {
-        $cor = 'secondary';
-      }
-      $progresso .= '<button type="button" class="btn btn-'. $cor .'" disabled></button>';
+    $cor = '';
+
+    if($ava->resultado == 'r'){
+      $cor = 'warning';
+      $progresso =  '<span class="badge badge-warning">Pedido de revisão</span>';
+    } elseif ($ava->resultado == 'a'){
+      $progresso =  '<span class="badge badge-success">Favoravel</span>';
+      $cor = 'success';
+    } else {
+      $progresso =  '<span class="badge badge-danger">Error</span>';
+      $cor = 'danger';
     }
-    $progresso .= 
-      '  </div>
-      </span>';
+      
     /*------------------*/
+    $titulo = $ava->titulo;
+    if($ava->ver >0 ){
+      $titulo .= ' [Versão: '.$ava->ver.']';
+    }
 
     $resultados .=  '
 <div class="card mt-2">
   <div class="card-header">
      <div class="row">
-        <div class="col-sm-5"><a class="collapsed card-link" data-toggle="collapse" href="#p'. $ava->id_ava .'">📃 '. $ava->titulo .'</a></div>
-        <div class="col-sm-5">Submetido para o colegidado de <span class="badge badge-success">'.$ava->colegiado.'</span></div>
-        <div class="col-sm-2">
+        <div class="col-sm-5"><a class="collapsed card-link" data-toggle="collapse" href="#p'. $ava->id_ava .'">📃 '. $titulo .'</a></div>
+        <div class="col-sm-7">
            '. 
            $progresso
            .'
+
+            <div class="d-flex flex-row-reverse ">
+              <div class="p-1"></div>
+              <a href="../forms/'. $ava->form .'/vista.php?p='. $ava->id_proj . '&v='. $ava->ver . '" target="_blank"><button class="btn btn-primary btn-sm mb-2"> ⚖️ Ver avaliação</button></a>
+              <div class="p-1"></div>
+              <a href="../projetos/visualizar.php?id='. $ava->id_proj . '&v='. $ava->ver . '&w=nw" target="_blank"><button class="btn btn-success btn-sm mb-2"> 👀 Visualizar projeto</button></a>
+              <div class="p-1"></div>
+            </div>
+           
+
         </div>
      </div>
   </div>
-    <div id="p'. $ava->id_ava .'" class="collapse" data-parent="#accordion">
-      <div class="card-body">
+</div>    
 
-
-        <h5>Tipo de Proposta</h5>
-
-        <div class="form-group">
-            <input type="text" class="form-control" name="tp_proposta" value="'. $ava->tipo_exten .'" readonly>
-        </div>
-      
-  
-        <h5>Identificação da Proposta</h5>
-     
-        <div class="form-group">
-          <label>Título</label>
-          <input type="text" class="form-control" name="coordNome" value="'.$ava->titulo.'" readonly="">
-        </div>
-      
-        <div class="form-group">
-          <label>Proponente</label>
-          <input type="text" class="form-control" name="coordNome" value="'. $ava->nome_prof .'" readonly="">
-        </div>
-      
-        <div class="form-group">
-          <label>Colegiado de Curso</label>
-          <input type="text" class="form-control" name="coordNome" value="'.$ava->colegiado.'" readonly="">
-        </div>
-        
-        <div class="row">
-        
-          <div class="col">
-            <div class="form-group">
-              <label for="area_extensao">Área de extensão</label>
-              <input type="text" class="form-control" value="'. $ava->area_extensao .'" readonly>
-            </div>
-          </div>
-        
-          <div class="col">
-            <div class="form-group">
-              <label for="linh_ext">Linha de  extensão</label>
-              <input type="text" class="form-control" value="'. $ava->linh_ext .'" readonly>
-            </div>
-          </div>
-    
-        </div>    
-        <hr>
-          <div class="d-flex flex-row-reverse ">
-            <div class="p-1"></div>
-            <a href="../forms/'. $ava->form .'/vista.php?p='. $ava->id_proj . '&v='. $ava->ver . '" target="_blank"><button class="btn btn-primary btn-sm mb-2"> ⚖️ Ver avaliação</button></a>
-            <div class="p-1"></div>
-            <a href="../projetos/visualizar.php?id='. $ava->id_proj . '&v='. $ava->ver . '&w=nw" target="_blank"><button class="btn btn-success btn-sm mb-2"> 👀 Visualizar</button></a>
-            <div class="p-1"></div>
-          </div>
           
-          
-      </div>
-    </div>
-           
-        </div>';
+';
 
   }
-  $resultados .= '</div>';
+
   
   $qnt1 > 0 ? $resultados : $resultados = 'Nenhum registro encontrado.';
 
@@ -122,7 +71,7 @@
   //Paginação
   $paginacao = '';
   $paginas   = $obPagination->getPages();
-  $paginacao .= '<nav aria-label="Page navigation >
+  $paginacao .= '<nav aria-label="Page navigation" >
                   <ul class="pagination pagination-sm">'; 
   foreach($paginas as $key=>$pagina){
     $class = $pagina['atual'] ? 'page-item active': 'page-item';

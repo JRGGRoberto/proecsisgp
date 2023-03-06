@@ -42,7 +42,7 @@ $where = implode(' AND ', $condicoes);
 $qntAvaliacoes = Avaliacoes::getQntdRegistros($where);
 
 //paginação
-$obPagination = new Pagination($qntAvaliacoes, $_GET['pagina']?? 1, 10);
+$obPagination = new Pagination($qntAvaliacoes, $_GET['pagina']?? 1, 5);
 
 $avaliacoes = Avaliacoes::getRegistros($where, null, $obPagination->getLimite());
 
