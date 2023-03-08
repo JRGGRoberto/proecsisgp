@@ -52,28 +52,12 @@
         </li>
 
         <li class="mb-4">
-          <h5>Selecione um professor para realizar o parecer</h5>
-          <select name="id_parecerista" id="id_parecerista" class="form-control" onchange="ativaBTN();">
-              <option value="" selected="">Selecione um professor</option>
-              <option value="3442d0c9-464d-11ed-9793-0266ad9885af">Ana Claudia Freitas Pantoja</option>
-              <option value="4ee313a3-464c-11ed-9793-0266ad9885af">Ana Paula F. de Mendonça</option>
-              <option value="56e08dde-099c-4d4c-aa2c-0161b2d6ff3f" selected="">Tânia Terezinha Rissa</option>
-              <option value="74183e1a-4577-11ed-9793-0266ad9885af">Cleber Broietti</option>
-              <option value="83690c70-2689-4e6c-83a3-ca4987ccc4f5">Sérgio Dantas</option>
-              <option value="9c72f724-456b-11ed-9793-0266ad9885af">Joelma Castelo Bernardo da Silva</option>
-              <option value="b8fa555f-cedb-47cf-91cc-7581736aac88">José Roberto de Góes Gomes</option>
-              <option value="c30d4d76-464c-11ed-9793-0266ad9885af">Patrícia Josiane Tavares da Cunha</option>
-              <option value="c771f75a-7427-4d7c-8ff1-388e8e59ff9d">Merline Cristina</option>
-            </select>
-        </li>
-
-        <li class="mb-4">
-          <h5>Solicitação de Adequações (Indicar qual item necessita de adequação e justificar)</h5>
+          <h5>Parecer</h5>
           <div class="row">
             <div class="col">
               <div class="form-group">
-                <textarea class="form-control" name="solicitacoes" rows="10" 
-                placeholder="(Descrever quais adequações devem ser realizadas para que o projeto ultrapasse esta etapa) 10 linhas máximo"><?=$form->solicitacoes?></textarea>
+                <textarea class="form-control" name="parecer" rows="10" 
+                placeholder="(Informar o parecer do projeto) 10 linhas máximo"><?=$form->parecer?></textarea>
                 (O prazo para devolução da proposta com adequações segue o previsto no Regulamento de Extensão – Resolução 042/2022 – CEPE/UNESPAR)
               </div>
             </div>
@@ -142,5 +126,4 @@ function submitAprova()
   document.myform.submit();
 }
 </script>
-
 

@@ -1,18 +1,13 @@
 <?php
 require '../../vendor/autoload.php';
 
-ini_set('display_errors', 1);
-ini_set('display_startup_errors', 1);
-error_reporting(E_ALL);
-
 use \App\Entity\Projeto;
-use \App\Entity\Form_Selecprof;
-use \App\Entity\Professor;
+use \App\Entity\form_parecer;
 
 $prj = Projeto::getProjetoView($_GET['p'], $_GET['v']);
-$form = Form_Selecprof::getRegistro($_GET['p'], $_GET['v']);
+$form = Form_Parecer::getRegistro($_GET['p'], $_GET['v']);
 
-$nomeProf = Professor::getProfessor($form->id_parecerista);
+
 include '../../includes/headers.php';
 
 ?>
@@ -70,24 +65,17 @@ include '../../includes/headers.php';
         </li>
          
         <li class="mb-4">
-          <h5>O professor selecionado como parecerista</h5>
-              <h4><span class="badge badge-secondary"><?=$nomeProf->nome?></span></h4>
-        </li>
-
- 
-        <li class="mb-4">
-          <h5>Solicitação de Adequações (Indicar qual item necessita de adequação e justificar)</h5>
+          <h5>Parecer</h5>
           <div class="row">
             <div class="col">
               <div class="form-group">
-                <textarea class="form-control" name="solicitacoes" rows="10" 
-                placeholder="(Descrever quais adequações devem ser realizadas para que o projeto ultrapasse esta etapa) 10 linhas máximo"><?=$form->solicitacoes?></textarea>
+                <textarea class="form-control" name="parecer" rows="10" 
+                placeholder="(Informar o parecer do projeto) 10 linhas máximo"><?=$form->parecer?></textarea>
                 (O prazo para devolução da proposta com adequações segue o previsto no Regulamento de Extensão – Resolução 042/2022 – CEPE/UNESPAR)
               </div>
             </div>
           </div>
         </li>
-
     </ol>
 
     <div class="form-group">

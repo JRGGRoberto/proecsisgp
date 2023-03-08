@@ -109,8 +109,8 @@
       } else {
         $nomecol = Colegiado::getRegistro($proj->para_avaliar);
 
-   $where = 'id_proj = "'. $proj->id. '" and ver < '. $proj->ver;
-   $order = "ver desc";
+   $where = 'id_proj = "'. $proj->id. '"';
+   $order = "ver desc, fase_seq desc";
    $ListaVerAnts = Avaliacoes::getRegistros($where, $order, null);
    $LastV = 
    '<table class="table table-bordered table-sm">
@@ -118,6 +118,8 @@
       <tr>
         <th>Projecto</th>
         <th>Avaliação</th>
+        <th>Parte</th>
+        <th>Resultado</th>
       </tr>
     </thead>
     <tbody>';
@@ -128,6 +130,8 @@
       '<tr>
         <td><a href="../projetos/visualizar.php?id='. $proj->id. '&v='. $la->ver . '&w=nw" target="_blank">Projeto v. '.($la->ver +1).'</a></td>
         <td><a href="../forms/'. $la->form .'/vista.php?p='. $proj->id.  '&v='. $la->ver . '" target="_blank">Avaliação ref# v. '.($la->ver +1).'</a></td>
+        <td>'.$la->fase_seq.'/'.$la->etapas.'</td>
+        <td>'.$la->resultado.'</td>
        </tr>';
     }
     $LastV .=

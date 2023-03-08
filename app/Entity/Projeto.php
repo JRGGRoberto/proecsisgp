@@ -275,16 +275,23 @@ class Projeto{
    * Método responsável por cadastrar um novo Registro no banco
    * @return boolean
    */
-  public function nextLevel(){
+  public function nextLevel($id_ins = 'id_instancia'){
     $this->last_result = 'a';
     $this->atualizar();
+
+    if($id_ins == 'id_instancia'){
+      $id_instancia = 'id_instancia';
+    } else {
+      $id_instancia = "'".$id_ins."'";
+    }
+    
 
     $sql = "
     insert into 
       avaliacoes ( 
         id, id_proj, ver, regra_def, fase_seq, form, tp_instancia, id_instancia, resultado )
     select 
-        id, id_proj, ver, regra_def, fase_seq, form, tp_avaliador, id_instancia, 'e' as resultado
+        id, id_proj, ver, regra_def, fase_seq, form, tp_avaliador, ". $id_instancia .", 'e' as resultado
     from to_avaliar 
     where 
        id_proj = '". $this->id ."' and
