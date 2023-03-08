@@ -284,7 +284,7 @@ class Projeto{
       avaliacoes ( 
         id, id_proj, ver, regra_def, fase_seq, form, tp_instancia, id_instancia, resultado )
     select 
-        id, id_proj, ver, regra_def, fase_seq, form, tp_avaliador, id_instancia, if(last_result='n', 'e', last_result) as resultado
+        id, id_proj, ver, regra_def, fase_seq, form, tp_avaliador, id_instancia, 'e' as resultado
     from to_avaliar 
     where 
        id_proj = '". $this->id ."' and
