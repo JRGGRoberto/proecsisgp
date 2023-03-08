@@ -1,5 +1,10 @@
 <?php
-require '../vendor/autoload.php';
+
+require __DIR__.'/vendor/autoload.php';
+
+ini_set('display_errors', 1);
+ini_set('display_startup_errors', 1);
+error_reporting(E_ALL);
 
 use \App\Session\Login;
 use \App\Entity\Projeto;
@@ -17,6 +22,7 @@ if(!isset($_GET['i'], $_GET['p'], $_GET['v'])){
 $id_ava  = $_GET['i'];
 $id_proj = $_GET['p'];
 $ver_proj = $_GET['v'];
+
 
 $avaliacao = Avaliacoes::getRegistroView($id_ava);
 

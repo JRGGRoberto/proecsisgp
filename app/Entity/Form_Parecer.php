@@ -5,7 +5,7 @@ namespace App\Entity;
 use \App\Db\Database;
 use \PDO;
 
-class Form_Selecprof{
+class Form_Parecer{
 
   public $id_proj;
   public $ver_proj;
