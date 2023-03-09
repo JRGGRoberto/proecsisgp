@@ -18,7 +18,7 @@ include '../../includes/headers.php';
 ?>
 
 <div class="container mt-4">
-   <h3>ANEXO A - FORMULÁRIO PARA AVALIAÇÃO DE AÇÃO EXTENSIONISTA</h3>
+   <h3>SELEÇÃO DE PROFESSOR PARA REALIZAR O PARECER</h3>
    <h4>Divisão de Extensão e Cultura dos Campi</h4>
       
   <form name="myform" id="myform" method="post" enctype="multipart/form-data">

@@ -29,7 +29,7 @@ class Form_Parecer{
   * @return Form_a
   */
   public static function getRegistro($id_proj, $ver_proj){
-    return (new Database('form_parecer'))->select(  '(id_proj, ver_proj)  = ("'.$id_proj.'", "'.$ver_proj.'")'  )
+    return (new Database('form_parecer'))->select(  '(id_proj, ver_proj)  = ("'.$id_proj.'", '.$ver_proj.')'  )
                                   ->fetchObject(self::class);
   }
 

@@ -1,11 +1,18 @@
 <?php
 require '../../vendor/autoload.php';
 
+ini_set('display_errors', 1);
+ini_set('display_startup_errors', 1);
+error_reporting(E_ALL);
+
 use \App\Entity\Projeto;
 use \App\Entity\Form_b;
 
 $prj = Projeto::getProjetoView($_GET['p'], $_GET['v']);
-$form = Form_a::getRegistro($_GET['p'], $_GET['v']);
+$form = Form_b::getRegistro($_GET['p'], $_GET['v']);
+
+
+
 
 
 include '../../includes/headers.php';

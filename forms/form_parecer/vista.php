@@ -2,18 +2,17 @@
 require '../../vendor/autoload.php';
 
 use \App\Entity\Projeto;
-use \App\Entity\form_parecer;
+use \App\Entity\Form_Parecer;
 
 $prj = Projeto::getProjetoView($_GET['p'], $_GET['v']);
 $form = Form_Parecer::getRegistro($_GET['p'], $_GET['v']);
-
 
 include '../../includes/headers.php';
 
 ?>
 
 <div class="container mt-4">
-   <h3>ANEXO A - FORMULÁRIO PARA AVALIAÇÃO DE AÇÃO EXTENSIONISTA</h3>
+   <h3>PARECER</h3>
    <h4>Divisão de Extensão e Cultura dos Campi</h4>
       
   <form name="myform" id="myform" method="post" enctype="multipart/form-data">
