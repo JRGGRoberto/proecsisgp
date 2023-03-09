@@ -68,7 +68,7 @@ include '../../includes/headers.php';
           <div class="row">
             <div class="col">
               <div class="form-group">
-                <textarea class="form-control" name="parecer" rows="10" 
+                <textarea class="form-control" name="parecer" rows="10" readonly
                 placeholder="(Informar o parecer do projeto) 10 linhas máximo"><?=$form->parecer?></textarea>
                 (O prazo para devolução da proposta com adequações segue o previsto no Regulamento de Extensão – Resolução 042/2022 – CEPE/UNESPAR)
               </div>

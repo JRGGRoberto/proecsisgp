@@ -126,21 +126,27 @@
     foreach($ListaVerAnts as $la){
       $a++;
       $class = '';
+      $td = '';
       switch ($la->resultado){
         case 'a': 
           $class = "table-success"; 
+          $td = '<td><a href="../forms/'. $la->form .'/vista.php?p='. $proj->id.  '&v='. $la->ver . '" target="_blank">📄 </a></td>';
           break;
         case 'r': 
           $class = "table-danger"; 
+          $td = '<td><a href="../forms/'. $la->form .'/vista.php?p='. $proj->id.  '&v='. $la->ver . '" target="_blank">📄 </a></td>';
           break;
         default: 
           $class = "table-warning"; 
+          $td = '<td>➖</td>';
       }
       $LastV .=
       '<tr class="'.$class.'">
-        <td><a href="../projetos/visualizar.php?id='. $proj->id. '&v='. $la->ver . '&w=nw" target="_blank">📄 <span class="badge badge-info">'.($la->ver +1).'</span></a></td>
-        <td><a href="../forms/'. $la->form .'/vista.php?p='. $proj->id.  '&v='. $la->ver . '" target="_blank">📄 </a></td>
-        <td>'.$la->fase_seq.'/'.$la->etapas.'</td>
+        <td><a href="../projetos/visualizar.php?id='. $proj->id. '&v='. $la->ver . '&w=nw" target="_blank">📄 <span class="badge badge-info">'.($la->ver +1).'</span></a></td>'
+        
+        . $td .
+        
+        '<td>'.$la->fase_seq.'/'.$la->etapas.'</td>
        </tr>';
     }
     $LastV .=
