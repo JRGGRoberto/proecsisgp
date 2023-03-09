@@ -113,40 +113,59 @@
    $order = "ver desc, fase_seq desc";
    $ListaVerAnts = Avaliacoes::getRegistros($where, $order, null);
    $LastV = 
-   '<table class="table table-bordered table-sm">
-    <thead class="thead-dark">
-      <tr>
-        <th>Projecto</th>
-        <th>Avaliação</th>
-        <th>Parte</th>
-        <th>Resultado</th>
-      </tr>
-    </thead>
-    <tbody>';
+      '<table class="table table-bordered table-sm">
+       <thead class="thead-dark">
+         <tr>
+           <th>Projeto</th>
+           <th>Relatório</th>
+           <th>Parte</th>
+         </tr>
+       </thead>
+       <tbody>';
     $a =0;
     foreach($ListaVerAnts as $la){
       $a++;
+      $class = '';
+      switch ($la->resultado){
+        case 'a': 
+          $class = "table-success"; 
+          break;
+        case 'r': 
+          $class = "table-danger"; 
+          break;
+        default: 
+          $class = "table-warning"; 
+      }
       $LastV .=
-      '<tr>
-        <td><a href="../projetos/visualizar.php?id='. $proj->id. '&v='. $la->ver . '&w=nw" target="_blank">Projeto v. '.($la->ver +1).'</a></td>
-        <td><a href="../forms/'. $la->form .'/vista.php?p='. $proj->id.  '&v='. $la->ver . '" target="_blank">Avaliação ref# v. '.($la->ver +1).'</a></td>
+      '<tr class="'.$class.'">
+        <td><a href="../projetos/visualizar.php?id='. $proj->id. '&v='. $la->ver . '&w=nw" target="_blank">📄 <span class="badge badge-info">'.($la->ver +1).'</span></a></td>
+        <td><a href="../forms/'. $la->form .'/vista.php?p='. $proj->id.  '&v='. $la->ver . '" target="_blank">📄 </a></td>
         <td>'.$la->fase_seq.'/'.$la->etapas.'</td>
-        <td>'.$la->resultado.'</td>
        </tr>';
     }
     $LastV .=
-    '</tbody>
-  </table>';
+      '</tbody>
+    </table>';
 
-  if($a==0){
-    $LastV = '';
-  }
+    if($a==0){
+      $LastV = '';
+    }
   
 
         $resultados .=  
       '<hr>
         
-        Projeto postado para o colegiado de <span class="badge badge-success">'. $nomecol->nome . '</span> '. $LastV .'
+        Projeto postado para o colegiado de <span class="badge badge-success">'. $nomecol->nome . '</span> 
+            <div class="row my-2">
+              <div class="col-2">
+              '. $LastV .'
+              </div>
+              <div class="col">
+               
+              </div>
+            </div>
+  
+            
         
         <div class="d-flex flex-row-reverse ">
           <a href="visualizar.php?id='. $proj->id . '&v='. $proj->ver . '&w=1"><button class="btn btn-success btn-sm mb-2">👀 Visualizar</button></a>
