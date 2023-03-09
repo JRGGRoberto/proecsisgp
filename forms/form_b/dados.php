@@ -5,7 +5,7 @@ require '../vendor/autoload.php';
 use \App\Entity\Avaliacoes;
 use \App\Entity\Projeto;
 
-use \App\Entity\Form_a;
+use \App\Entity\Form_b;
 $form = Form_b::getRegistro($_GET['p'], $_GET['v']);
 
 $cad = false;
