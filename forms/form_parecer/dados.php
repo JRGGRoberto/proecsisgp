@@ -20,7 +20,7 @@ if(!$form) {
 if(isset($_POST['resultado'])){
 
   $ava1 = Avaliacoes::getRegistro($_GET['i']);
-
+  
   if(($ava1->id_proj == $id_proj) and ($ava1->ver == $ver_proj)) {
     $form->id_proj = $id_proj;
     $form->ver_proj = $ver_proj;

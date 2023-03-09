@@ -4,6 +4,7 @@ require '../vendor/autoload.php';
 
 use \App\Entity\Avaliacoes;
 use \App\Entity\Projeto;
+use \App\Entity\Professor;
 
 use \App\Entity\Form_Selecprof;
 $form = Form_Selecprof::getRegistro($_GET['p'], $_GET['v']);
@@ -13,6 +14,15 @@ if(!$form) {
   $form = new Form_Selecprof();
   $cad = true;
 }
+
+$prj = Projeto::getRegistros("(id, ver)= ('".$_GET['p']."', ".$_GET['v'].")");
+$listaProf = Professor::getProfessores("id_colegiado  = '".$prj->para_avaliar ."'");
+$opc = '';
+foreach($listaProf as $l){
+  $opc .= "<option value='".$l.id."'>".$l.nome."</option>";
+}
+
+
 
 //VALIDAÇÃO DO POST
 if(isset($_POST['resultado'])){

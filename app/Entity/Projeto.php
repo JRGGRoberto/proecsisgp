@@ -218,22 +218,6 @@ class Projeto{
 
 
   /**
-   * Método responsável por obter as professores do banco de dados
-   * @param  string $id_avaliador
-   * @return array   id_proj, titulo, nivel_adm, local, id_avaliador
-   */
-  public static function getProjsParaAnalisar($id_avaliador, $level){
-    $sql = " select * from para_avaliar
-            where 
-              id_avaliador =  " . $id_avaliador . " and
-              nivel_adm = " . $level;
-        
-    return (new Database())->selectJ($sql)
-      ->fetchAll(PDO::FETCH_CLASS,self::class);
-  }
-
-
-  /**
    * Método responsável por cadastrar um novo Registro no banco
    * @return boolean
    */
