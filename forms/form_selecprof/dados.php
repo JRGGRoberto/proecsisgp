@@ -15,14 +15,15 @@ if(!$form) {
   $cad = true;
 }
 
-$prj = Projeto::getRegistros("(id, ver)= ('".$_GET['p']."', ".$_GET['v'].")");
+$prjS = Projeto::getRegistros("(id, ver)= ('".$_GET['p']."', ".$_GET['v'].")");
+$prj = $prjS[0];
+
 $listaProf = Professor::getProfessores("id_colegiado  = '".$prj->para_avaliar ."'");
+
 $opc = '';
 foreach($listaProf as $l){
-  $opc .= "<option value='".$l.id."'>".$l.nome."</option>";
+  $opc .= "<option value='".$l->id ."'>".$l->nome."</option>";
 }
-
-
 
 //VALIDAÇÃO DO POST
 if(isset($_POST['resultado'])){
