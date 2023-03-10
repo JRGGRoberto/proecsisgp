@@ -29,7 +29,6 @@ $condicoes = [
   strlen($centro) ? 'centros LIKE "%'.str_replace(' ','%',$centro).'%"': null
 ];
 
-
 array_push($condicoes, 'id_user = "' .$user['id'] .'"', 'resultado = "e"') ;
 
 //Remove posições vazias
@@ -45,7 +44,6 @@ $qntAvaliacoes = Avaliacoes::getQntdRegistros($where);
 $obPagination = new Pagination($qntAvaliacoes, $_GET['pagina']?? 1, 5);
 
 $avaliacoes = Avaliacoes::getRegistros($where, null, $obPagination->getLimite());
-
 
 include '../includes/header.php';
 include __DIR__.'/includes/listagem.php';

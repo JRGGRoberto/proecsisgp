@@ -18,24 +18,6 @@
       $progresso = '<span class="badge badge-info">'.($ava->ver + 1).'° versão</span>'; 
     }
     
-    /*  
-      '<span class="badge badge-light">Versão <br>
-        <div class="btn-group">';
-   /*  
-    for($i = 1; $i <= $ava->etapas; $i++){
-      if($i < $ava->fase_seq){
-        $cor = 'success';
-      } elseif ($i == $ava->fase_seq){
-        $cor = 'warning';
-      } else {
-        $cor = 'secondary';
-      }
-      $progresso .= '<button type="button" class="btn btn-'. $cor .'" disabled></button>';
-    } 
-    $progresso .= 
-      '  </div>
-      </span>';*/
-    /*------------------*/
 
     $resultados .=  '
 <div class="card mt-2">
