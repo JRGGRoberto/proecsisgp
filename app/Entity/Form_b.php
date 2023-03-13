@@ -96,8 +96,8 @@ class Form_b{
                                                'r3_5'     => $this->r3_5,
                                                'r3_6'     => $this->r3_6,
                                                'r3_7'     => $this->r3_7,
-                                               'r3_8'     => $this->r4_1,
-                                               'r3_9'     => $this->r4_2,
+                                               'r3_8'     => $this->r3_8,
+                                               'r3_9'     => $this->r3_9,
                                                                                               
                                                'parecer'      => $this->parecer,
                                                'cidade'       => $this->cidade,

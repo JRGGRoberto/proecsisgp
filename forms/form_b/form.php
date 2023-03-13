@@ -4,7 +4,7 @@
     <h5>(Parecer) Colegiado de Curso</h5>
 
     
-<form action="">
+    <form name="myform" id="myform" method="post" enctype="multipart/form-data">
     <ol>
     <li class="mb-4">
           <h5>Tipo de Proposta</h5>
@@ -217,7 +217,11 @@
       </div>
     </div>
     
-    <div class="form-group">
+
+
+
+
+<div class="form-group">
       <input type="text" class="form-control" name="whosigns"  value="<?=$user['nome']?> - <?=$user['nivel']?>" readonly>
     </div>
       <p> </p><hr><p> </p>
@@ -271,4 +275,3 @@ function submitAprova()
   document.myform.submit();
 }
 </script>
-
