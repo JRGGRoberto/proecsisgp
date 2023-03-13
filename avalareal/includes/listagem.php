@@ -1,7 +1,10 @@
 <?php
-  
-  use \App\Entity\Colegiado;
+
+  // require '../vendor/autoload.php';
+  // use \App\Entity\Colegiado;
+
   use \App\Session\Login;
+  use \App\Entity\Avaliacoes;
   $user = Login::getUsuarioLogado();
 
   require('../includes/msgAlert.php');
@@ -17,6 +20,56 @@
     } else {
       $progresso = '<span class="badge badge-info">'.($ava->ver + 1).'° versão</span>'; 
     }
+
+    
+    $where = 'id_proj = "'. $ava->id_proj . '"';
+    $order = "ver desc, fase_seq desc";
+    $ListaVerAnts = Avaliacoes::getRegistros($where, $order, null);
+    $LastV = 
+       '<table class="table table-bordered table-sm">
+        <thead class="thead-dark">
+          <tr>
+            <th>Projeto</th>
+            <th>Relatório</th>
+            <th>Parte</th>
+          </tr>
+        </thead>
+        <tbody>';
+     $a =0;
+     foreach($ListaVerAnts as $la){
+       $a++;
+       $class = '';
+       $td = '';
+       switch ($la->resultado){
+         case 'a': 
+           $class = "table-success"; 
+           $td = '<td><a href="../forms/'. $la->form .'/vista.php?p='. $proj->id.  '&v='. $la->ver . '" target="_blank">📄 </a></td>';
+           break;
+         case 'r': 
+           $class = "table-danger"; 
+           $td = '<td><a href="../forms/'. $la->form .'/vista.php?p='. $proj->id.  '&v='. $la->ver . '" target="_blank">📄 </a></td>';
+           break;
+         default: 
+           $class = "table-warning"; 
+           $td = '<td>➖</td>';
+       }
+       $LastV .=
+       '<tr class="'.$class.'">
+         <td><a href="../projetos/visualizar.php?id='. $proj->id. '&v='. $la->ver . '&w=nw" target="_blank">📄 <span class="badge badge-info">'.($la->ver +1).'</span></a></td>'
+         
+         . $td .
+         
+         '<td>'.$la->fase_seq.'/'.$la->etapas.'</td>
+        </tr>';
+     }
+     $LastV .=
+       '</tbody>
+     </table>';
+ 
+     if($a==0){
+       $LastV = '';
+     }
+
     
 
     $resultados .=  '
@@ -77,7 +130,23 @@
           </div>
     
         </div>    
+
+
+        <div class="row my-2">
+        <div class="col-2">
+        '. $LastV .'
+        </div>
+        <div class="col">
+         
+        </div>
+      </div>
+
+
+
+
+
         <hr>
+        
           <div class="d-flex flex-row-reverse ">
             <div class="p-1"></div>
             <a href="../forms/index.php?i='. $ava->id_ava . '&p='. $ava->id_proj . '&v='. $ava->ver . '"><button class="btn btn-primary btn-sm mb-2"> ⚖️ Avaliar</button></a>
@@ -124,7 +193,7 @@
 
 ?>
 <main>
-  <h2 class="mt-0">Avaliaçõs a serem realizadas</h2>
+  <h2 class="mt-0">Avaliações a serem realizadas</h2>
   
   <?=$msg?> 
 
