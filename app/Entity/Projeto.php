@@ -268,7 +268,6 @@ class Projeto{
     } else {
       $id_instancia = "'".$id_ins."'";
     }
-    
 
     $sql = "
     insert into 
@@ -297,5 +296,31 @@ class Projeto{
     $a->execute($sql);
     return true;
       // ->fetchAll(PDO::FETCH_CLASS,self::class);
+  }
+
+
+
+    /**
+   * Método responsável por obter as projeto do banco de dados
+   * @param  string $where
+   * @param  string $order
+   * @param  string $limit
+   * @return array
+   */
+  public function ultimaInstancia(){
+    $sql = "
+    select 
+       i.id AS id,i.ver AS ver,
+       ifnull(a.fase_seq,(select a.fase_seq from avaliacoes a where ((a.id_proj = l.id) and (a.ver = (i.ver - 1))) order by a.fase_seq desc limit 1)) AS fase_seq,
+       (select count(1) from regras_defin rd where (rd.id_reg = i.regras)) AS etapas 
+      
+      from 
+         proj_last l join proj_inf i on (l.id = i.id) and (l.ver = i.ver) 
+          left join avalia_last a on(l.id = a.id_proj) and (l.ver = a.ver)
+      where
+          l.id    = '". $this->id ."' ";
+    return $a = (new Database())->selectJ($sql)
+      //->fetchAll(PDO::FETCH_CLASS,self::class);
+      ->fetchObject(self::class);
   }
 }

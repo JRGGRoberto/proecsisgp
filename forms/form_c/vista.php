@@ -1,6 +1,18 @@
+<?php
+require '../../vendor/autoload.php';
+
+use \App\Entity\Projeto;
+use \App\Entity\Form_c;
+
+$prj = Projeto::getProjetoView($_GET['p'], $_GET['v']);
+$form = Form_c::getRegistro($_GET['p'], $_GET['v']);
+
+include '../../includes/headers.php';
+
+?>
 
 <div class="container mt-4">
-   <h3>PARECER</h3>
+   <h3>FORM C</h3>
    <h4>Divisão de Extensão e Cultura dos Campi</h4>
       
   <form name="myform" id="myform" method="post" enctype="multipart/form-data">
@@ -50,7 +62,7 @@
 
             </div>
         </li>
-
+         
         <li class="mb-4">
           <h5>Parecer</h5>
           <div class="row">
@@ -67,63 +79,18 @@
 
     <div class="form-group">
       <div class="row">
-        <div class="col-3"><input type="text" class="form-control" name="cidade"  value="<?=$user['campus']?>"></div>
-        <div class="col-2"> <input type="date" class="form-control" name="dateAssing" id="dateAssing" readonly> </div>
+        <div class="col-3"><input type="text" class="form-control" name="cidade"  value="<?=$form->cidade?>" readonly></div>
+        <div class="col-2"> <input type="date" class="form-control" name="dateAssing" id="dateAssing" readonly value="<?=substr($form->dateAssing,0,10)?>"> </div>
       </div>
     </div>
-    
     <div class="form-group">
-      <input type="text" class="form-control" name="whosigns"  value="<?=$user['nome']?> - <?=$user['nivel']?>" readonly>
+      <input type="text" class="form-control" name="whosigns"  value="<?=$form->whosigns?>" readonly>
     </div>
-      <p> </p><hr><p> </p>
-    <div class="form-group form-group d-flex justify-content-around">
-      <a href="javascript: submitSolicAlterac()" class="btn btn-warning" >Solicitar alterações ↩️</a>
-      <a href="javascript: submitSave()" class="btn btn-secondary" >Avaliar mais tarde ⌛</a>
-      <a href="javascript: submitAprova()" class="btn btn-success" >✔️ Enviar para próxima instância</a>
-    </div>
-
-    <div class="form-group form-group d-flex justify-content-around">
-      <div class="col-4">
-        <p><span class="badge badge-warning">↩️</span><small> Ao Solicitar alterações, esta avalização fica anexa a esta versão e uma nova versão do projeto é disponibilizada ao proponente, para que este realiza as alterações necessárias e volte a submeter a uma nova avaliação.</small></p>
-      </div>
-      <div class="col-4">
-        <p><span class="badge badge-secondary">⌛</span><small> Os dados da avalização ficam salvos para outros acesso e alterações até que se chegue há um veredito.</small></p>
-      </div>
-      <div class="col-4">
-        <p><span class="badge badge-success">✔️</span><small> O projeto não necessita de alterações, esta completamente atentendo os requisitos e será avaliado para a próxima instância ou registro/publicação.</small></p>
-      </div>
-      
-    </div>
-    <input type="hidden" id="resultado" name="resultado">
-    <input type="hidden" name="a" value="<?=$user['id']?>">
-    <input type="hidden" name="u" value="<?=$user['id']?>">
-  </form>
 
 </div>
 
-<script>
 
-document.getElementById("dateAssing").valueAsDate = new Date();
+<?php
 
-function submitSolicAlterac()
-{
-  const name = document.getElementById('resultado');
-  name.value = 'r';
-  document.myform.submit();
-}
 
-function submitSave()
-{
-  const name = document.getElementById('resultado');
-  name.value = 'e';
-  document.myform.submit();
-}
-
-function submitAprova()
-{
-  const name = document.getElementById('resultado');
-  name.value = 'a';
-  document.myform.submit();
-}
-</script>
-
+include '../../includes/footer.php';

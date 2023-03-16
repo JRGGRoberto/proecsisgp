@@ -30,6 +30,14 @@ if(isset($_POST['acao'])){
         break;
       }
 
+      if($obUsuario->ativo != 1){
+        $alertaLogin = "Conta desativada";
+        break;
+      }
+
+      
+
+
       /*
       echo "<pre>";
       print_r($obUsuario);

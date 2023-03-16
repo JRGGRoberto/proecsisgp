@@ -33,8 +33,7 @@ class Form_D{
                                   ->fetchObject(self::class);
   }
 
-
-
+  
   public function cadastrar(){
     //DEFINIR A DATA
     // $this->data = date('Y-m-d H:i:s');

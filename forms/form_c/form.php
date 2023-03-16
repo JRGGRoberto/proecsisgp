@@ -1,6 +1,6 @@
 
 <div class="container mt-4">
-   <h3>PARECER</h3>
+   <h3><?=TITLE?></h3>
    <h4>Divisão de Extensão e Cultura dos Campi</h4>
       
   <form name="myform" id="myform" method="post" enctype="multipart/form-data">
@@ -56,7 +56,7 @@
           <div class="row">
             <div class="col">
               <div class="form-group">
-                <textarea class="form-control" name="parecer" rows="10" readonly
+                <textarea class="form-control" name="parecer" rows="10" 
                 placeholder="(Informar o parecer do projeto) 10 linhas máximo"><?=$form->parecer?></textarea>
                 (O prazo para devolução da proposta com adequações segue o previsto no Regulamento de Extensão – Resolução 042/2022 – CEPE/UNESPAR)
               </div>
