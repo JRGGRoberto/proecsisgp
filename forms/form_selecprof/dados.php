@@ -55,8 +55,6 @@ if(isset($_POST['resultado'])){
         $ava1->resultado = 'a';
         $ava1->atualizar();
         $proj = Projeto::getProjeto($id_proj, $ver_proj);
-        $proj->last_result = 'a';
-        $proj->atualizar();
         $proj->nextLevel($_POST['id_parecerista']); 
 
         break;

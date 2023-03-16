@@ -269,31 +269,35 @@ class Projeto{
       $id_instancia = "'".$id_ins."'";
     }
 
-    $sql = "
-    insert into 
-      avaliacoes ( 
-        id, id_proj, ver, regra_def, fase_seq, form, tp_instancia, id_instancia, resultado )
-    select 
-        id, id_proj, ver, regra_def, fase_seq, form, tp_avaliador, ". $id_instancia .", 'e' as resultado
-    from to_avaliar 
-    where 
-       id_proj = '". $this->id ."' and
-       fase_seq = (select 
-                     IFNULL(max(fase_seq), 0) +
-                     (
-                        SELECT 
-                          if(max(am.fase_seq) < max(ta.fase_seq), 1, 0) soma
-                        FROM avaliacoes am
-                           inner join to_avaliar ta on (am.id_proj, am.ver ) = (ta.id_proj, ta.ver)
-                        WHERE 
-                          am.id_proj = ta.id_proj
-                     )
-                   from avaliacoes a where a.id_proj  = '". $this->id ."'
-                  )
-    ";
-                
-    $a = new Database(); 
-    $a->execute($sql);
+    $ultimaInst = $this->ultimaInstancia();
+
+    if($ultimaInst == 0) {
+      $sql = "
+      insert into 
+        avaliacoes ( 
+          id, id_proj, ver, regra_def, fase_seq, form, tp_instancia, id_instancia, resultado )
+      select 
+          id, id_proj, ver, regra_def, fase_seq, form, tp_avaliador, ". $id_instancia .", 'e' as resultado
+      from to_avaliar 
+      where 
+         id_proj = '". $this->id ."' and
+         fase_seq = (select 
+                       IFNULL(max(fase_seq), 0) +
+                       (
+                          SELECT 
+                            if(max(am.fase_seq) < max(ta.fase_seq), 1, 0) soma
+                          FROM avaliacoes am
+                             inner join to_avaliar ta on (am.id_proj, am.ver ) = (ta.id_proj, ta.ver)
+                          WHERE 
+                            am.id_proj = ta.id_proj
+                       )
+                     from avaliacoes a where a.id_proj  = '". $this->id ."'
+                    )
+      ";
+                  
+      $a = new Database(); 
+      $a->execute($sql);
+    }
     return true;
       // ->fetchAll(PDO::FETCH_CLASS,self::class);
   }
@@ -308,19 +312,21 @@ class Projeto{
    * @return array
    */
   public function ultimaInstancia(){
-    $sql = "
+   $completou = 0;
+   $sql = "
     select 
-       i.id AS id,i.ver AS ver,
-       ifnull(a.fase_seq,(select a.fase_seq from avaliacoes a where ((a.id_proj = l.id) and (a.ver = (i.ver - 1))) order by a.fase_seq desc limit 1)) AS fase_seq,
-       (select count(1) from regras_defin rd where (rd.id_reg = i.regras)) AS etapas 
-      
-      from 
-         proj_last l join proj_inf i on (l.id = i.id) and (l.ver = i.ver) 
-          left join avalia_last a on(l.id = a.id_proj) and (l.ver = a.ver)
-      where
-          l.id    = '". $this->id ."' ";
-    return $a = (new Database())->selectJ($sql)
-      //->fetchAll(PDO::FETCH_CLASS,self::class);
-      ->fetchObject(self::class);
+      ifnull(a.fase_seq,(select a.fase_seq from avaliacoes a where ((a.id_proj = l.id) and (a.ver = (i.ver - 1))) order by a.fase_seq desc limit 1)) AS fase_seq,
+      (select count(1) from regras_defin rd where (rd.id_reg = i.regras)) AS etapas 
+    from 
+      proj_last l join proj_inf i on (l.id = i.id) and (l.ver = i.ver) 
+      left join avalia_last a on(l.id = a.id_proj) and (l.ver = a.ver)
+    where
+      l.id    = '". $this->id ."' ";
+    $a = (new Database())->selectJ($sql)->fetchObject(self::class);
+         //->fetchAll(PDO::FETCH_CLASS,self::class);
+    if($a->etapas == $a->fase_seq){
+      $completou = 1;
+    }
+    return $completou;
   }
 }
