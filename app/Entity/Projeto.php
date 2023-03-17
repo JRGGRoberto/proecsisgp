@@ -226,15 +226,31 @@ class Projeto{
     $this->edt = 0;
     $this->atualizar();
 
+
+    /*
+    Quando o projeto é recusado, no professor parecerista escolhido, como é a instancia anterior que define o 
+    id_instancia no SelecProf, temos estas 7 linhas a seguir, pois se não não fica definido o id_instancia
+    */
+    $inst =  "id_instancia";
+    $sqla = "select * from avalia_last al WHERE id_proj = '". $this->id ."' limit 1";
+    $lastAvalia =  (new Database())->selectJ($sqla)->fetchAll(PDO::FETCH_CLASS);
+    $lastAvalia0 = $lastAvalia[0];
+    
+    if(($lastAvalia0->resultado == 'r') and ($lastAvalia0->tp_instancia == 'pf')){
+      $inst = "'". $lastAvalia0->id_instancia ."'";
+    } 
+    
     $sql = "
           insert into
-             avaliacoes ( id, id_proj, ver, regra_def, fase_seq, form, tp_instancia, id_instancia, resultado )
-             select id, id_proj, ver, regra_def, fase_seq, form, tp_avaliador, id_instancia, if(last_result='n', 'e', last_result)  
+            avaliacoes 
+            ( id, id_proj, ver, regra_def, fase_seq, form, tp_instancia, id_instancia, resultado )
+          select 
+             id, id_proj, ver, regra_def, fase_seq, form, tp_avaliador, $inst , if(last_result='n', 'e', last_result)  
           from to_avaliar 
           where 
             id_proj = '". $this->id ."' and
             fase_seq = (select IFNULL(max(fase_seq), 1)   from avaliacoes a where id_proj  = '". $this->id ."')";
-                
+
     $a = new Database(); 
     $a->execute($sql);
     return true;
@@ -285,11 +301,7 @@ class Projeto{
              select (fase_seq + 1)  from avalia_last al where (al.id_proj, al.ver) = (toa.id_proj, toa.ver)
         )
       ";
-
-
-
-
-                  
+       
       $a = new Database(); 
       $a->execute($sql);
     }

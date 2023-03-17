@@ -54,7 +54,7 @@
         <li class="mb-4">
           <h5>Selecione um professor para realizar o parecer</h5>
           <select name="id_parecerista" id="id_parecerista" class="form-control" onchange="ativaBTN();">
-              <option value="" selected="">Selecione um professor</option>
+              <option value="-1" selected="" >Selecione um professor</option>
                <?=$opc?>
             </select>
         </li>
@@ -87,7 +87,7 @@
     <div class="form-group form-group d-flex justify-content-around">
       <a href="javascript: submitSolicAlterac()" class="btn btn-warning" >Solicitar alterações ↩️</a>
       <a href="javascript: submitSave()" class="btn btn-secondary" >Avaliar mais tarde ⌛</a>
-      <a href="javascript: submitAprova()" class="btn btn-success" >✔️ Enviar para próxima instância</a>
+      <a href="javascript: submitAprova()" class="btn btn-success" id="btnSubmit">✔️ Enviar para próxima instância</a>
     </div>
 
     <div class="form-group form-group d-flex justify-content-around">
@@ -113,6 +113,21 @@
 
 document.getElementById("dateAssing").valueAsDate = new Date();
 
+const opt = document.getElementById('id_parecerista');
+const btn = document.getElementById('btnSubmit');
+           
+function ativaBTN() {
+    
+        
+    if((opt.value != -1 ) ){
+      btn.disabled=false;
+      
+    } else {
+      btn.disabled=true;
+    }
+  }
+
+
 function submitSolicAlterac()
 {
   const name = document.getElementById('resultado');
@@ -131,7 +146,12 @@ function submitAprova()
 {
   const name = document.getElementById('resultado');
   name.value = 'a';
-  document.myform.submit();
+  if(opt.value != -1 ){
+    document.myform.submit();
+  } else {
+    alert("Para enviar para a próxima etapa é necessário escolher um professor");
+  }
+  
 }
 </script>
 

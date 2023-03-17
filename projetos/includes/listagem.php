@@ -26,7 +26,7 @@
     if ($i == $proj->fase_seq){
       if($proj->last_result == 'r'){
         $cor = 'danger';
-      } elseif($proj->last_result == 'a'){
+      } elseif($proj->last_result == 'a' and $proj->etapas == $i ){
         $cor = 'success';
       }
       else{

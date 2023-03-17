@@ -85,6 +85,18 @@ class Avaliacoes{
                                                          ]);
   }
 
+
+  /**
+   * Método responsável por buscar um Registro com base em seu ID
+   * @param  integer $id
+   * @return 
+   */
+  public static function getUltimaAvalia($id_proj){
+    return (new Database('avalia_last'))->select('id_proj =  "'. $id_proj .'"')
+                                  ->fetchObject(self::class);
+  }
+
+
   /**
    * Método responsável por cadastrar um novo Registro no banco
    * NÃO UTILIZAR!!!

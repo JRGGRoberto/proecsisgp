@@ -23,8 +23,6 @@
     <script type="text/javascript">
       var optOrig = document.getElementById('selCoord').value;
            
-     console.log(op.value);
-
       function ativaBTN() {
         var btn = document.getElementById('btnOk');
         var opt = document.getElementById('selCoord').value;
