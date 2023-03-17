@@ -20,8 +20,8 @@ include '../../includes/headers.php';
 ?>
 
 <div class="container mt-4">
-   <h3>ANEXO A - FORMULÁRIO PARA AVALIAÇÃO DE AÇÃO EXTENSIONISTA</h3>
-   <h4>Divisão de Extensão e Cultura dos Campi</h4>
+  <h3>ANEXO B - FORMULÁRIO PARA AVALIAÇÃO DE AÇÃO EXTENSIONISTA</h3>
+  <h5>(Parecer) Colegiado de Curso</h5>
       
   <form name="myform" id="myform" method="post" enctype="multipart/form-data">
        <ol>

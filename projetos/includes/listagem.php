@@ -26,7 +26,10 @@
     if ($i == $proj->fase_seq){
       if($proj->last_result == 'r'){
         $cor = 'danger';
-      }else{
+      } elseif($proj->last_result == 'a'){
+        $cor = 'success';
+      }
+      else{
         $cor = 'warning';
       }
     } elseif ($i < $proj->fase_seq){

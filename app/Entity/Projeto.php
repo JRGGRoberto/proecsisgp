@@ -277,23 +277,18 @@ class Projeto{
         avaliacoes ( 
           id, id_proj, ver, regra_def, fase_seq, form, tp_instancia, id_instancia, resultado )
       select 
-          id, id_proj, ver, regra_def, fase_seq, form, tp_avaliador, ". $id_instancia .", 'e' as resultado
-      from to_avaliar 
+        id, id_proj, ver, regra_def, fase_seq, form, tp_avaliador, ". $id_instancia .", 'e' as resultado
+      from to_avaliar toa
       where 
-         id_proj = '". $this->id ."' and
-         fase_seq = (select 
-                       IFNULL(max(fase_seq), 0) +
-                       (
-                          SELECT 
-                            if(max(am.fase_seq) < max(ta.fase_seq), 1, 0) soma
-                          FROM avaliacoes am
-                             inner join to_avaliar ta on (am.id_proj, am.ver ) = (ta.id_proj, ta.ver)
-                          WHERE 
-                            am.id_proj = ta.id_proj
-                       )
-                     from avaliacoes a where a.id_proj  = '". $this->id ."'
-                    )
+        toa.id_proj = '". $this->id ."' and
+        fase_seq = (
+             select (fase_seq + 1)  from avalia_last al where (al.id_proj, al.ver) = (toa.id_proj, toa.ver)
+        )
       ";
+
+
+
+
                   
       $a = new Database(); 
       $a->execute($sql);

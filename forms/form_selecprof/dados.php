@@ -18,7 +18,7 @@ if(!$form) {
 $prjS = Projeto::getRegistros("(id, ver)= ('".$_GET['p']."', ".$_GET['v'].")");
 $prj = $prjS[0];
 
-$listaProf = Professor::getProfessores("id_colegiado  = '".$prj->para_avaliar ."'");
+$listaProf = Professor::getProfessores("id_colegiado  = '".$prj->para_avaliar ."'  and ativo = 1 ");
 
 $opc = '';
 foreach($listaProf as $l){
