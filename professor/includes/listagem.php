@@ -227,13 +227,14 @@
 <script>
   const btnOpen = document.getElementById("excluir1");
   const modal = document.querySelector("dialog");
+  const btnLimpar = document.getElementById('limpar');
 
   btnOpen.onclick = function(){
     modal.showModal();
   }
 
 
-  document.getElementById('limpar').hidden = true;
+  btnLimpar.hidden = true;
 
   
   function showLimpar(){
@@ -243,8 +244,7 @@
     var colegiado = document.getElementById('colegiado').value;
 
     if((nome.length > 0 ) | (campus.length > 0)| (centro.length > 0)| (colegiado.length > 0) ) {
-
-      document.getElementById('limpar').hidden = false;
+      btnLimpar.hidden = false;
     }
   }
 

@@ -233,28 +233,9 @@
 
       <div class="row my-2">
 
-        <div class="col">
+        <div class="col-5">
           <label>Titulo</label> 
-          <input type="text" name="titulo" class="form-control form-control-sm" value="<?=$titulo?>"  id="titulo"  onchange="showLimpar();">
-        </div>
-
-        <div class="col">
-          <label>Colegiado</label>
-          <input type="text" name="colegiado" class="form-control form-control-sm" value="<?=$colegiado?>" id="colegiado" onChange="showLimpar();">
-        </div>
-
-        <div class="col">
-          <label>Área de extensão</label>
-          <input type="text" name="area" class="form-control form-control-sm" value="<?=$area?>" id="area" onChange="showLimpar();">
-        </div>
-
-        <div class="col">
-          <label>Linha de extensão</label>
-          <select name="linh_ext" id="linh_ext" class="form-control form-control-sm">
-            <option value="-1"></option>
-            <?=$propOptions?>
-          <select>
-
+          <input type="text" name="titulo" class="form-control form-control-sm" value="<?=$titulo?>"  id="titulo"   onchange="showLimpar();">
         </div>
 
 
@@ -332,164 +313,160 @@
 
 <script>
 
-const modalTitle  = document.getElementById('modalTitle');
-const modalBody   = document.getElementById('modalBody');
-const modalFooter = document.getElementById('modalFooter');
+  const modalTitle  = document.getElementById('modalTitle');
+  const modalBody   = document.getElementById('modalBody');
+  const modalFooter = document.getElementById('modalFooter');
 
+  const btnLimpar = document.getElementById('limpar');
 
-function ativaBTN() {
-  var btn = document.getElementById('btnSubmit');
-  var opt = document.getElementById('selPara');
-  var b = document.getElementById('selecOpt');
-  b.value = opt.value;
+  btnLimpar.hidden = true;
+  function showLimpar(){
+    var titulo    = document.getElementById('titulo').value;
 
-  
-  if((opt.value != -1 ) ){
-    btn.disabled=false;
-    
-  } else {
-    btn.disabled=true;
-
+    if(titulo.length > 0 ) {
+      btnLimpar.hidden = false;
+    } 
   }
-}
+
+  showLimpar();
+  
+  function ativaBTN() {
+    var btn = document.getElementById('btnSubmit');
+    var opt = document.getElementById('selPara');
+    var b = document.getElementById('selecOpt');
+    b.value = opt.value;
+  
+    
+    if((opt.value != -1 ) ){
+      btn.disabled=false;
+      
+    } else {
+      btn.disabled=true;
+  
+    }
+  }
 
 
-function printDel(data){
-  modalTitle.innerText = 'Confirmação de exclusão';
-  modalBody.innerHTML =  `<h4>Tem certeza que deseja apagar o registro abaixo?</h4><p class="justify-content-center"> ${data.titulo}</p><span class="badge badge-warning float-right" ><span class="badge badge-light">⚠️</span>Atenção! O processo não pode ser revertido</span>`;
-  modalFooter.innerHTML = `
-          <a href="excluir.php?id=${data.id}&v=${data.created_at}" 
-                                class="btn btn-danger    btn-sm mb-2">🗑  Excluir</a>
-          <button type="button" class="btn btn-secondary btn-sm mb-2" data-dismiss="modal">Fechar</button>
-  `;
-  $('#modalSub').modal('show');
-}
+  function printDel(data){
+    modalTitle.innerText = 'Confirmação de exclusão';
+    modalBody.innerHTML =  `<h4>Tem certeza que deseja apagar o registro abaixo?</h4><p class="justify-content-center"> ${data.titulo}</p><span class="badge badge-warning float-right" ><span class="badge badge-light">⚠️</span>Atenção! O processo não pode ser revertido</span>`;
+    modalFooter.innerHTML = `
+            <a href="excluir.php?id=${data.id}&v=${data.created_at}" 
+                                  class="btn btn-danger    btn-sm mb-2">🗑  Excluir</a>
+            <button type="button" class="btn btn-secondary btn-sm mb-2" data-dismiss="modal">Fechar</button>
+    `;
+    $('#modalSub').modal('show');
+  }
 
 
 
-function printSubAlt(data){
-  modalTitle.innerText = 'Reenvio do projeto à PROEC';
-  modalBody.innerHTML = `
-        <div class="modal-body" id="modalBody">
-          <h4>${data.titulo}</h4>
-          <p>Estás confirmar que realizaste as solicitações de adequasões as quais foram propostas, feito isto, terás tudo para que seu projeto avance para o próximo etapa. Ele será reavaliado pelas instâncias competentes.</p>
-          <p>Não será mais possível editá-lo a não ser que haja uma solicitação para isso.</p>
-          <p>Concordando com o informado, clique em Submeter.</p>
-            <div class="row">
-              <div class="col-12">
-                <div class="form-group">
-                  <label for="para_avaliar">Colegiado de </label>
-                  <select name="para_avaliar" id="selPara" class="form-control" onchange="ativaBTN();">
-                    <option value="${data.para_avaliar}" selected>${data.colegiado}</option>
-                  </select>
+  function printSubAlt(data){
+    modalTitle.innerText = 'Reenvio do projeto à PROEC';
+    modalBody.innerHTML = `
+          <div class="modal-body" id="modalBody">
+            <h4>${data.titulo}</h4>
+            <p>Estás confirmar que realizaste as solicitações de adequasões as quais foram propostas, feito isto, terás tudo para que seu projeto avance para o próximo etapa. Ele será reavaliado pelas instâncias competentes.</p>
+            <p>Não será mais possível editá-lo a não ser que haja uma solicitação para isso.</p>
+            <p>Concordando com o informado, clique em Submeter.</p>
+              <div class="row">
+                <div class="col-12">
+                  <div class="form-group">
+                    <label for="para_avaliar">Colegiado de </label>
+                    <select name="para_avaliar" id="selPara" class="form-control" onchange="ativaBTN();">
+                      <option value="${data.para_avaliar}" selected>${data.colegiado}</option>
+                    </select>
+                  </div>
                 </div>
-              </div>
-           </div>
-        </div>
-  `;
-  modalFooter.innerHTML = data.innerHTML = `
-          <form method="post" action="submeter.php?">
-              <input type="hidden" name="modIDprj"   value="${data.id}">
-              <input type="hidden" name="selecOpt"   value="${data.para_avaliar}" id="selecOpt">
-              <input type="hidden" name="modVerPrj"  value="${data.ver}">
-              <input type="hidden" name="modCreated" value="${data.created_at}">
-              <button type="submit" class="btn btn-primary btn-sm mb-2" id="btnSubmitN">📤 Submeter nova versão</button>
-          </form>                    
-          <button type="button" class="btn btn-secondary btn-sm mb-2" data-dismiss="modal">Fechar</button>
-  `;
-  $('#modalSub').modal('show');
-}
+             </div>
+          </div>
+    `;
+    modalFooter.innerHTML = data.innerHTML = `
+            <form method="post" action="submeter.php?">
+                <input type="hidden" name="modIDprj"   value="${data.id}">
+                <input type="hidden" name="selecOpt"   value="${data.para_avaliar}" id="selecOpt">
+                <input type="hidden" name="modVerPrj"  value="${data.ver}">
+                <input type="hidden" name="modCreated" value="${data.created_at}">
+                <button type="submit" class="btn btn-primary btn-sm mb-2" id="btnSubmitN">📤 Submeter nova versão</button>
+            </form>                    
+            <button type="button" class="btn btn-secondary btn-sm mb-2" data-dismiss="modal">Fechar</button>
+    `;
+    $('#modalSub').modal('show');
+  }
 
 
 
-function printSub(data){
-  modalTitle.innerText = 'Submissão de projeto';
-  modalBody.innerHTML = `
-        <div class="modal-body" id="modalBody">
-          <h4>${data.titulo}</h4>
-          <p>Ao submeter o projeto à PROEC, estás a aceitar que este será avaliado pelas instâncias competentes.</p>
-          <p>Não será mais possível editá-lo a não ser que haja uma solicitação para isso.</p>
-          <p>Concordando com o informado, selecione o colegiado o qual julga ser relacionado a ele e clique em Submeter.</p>
-          
-          
-           <div class="row">
-             <div class="col-12">
-               <div class="form-group">
-                  <label for="para_avaliar">Enviar para o colegiado de </label>
-                  <select name="para_avaliar" id="selPara" class="form-control" onchange="ativaBTN();">
-                    <option value="-1">Selecione</option>
-                    ${optspara}
-                  </select>
+  function printSub(data){
+    modalTitle.innerText = 'Submissão de projeto';
+    modalBody.innerHTML = `
+          <div class="modal-body" id="modalBody">
+            <h4>${data.titulo}</h4>
+            <p>Ao submeter o projeto à PROEC, estás a aceitar que este será avaliado pelas instâncias competentes.</p>
+            <p>Não será mais possível editá-lo a não ser que haja uma solicitação para isso.</p>
+            <p>Concordando com o informado, selecione o colegiado o qual julga ser relacionado a ele e clique em Submeter.</p>
+            
+            
+             <div class="row">
+               <div class="col-12">
+                 <div class="form-group">
+                    <label for="para_avaliar">Enviar para o colegiado de </label>
+                    <select name="para_avaliar" id="selPara" class="form-control" onchange="ativaBTN();">
+                      <option value="-1">Selecione</option>
+                      ${optspara}
+                    </select>
+                 </div>
                </div>
              </div>
-           </div>
-        </div>
-  `;
-
-  modalFooter.innerHTML = data.innerHTML = `
-          
-          <form method="post" action="submeter.php?">
-              <input type="hidden" name="modIDprj"   value="${data.id}">
-              <input type="hidden" name="selecOpt"   value="" id="selecOpt">
-              <input type="hidden" name="modVerPrj"  value="${data.ver}">
-              <input type="hidden" name="modCreated" value="${data.created_at}">
-              <button type="submit" class="btn btn-primary btn-sm mb-2" id="btnSubmit" disabled>📤 Submeter</button>
-          </form>                    
-          <button type="button" class="btn btn-secondary btn-sm mb-2" data-dismiss="modal">Fechar</button>
-  `;
-  $('#modalSub').modal('show');
-}
-
-
-const getProjDados = async(id) => {
-  const oper = id.substr(0,3);
-  const data = await fetch(`https://${location.host}/sis/api/proj.php?prj=${id}`)
-    .then(resp => resp.json()).catch(error => false);
-
-  if(!data) return;
+          </div>
+    `;
   
-  printDel(data);
-
-  if(oper == 'del'){
-    printDel(data);
-  } else if(oper == 'sub'){
-    printSub(data);
-  } else if(oper == 'Alt'){
-    printSubAlt(data);
-  } else {
-    return;
+    modalFooter.innerHTML = data.innerHTML = `
+            
+            <form method="post" action="submeter.php?">
+                <input type="hidden" name="modIDprj"   value="${data.id}">
+                <input type="hidden" name="selecOpt"   value="" id="selecOpt">
+                <input type="hidden" name="modVerPrj"  value="${data.ver}">
+                <input type="hidden" name="modCreated" value="${data.created_at}">
+                <button type="submit" class="btn btn-primary btn-sm mb-2" id="btnSubmit" disabled>📤 Submeter</button>
+            </form>                    
+            <button type="button" class="btn btn-secondary btn-sm mb-2" data-dismiss="modal">Fechar</button>
+    `;
+    $('#modalSub').modal('show');
   }
-}
 
-function writeNumber(elementId) {
-  var outputValueTo =   elementId.id;
-  getProjDados(outputValueTo);
 
-}
+  const getProjDados = async(id) => {
+    const oper = id.substr(0,3);
+    const data = await fetch(`https://${location.host}/sis/api/proj.php?prj=${id}`)
+      .then(resp => resp.json()).catch(error => false);
+  
+    if(!data) return;
+    
+    printDel(data);
+  
+    if(oper == 'del'){
+      printDel(data);
+    } else if(oper == 'sub'){
+      printSub(data);
+    } else if(oper == 'Alt'){
+      printSubAlt(data);
+    } else {
+      return;
+    }
+  }
+  
+  function writeNumber(elementId) {
+    var outputValueTo =   elementId.id;
+    getProjDados(outputValueTo);
+  
+  }
 
   const btnOpen = document.getElementById("excluir1");
-  const modal = document.querySelector("dialog")
+  const modal = document.querySelector("dialog");
+  
 
   btnOpen.onclick = function(){
     modal.showModa();
   }
 
 
-  document.getElementById('limpar').hidden = true;
-
-  
-  function showLimpar(){
-    var titulo    = document.getElementById('titulo').value;
-    var colegiado = document.getElementById('colegiado').value;
-    var area      = document.getElementById('area').value;
-    var linh_ext  = document.getElementById('linh_ext').value;
-
-    if((titulo.length > 0 ) | (colegiado.length > 0)| (area.length > 0)| (linh_ext.length > 0) ) {
-
-      document.getElementById('limpar').hidden = false;
-    }
-  }
-
-  showLimpar();
-  
 </script>

@@ -29,28 +29,6 @@ $condicoes = [
   strlen($centro) ? 'centros LIKE "%'.str_replace(' ','%',$centro).'%"': null
 ];
 
-/*
-
-if ($user[adm] == 1){
-  $a = true;
-} else {
-  switch ($user[niveln]) {
-    case 1:
-      array_push($condicoes, "ca_id = '". $user[ca_id] .'"');
-      break;
-    case 2:
-      array_push($condicoes, "ce_id = '". $user[ce_id] .'"');
-      break;
-    case 3:
-      array_push($condicoes, "co_id = '". $user[co_id] .'"');
-      break;
-    default:
-      header('location: ../home/index.php?status=error');
-      exit;
-  } 
-}
-
-*/
 
 //Remove posições vazias
 $condicoes = array_filter($condicoes);
@@ -65,7 +43,6 @@ $qntProfessores = Professor::getQntdProfessores($where);
 $obPagination = new Pagination($qntProfessores, $_GET['pagina']?? 1, 10);
 
 $professores = Professor::getProfessores($where, null, $obPagination->getLimite());
-
 
 include '../includes/header.php';
 include __DIR__.'/includes/listagem.php';

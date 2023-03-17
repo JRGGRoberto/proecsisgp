@@ -30,10 +30,11 @@ $filtroStatus = filter_input(INPUT_GET, 'filtroStatus', FILTER_SANITIZE_STRING);
 
 //Condições SQL
 $condicoes = [
-  strlen($titulo) ? 'titulo LIKE "%'.str_replace(' ','%',$titulo).'%"': null,
+  strlen($titulo) ? 'titulo LIKE "%'.str_replace(' ','%',$titulo).'%"': null
+  /*,
   strlen($colegiado) ? 'colegiado LIKE "%'.str_replace(' ','%',$colegiado).'%"': null,
   strlen($area) ? "area_extensao = '$area_extensao'": null,  
-  strlen($linh_ext) ? 'linh_ext LIKE "%'.str_replace(' ','%',$linh_ext).'%"': null
+  strlen($linh_ext) ? 'linh_ext LIKE "%'.str_replace(' ','%',$linh_ext).'%"': null */
 ];
 
 array_push($condicoes, 'id_prof = "' .$user['id'] .'"');
@@ -53,15 +54,14 @@ $obPagination = new Pagination($qntdProjetos, $_GET['pagina']?? 1, 5);
 
 $projetos = Projeto::getRegistros($where, null, $obPagination->getLimite());
 
-
+/*
 use \App\Entity\Tipo_exten;
 $proposta = Tipo_exten::getRegistros();
 $propOptions = '';
 foreach($proposta as $prop){
   $propOptions .= '<option value="'.$prop->nome.'"   >'.$prop->nome.'</option>';
 }
-
-
+*/
 
 include '../includes/header.php';
 include __DIR__.'/includes/listagem.php';
