@@ -84,43 +84,4 @@ class Avaliacoes{
                                                           'user' => $this->user 
                                                          ]);
   }
-
-
-  /**
-   * Método responsável por buscar um Registro com base em seu ID
-   * @param  integer $id
-   * @return 
-   */
-  public static function getUltimaAvalia($id_proj){
-    return (new Database('avalia_last'))->select('id_proj =  "'. $id_proj .'"')
-                                  ->fetchObject(self::class);
-  }
-
-
-  /**
-   * Método responsável por cadastrar um novo Registro no banco
-   * NÃO UTILIZAR!!!
-   *  A DESENVOLVER.... ?????COMO
-   * --areturn boolean
-   */
-  /*
-  public function cadastrar(){
-    //DEFINIR A DATA
-    // $this->data = date('Y-m-d H:i:s');
-    $obDatabase = new Database('avaliacoes');
-    $this->id = $obDatabase->insert([
-                                       'id_proj' => $this->id_proj,
-                                       'id_instancia' => $this->id_instancia,
-                                       'id_avaliador' => $this->id_avaliador,
-                                       'resultado' => $this->resultado,
-                                       'resu_ata' => $this->resu_ata,
-                                       'dt_av' => date("Y-m-d H:i:s"),
-                                       'user' => $this->user 
-                                    ]);
-
-    //RETORNAR SUCESSO
-    return $this->id;
-  }
-*/
-
 }
