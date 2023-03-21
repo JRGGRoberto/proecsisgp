@@ -462,7 +462,7 @@
 
   const getProjDados = async(id) => {
     const oper = id.substr(0,3);
-    const data = await fetch(`https://${location.host}/sis/api/proj.php?prj=${id}`)
+    const data = await fetch(`../api/proj.php?prj=${id}`)
       .then(resp => resp.json()).catch(error => false);
   
     if(!data) return;
