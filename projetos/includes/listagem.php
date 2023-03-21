@@ -86,6 +86,7 @@
 
     if($a==0){
       $LastV = '';
+      $progresso = '<span class="badge badge-warning">Não submetido</span>';
     } else {
       $btnStatus = array_reverse($btnStatus);
 
