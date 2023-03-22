@@ -11,12 +11,34 @@ use \App\Session\Login;
 Login::requireLogin();
 $user = Login::getUsuarioLogado();
 
-define('TITLE','Cadastrar projeto');
+$t = $_GET['t'];
+
+switch($t) {
+  case 1: 
+    define('TITLE','FORMULÁRIO PARA ELABORAÇÃO DE PROPOSTA DE CURSO');
+    break;
+  case 2:
+    define('TITLE','FORMULÁRIO PARA ELABORAÇÃO DE PROPOSTA DE EVENTO');
+    break;
+  case 3:
+    define('TITLE','FORMULÁRIO PARA ELABORAÇÃO DE PROPOSTAS DE PRESTAÇÃO DE SERVIÇO');
+    break;
+  case 4:
+    define('TITLE','FORMULÁRIO PARA ELABORAÇÃO DE PROPOSTAS DE PROGRAMA');
+    break;
+  case 5:
+    define('TITLE','FORMULÁRIO PARA ELABORAÇÃO DE PROPOSTAS DE PROJETO');
+    break;
+  default:
+    header('location: index.php?status=error');
+    exit;
+}
 
 use \App\Entity\Projeto;
 $obProjeto = new Projeto;
 $obProjeto->id_prof      =  $user['id'];
 $obProjeto->nome_prof    = $user['nome'];
+$obProjeto->tipo_exten = $t;
 
 // Quando a ação for para remover anexo
 if (isset($_POST['acao']) == 'removeAnexo')
@@ -156,5 +178,12 @@ include '../includes/header.php';
 include __DIR__.'/includes/formulario.php';
 
 include '../includes/footer.php';
+
+?>
+<script>
+
+  alert('*O responsável pelo preenchimento e encaminhamento é o coordenador da Proposta de Extensão \n Tramitação:\n ➡️ Coordenador (Preencher o formulário e depois submete-lo)\n ➡️ Divisão de Extensão e Cultura\n ➡️ Colegiado de Curso\n ➡️ Conselho de Centro de Área\n ➡️ Divisão de Extensão e Cultura.');
+
+</script>
 
 
