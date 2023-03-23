@@ -41,6 +41,7 @@ class Login{
       'id'    => $obUsuario->id,
       'nome'  => $obUsuario->nome,
       'email' => $obUsuario->email,
+      'telefone' => $obUsuario->telefone,
       'ca_id' => $obUsuario->ca_id,
       'campus' => $obUsuario->campus,
       'ce_id' => $obUsuario->ce_id,

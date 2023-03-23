@@ -121,9 +121,6 @@ echo '</pre>';
 */
 
 
-
-$t = $_GET['t'];
-
 switch($obProjeto->tipo_exten) {
   case 1: 
     define('TITLE','FORMULÁRIO PARA ELABORAÇÃO DE PROPOSTA DE CURSO');
@@ -150,7 +147,7 @@ switch($obProjeto->tipo_exten) {
 if(isset( $_POST['titulo']) ) {
 
   // $obProjeto->id           =  $_POST['id'];
-  //$obProjeto->id_prof      =  $obProfessor['id'];
+  // $obProjeto->id_prof      =  $obProfessor['id'];
   $obProjeto->tipo_exten   =  $_POST['tipo_exten'];
   $obProjeto->titulo       =  $_POST['titulo'];
   $obProjeto->tide         =  $_POST['tide'];

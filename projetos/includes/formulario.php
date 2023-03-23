@@ -1,9 +1,15 @@
 <main>
 
 <?php
-$anexoII = [3, 4, 5];
+$anexoII  = [3, 4, 5];
 $anexoIII = [1, 2];
 $t = $obProjeto->tipo_exten;
+
+
+echo '<pre>';
+print_r($user);
+echo '</pre>';
+
 ?>
   <section>
     <a href="index.php">
@@ -30,13 +36,13 @@ $t = $obProjeto->tipo_exten;
     <label><h5><?=++$n?>. Contato do Coordenador</h5></label>
     <div class="row">
       <div class="form-group col">
-        <label><h6><?=$n?>.1 Telefone</h6></label>
-          <input type="text" class="form-control" name="tel" readonly value="<?=$userprof->tel?>">
+        <label><h6><?=$n?>.1. Telefone</h6></label>
+          <input type="text" class="form-control" name="tel" readonly value="<?=$user['telefone']?>">
       </div>
       
       <div class="form-group col">
-        <label><h6><?=$n?>.2 Email</h6></label>
-          <input type="text" class="form-control" name="email" readonly value="<?=$userprof->email?>">
+        <label><h6><?=$n?>.2. Email</h6></label>
+          <input type="text" class="form-control" name="email" readonly value="<?=$user['email']?>">
       </div>
       
     </div>
@@ -56,15 +62,34 @@ if (in_array($t, $anexoII)) {
 }
  ?>
 
-    <div class="col-1.5">
-        <div class="form-group">
-        <label><h5><?=++$n?>. TIDE</h5></label>
-          <select name="tide" class="form-control">
-            <option value="s" <?= ($obProjeto->tide=='s')? 'selected': ' ' ?> >Sim</option> 
-            <option value="n" <?= ($obProjeto->tide=='n')? 'selected': ' ' ?> >Não</option>
-          </select>
-        </div>
+
+<div class="form-group">
+  <label><h5><?=++$n?>. Vinculação à Programa de Extensão e Cultura</h5></label>
+  <div class="row">
+    <div class="col-3">
+      <label><h6>É vinculado?</h6></label>
+      <select name="tide" class="form-control">
+        <option value="s" <?= ($obProjeto->tide=='s')? 'selected': ' ' ?> >Vinculado</option> 
+        <option value="n" <?= ($obProjeto->tide=='n')? 'selected': ' ' ?> >Não vinculado</option>
+      </select>
     </div>
+    <div class="col-9">
+      <label><h6>Título do Programa de vinculação</h6></label>
+      <input type="text" class="form-control" required name="titulo_progvinc" value="<?=$obProjeto->titulo?>" >
+    </div>
+</div>
+<hr>
+
+<div class="col-1.5">
+    <div class="form-group">
+    <label for="tide"><h5><?=++$n?>. TIDE</h5></label>
+      <select name="tide" class="form-control">
+        <option value="s" <?= ($obProjeto->tide=='s')? 'selected': ' ' ?> >Sim</option> 
+        <option value="n" <?= ($obProjeto->tide=='n')? 'selected': ' ' ?> >Não</option>
+      </select>
+    </div>
+</div>
+
 <hr>
 <label><h5><?=++$n?>. Período de Realização e Carga Horária</h5></label>
     <div class="row">
@@ -100,7 +125,10 @@ if (in_array($t, $anexoII)) {
     </div>
 
     <hr>
-    <h4>Classificação do Projeto ou Programa</h4>
+<?php
+if (in_array($t, $anexoII)) {
+?>
+    <label><h5><?=++$n?>. Classificação do Projeto ou Programa</h5></label>
 
     <div class="row">
 
@@ -155,7 +183,9 @@ if (in_array($t, $anexoII)) {
         </div>
       </div>
     </div>
-
+<?php
+}
+?>
     <hr>
     <h4>Dados Técnicos</h4>
 

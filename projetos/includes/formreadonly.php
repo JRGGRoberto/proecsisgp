@@ -12,7 +12,35 @@ if ($jan != 0) { ?>
 
 <?php
 } 
+
+$anexoII = [3, 4, 5];
+$anexoIII = [1, 2];
+$t = $obProjeto->tipo_exten;
+
+switch($t) {
+  case 1: 
+    define('TITLE','FORMULÁRIO PARA ELABORAÇÃO DE PROPOSTA DE CURSO');
+    break;
+  case 2:
+    define('TITLE','FORMULÁRIO PARA ELABORAÇÃO DE PROPOSTA DE EVENTO');
+    break;
+  case 3:
+    define('TITLE','FORMULÁRIO PARA ELABORAÇÃO DE PROPOSTAS DE PRESTAÇÃO DE SERVIÇO');
+    break;
+  case 4:
+    define('TITLE','FORMULÁRIO PARA ELABORAÇÃO DE PROPOSTAS DE PROGRAMA');
+    break;
+  case 5:
+    define('TITLE','FORMULÁRIO PARA ELABORAÇÃO DE PROPOSTAS DE PROJETO');
+    break;
+  default:
+    header('location: index.php?status=error');
+    exit;
+}
+
 ?>
+
+
 
 
   <h2 class="mt-3"><?=TITLE?></h2>

@@ -12,6 +12,7 @@ class Usuario{
   public $lattes;
   public $titulacao;
   public $email;
+  public $telefone;
   public $id_colegiado;
   public $cat_func;
   public $ativo;
