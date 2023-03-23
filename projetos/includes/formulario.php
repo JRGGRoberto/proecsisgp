@@ -1,59 +1,72 @@
 <main>
 
-
-
+<?php
+$anexoII = [3, 4, 5];
+$anexoIII = [1, 2];
+$t = $obProjeto->tipo_exten;
+?>
   <section>
     <a href="index.php">
       <button class="btn btn-success btn-sm float-right">Voltar</button>
     </a>
   </section>
 
-  <h2 class="mt-3"><?=TITLE?></h2>
+  <h3 class="mt-3"><?=TITLE?></h2>
 
   <form  id="upload" method="post" enctype="multipart/form-data">
     <input type="hidden" name="id_prof" value="<?=$obProjeto->id_prof ?>">
     <input type="hidden" name="tabela" value="projetos">
     <hr>
-    <h4>Dados Cadastrais</h4>
+    <div class="form-group">
+      <label><h5><?=$n = 1?>. Título da proposta</h5></label>
+      <input type="text" class="form-control" required name="titulo" value="<?=$obProjeto->titulo?>" >
+    </div>
     
     <div class="form-group">
-      <label>Coordenador</label>
+      <label><h5><?=++$n?>. Coordenador(a)</h5></label>
       <input type="text" class="form-control" name="coordNome" readonly value="<?=$obProjeto->nome_prof?>">
     </div>
 
-    <hr>
-    <h4>Título</h4>
-    <div class="form-group">
-      <label>Título</label>
-      <input type="text" class="form-control" required name="titulo" value="<?=$obProjeto->titulo?>" >
-    </div>
-
+    <label><h5><?=++$n?>. Contato do Coordenador</h5></label>
     <div class="row">
-      <div class="col-3">
-        <div class="form-group">
-          <label>Proposta</label>
-          <select name="tipo_exten" class="form-control">
-            <?= $propOptions ?>
-          </select>
-        </div>
+      <div class="form-group col">
+        <label><h6><?=$n?>.1 Telefone</h6></label>
+          <input type="text" class="form-control" name="tel" readonly value="<?=$userprof->tel?>">
       </div>
       
-      <div class="col-1.5">
-        <div class="form-group">
-          <label>TIDE</label>
+      <div class="form-group col">
+        <label><h6><?=$n?>.2 Email</h6></label>
+          <input type="text" class="form-control" name="email" readonly value="<?=$userprof->email?>">
+      </div>
+      
+    </div>
+    
+<?php
+if (in_array($t, $anexoII)) {
+?>
+  
+    <div class="form-group">
+        <label><h5><?=++$n?>. A proposta está vinculada a alguma disciplina do curso de Graduação ou Pós-Graduação (ACEC II)</h5></label>
           <select name="tide" class="form-control">
             <option value="s" <?= ($obProjeto->tide=='s')? 'selected': ' ' ?> >Sim</option> 
             <option value="n" <?= ($obProjeto->tide=='n')? 'selected': ' ' ?> >Não</option>
           </select>
         </div>
-      </div>
+ <?php
+}
+ ?>
 
-      
-
-
+    <div class="col-1.5">
+        <div class="form-group">
+        <label><h5><?=++$n?>. TIDE</h5></label>
+          <select name="tide" class="form-control">
+            <option value="s" <?= ($obProjeto->tide=='s')? 'selected': ' ' ?> >Sim</option> 
+            <option value="n" <?= ($obProjeto->tide=='n')? 'selected': ' ' ?> >Não</option>
+          </select>
+        </div>
     </div>
 <hr>
-<h4> Período de Realização e Carga Horária</h4>
+<label><h5><?=++$n?>. Período de Realização e Carga Horária</h5></label>
     <div class="row">
           <div class="col-3">
         <div class="form-group">
@@ -150,7 +163,7 @@
     <div class="row">
       <div class="col">
         <div class="form-group">
-          <label for="resumo">Resumo do Projeto</label>
+        <label><h5><?=++$n?>. Resumo do Projeto</h5></label>
           <textarea class="form-control" name="resumo" rows="10" 
           placeholder="Descrever o resumo da ação de extensão (no máximo 250 palavras), destacando sua relevância na perspectiva acadêmica e social, o público a que se destina e o resultado esperado. Este texto poderá ser publicado na homepage da PROEC, portanto, recomenda-se revisá-lo corretamente."
           ><?=$obProjeto->resumo?></textarea>
@@ -164,7 +177,7 @@
     <div class="row">
       <div class="col">
         <div class="form-group">
-          <label for="descricao">Problema e Justificativa</label>
+          <label><h5><?=++$n?>. Problema e Justificativa</h5></label>
           <textarea class="form-control" name="descricao" rows="10" 
           placeholder="(Identificar o problema e justificaro projeto). 20 linhas máximo"
           ><?=$obProjeto->descricao?></textarea>
@@ -176,7 +189,7 @@
     <div class="row">
       <div class="col">
         <div class="form-group">
-          <label for="objetivos">Objetivo Geral e Objetivos Específicos</label>
+          <label><h5><?=++$n?>. Objetivo Geral e Objetivos Específicos</h5></label>
           <textarea class="form-control" name="objetivos" rows="10" 
           placeholder="(O Objetivo Geral é a ação macro que se quer alcançar. E os Objetivos Específicos são as ações fracionadas, para se alcançar o Objetivo Geral). 10 linhas máximo."
           ><?=$obProjeto->objetivos?></textarea>
@@ -187,7 +200,8 @@
     <div class="row">
       <div class="col">
         <div class="form-group">
-          <label for="public_alvo">Publico Alvo</label>
+
+          <label for="public_alvo"><h5><?=++$n?>. Publico alvo</h5></label>
           <textarea class="form-control" name="public_alvo" rows="10" 
           placeholder="(Mencionar de forma sucinta os beneficiários e a(s) região(ões) de abrangência do projeto). 5 linhas máximo."
           ><?=$obProjeto->public_alvo?></textarea>
@@ -198,7 +212,7 @@
     <div class="row">
       <div class="col">
         <div class="form-group">
-          <label for="metodologia">Metodologia para Execução do Projeto</label>
+          <label for="metodologia"><h5><?=++$n?>. Metodologia para Execução do Projeto</h5></label>
           <textarea class="form-control" name="metodologia" rows="10" 
           placeholder="(Explicar os procedimentos necessários para a execução do projeto destacando o método, ou seja, a explicação do delineamento do estudo, amostra, procedimentos para a coleta de dados, bem como, o plano para a análise de dados). 20 linhas máximo."
           ><?=$obProjeto->metodologia?></textarea>
@@ -209,7 +223,7 @@
     <div class="row">
       <div class="col">
         <div class="form-group">
-          <label for="prodserv_espe">Produtos/Serviços Esperados</label>
+          <label for="prodserv_espe"><h5><?=++$n?>. Produtos/Serviços Esperados</h5></label>
           <textarea class="form-control" name="prodserv_espe" rows="10" 
           placeholder="(Relacionar neste tópico os produtos, equipamentos, bens, serviços, patentes e/ou registros resultantes deste projeto). 10 linhas máximo"
           ><?=$obProjeto->prodserv_espe?></textarea>
@@ -221,7 +235,7 @@
     <div class="row">
       <div class="col">
         <div class="form-group">
-          <label for="contribuicao">Contribuição Científica, Tecnológica e de Inovação</label>
+          <label for="contribuicao"><h5><?=++$n?>. Contribuição Científica, Tecnológica e de Inovação</h5></label>
           <textarea class="form-control" name="contribuicao" rows="10" 
           placeholder="(Identificar de que forma os resultados esperados do projeto contribuirão no cenário científico, tecnológicoe cultural  ). 10 linhas máximo"
           ><?=$obProjeto->contribuicao?></textarea>
@@ -233,7 +247,7 @@
     <div class="row">
       <div class="col">
         <div class="form-group">
-          <label for="contrap_nofinac">Contrapartida não Financeira da Instituição Proponente</label>
+          <label for="contrap_nofinac"><h5><?=++$n?>. Contrapartida não Financeira da Instituição Proponente</h5></label>
           <textarea class="form-control" name="contrap_nofinac" rows="10" 
           placeholder="(Descrever as ações não financeiras que serão suportadas no projeto pela Instituição Proponente) 10 linhas máximo"
           ><?=$obProjeto->contrap_nofinac?></textarea>

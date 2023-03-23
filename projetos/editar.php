@@ -34,6 +34,7 @@ $ver = $_GET['v'];
 $obProjeto = new Projeto();
 $obProjeto = Projeto::getProjeto($id, $ver);
 
+
 //VALIDAÇÃO DA TIPO
 if(!$obProjeto instanceof Projeto){
   header('location: ../index.php?status=error');
@@ -120,7 +121,30 @@ echo '</pre>';
 */
 
 
-define('TITLE','Editar informações do projeto');
+
+$t = $_GET['t'];
+
+switch($obProjeto->tipo_exten) {
+  case 1: 
+    define('TITLE','FORMULÁRIO PARA ELABORAÇÃO DE PROPOSTA DE CURSO');
+    break;
+  case 2:
+    define('TITLE','FORMULÁRIO PARA ELABORAÇÃO DE PROPOSTA DE EVENTO');
+    break;
+  case 3:
+    define('TITLE','FORMULÁRIO PARA ELABORAÇÃO DE PROPOSTAS DE PRESTAÇÃO DE SERVIÇO');
+    break;
+  case 4:
+    define('TITLE','FORMULÁRIO PARA ELABORAÇÃO DE PROPOSTAS DE PROGRAMA');
+    break;
+  case 5:
+    define('TITLE','FORMULÁRIO PARA ELABORAÇÃO DE PROPOSTAS DE PROJETO');
+    break;
+  default:
+    header('location: index.php?status=error');
+    exit;
+}
+
 
 //VALIDAÇÃO DO POST
 if(isset( $_POST['titulo']) ) {
