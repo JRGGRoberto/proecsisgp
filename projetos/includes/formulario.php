@@ -5,11 +5,6 @@ $anexoII  = [3, 4, 5];
 $anexoIII = [1, 2];
 $t = $obProjeto->tipo_exten;
 
-
-echo '<pre>';
-print_r($user);
-echo '</pre>';
-
 ?>
   <section>
     <a href="index.php">
@@ -44,42 +39,9 @@ echo '</pre>';
         <label><h6><?=$n?>.2. Email</h6></label>
           <input type="text" class="form-control" name="email" readonly value="<?=$user['email']?>">
       </div>
-      
     </div>
-    
-<?php
-if (in_array($t, $anexoII)) {
-?>
-  
-    <div class="form-group">
-        <label><h5><?=++$n?>. A proposta está vinculada a alguma disciplina do curso de Graduação ou Pós-Graduação (ACEC II)</h5></label>
-          <select name="tide" class="form-control">
-            <option value="s" <?= ($obProjeto->tide=='s')? 'selected': ' ' ?> >Sim</option> 
-            <option value="n" <?= ($obProjeto->tide=='n')? 'selected': ' ' ?> >Não</option>
-          </select>
-        </div>
- <?php
-}
- ?>
 
-
-<div class="form-group">
-  <label><h5><?=++$n?>. Vinculação à Programa de Extensão e Cultura</h5></label>
-  <div class="row">
-    <div class="col-3">
-      <label><h6>É vinculado?</h6></label>
-      <select name="tide" class="form-control">
-        <option value="s" <?= ($obProjeto->tide=='s')? 'selected': ' ' ?> >Vinculado</option> 
-        <option value="n" <?= ($obProjeto->tide=='n')? 'selected': ' ' ?> >Não vinculado</option>
-      </select>
-    </div>
-    <div class="col-9">
-      <label><h6>Título do Programa de vinculação</h6></label>
-      <input type="text" class="form-control" required name="titulo_progvinc" value="<?=$obProjeto->titulo?>" >
-    </div>
-</div>
 <hr>
-
 <div class="col-1.5">
     <div class="form-group">
     <label for="tide"><h5><?=++$n?>. TIDE</h5></label>
@@ -90,41 +52,39 @@ if (in_array($t, $anexoII)) {
     </div>
 </div>
 
-<hr>
-<label><h5><?=++$n?>. Período de Realização e Carga Horária</h5></label>
-    <div class="row">
-          <div class="col-3">
-        <div class="form-group">
-          <label>Início vigência</label>
-          <input type="date" name="vigen_ini" class="form-control" value="<?= substr ($obProjeto->vigen_ini,0, 10) ?>" required>
-        </div>
-      </div>
-
-      <div class="col-3">
-        <div class="form-group">
-          <label>Fim vigência</label>
-          <input type="date" name="vigen_fim" class="form-control" value="<?= substr ($obProjeto->vigen_fim,0, 10) ?>" required>
-        </div>
-      </div>
-     
-
-      <div class="col">
-        <div class="form-group">
-          <label>Carga semanal (h)</label>
-          <input type="number"  min=0 max=44 class="form-control" name="ch_semanal" value="<?=$obProjeto->ch_semanal?>">
-        </div>
-      </div>
-
-      <div class="col">
-        <div class="form-group">
-          <label>Carga total (h)</label>
-          <input type="number"  min=0 max=1000 class="form-control" name="ch_total" value="<?= $obProjeto->ch_total ?>">
-        </div>
-      </div>
-
+    
+<div class="form-group">
+  <label><h5><?=++$n?>. Vinculação à Programa de Extensão e Cultura</h5></label>
+  <div class="row">
+    <div class="col-3">
+      <label><h6>É vinculado?</h6></label>
+      <select name="vinc_prog_ec" id="vinc_prog_ec" class="form-control" onchange="showTitProg();">
+        <option value="s" <?= ($obProjeto->tide=='s')? 'selected': ' ' ?> >Vinculado</option> 
+        <option value="n" <?= ($obProjeto->tide=='n')? 'selected': ' ' ?> >Não vinculado</option>
+      </select>
+    </div>
+    <div class="col-9" id="titProgDIV" >
+      <label><h6>Título do Programa de vinculação</h6></label>
+      <input type="text" class="form-control"  name="titulo_progvinc" id="titulo_progvinc" value="<?=$obProjeto->titulo?>" >
     </div>
 
-    <hr>
+<script type="text/javascript">
+  const titProgDIV     = document.getElementById('titProgDIV');
+  const Tex_Prog_vinc  = document.getElementById('titulo_progvinc');
+  const opcao          = document.getElementById('vinc_prog_ec');
+     
+  function showTitProg() {
+    
+    if(opcao.value == 's'){
+      titProgDIV.hidden = false;
+    } else {
+      Tex_Prog_vinc.value = '';
+      titProgDIV.hidden = true;          
+    }
+  }
+</script>    
+</div>
+
 <?php
 if (in_array($t, $anexoII)) {
 ?>
@@ -186,9 +146,70 @@ if (in_array($t, $anexoII)) {
 <?php
 }
 ?>
+
+
+
+
+<hr>
+<label><h5><?=++$n?>. Período de Realização e Carga Horária</h5></label>
+    <div class="row">
+          <div class="col-3">
+        <div class="form-group">
+          <label>Início vigência</label>
+          <input type="date" name="vigen_ini" class="form-control" value="<?= substr ($obProjeto->vigen_ini,0, 10) ?>" required>
+        </div>
+      </div>
+
+      <div class="col-3">
+        <div class="form-group">
+          <label>Fim vigência</label>
+          <input type="date" name="vigen_fim" class="form-control" value="<?= substr ($obProjeto->vigen_fim,0, 10) ?>" required>
+        </div>
+      </div>
+     
+<?php
+  if (in_array($t, $anexoII)) {
+?>
+      <div class="col">
+        <div class="form-group">
+          <label>Carga semanal (h)</label>
+          <input type="number"  min=0 max=44 class="form-control" name="ch_semanal" value="<?=$obProjeto->ch_semanal?>">
+        </div>
+      </div>
+
+<?php
+  }
+  
+  if (in_array($t, $anexoIII)) {
+?>
+
+      <div class="col">
+        <div class="form-group">
+          <label>Carga total (h)</label>
+          <input type="number"  min=0 max=1000 class="form-control" name="ch_total" value="<?= $obProjeto->ch_total ?>">
+        </div>
+      </div>
+<?php
+  }
+
+  if (in_array($t, $anexoII)) {
+  ?>
+    
+      <div class="form-group">
+          <label><h5><?=++$n?>. A proposta está vinculada a alguma disciplina do curso de Graduação ou Pós-Graduação (ACEC II)</h5></label>
+            <select name="tide" class="form-control">
+              <option value="s" <?= ($obProjeto->tide=='s')? 'selected': ' ' ?> >Sim</option> 
+              <option value="n" <?= ($obProjeto->tide=='n')? 'selected': ' ' ?> >Não</option>
+            </select>
+          </div>
+   <?php
+  }
+   ?>
+    </div>
+
+    <hr>
     <hr>
     <h4>Dados Técnicos</h4>
-
 
     <div class="row">
       <div class="col">

@@ -38,14 +38,12 @@ switch($t) {
 use \App\Entity\Projeto;
 
 $obProjeto = new Projeto;
-$obProjeto->id_prof      =  $user['id'];
-$obProjeto->nome_prof    = $user['nome'];
+$obProjeto->id_prof    = $user['id'];
+$obProjeto->nome_prof  = $user['nome'];
 $obProjeto->tipo_exten = $t;
 
-
 // Quando a ação for para remover anexo
-if (isset($_POST['acao']) == 'removeAnexo')
-{
+if (isset($_POST['acao']) == 'removeAnexo'){
     // Recuperando nome do arquivo
     $arquivo = $_POST['arquivo'];
     // Caminho dos uploads
