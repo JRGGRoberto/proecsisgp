@@ -301,6 +301,7 @@
             <div class="dropdown-divider"></div>
             <a class="dropdown-item btn-sm" href="../projetos/cadastrar.php?t=1">Novo Curso</a>
             <a class="dropdown-item btn-sm" href="../projetos/cadastrar.php?t=2">Novo Evento</a>
+            <!-- branch div_proj -->
           </div>
         </div>
 
