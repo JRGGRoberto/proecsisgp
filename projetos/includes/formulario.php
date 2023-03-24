@@ -40,19 +40,22 @@ $t = $obProjeto->tipo_exten;
           <input type="text" class="form-control" name="email" readonly value="<?=$user['email']?>">
       </div>
     </div>
-
-<hr>
-<div class="col-1.5">
-    <div class="form-group">
-    <label for="tide"><h5><?=++$n?>. TIDE</h5></label>
-      <select name="tide" class="form-control">
-        <option value="s" <?= ($obProjeto->tide=='s')? 'selected': ' ' ?> >Sim</option> 
-        <option value="n" <?= ($obProjeto->tide=='n')? 'selected': ' ' ?> >Não</option>
-      </select>
-    </div>
-</div>
-
+<?php
+    if (in_array($t, $anexoII)) {
+?>
     
+      <div class="form-group">
+          <label><h5><?=++$n?>. A proposta está vinculada a alguma disciplina do curso de Graduação ou Pós-Graduação (ACEC II)</h5></label>
+            <select name="tide" class="form-control">
+              <option value="s" <?= ($obProjeto->tide=='s')? 'selected': ' ' ?> >Sim</option> 
+              <option value="n" <?= ($obProjeto->tide=='n')? 'selected': ' ' ?> >Não</option>
+            </select>
+          </div>
+ <?php
+  }
+?>
+
+
 <div class="form-group">
   <label><h5><?=++$n?>. Vinculação à Programa de Extensão e Cultura</h5></label>
   <div class="row">
@@ -146,10 +149,6 @@ if (in_array($t, $anexoII)) {
 <?php
 }
 ?>
-
-
-
-
 <hr>
 <label><h5><?=++$n?>. Período de Realização e Carga Horária</h5></label>
     <div class="row">
@@ -179,7 +178,9 @@ if (in_array($t, $anexoII)) {
 
 <?php
   }
-  
+?>
+
+<?php
   if (in_array($t, $anexoIII)) {
 ?>
 
@@ -191,21 +192,26 @@ if (in_array($t, $anexoII)) {
       </div>
 <?php
   }
-
-  if (in_array($t, $anexoII)) {
   ?>
-    
-      <div class="form-group">
-          <label><h5><?=++$n?>. A proposta está vinculada a alguma disciplina do curso de Graduação ou Pós-Graduação (ACEC II)</h5></label>
-            <select name="tide" class="form-control">
-              <option value="s" <?= ($obProjeto->tide=='s')? 'selected': ' ' ?> >Sim</option> 
-              <option value="n" <?= ($obProjeto->tide=='n')? 'selected': ' ' ?> >Não</option>
-            </select>
-          </div>
-   <?php
-  }
-   ?>
     </div>
+
+
+<hr>
+<div class="col-1.5">
+    <div class="form-group">
+    <label for="tide"><h5><?=++$n?>. TIDE</h5></label>
+      <select name="tide" class="form-control">
+        <option value="s" <?= ($obProjeto->tide=='s')? 'selected': ' ' ?> >Sim</option> 
+        <option value="n" <?= ($obProjeto->tide=='n')? 'selected': ' ' ?> >Não</option>
+      </select>
+    </div>
+</div>
+
+    
+
+
+
+
 
     <hr>
     <hr>
