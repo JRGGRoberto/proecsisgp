@@ -4,10 +4,6 @@ require '../vendor/autoload.php';
 
 use \App\Session\Login;
 
-
-// use \App\Entity\Professor;
-
-
 //Obriga o usuário a estar logado
 Login::requireLogin();
 $user = Login::getUsuarioLogado();
@@ -92,6 +88,8 @@ foreach($area_ext as $aext){
   $area_ext_Opt .= '<option value="'.$aext->id.'" '.$aext->sel.'>'.$aext->nome.'</option>';
 }
 
+use \App\Entity\Professor;
+$dadosProf = Professor::getDadosProf($obProjeto->id_prof);
 /*
 $qry = 'select ccc.co_id as id, ccc.colegiado as nome  from ca_ce_co ccc where ccc.ca_id  = "'. $user[ca_id] .'"';
 use \App\Entity\Diversos;

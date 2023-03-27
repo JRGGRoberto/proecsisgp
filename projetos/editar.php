@@ -71,6 +71,9 @@ foreach($area_ext as $aext){
 }
 
 
+use \App\Entity\Professor;
+$dadosProf = Professor::getDadosProf($obProjeto->id_prof);
+
 // $x = Login::getUsuarioLogado();
 
 /*
@@ -108,8 +111,6 @@ foreach($anexados as $att){
 $anex .= '</ul>';
 */
 
-
-use \App\Entity\Professor;
 
 /*CONSULTA AO PROFESSOR
 $obProfessor = Professor::getProfessor($obProjeto->id_prof);

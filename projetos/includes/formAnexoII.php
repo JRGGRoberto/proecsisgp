@@ -2,9 +2,7 @@
 
 <?php
 $anexoII  = [3, 4, 5]; // Programa / Projeto / Serviço
-$anexoIII = [1, 2];    // Curso / Evento
 $t = $obProjeto->tipo_exten;
-
 ?>
   <section>
     <a href="index.php">
@@ -40,21 +38,15 @@ $t = $obProjeto->tipo_exten;
           <input type="text" class="form-control" name="email" readonly value="<?=$dadosProf->email?>">
       </div>
     </div>
-<?php
-    if (in_array($t, $anexoII)) {
-?>
-    
+   
       <div class="form-group">
-          <label><h5><?=++$n?>. A proposta está vinculada a alguma disciplina do curso de Graduação ou Pós-Graduação (ACEC II)</h5></label>
-            <select name="tide" class="form-control">
-              <option value="s" <?= ($obProjeto->tide=='s')? 'selected': ' ' ?> >Sim</option> 
-              <option value="n" <?= ($obProjeto->tide=='n')? 'selected': ' ' ?> >Não</option>
-            </select>
-          </div>
- <?php
-  }
-?>
-
+        <label><h5><?=++$n?>. A proposta está vinculada a alguma disciplina do curso de Graduação ou Pós-Graduação (ACEC II)</h5></label>
+          <select name="vinculo" class="form-control">
+            <option value="s" <?= ($obProjeto->vinculo=='s')? 'selected': ' ' ?> >Sim</option> 
+            <option value="n" <?= ($obProjeto->vinculo=='n')? 'selected': ' ' ?> >Não</option>
+          </select>
+      </div>
+<hr>
 
 <div class="form-group">
   <label><h5><?=++$n?>. Vinculação à Programa de Extensão e Cultura</h5></label>
@@ -87,17 +79,17 @@ $t = $obProjeto->tipo_exten;
   }
 </script>    
 </div>
+
 <hr>
-<?php
-if (in_array($t, $anexoII)) {
-?>
+
     <label><h5><?=++$n?>. Classificação do Projeto ou Programa</h5></label>
+    <label><?=$n?>.1. Área de Conhecimento CNPQ (Ver classificaçõa do CNPQ)</label>
 
     <div class="row">
 
       <div class="col">
         <div class="form-group">
-          <label for="area_cnpq">Área de Conhecimento CNPQ</label>
+          <label for="area_cnpq">Grande Área</label>
           <select name="area_cnpq" class="form-control">
             <?=$selectAreaCNPQ?>
           </select>
@@ -106,7 +98,7 @@ if (in_array($t, $anexoII)) {
 
       <div class="col">
         <div class="form-group">
-          <label for="area_tema1">Área Temática</label>
+          <label for="area_tema1">Área</label>
           <select name="area_tema1" class="form-control">
             <?=$areaOptions?>
           </select>
@@ -115,7 +107,7 @@ if (in_array($t, $anexoII)) {
 
       <div class="col">
         <div class="form-group">
-          <label for="area_tema2">Área Temática Secundária</label>
+          <label for="area_tema2">Subária</label>
           <select name="area_tema2" class="form-control">
           <?=$areaOptions2?>
           </select>
@@ -125,6 +117,7 @@ if (in_array($t, $anexoII)) {
 
     </div>
 
+    <label><?=$n?>.2. Plano Nacional de Extensão Universitária (ver <a href="https://proec.unespar.edu.br/menu-extensao/orientacoes" target="_blank">https://proec.unespar.edu.br/menu-extensao/orientacoes</a> </label>
     <div class="row">
 
       <div class="col">
@@ -146,13 +139,11 @@ if (in_array($t, $anexoII)) {
         </div>
       </div>
     </div>
-<?php
-}
-?>
+
 <hr>
-<label><h5><?=++$n?>. Período de Realização e Carga Horária</h5></label>
+<label><h5><?=++$n?>. Período de vigência</h5></label>
     <div class="row">
-          <div class="col-3">
+      <div class="col-3">
         <div class="form-group">
           <label>Início vigência</label>
           <input type="date" name="vigen_ini" class="form-control" value="<?= substr ($obProjeto->vigen_ini,0, 10) ?>" required>
@@ -165,40 +156,18 @@ if (in_array($t, $anexoII)) {
           <input type="date" name="vigen_fim" class="form-control" value="<?= substr ($obProjeto->vigen_fim,0, 10) ?>" required>
         </div>
       </div>
-     
-<?php
-  if (in_array($t, $anexoII)) {
-?>
+    </div> 
+
+    <div class="row">
       <div class="col">
         <div class="form-group">
-          <label>Carga semanal (h)</label>
+          <label>Carga semanal*:</label>
           <input type="number"  min=0 max=44 class="form-control" name="ch_semanal" value="<?=$obProjeto->ch_semanal?>">
+          *Indicar a CH a ser computada no PAD, cf. regulamento próprio de distribuição de carga horária da Unespar.
         </div>
       </div>
-
-<?php
-  }
-?>
-
-<?php
-  if (in_array($t, $anexoIII)) {
-?>
 
       <div class="col">
-        <div class="form-group">
-          <label>Carga total (h)</label>
-          <input type="number"  min=0 max=1000 class="form-control" name="ch_total" value="<?= $obProjeto->ch_total ?>">
-        </div>
-      </div>
-
-      
-
-
-<?php
-  }  
-  if (in_array($t, $anexoII)) {
-?>
-    <div class="col">
         <div class="form-group">
           <label for="tide">TIDE</label>
           <select name="tide" class="form-control">
@@ -207,16 +176,7 @@ if (in_array($t, $anexoII)) {
           </select>
         </div>
       </div>
-
-
-<?php
-  }
-?>
     </div>
-
-
-
-    
 
 <hr>
 
@@ -231,13 +191,8 @@ if (in_array($t, $anexoII)) {
         </div>
       </div>
     </div>
-  
-
-
-----------------------------------------
-
-
-    <hr>
+    <hr>  
+--------------------------------
     <hr>
     <h4>Dados Técnicos</h4>
 
@@ -266,7 +221,6 @@ if (in_array($t, $anexoII)) {
       </div>
     </div>
 
-
     <div class="row">
       <div class="col">
         <div class="form-group">
@@ -277,7 +231,6 @@ if (in_array($t, $anexoII)) {
         </div>
       </div>
     </div>
-
     
     <div class="row">
       <div class="col">
@@ -301,7 +254,6 @@ if (in_array($t, $anexoII)) {
       </div>
     </div>
 
-
     <div class="row">
       <div class="col">
         <div class="form-group">
@@ -313,7 +265,6 @@ if (in_array($t, $anexoII)) {
       </div>
     </div>
 
-
     <div class="row">
       <div class="col">
         <div class="form-group">
@@ -324,7 +275,6 @@ if (in_array($t, $anexoII)) {
         </div>
       </div>
     </div>
-
 
     <div class="row">
       <div class="col">
@@ -357,10 +307,7 @@ if (in_array($t, $anexoII)) {
           </select>
         </div>
       </div>
-
    -->   
-
-    
 
     <hr>
     <h4>Informações complementares</h4>
@@ -389,13 +336,7 @@ if (in_array($t, $anexoII)) {
       </div>
     </div>
 
-
     <hr>
-
-    
-
-    
-
     <div class="row">
 
       <div class="col-3">
@@ -405,9 +346,7 @@ if (in_array($t, $anexoII)) {
         </div>
       </div>
     </div>
-    
 <!--
-
     <div class="form-group">
       <h4>Anexos</h4>
       <ul id="anexos"></ul>
@@ -415,11 +354,9 @@ if (in_array($t, $anexoII)) {
       <?=$anex?>
     </div>
 -->
-    
     <div class="form-group">
       <input type="submit" name="enviar" class="btn btn-success" value="Salvar">
     </div>
-
 
     <div class="row">
       <div class="col">
@@ -440,9 +377,7 @@ if(TITLE == 'Cadastrar projeto'){
         </script>    
           ";
 }
-
 ?>
-
 
 </main>
 

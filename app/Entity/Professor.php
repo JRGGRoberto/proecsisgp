@@ -110,6 +110,20 @@ class Professor {
 
 
   /**
+   * Método responsável por obter as professores do banco de dados
+   * @param  string $where
+   * @param  string $order
+   * @param  string $limit
+   * @return array
+   */
+  public static function getDadosProf($id){
+    $where = ' id = "'.$id.'" ';
+    return (new Database('professores'))->select($where)
+                                     ->fetchObject(self::class);
+  }
+
+
+  /**
    * Método responsável por obter a quantidade de registros
    * @param  integer $id
    * @return integer
