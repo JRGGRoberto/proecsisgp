@@ -86,13 +86,19 @@ foreach($coolSe as $co){
 }
 
 */
-
+/*
 use \App\Entity\Tipo_exten;
 $proposta = Tipo_exten::getRegistros($obProjeto->id);
 $propOptions = '';
 foreach($proposta as $prop){
   $propOptions .= '<option value="'.$prop->id.'" '.$prop->sel.'>'.$prop->nome.'</option>';
 }
+*/
+use \App\Entity\Tipo_exten;
+$proposta = Tipo_exten::getRegistro($obProjeto->id);
+
+
+
 
 use \App\Entity\Arquivo;
 /*

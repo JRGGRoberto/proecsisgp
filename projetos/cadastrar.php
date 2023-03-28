@@ -60,12 +60,17 @@ foreach($areas_cnpq1 as $ar_cnpq){
   $selectAreaCNPQ .= '<option value="'.$ar_cnpq->id.'" '.$ar_cnpq->sel.'>'.$ar_cnpq->nome.'</option>';
 }
 
+/*
 use \App\Entity\Tipo_exten;
-$proposta = Tipo_exten::getRegistros();
+$proposta = Tipo_exten::getRegistros($obProjeto->id);
 $propOptions = '';
 foreach($proposta as $prop){
   $propOptions .= '<option value="'.$prop->id.'" '.$prop->sel.'>'.$prop->nome.'</option>';
 }
+*/
+use \App\Entity\Tipo_exten;
+$proposta = Tipo_exten::getRegistro($obProjeto->id);
+
 
 use \App\Entity\Area_temat;
 $area_tem1 = Area_temat::getRegistros();

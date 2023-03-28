@@ -117,7 +117,7 @@ $t = $obProjeto->tipo_exten;
 
     </div>
 
-    <label><?=$n?>.2. Plano Nacional de Extensão Universitária (ver <a href="https://proec.unespar.edu.br/menu-extensao/orientacoes" target="_blank">https://proec.unespar.edu.br/menu-extensao/orientacoes</a> </label>
+    <label><?=$n?>.2. Plano Nacional de Extensão Universitária (ver <a href="https://proec.unespar.edu.br/menu-extensao/orientacoes" target="_blank">https://proec.unespar.edu.br/menu-extensao/orientacoes)</a> </label>
     <div class="row">
 
       <div class="col">
@@ -180,20 +180,29 @@ $t = $obProjeto->tipo_exten;
 
 <hr>
 
-<div class="row">
-      <div class="col">
+<label><h5><?=++$n?>. Dimensão</h5></label>
+    <div class="row">
+      <div class="col-3">
         <div class="form-group">
+          <label>Publico Alvo</label>
+          <input type="text" name="public_alvo" class="form-control" value="<?= $obProjeto->public_alvo ?>" >
+        </div>
+      </div>
 
-          <label for="public_alvo"><h5><?=++$n?>. Publico alvo</h5></label>
-          <textarea class="form-control" name="public_alvo" rows="10" 
-          placeholder="(Mencionar de forma sucinta os beneficiários e a(s) região(ões) de abrangência do projeto). 5 linhas máximo."
-          ><?=$obProjeto->public_alvo?></textarea>
+      <div class="col-3">
+        <div class="form-group">
+          <label>Abrangência (região e/ou municípios)</label>
+          <input type="text" name="abrangencia" class="form-control" value="<?= $obProjeto->abrangencia ?>" >
         </div>
       </div>
     </div>
-    <hr>  
---------------------------------
-    <hr>
+ <hr>
+ ---------------------
+
+
+
+
+
     <h4>Dados Técnicos</h4>
 
     <div class="row">
@@ -208,6 +217,8 @@ $t = $obProjeto->tipo_exten;
     </div>
 
     <hr>
+
+
     <h4>Descrição do Projeto</h4>
 
     <div class="row">
