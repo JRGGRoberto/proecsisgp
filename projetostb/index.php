@@ -1,10 +1,9 @@
 <?php
 
+require '../vendor/autoload.php';
 
-    require __DIR__.'/vendor/autoload.php';
-
-    use \App\Entity\Projetostb;
-    use \App\Db\Pagination;
+use \App\Entity\Projetostb;
+use \App\Db\Pagination;
 
 //Filtros
 $coord  = filter_input(INPUT_GET, 'coord', FILTER_SANITIZE_STRING);
@@ -34,7 +33,9 @@ $obPagination = new Pagination($qntd, $_GET['pagina']?? 1, 10);
 
 $prjs = Projetostb::getList($where, null, $obPagination->getLimite());
 
-include __DIR__.'/includes/header.php';
+
+include './includes/header.php';
+
 ?>
 <section>
 
@@ -91,4 +92,4 @@ include __DIR__.'/includes/header.php';
 </section>
 
 <?php
-include __DIR__.'/includes/footer.php';
+include './includes/footer.php';

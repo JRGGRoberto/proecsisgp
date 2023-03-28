@@ -21,6 +21,7 @@ $t = $obProjeto->tipo_exten;
       <input type="text" class="form-control" required name="titulo" value="<?=$obProjeto->titulo?>" >
     </div>
     
+
     <div class="form-group">
       <label><h5><?=++$n?>. Coordenador(a)</h5></label>
       <input type="text" class="form-control" name="coordNome" readonly value="<?=$obProjeto->nome_prof?>">

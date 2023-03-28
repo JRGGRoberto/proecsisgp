@@ -99,7 +99,6 @@ $proposta = Tipo_exten::getRegistro($obProjeto->id);
 
 
 
-
 use \App\Entity\Arquivo;
 /*
 use \App\Entity\Arquivo;
