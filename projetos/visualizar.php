@@ -1,7 +1,7 @@
 <?php
 require '../vendor/autoload.php';
 
-use \App\Session\Login;
+// use \App\Session\Login;
 use \App\Entity\Projeto;
 //Login::requireLogin();
 //$user = Login::getUsuarioLogado();
