@@ -12,16 +12,33 @@
         break;
     }
   }
-  
+  /**
+   * Antigo :
+   *  <a href="./doc/'.$prj->arq_projeto.'.pdf" target="_blank">📄</a>
+   * 
+   * Novo:
+   * <a href=" " target="_blank">📄</a>
+   * 
+   */
+
+
   $resultados = '';
   foreach($prjs as $prj){
     $a;
     if ($prj->arq_relatorio){
-      $a = '<a href="./doc/'.$prj->arq_relatorio.'.pdf" target="_blank"><img src="./imgs/relat.png" alt="Relatório"></a>';
+      $a = '<a href="../../projetos/doc/'.$prj->arq_relatorio.'.pdf" target="_blank">📄</a>';
     } else {
       $a = '';
     }
-    
+
+    $linkProj;
+    if($prj->versao == 'n'){
+      $linkProj = '<a href="'.$prj->arq_projeto.'" target="_blank">📄</a>';
+    } elseif ($prj->versao == 'o'){
+      $linkProj = '<a href="../../projetos/doc/'.$prj->arq_projeto.'.pdf" target="_blank">📄</a>';
+    } else {
+      $linkProj = '';
+    }
 
 
     $resultados .= '<tr>
@@ -29,7 +46,7 @@
                       <td>'.$prj->campus.'</td>
                       <td>'.$prj->ano.'</td>
                       <td>'.$prj->titulo.'</td>
-                      <td class="text-center"><a href="./doc/'.$prj->arq_projeto.'.pdf" target="_blank"><img src="./imgs/relat.png" alt="Projeto"></a>
+                      <td class="text-center">'.$linkProj.'</td>
                       <td class="text-center">'.$a.'</td>
                       
 

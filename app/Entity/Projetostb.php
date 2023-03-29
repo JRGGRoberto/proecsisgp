@@ -14,6 +14,12 @@ class Projetostb{
   public $id;
 
   /**
+   * versão
+   * @var int
+   */
+  public $versao;
+  
+  /**
    * coordenador
    * @var string
    */
