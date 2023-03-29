@@ -17,7 +17,7 @@
     <div class="shadow-sm p-3 mb-5 bg-body rounded">
 
     <div class="shadow-sm p-3 mb-5 bg-body rounded">
-      <a href="./index.php"><img src="./imgs/logo_unespar.png" width="50" height="53"></a>
+      <a href="./index.php"><img src="../imgs/logo_unespar.png" width="50" height="53"></a>
       PROEC - Universidade Estadual do Paraná
     </div>
 

@@ -10,6 +10,7 @@ $user = Login::getUsuarioLogado();
 
 $t = $_GET['t'];
 
+
 switch($t) {
   case 1: 
     define('TITLE','FORMULÁRIO PARA ELABORAÇÃO DE PROPOSTA DE CURSO');
@@ -179,7 +180,7 @@ $anex = '';
 
 include '../includes/header.php';
 
-include __DIR__.'/includes/formulario.php';
+//include __DIR__.'/includes/formulario.php';
 
 include '../includes/footer.php';
 

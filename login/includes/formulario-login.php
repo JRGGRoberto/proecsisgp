@@ -40,6 +40,11 @@
         </div>
 
       </form>
+
+      <br>
+      
+      <a href="../projetostb/" class="btn btn-success" id="projEfet">📑 Propostas efetivadas</a>
+      <label for="projEfet">Acessar projetos que já passaram por todos os crivos estabelecidos</label>
     
 
     </div>

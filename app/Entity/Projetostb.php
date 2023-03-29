@@ -84,7 +84,7 @@ class Projetostb{
    * @return Projetostb
    */
   public static function get($id){
-    return (new Database('projetostb'))->select('id = '.$id)
+    return (new Database('projetostb'))->select('id = "'.$id.'"')
                                   ->fetchObject(self::class);
   }
 
