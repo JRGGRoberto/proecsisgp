@@ -41,7 +41,7 @@ class Tipo_exten{
    * @return Proposta
    */
   public static function getRegistro($id){
-    return (new Database('tipo_exten'))->select('id = '.$id)
+    return (new Database('tipo_exten'))->select('id = "'.$id.'"')
                                   ->fetchObject(self::class);
   }
 

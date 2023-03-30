@@ -473,7 +473,6 @@
     `;
     $('#modalSub').modal('show');
   }
-  $i
 
   const getProjDados = async(id) => {
     const oper = id.substr(0,3);

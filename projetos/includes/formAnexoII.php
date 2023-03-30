@@ -1,9 +1,9 @@
 <main>
 
-<?php
-$anexoII  = [3, 4, 5]; // Programa / Projeto / Serviço
-$t = $obProjeto->tipo_exten;
-?>
+
+<!--//$anexoII  = [3, 4, 5]; // Programa / Projeto / Serviço -->
+
+
   <section>
     <a href="index.php">
       <button class="btn btn-success btn-sm float-right">Voltar</button>
@@ -192,35 +192,147 @@ $t = $obProjeto->tipo_exten;
 
       <div class="col-3">
         <div class="form-group">
-          <label>Abrangência (região e/ou municípios)</label>
-          <input type="text" name="abrangencia" class="form-control" value="<?= $obProjeto->abrangencia ?>" >
+        <label for="municipios_abr">Abrangência (região e/ou municípios)</label>
+          <input type="text" name="municipios_abr" class="form-control" value="<?= $obProjeto->municipios_abr ?>" >
         </div>
       </div>
     </div>
  <hr>
- ---------------------
 
+<label><h5><?=++$n?>. Previsão de Financiamento</h5></label>
+  <div class="row">
+    <div class="col-3">
+      <label><h6>Há/haverá financiamento?</h6></label>
+      <select name="financiamento" id="financiamento" class="form-control" onchange="showFinac();">
+        <option value="s" <?= ($obProjeto->tide=='n')? 'selected': ' ' ?> >Sem Financiamento</option> 
+        <option value="n" <?= ($obProjeto->tide=='s')? 'selected': ' ' ?> >Com Financiamento</option>
+      </select>
+    </div>
+    <div class="col-9" id="orgaoFinac" >
+      <label><h6>Órgão de Financiamento</h6></label>
+      <input type="text" class="form-control" id="orgao_finacInput" name="orgao_finac" value="<?=$obProjeto->orgao_finac?>" >
+    </div>
+    <div class="col-9" id="valorFinac" >
+      <label><h6>Valor do Financiamento</h6></label>
+      <input type="text" class="form-control" id="valor_finacInput" name="valor_finac" value="<?=$obProjeto->valor_finac?>" >
+    </div>
 
+<script type="text/javascript">
+  const diva1     = document.getElementById('orgaoFinac');
+  const diva2     = document.getElementById('valorFinac');
+  const opcaoPar  = document.getElementById('financiamento');
+     
+  function showFinac() {
+    
+    if(opcaoF.value == 's'){
+      div1a.hidden = false;
+      div2a.hidden = false;
+    } else {
+      document.getElementById('orgao_finacInput').value = '';
+      document.getElementById('valor_finacInput').value = '';
+      diva1.hidden = true;
+      diva2.hidden = true;
+    }
+  }
+</script>    
+</div>
+<hr>
 
+<label><h5><?=++$n?>. Parcerias</h5></label>
+  <div class="row">
+    <div class="col-3">
+      <label><h6>Há/haverá parcerias?</h6></label>
+      <select name="parcerias" id="parcerias" class="form-control" onchange="showParcas();">
+        <option value="s" <?= ($obProjeto->parcerias=='s')? 'selected': ' ' ?> >Sim</option> 
+        <option value="n" <?= ($obProjeto->parcerias=='n')? 'selected': ' ' ?> >Não</option>
+      </select>
+    </div>
+    <div class="col-9" id="parcaEntidades" >
+      <label><h6>Nome(s) da(s) Entidade(s)</h6></label>
+      <input type="text" class="form-control" id="par_entidades" name="par_entidades" value="<?=$obProjeto->par_entidades?>" >
+    </div>
+    <div class="col-9" id="AtribuEnti" >
+      <label><h6>Atribuição(ões) da(s) Entidade(s)</h6></label>
+      <input type="text" class="form-control" id="par_atribu" name="par_atribu" value="<?=$obProjeto->par_atribu?>" >
+    </div>
 
+<script type="text/javascript">
+  const divb1     = document.getElementById('parcaEntidades');
+  const divb2     = document.getElementById('AtribuEnti');
+  const opcaoF   = document.getElementById('parcerias');
+     
+  function showParcas() {
+    
+    if(opcaoF.value == 's'){
+      divb1.hidden = false;
+      divb2.hidden = false;
+    } else {
+      document.getElementById('par_entidades').value = '';
+      document.getElementById('par_atribu').value = '';
+      divb1.hidden = true;
+      divb2.hidden = true;
+    }
+  }
+</script>    
+</div>
 
-    <h4>Dados Técnicos</h4>
+<hr>
+<h1>Equipe da prosposta</h1>
+    
+    <form>
+      <label for="nome">Nome</label>
+      <input type="text" id="nome">
+
+      <label for="instituicao">Instituição</label>
+      <input type="text" id="instituicao">
+
+      <label for="formacao">Formação</label>
+      <input type="text" id="formacao">
+
+      <label for="funcao">Função na equipe</label>
+      <input type="text" id="funcao">
+
+      <label for="telefone">Telefone</label>
+      <input type="text" id="telefone">
+      
+      <button type="button" onclick="adicionarContato()">Adicionar</button>
+    </form>
+    
+    <table id="tabela-equipe">
+      <thead>
+        <tr>
+          <th>ID</th>
+          <th>Nome</th>
+          <th>Instituição</th>
+          <th>Formação</th>
+          <th>Função na equipe</th>
+          <th>Telefone</th>
+          <th></th>
+        </tr>
+      </thead>
+      <tbody>
+      </tbody>
+    </table>
+
+<hr>
 
     <div class="row">
       <div class="col">
         <div class="form-group">
-        <label><h5><?=++$n?>. Resumo do Projeto</h5></label>
+          <label><h5><?=++$n?>. Resumo do Projeto</h5></label>
           <textarea class="form-control" name="resumo" rows="10" 
-          placeholder="Descrever o resumo da ação de extensão (no máximo 250 palavras), destacando sua relevância na perspectiva acadêmica e social, o público a que se destina e o resultado esperado. Este texto poderá ser publicado na homepage da PROEC, portanto, recomenda-se revisá-lo corretamente."
-          ><?=$obProjeto->resumo?></textarea>
+            placeholder="Descrever o resumo da ação de extensão (no máximo 250 palavras), destacando sua relevância na perspectiva acadêmica e social, o público a que se destina e o resultado esperado. Este texto poderá ser publicado na homepage da PROEC, portanto, recomenda-se revisá-lo corretamente."><?=$obProjeto->resumo?></textarea>
+        </div>
+      </div>
+      <div class="col">
+        <div class="form-group">
+          <label><h5>Palavras-chave: (até três)</h5></label>
+          <input type="text" class="form-control" id="par_atribu" name="par_atribu" value="<?=$obProjeto->par_atribu?>" >
         </div>
       </div>
     </div>
 
     <hr>
-
-
-    <h4>Descrição do Projeto</h4>
 
     <div class="row">
       <div class="col">
@@ -233,7 +345,7 @@ $t = $obProjeto->tipo_exten;
       </div>
     </div>
 
-    <div class="row">
+     <div class="row">
       <div class="col">
         <div class="form-group">
           <label><h5><?=++$n?>. Objetivo Geral e Objetivos Específicos</h5></label>
@@ -258,17 +370,6 @@ $t = $obProjeto->tipo_exten;
     <div class="row">
       <div class="col">
         <div class="form-group">
-          <label for="prodserv_espe"><h5><?=++$n?>. Produtos/Serviços Esperados</h5></label>
-          <textarea class="form-control" name="prodserv_espe" rows="10" 
-          placeholder="(Relacionar neste tópico os produtos, equipamentos, bens, serviços, patentes e/ou registros resultantes deste projeto). 10 linhas máximo"
-          ><?=$obProjeto->prodserv_espe?></textarea>
-        </div>
-      </div>
-    </div>
-
-    <div class="row">
-      <div class="col">
-        <div class="form-group">
           <label for="contribuicao"><h5><?=++$n?>. Contribuição Científica, Tecnológica e de Inovação</h5></label>
           <textarea class="form-control" name="contribuicao" rows="10" 
           placeholder="(Identificar de que forma os resultados esperados do projeto contribuirão no cenário científico, tecnológicoe cultural  ). 10 linhas máximo"
@@ -280,7 +381,7 @@ $t = $obProjeto->tipo_exten;
     <div class="row">
       <div class="col">
         <div class="form-group">
-          <label for="contrap_nofinac"><h5><?=++$n?>. Contrapartida não Financeira da Instituição Proponente</h5></label>
+          <label for="contrap_nofinac"><h5><?=++$n?>. Contribuição científica, tecnológica e de Inovação</h5></label>
           <textarea class="form-control" name="contrap_nofinac" rows="10" 
           placeholder="(Descrever as ações não financeiras que serão suportadas no projeto pela Instituição Proponente) 10 linhas máximo"
           ><?=$obProjeto->contrap_nofinac?></textarea>
@@ -288,38 +389,6 @@ $t = $obProjeto->tipo_exten;
       </div>
     </div>
 
-    <div class="row">
-      <div class="col">
-        <div class="form-group">
-          <label for="municipios_abr">Listar os Municípios Abrangidos pelo Projeto</label>
-          <textarea class="form-control" name="municipios_abr" rows="10" 
-          placeholder=""
-          ><?=$obProjeto->municipios_abr?></textarea>
-        </div>
-      </div>
-    </div>
-
-   <!-- 
-    <div class="form-group">
-      <label for="area1">Listar os municípios abrangidos pelo projeto</label>
-      <select id="municipio" name="id_munic[]" class="form-control js-example-basic-multiple" rows="3" multiple 
-      title="Digite o nome do(s) município(s)">
-          < ?=$selMunAten ?>
-      </select>
-    </div>
--->
-
-<!-- 
-    <div class="col-2">
-        <div class="form-group">
-          <label>Aux. Finac</label>
-          <select name="aux_financ" class="form-control">
-            <option value="s" < ?= ($obProjeto->aux_financ=='s')? 'selected': ' ' ?> >Sim</option> 
-            <option value="n" < ?= ($obProjeto->aux_financ=='n')? 'selected': ' ' ?> >Não</option>
-          </select>
-        </div>
-      </div>
-   -->   
 
     <hr>
     <h4>Informações complementares</h4>
