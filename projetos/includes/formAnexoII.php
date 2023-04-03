@@ -23,6 +23,7 @@
         <input type="text" class="form-control" required name="titulo" value="<?= $obProjeto->titulo ?>">
       </div>
 
+      <hr>
 
       <div class="form-group">
         <label>
@@ -30,6 +31,8 @@
         </label>
         <input type="text" class="form-control" name="coordNome" readonly value="<?= $obProjeto->nome_prof ?>">
       </div>
+
+      <hr>
 
       <label>
         <h5><?= ++$n ?>. Contato do Coordenador</h5>
@@ -50,11 +53,13 @@
         </div>
       </div>
 
+        <hr>
+
       <div class="form-group">
         <label>
           <h5><?= ++$n ?>. A proposta está vinculada a alguma disciplina do curso de Graduação ou Pós-Graduação (ACEC II)</h5>
         </label>
-        <select name="vinculo" class="form-control">
+        <select name="vinculo" class="form-control col-1">
           <option value="s" <?= ($obProjeto->vinculo == 's') ? 'selected' : ' ' ?>>Sim</option>
           <option value="n" <?= ($obProjeto->vinculo == 'n') ? 'selected' : ' ' ?>>Não</option>
         </select>
@@ -66,16 +71,16 @@
           <h5><?= ++$n ?>. Vinculação à Programa de Extensão e Cultura</h5>
         </label>
         <div class="row">
-          <div class="col-3">
+          <div class="col-2">
             <label>
               <h6>É vinculado?</h6>
             </label>
-            <select name="vinc_prog_ec" id="vinc_prog_ec" class="form-control" onchange="showTitProg();">
-              <option value="s" <?= ($obProjeto->tide == 's') ? 'selected' : ' ' ?>>Vinculado</option>
-              <option value="n" <?= ($obProjeto->tide == 'n') ? 'selected' : ' ' ?>>Não vinculado</option>
+            <select name="vinc_prog_ec" id="vinc_prog_ec" class="form-control col-8" onchange="showTitProg();">
+              <option value="s" <?= ($obProjeto->tide == 's') ? 'selected' : ' ' ?>>Sim</option>
+              <option value="n" <?= ($obProjeto->tide == 'n') ? 'selected' : ' ' ?>>Não</option>
             </select>
           </div>
-          <div class="col-9" id="titProgDIV">
+          <div class="col-10" id="titProgDIV">
             <label>
               <h6>Título do Programa de vinculação</h6>
             </label>
@@ -179,18 +184,16 @@
               <input type="date" name="vigen_fim" class="form-control" value="<?= substr($obProjeto->vigen_fim, 0, 10) ?>" required>
             </div>
           </div>
-        </div>
-
-        <div class="row">
-          <div class="col">
+ 
+          <div class="col-3">
             <div class="form-group">
               <label>Carga semanal*:</label>
               <input type="number" min=0 max=44 class="form-control" name="ch_semanal" value="<?= $obProjeto->ch_semanal ?>">
-              *Indicar a CH a ser computada no PAD, cf. regulamento próprio de distribuição de carga horária da Unespar.
+              
             </div>
           </div>
 
-          <div class="col">
+          <div class="col-3">
             <div class="form-group">
               <label for="tide">TIDE</label>
               <select name="tide" class="form-control">
@@ -199,6 +202,7 @@
               </select>
             </div>
           </div>
+          <span class="badge badge-light">* Indicar a CH a ser computada no PAD, cf. regulamento próprio de distribuição de carga horária da Unespar.</span>
         </div>
 
         <hr>
@@ -206,43 +210,39 @@
         <label>
           <h5><?= ++$n ?>. Dimensão</h5>
         </label>
-        <div class="row">
-          <div class="col-3">
+       
             <div class="form-group">
               <label>Publico Alvo</label>
               <input type="text" name="public_alvo" class="form-control" value="<?= $obProjeto->public_alvo ?>">
             </div>
-          </div>
-
-          <div class="col-3">
+       
             <div class="form-group">
               <label for="municipios_abr">Abrangência (região e/ou municípios)</label>
               <input type="text" name="municipios_abr" class="form-control" value="<?= $obProjeto->municipios_abr ?>">
             </div>
-          </div>
-        </div>
+       
         <hr>
 
         <label>
           <h5><?= ++$n ?>. Previsão de Financiamento</h5>
         </label>
         <div class="row">
-          <div class="col-3">
+          <div class="col-2">
             <label>
-              <h6>Há/haverá financiamento?</h6>
+              <h6>Financiamento?</h6>
             </label>
             <select name="financiamento" id="financiamento" class="form-control" onchange="showFinac();">
-              <option value="s" <?= ($obProjeto->tide == 'n') ? 'selected' : ' ' ?>>Sem Financiamento</option>
-              <option value="n" <?= ($obProjeto->tide == 's') ? 'selected' : ' ' ?>>Com Financiamento</option>
+              <option value="s" <?= ($obProjeto->tide == 's') ? 'selected' : ' ' ?>>Sim</option>
+              <option value="n" <?= ($obProjeto->tide == 'n') ? 'selected' : ' ' ?>>Não</option>
             </select>
           </div>
-          <div class="col-9" id="orgaoFinac">
+          <div class="col-5" id="orgaoFinac">
             <label>
               <h6>Órgão de Financiamento</h6>
             </label>
             <input type="text" class="form-control" id="orgao_finacInput" name="orgao_finac" value="<?= $obProjeto->orgao_finac ?>">
           </div>
-          <div class="col-9" id="valorFinac">
+          <div class="col-5" id="valorFinac">
             <label>
               <h6>Valor do Financiamento</h6>
             </label>
@@ -250,20 +250,20 @@
           </div>
 
           <script type="text/javascript">
-            const diva1 = document.getElementById('orgaoFinac');
-            const diva2 = document.getElementById('valorFinac');
-            const opcaoPar = document.getElementById('financiamento');
+            const divFinac1 = document.getElementById('orgaoFinac');
+            const divFinac2 = document.getElementById('valorFinac');
+            const opcaoF = document.getElementById('financiamento');
 
             function showFinac() {
 
               if (opcaoF.value == 's') {
-                div1a.hidden = false;
-                div2a.hidden = false;
+                divFinac1.hidden = false;
+                divFinac2.hidden = false;
               } else {
                 document.getElementById('orgao_finacInput').value = '';
                 document.getElementById('valor_finacInput').value = '';
-                diva1.hidden = true;
-                diva2.hidden = true;
+                divFinac1.hidden = true;
+                divFinac2.hidden = true;
               }
             }
           </script>
@@ -295,20 +295,20 @@
           </div>
 
           <script type="text/javascript">
-            const divb1 = document.getElementById('parcaEntidades');
-            const divb2 = document.getElementById('AtribuEnti');
-            const opcaoF = document.getElementById('parcerias');
+            const divParcas1 = document.getElementById('parcaEntidades');
+            const divParcas2 = document.getElementById('AtribuEnti');
+            const opcaoParcas = document.getElementById('parcerias');
 
             function showParcas() {
 
-              if (opcaoF.value == 's') {
-                divb1.hidden = false;
-                divb2.hidden = false;
+              if (opcaoParcas.value == 's') {
+                divParcas1.hidden = false;
+                divParcas2.hidden = false;
               } else {
                 document.getElementById('par_entidades').value = '';
                 document.getElementById('par_atribu').value = '';
-                divb1.hidden = true;
-                divb2.hidden = true;
+                divParcas1.hidden = true;
+                divParcas2.hidden = true;
               }
             }
           </script>
@@ -320,7 +320,7 @@
         </label>
         <div class="form-group table-responsive-sm">
           <table id="tabela-equipe" class="table table-bordered table-sm">
-            <thead>
+            <thead class="thead-light">
               <tr>
                 <th>ID</th>
                 <th>Nome</th>
@@ -328,7 +328,7 @@
                 <th>Formação</th>
                 <th>Função na equipe</th>
                 <th>Telefone</th>
-                <th><button type="button" class="btn btn-primary btn-sm" data-toggle="modal" data-target="#myModal">Adicionar</button></th>
+                <th style="width:20px"><button type="button" class="btn btn-primary btn-sm" data-toggle="modal" data-target="#myModal">Adicionar</button></th>
               </tr>
             </thead>
             <tbody>
@@ -339,24 +339,19 @@
 
         <hr>
 
-        <div class="row">
-          <div class="col">
+        
             <div class="form-group">
-              <label>
-                <h5><?= ++$n ?>. Resumo do Projeto</h5>
-              </label>
-              <textarea class="form-control" name="resumo" rows="10" placeholder="Descrever o resumo da ação de extensão (no máximo 250 palavras), destacando sua relevância na perspectiva acadêmica e social, o público a que se destina e o resultado esperado. Este texto poderá ser publicado na homepage da PROEC, portanto, recomenda-se revisá-lo corretamente."><?= $obProjeto->resumo ?></textarea>
+              <label><h5><?= ++$n ?>. Resumo do Projeto e Palavras-chaves</h5></label>
+              <div class="form-group">
+                <label for="resumo">Palavras-chave: (até três)</label>
+                <textarea class="form-control" name="resumo" rows="10" placeholder="Descrever o resumo da ação de extensão (no máximo 250 palavras), destacando sua relevância na perspectiva acadêmica e social, o público a que se destina e o resultado esperado. Este texto poderá ser publicado na homepage da PROEC, portanto, recomenda-se revisá-lo corretamente."><?= $obProjeto->resumo ?></textarea>
+<br>
+                <label for="palavras">Resumo do Projeto</label>
+                <input type="text" class="form-control" id="palavras" name="palavras" value="<?= $obProjeto->palavras ?>">
+                <div class="form-group">
             </div>
-          </div>
-          <div class="col">
-            <div class="form-group">
-              <label>
-                <h5>Palavras-chave: (até três)</h5>
-              </label>
-              <input type="text" class="form-control" id="par_atribu" name="par_atribu" value="<?= $obProjeto->par_atribu ?>">
-            </div>
-          </div>
-        </div>
+          
+            
 
         <hr>
 
@@ -565,7 +560,7 @@
               celFormacao.innerHTML = novoContato.formacao;
               celFuncao.innerHTML = novoContato.funcao;
               celTelefone.innerHTML = novoContato.telefone;
-              celDelete.innerHTML = '<button type="button" class="btn btn-danger btn-sm" onclick="excluirContato(' + novoContato.id + ')">⛔</button>';
+              celDelete.innerHTML = '<center><button type="button" class="btn btn-danger btn-sm" onclick="excluirContato(' + novoContato.id + ')">⛔</button></center>';
 
               // Limpar os inputs
               document.getElementById("nome").value = "";
