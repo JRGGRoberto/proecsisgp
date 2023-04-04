@@ -5,8 +5,9 @@ var ce = document.querySelector("#ce");
 var co = document.querySelector("#co");
 */
 
+
 const pegarCA = async() => {
-  const data = await fetch(`https://${location.host}/sis/api/ca.php`)
+  const data = await fetch(`../api/ca.php`)
     .then(resp => resp.json()).catch(error => false)
 
   if(!data) return;
@@ -32,7 +33,7 @@ const inserirCA = (data) => {
 
 const pegarCE = async (id) => {
 
-  const data = await fetch(`https://${location.host}/sis/api/ce.php?ca=${id}`)
+  const data = await fetch(`../api/ce.php?ca=${id}`)
      .then(resp => resp.json()).catch(error => false)
 
    if(!data) return;
@@ -53,7 +54,7 @@ const inserirCE = (data) => {
 
 const pegarCO = async (id) => {
 
-  const data = await fetch(`https://${location.host}/sis/api/co.php?ce=${id}`)
+  const data = await fetch(`../api/co.php?ce=${id}`)
      .then(resp => resp.json()).catch(error => false)
 
    if(!data) return;

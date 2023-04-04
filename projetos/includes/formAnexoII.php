@@ -322,7 +322,7 @@
           <table id="tabela-equipe" class="table table-bordered table-sm">
             <thead class="thead-light">
               <tr>
-                <th>ID</th>
+                <th>N</th>
                 <th>Nome</th>
                 <th>Instituição</th>
                 <th>Formação</th>
@@ -455,18 +455,7 @@
 
 
     </form>
-    <?php
-
-    if (TITLE == 'Cadastrar projeto') {
-      echo "
-        <script>
-            document.getElementById('dateAssing').valueAsDate = new Date();
-        </script>    
-          ";
-    }
-    ?>
-
-
+    
   <!-- The Modal -->
   <div class="modal fade" id="modalEquipe">
     <div class="modal-dialog">
@@ -501,37 +490,14 @@
     </div>
   </div>
 <!-- The Modal Fim-->
+<?=$scriptVars?>
 
+</main>
 
 <script>
 
 // Array para armazenar os equipe
-let equipe = [
-  {
-    "id": 1,
-    "nome": "a",
-    "instituicao": "a",
-    "formacao": "a",
-    "funcao": "a",
-    "telefone": "a"
-  },
-  {
-    "id": 2,
-    "nome": "b",
-    "instituicao": "b",
-    "formacao": "b",
-    "funcao": "b",
-    "telefone": "b"
-  },
-  {
-    "id": 3,
-    "nome": "c",
-    "instituicao": "c",
-    "formacao": "c",
-    "funcao": "c",
-    "telefone": "c"
-  }
-];
+//let equipe = [ ];   // informação vem do 'cadastrar.php' ou do 'editar.php'
 
 
 function deleteAllRows(){
@@ -681,6 +647,4 @@ function excluirContato(id) {
 
 carregarDados();
 
-        </script>
-
-</main>
+</script>

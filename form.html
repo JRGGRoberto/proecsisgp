@@ -12,16 +12,17 @@
 <body>
 
 <div class="container mt-3">
+  <h1>Equipe</h1>
   <div class="form-group table-responsive-sm">
     <table id="tabela-equipe" class="table table-bordered table-sm">
       <thead class="thead-light">
         <tr>
-          <th>ID</th>
-          <th>Nome</th>
-          <th>Instituição</th>
-          <th>Formação</th>
-          <th>Função na equipe</th>
-          <th>Telefone</th>
+          <th><div><div><button type="button" class="btn btn-light btn-sm" onclick="excluirContato(1)"></button></div><div><button type="button" class="btn btn-light btn-sm" onclick="excluirContato(1)"></button></div></div> ID</th>
+          <th><button type="button" class="btn btn-light btn-sm" onclick="excluirContato(1)"><small>▲▼</small></button> Nome</th>
+          <th><button type="button" class="btn btn-light btn-sm" onclick="excluirContato(1)">▲▼</button> Instituição</th>
+          <th> Formação</th>
+          <th><small>▲▼</small> Função na equipe</th>
+          <th><small>▲▼</small> Telefone</th>
           <th style="width:20px"><button type="button" class="btn btn-primary btn-sm" onclick="formAddEquipe()">Adicionar</button></th>
         </tr>
       </thead>
@@ -64,7 +65,7 @@
       </div>
     </div>
   </div>
-<!-- The Modal Fim-->
+  <!-- The Modal Fim-->
   
 </div>
  
@@ -107,6 +108,29 @@
      equipe.forEach(e => insereTable(e) );
   }
   
+  function ordernarByNome(campo, az=true ){
+    switch(campo) {
+      case 'id':
+        az ? equipe.sort((a, b) => a.id > b.id) : equipe.sort((a, b) => a.id < b.id);
+        break;
+      case 'nome':
+        az ? equipe.sort((a, b) => a.nome > b.nome) : equipe.sort((a, b) => a.nome < b.nome);
+        break;
+      case 'instituicao':
+        az ? equipe.sort((a, b) => a.instituicao > b.instituicao) : equipe.sort((a, b) => a.instituicao < b.instituicao);
+        break;
+      case 'formacao':
+        az ? equipe.sort((a, b) => a.formacao > b.formacao) : equipe.sort((a, b) => a.formacao < b.formacao);
+        break;
+      case 'telefone':
+        az ? equipe.sort((a, b) => a.telefone > b.telefone) : equipe.sort((a, b) => a.telefone < b.telefone);
+        break;
+    }
+
+    deleteAllRows();
+    carregarDados();
+  }
+
   function clearModalEquipe(){
     document.getElementById("nome").value = "";
     document.getElementById("instituicao").value = "";

@@ -126,8 +126,11 @@ print_r($obProfessor);
 echo '</pre>';
 */
 
+$t = $obProjeto->tipo_exten;
+$anexoIII  = [1, 2];
+$anexoII   = [3, 4, 5];
 
-switch($obProjeto->tipo_exten) {
+switch($t) {
   case 1: 
     define('TITLE','FORMULÁRIO PARA ELABORAÇÃO DE PROPOSTA DE CURSO');
     break;
@@ -185,7 +188,7 @@ if(isset( $_POST['titulo']) ) {
   $obProjeto->last_result = 'n';
   
   $obProjeto->atualizar();
-/*  $arqs = $_POST['anexos'];
+  /*  $arqs = $_POST['anexos'];
 
   foreach($arqs as $arq){
     $dados = Arquivo::getArquivo($arq);
@@ -194,13 +197,16 @@ if(isset( $_POST['titulo']) ) {
     $dados->user = $obProjeto->user;
     $dados->atualizar();
   }
-*/
+  */
   header('location: ./index.php?status=success');
   exit;
-  
-  
 }
 
+$scriptVars  = 
+"<script>
+  document.getElementById('dateAssing').valueAsDate = new Date();
+  let equipe = []; 
+</script>";
 
 include '../includes/header.php';
 
@@ -220,8 +226,15 @@ if ($user['id'] == $obProjeto->id_prof){
     </div>';
   
   } else {
-   // include __DIR__.'/includes/formulario.php';
-     include __DIR__.'/includes/formAnexoII.php';
+   
+    if(in_array($t, $anexoII)){
+      include __DIR__.'/includes/formAnexoII.php';
+    } elseif (in_array($t, $anexoIII)){
+      include __DIR__.'/includes/formAnexoIII.php';
+    } else {
+      header('location: index.php?status=error');
+      exit;
+    }
   }
 } else {
 
@@ -229,8 +242,6 @@ if ($user['id'] == $obProjeto->id_prof){
           <hr>
           <div class="container p-3 my-3 bg-danger text-white rounded p-5">
             <h1><span class="badge badge-light"> 🚧 </span> Atenção! </h1>
-  
-            
             <hr>
             <p><span class="badge badge-light"> 🚨 </span> Operação não permitida.</p>
           </div>

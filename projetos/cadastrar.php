@@ -8,6 +8,9 @@ use \App\Session\Login;
 Login::requireLogin();
 $user = Login::getUsuarioLogado();
 
+$anexoIII  = [1, 2];
+$anexoII   = [3, 4, 5];
+
 $t = $_GET['t'];
 
 
@@ -96,16 +99,6 @@ foreach($area_ext as $aext){
 
 use \App\Entity\Professor;
 $dadosProf = Professor::getDadosProf($obProjeto->id_prof);
-/*
-$qry = 'select ccc.co_id as id, ccc.colegiado as nome  from ca_ce_co ccc where ccc.ca_id  = "'. $user[ca_id] .'"';
-use \App\Entity\Diversos;
-$sendColegiado = Diversos::qry($qry);
-$coolSelectSend = '';
-foreach($sendColegiado as $co){
-  $coolSelectSend .= '<option value="'.$co->id.'">'.$co->nome.'</option>';
-}
-
-*/
 
 
 use  \App\Entity\Arquivo;
@@ -180,7 +173,22 @@ $anex = '';
 
 include '../includes/header.php';
 
-//include __DIR__.'/includes/formulario.php';
+$scriptVars  = 
+"<script>
+  document.getElementById('dateAssing').valueAsDate = new Date();
+  let equipe = []; 
+</script>";
+
+if(in_array($t, $anexoII)){
+  include __DIR__.'/includes/formAnexoII.php';
+} elseif (in_array($t, $anexoIII)){
+  include __DIR__.'/includes/formAnexoIII.php';
+} else {
+  header('location: index.php?status=error');
+  exit;
+}
+
+
 
 include '../includes/footer.php';
 
