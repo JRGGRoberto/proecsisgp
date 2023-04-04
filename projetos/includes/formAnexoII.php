@@ -328,7 +328,7 @@
                 <th>Formação</th>
                 <th>Função na equipe</th>
                 <th>Telefone</th>
-                <th style="width:20px"><button type="button" class="btn btn-primary btn-sm" data-toggle="modal" data-target="#myModal">Adicionar</button></th>
+                <th style="width:20px"><button type="button" class="btn btn-primary btn-sm" onclick="formAddEquipe()">Adicionar</button></th>
               </tr>
             </thead>
             <tbody>
@@ -343,10 +343,10 @@
             <div class="form-group">
               <label><h5><?= ++$n ?>. Resumo do Projeto e Palavras-chaves</h5></label>
               <div class="form-group">
-                <label for="resumo">Palavras-chave: (até três)</label>
+                <label for="resumo">Resumo do Projeto</label>
                 <textarea class="form-control" name="resumo" rows="10" placeholder="Descrever o resumo da ação de extensão (no máximo 250 palavras), destacando sua relevância na perspectiva acadêmica e social, o público a que se destina e o resultado esperado. Este texto poderá ser publicado na homepage da PROEC, portanto, recomenda-se revisá-lo corretamente."><?= $obProjeto->resumo ?></textarea>
 <br>
-                <label for="palavras">Resumo do Projeto</label>
+                <label for="palavras">Palavras-chave: (até três)</label>
                 <input type="text" class="form-control" id="palavras" name="palavras" value="<?= $obProjeto->palavras ?>">
                 <div class="form-group">
             </div>
@@ -358,10 +358,10 @@
         <div class="row">
           <div class="col">
             <div class="form-group">
-              <label>
+              <label for="justificativa">
                 <h5><?= ++$n ?>. Problema e Justificativa</h5>
               </label>
-              <textarea class="form-control" name="descricao" rows="10" placeholder="(Identificar o problema e justificaro projeto). 20 linhas máximo"><?= $obProjeto->descricao ?></textarea>
+              <textarea class="form-control" name="justificativa" rows="10" placeholder="(Identificar o problema e justificaro projeto). 20 linhas máximo"><?= $obProjeto->justificativa ?></textarea>
             </div>
           </div>
         </div>
@@ -381,7 +381,7 @@
           <div class="col">
             <div class="form-group">
               <label for="metodologia">
-                <h5><?= ++$n ?>. Metodologia para Execução do Projeto</h5>
+                <h5><?= ++$n ?>. Metodologia para Execução da Proposta</h5>
               </label>
               <textarea class="form-control" name="metodologia" rows="10" placeholder="(Explicar os procedimentos necessários para a execução do projeto destacando o método, ou seja, a explicação do delineamento do estudo, amostra, procedimentos para a coleta de dados, bem como, o plano para a análise de dados). 20 linhas máximo."><?= $obProjeto->metodologia ?></textarea>
             </div>
@@ -402,36 +402,23 @@
         <div class="row">
           <div class="col">
             <div class="form-group">
-              <label for="contrap_nofinac">
-                <h5><?= ++$n ?>. Contribuição científica, tecnológica e de Inovação</h5>
+              <label for="cronograma">
+                <h5><?= ++$n ?>. Cronorama da proposta</h5>
               </label>
-              <textarea class="form-control" name="contrap_nofinac" rows="10" placeholder="(Descrever as ações não financeiras que serão suportadas no projeto pela Instituição Proponente) 10 linhas máximo"><?= $obProjeto->contrap_nofinac ?></textarea>
+              <textarea class="form-control" name="cronograma" rows="10" placeholder="(considerar o período de vigência do projeto)"><?= $obProjeto->cronograma ?></textarea>
             </div>
           </div>
         </div>
 
 
         <hr>
-        <h4>Informações complementares</h4>
-        <div class="row">
-          <div class="col-3">
-            <div class="form-group">
-              <label>Número de certificados previstos</label>
-              <input type="number" min=0 max=200 class="form-control" default="0" name="n_cert_prev" value="<?= $obProjeto->n_cert_prev ? $obProjeto->n_cert_prev : 0 ?>">
-            </div>
-          </div>
-          <div class="col"><br><br>0 para que não tenha emissão de certificados.
-          </div>
-        </div>
-
-
-
-
         <div class="row">
           <div class="col">
             <div class="form-group">
-              <label for="outs_info">Outras informações que julgar importantes</label>
-              <textarea class="form-control" name="outs_info" rows="10" placeholder=""><?= $obProjeto->outs_info ?></textarea>
+              <label for="referencias">
+                <h5><?= ++$n ?>. Referências</h5>
+              </label>
+              <textarea class="form-control" name="referencias" rows="10" ><?= $obProjeto->referencias ?></textarea>
             </div>
           </div>
         </div>
@@ -481,35 +468,34 @@
 
 
   <!-- The Modal -->
-  <div class="modal fade" id="myModal">
+  <div class="modal fade" id="modalEquipe">
     <div class="modal-dialog">
       <div class="modal-content">
       
         <!-- Modal Header -->
         <div class="modal-header">
-          <h4 class="modal-title">Modal Heading</h4>
+          <h4 class="modal-title" id="titleMemb">Adicionar membros a equipe</h4>
           <button type="button" class="close" data-dismiss="modal">×</button>
         </div>
         
         <!-- Modal body -->
         <div class="modal-body">
             <form class="form-group">
-          
+      
               <label for="nome">Nome</label>                  <input type="text" class="form-control" id="nome">
               <label for="instituicao">Instituição</label>    <input type="text" class="form-control" id="instituicao">
               <label for="formacao">Formação</label>          <input type="text" class="form-control" id="formacao">
               <label for="funcao">Função na equipe</label>    <input type="text" class="form-control" id="funcao">
               <label for="telefone">Telefone</label>          <input type="text" class="form-control" id="telefone">
-              <BR>
-             <button type="button" class="btn btn-primary btn-sm" onclick="adicionarContato()">Adicionar</button>
-
+              <BR><center>
+              <button type="button" class="btn btn-secondary btn-sm" onclick="fecharModalEquipe()">Fechar</button>
+              <button type="button" id="addMemb" class="btn btn-primary btn-sm" onclick="adicionarContato()">Adicionar</button>
+              <button type="button" name="altMemb" class="btn btn-primary btn-sm" onclick="updatMembro(this)">Alterar</button></center>
+              
         </form>
         </div>
         
-        <!-- Modal footer -->
-        <div class="modal-footer">
-          <button type="button" class="btn btn-secundary" data-dismiss="modal">Fechar</button>
-        </div>
+
         
       </div>
     </div>
@@ -518,71 +504,183 @@
 
 
 <script>
-          // Array para armazenar os equipe
-          let equipe = [];
 
-          // Função para adicionar um contato na tabela
-          function adicionarContato() {
-            // Obter os valores dos inputs
-            let nome = document.getElementById("nome").value;
-            let instituicao = document.getElementById("instituicao").value;
-            let formacao = document.getElementById("formacao").value;
-            let funcao = document.getElementById("funcao").value;
-            let telefone = document.getElementById("telefone").value;
+// Array para armazenar os equipe
+let equipe = [
+  {
+    "id": 1,
+    "nome": "a",
+    "instituicao": "a",
+    "formacao": "a",
+    "funcao": "a",
+    "telefone": "a"
+  },
+  {
+    "id": 2,
+    "nome": "b",
+    "instituicao": "b",
+    "formacao": "b",
+    "funcao": "b",
+    "telefone": "b"
+  },
+  {
+    "id": 3,
+    "nome": "c",
+    "instituicao": "c",
+    "formacao": "c",
+    "funcao": "c",
+    "telefone": "c"
+  }
+];
 
-            if( nome.length > 0 ) {
-              // Criar um novo objeto de contato
-              let novoContato = {
-                id: equipe.length + 1,
-                nome: nome,
-                instituicao: instituicao,
-                formacao: formacao,
-                funcao: funcao,
-                telefone: telefone
-              };
+
+function deleteAllRows(){
+  $("#tabela-equipe tbody tr").remove(); 
+}
+
+function carregarDados(){
+   equipe.forEach(e => insereTable(e) );
+}
+
+function clearModalEquipe(){
+  document.getElementById("nome").value = "";
+  document.getElementById("instituicao").value = "";
+  document.getElementById("formacao").value = "";
+  document.getElementById("funcao").value = "";
+  document.getElementById("telefone").value = "";
+}
+
+function fecharModalEquipe(){            
+  $('#modalEquipe').modal('hide');
+}
+           
+// Função para editar contato da tabela
+function formEditarMembro(id){
+  $('#modalEquipe').modal('show');
   
-              // Adicionar o novo contato no array
-              equipe.push(novoContato);
+  let index = equipe.findIndex(e => e.id === id);
+  var myObj = equipe[index];
   
-              // Adicionar uma nova linha na tabela
-              let tabela = document.getElementById("tabela-equipe").getElementsByTagName("tbody")[0];
-              let novaLinha = tabela.insertRow();
-              let celId = novaLinha.insertCell(0);
-              let celNome = novaLinha.insertCell(1);
-              let celInstituicao = novaLinha.insertCell(2);
-              let celFormacao = novaLinha.insertCell(3);
-              let celFuncao = novaLinha.insertCell(4);
-              let celTelefone = novaLinha.insertCell(5);
-              let celDelete = novaLinha.insertCell(6);
-              celId.innerHTML = novoContato.id;
-              celNome.innerHTML = novoContato.nome;
-              celInstituicao.innerHTML = novoContato.instituicao;
-              celFormacao.innerHTML = novoContato.formacao;
-              celFuncao.innerHTML = novoContato.funcao;
-              celTelefone.innerHTML = novoContato.telefone;
-              celDelete.innerHTML = '<center><button type="button" class="btn btn-danger btn-sm" onclick="excluirContato(' + novoContato.id + ')">⛔</button></center>';
+  // Preenche os inputs
+  document.getElementById("nome").value        = myObj.nome;
+  document.getElementById("instituicao").value = myObj.instituicao;
+  document.getElementById("formacao").value    = myObj.formacao;
+  document.getElementById("funcao").value      = myObj.funcao;
+  document.getElementById("telefone").value    = myObj.telefone;
+          
+  document.getElementById("titleMemb").innerHTML = 'Editar dados';
+  document.getElementById("addMemb").hidden = true;
+  let altMemb = document.getElementsByName("altMemb")[0];
+  altMemb.hidden = false;
+  altMemb.setAttribute("id",  (myObj.id) );              
+};
 
-              // Limpar os inputs
-              document.getElementById("nome").value = "";
-              document.getElementById("instituicao").value = "";
-              document.getElementById("formacao").value = "";
-              document.getElementById("funcao").value = "";
-              document.getElementById("telefone").value = "";
-            }
-          }
+function formAddEquipe(){
+  $('#modalEquipe').modal('show');
+  document.getElementById("addMemb").hidden = false;
+  document.getElementsByName("altMemb")[0].hidden = true;
+  clearModalEquipe();
+  document.getElementById("titleMemb").innerHTML = 'Adicionar membro';
+}
 
-          // Função para excluir um contato da tabela
-          function excluirContato(id) {
-            // Encontrar o índice do contato no array
-            let index = equipe.findIndex(contato => contato.id === id);
+function updatMembro(ida) {
+  // Obter os valores dos inputs
+       
+  let idM = parseInt(ida.id);
+  let nome = document.getElementById("nome").value;
+  let instituicao = document.getElementById("instituicao").value;
+  let formacao = document.getElementById("formacao").value;
+  let funcao = document.getElementById("funcao").value;
+  let telefone = document.getElementById("telefone").value;
+   
+  
+  let dadosAtual = {
+    id: idM,
+    nome: nome,
+    instituicao: instituicao,
+    formacao: formacao,
+    funcao: funcao,
+    telefone: telefone
+  };
+              
+  idx = equipe.findIndex(e => e.id === idM);
 
-            // Remover o contato do array
-            equipe.splice(index, 1);
+  equipe[idx] = dadosAtual;
+   
+  deleteAllRows();
+  carregarDados();
+  clearModalEquipe();
+  fecharModalEquipe();
+}
 
-            // Remover a linha correspondente da tabela
-            let tabela = document.getElementById("tabela-equipe").getElementsByTagName("tbody")[0];
-            tabela.deleteRow(index);
-          }
+function insereTable(novoContato){
+  // Adicionar uma nova linha na tabela
+  let tabela = document.getElementById("tabela-equipe").getElementsByTagName("tbody")[0];
+  let novaLinha = tabela.insertRow();
+    let celId = novaLinha.insertCell(0);
+    let celNome = novaLinha.insertCell(1);
+    let celInstituicao = novaLinha.insertCell(2);
+    let celFormacao = novaLinha.insertCell(3);
+    let celFuncao = novaLinha.insertCell(4);
+    let celTelefone = novaLinha.insertCell(5);
+    let celDelete = novaLinha.insertCell(6);
+
+  celId.innerHTML = novoContato.id;
+  celNome.innerHTML = novoContato.nome;
+  celInstituicao.innerHTML = novoContato.instituicao;
+  celFormacao.innerHTML = novoContato.formacao;
+  celFuncao.innerHTML = novoContato.funcao;
+  celTelefone.innerHTML = novoContato.telefone;
+  celDelete.innerHTML = '<center><button type="button" class="btn btn-light btn-sm" onclick="excluirContato(' + novoContato.id + ')">⛔</button><button type="button" class="btn btn-light btn-sm" onclick="formEditarMembro(' + novoContato.id + ')">✏️</button></center></center>';
+}
+
+// Função para adicionar um contato na tabela
+function adicionarContato() {
+  // Obter os valores dos inputs
+  let nome = document.getElementById("nome").value;
+  let instituicao = document.getElementById("instituicao").value;
+  let formacao = document.getElementById("formacao").value;
+  let funcao = document.getElementById("funcao").value;
+  let telefone = document.getElementById("telefone").value;
+    
+  if( nome.length > 0 ) {
+    // Criar um novo objeto de contato
+    let novoContato = {
+      id: equipe.length + 1,
+      nome: nome,
+      instituicao: instituicao,
+      formacao: formacao,
+      funcao: funcao,
+      telefone: telefone
+    };
+        
+    // Adicionar o novo contato no array
+    equipe.push(novoContato);
+       
+    //Call preenche <Table>
+    insereTable(novoContato);
+            
+    // Limpar os inputs
+    clearModalEquipe();
+    fecharModalEquipe();
+  }
+}
+
+// Função para excluir um contato da tabela
+function excluirContato(id) {
+  // Encontrar o índice do contato no array
+  let index = equipe.findIndex(contato => contato.id === id);
+       
+  // Remover o contato do array
+  equipe.splice(index, 1);
+     
+  // Remover a linha correspondente da tabela
+  let tabela = document.getElementById("tabela-equipe").getElementsByTagName("tbody")[0];
+  tabela.deleteRow(index);
+}
+
+carregarDados();
+
         </script>
 
 </main>
