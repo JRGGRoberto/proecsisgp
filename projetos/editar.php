@@ -1,8 +1,9 @@
 <?php
-require '../vendor/autoload.php';
 
 use \App\Session\Login;
 use \App\Entity\Projeto;
+
+use \App\Entity\Equipe;
 
 Login::requireLogin();
 $user = Login::getUsuarioLogado();
@@ -202,11 +203,14 @@ if(isset( $_POST['titulo']) ) {
   exit;
 }
 
+$equipe = Equipe::getMembProj($obProjeto->id);
+
 $scriptVars  = 
-"<script>
-  document.getElementById('dateAssing').valueAsDate = new Date();
-  let equipe = []; 
-</script>";
+'<script>
+    let equipe = '. json_encode($equipe, JSON_NUMERIC_CHECK) . '
+</script>';
+// echo json_encode($equipe);
+
 
 include '../includes/header.php';
 
