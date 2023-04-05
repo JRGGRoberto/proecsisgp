@@ -153,7 +153,7 @@ img.remover {
       <div class="btn-group btn-group-sm float-right">   
       <div class="btn-group btn-group-sm">
         <button type="button" class="btn btn-primary dropdown-toggle" data-toggle="dropdown">
-        Meus projetos
+        Propostas
         </button>
         <div class="dropdown-menu">
           <a class="dropdown-item btn-sm" href="../projetos/cadastrar.php?t=4">Novo Programa</a>
@@ -164,6 +164,8 @@ img.remover {
           <a class="dropdown-item btn-sm" href="../projetos/cadastrar.php?t=2">Novo Evento</a>
           <div class="dropdown-divider"></div>
           <a class="dropdown-item btn-sm" href="../projetos">Listar minhas propostas</a>
+          <div class="dropdown-divider"></div>
+          <a class="dropdown-item btn-sm" href="../projetostb">Listar todos os projetos aprovados</a>
         </div>
       </div>
 
