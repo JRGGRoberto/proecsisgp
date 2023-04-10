@@ -10,7 +10,8 @@
     </a>
   </section>
 
-  <h3 class="mt-3"><?= TITLE ?></h2>
+  <h3 class="mt-3"><?= TITLE ?></h3>
+  <h2><s>remover depois formAnexoIII</s></h2>
 
     <form id="upload" method="post" enctype="multipart/form-data">
       <input type="hidden" name="id_prof" value="<?= $obProjeto->id_prof ?>">
@@ -462,7 +463,7 @@
       <div class="modal-content">
       
         <!-- Modal Header -->
-        <div class="modal-header">
+        <div class="modal-header" style="background-color: #3385ff; color: white">
           <h4 class="modal-title" id="titleMemb">Adicionar membros a equipe</h4>
           <button type="button" class="close" data-dismiss="modal">×</button>
         </div>

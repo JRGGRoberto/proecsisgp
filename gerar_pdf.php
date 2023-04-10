@@ -30,7 +30,7 @@ $dompdf->loadHtml($dados);
 
 // Configurar o tamanho e a orientacao do papel
 // landscape - Imprimir no formato paisagem
-//$dompdf->setPaper('A4', 'landscape');
+// $dompdf->setPaper('A4', 'landscape');
 // portrait - Imprimir no formato retrato
 $dompdf->setPaper('A4', 'portrait');
 
