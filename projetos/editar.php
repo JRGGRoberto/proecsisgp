@@ -194,7 +194,7 @@ if(isset( $_POST['titulo']) ) {
   foreach($arqs as $arq){
     $dados = Arquivo::getArquivo($arq);
     $dados->tabela = $_POST['tabela'];
-    $dados->id_tab = $obProjeto->id;
+    $dados->id_tab = $obProjeto->id; 
     $dados->user = $obProjeto->user;
     $dados->atualizar();
   }
