@@ -41,6 +41,11 @@ class Projeto{
   public $para_avaliar;
   public $last_result;
   public $edt;
+
+  public $acec;
+  public $vinculo;
+  public $tituloprogvinc;
+
   public $created_at;
   public $updated_at;
   public $user;
@@ -92,6 +97,11 @@ class Projeto{
                            'n_cert_prev' => $this->n_cert_prev,
                            'data' => $this->data,
                            'edt' => $edt,
+
+                           'acec' => $this->acec,
+                           'vinculo' => $this->vinculo,
+                           'tituloprogvinc' => $this->tituloprogvinc,
+
                            'outs_info' => $this->outs_info,
                            'para_avaliar' => $aval,
                            'last_result' => $lr,
@@ -140,6 +150,12 @@ class Projeto{
                                        'n_cert_prev' => $this->n_cert_prev,
                                        'data' => $this->data,
                                        'edt' => $this->edt,
+
+                                       'acec' => $this->acec,
+                                       'vinculo' => $this->vinculo,
+                                       'tituloprogvinc' => $this->tituloprogvinc,
+
+
                                        'outs_info' => $this->outs_info,
                                        'para_avaliar' => $this->para_avaliar,
                                        'last_result' => $this->last_result,

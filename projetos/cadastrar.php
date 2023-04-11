@@ -145,6 +145,12 @@ if(isset($_POST['titulo'])){
   $obProjeto->n_cert_prev     =  $_POST['n_cert_prev'];
   $obProjeto->data            =  $_POST['data'];
   $obProjeto->outs_info       =  $_POST['outs_info'];
+
+  $obProjeto->acec            =  $_POST['acec'];
+  $obProjeto->vinculo         =  $_POST['vinculo'];
+  $obProjeto->tituloprogvinc  =  $_POST['tituloprogvinc'];
+
+
   // sempre que cadastrar "para avaliar" ficará com o valor de -1.
   $obProjeto->para_avaliar    =  -1;
  // 'created_at' => $this->created_at,

@@ -60,9 +60,9 @@
         <label>
           <h5><?= ++$n ?>. A proposta está vinculada a alguma disciplina do curso de Graduação ou Pós-Graduação (ACEC II)</h5>
         </label>
-        <select name="vinculo" class="form-control col-1">
-          <option value="s" <?= ($obProjeto->vinculo == 's') ? 'selected' : ' ' ?>>Sim</option>
-          <option value="n" <?= ($obProjeto->vinculo == 'n') ? 'selected' : ' ' ?>>Não</option>
+        <select name="acec" class="form-control col-1">
+          <option value="s" <?= ($obProjeto->acec == 's') ? 'selected' : ' ' ?>>Sim</option>
+          <option value="n" <?= ($obProjeto->acec == 'n') ? 'selected' : ' ' ?>>Não</option>
         </select>
       </div>
       <hr>
@@ -76,22 +76,22 @@
             <label>
               <h6>É vinculado?</h6>
             </label>
-            <select name="vinc_prog_ec" id="vinc_prog_ec" class="form-control col-8" onchange="showTitProg();">
-              <option value="s" <?= ($obProjeto->tide == 's') ? 'selected' : ' ' ?>>Sim</option>
-              <option value="n" <?= ($obProjeto->tide == 'n') ? 'selected' : ' ' ?>>Não</option>
+            <select name="vinculo" id="vinculo" class="form-control col-8" onchange="showTitProg();">
+              <option value="s" <?= ($obProjeto->vinculo == 's') ? 'selected' : ' ' ?>>Sim</option>
+              <option value="n" <?= ($obProjeto->vinculo == 'n') ? 'selected' : ' ' ?>>Não</option>
             </select>
           </div>
           <div class="col-10" id="titProgDIV">
             <label>
               <h6>Título do Programa de vinculação</h6>
             </label>
-            <input type="text" class="form-control" name="titulo_progvinc" id="titulo_progvinc" value="<?= $obProjeto->titulo ?>">
+            <input type="text" class="form-control" name="tituloprogvinc" id="tituloprogvinc" value="<?= $obProjeto->tituloprogvinc ?>">
           </div>
 
           <script type="text/javascript">
             const titProgDIV = document.getElementById('titProgDIV');
-            const Tex_Prog_vinc = document.getElementById('titulo_progvinc');
-            const opcao = document.getElementById('vinc_prog_ec');
+            const Tex_Prog_vinc = document.getElementById('tituloprogvinc');
+            const opcao = document.getElementById('vinculo');
 
             function showTitProg() {
 

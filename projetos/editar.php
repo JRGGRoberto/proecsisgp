@@ -183,6 +183,12 @@ if(isset( $_POST['titulo']) ) {
   $obProjeto->n_cert_prev     =  $_POST['n_cert_prev'];
   $obProjeto->data            =  $_POST['data'];
   $obProjeto->outs_info       =  $_POST['outs_info'];
+
+  $obProjeto->acec            =  $_POST['acec'];
+  $obProjeto->vinculo         =  $_POST['vinculo'];
+  $obProjeto->tituloprogvinc  =  $_POST['tituloprogvinc'];
+
+
   //$obProjeto->para_avaliar    =  $_POST['para_avaliar'];
   $obProjeto->updated_at = date("Y-m-d H:i:s");
   $obProjeto->user = $user['id'];
