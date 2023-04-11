@@ -46,6 +46,10 @@ class Projeto{
   public $vinculo;
   public $tituloprogvinc;
 
+  public $finac;
+  public $finacorgao;
+  public $finacval;
+
   public $created_at;
   public $updated_at;
   public $user;
@@ -102,6 +106,10 @@ class Projeto{
                            'vinculo' => $this->vinculo,
                            'tituloprogvinc' => $this->tituloprogvinc,
 
+                           'finac' => $this->finac,
+                           'finacorgao' => $this->finacorgao,
+                           'finacval' => $this->finacval,
+
                            'outs_info' => $this->outs_info,
                            'para_avaliar' => $aval,
                            'last_result' => $lr,
@@ -155,6 +163,11 @@ class Projeto{
                                        'vinculo' => $this->vinculo,
                                        'tituloprogvinc' => $this->tituloprogvinc,
 
+                                       'finac' => $this->finac,
+                                       'finacorgao' => $this->finacorgao,
+                                       'finacval' => $this->finacval,
+
+                                       'municipios_abr' => $this->municipios_abr,
 
                                        'outs_info' => $this->outs_info,
                                        'para_avaliar' => $this->para_avaliar,

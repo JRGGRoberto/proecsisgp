@@ -1,4 +1,5 @@
 <?php
+require '../vendor/autoload.php';
 
 use \App\Session\Login;
 use \App\Entity\Projeto;
@@ -158,7 +159,7 @@ if(isset( $_POST['titulo']) ) {
 
   // $obProjeto->id           =  $_POST['id'];
   // $obProjeto->id_prof      =  $obProfessor['id'];
-  $obProjeto->tipo_exten   =  $_POST['tipo_exten'];
+  $obProjeto->tipo_exten   =  $t;
   $obProjeto->titulo       =  $_POST['titulo'];
   $obProjeto->tide         =  $_POST['tide'];
   $obProjeto->vigen_ini    =  $_POST['vigen_ini'];
@@ -188,12 +189,15 @@ if(isset( $_POST['titulo']) ) {
   $obProjeto->vinculo         =  $_POST['vinculo'];
   $obProjeto->tituloprogvinc  =  $_POST['tituloprogvinc'];
 
-
+  $obProjeto->finac            =  $_POST['finac'];
+  $obProjeto->finacorgao       =  $_POST['finacorgao'];
+  $obProjeto->finacval         =  $_POST['finacval'];
+ 
   //$obProjeto->para_avaliar    =  $_POST['para_avaliar'];
   $obProjeto->updated_at = date("Y-m-d H:i:s");
   $obProjeto->user = $user['id'];
   $obProjeto->last_result = 'n';
-  
+
   $obProjeto->atualizar();
   /*  $arqs = $_POST['anexos'];
 

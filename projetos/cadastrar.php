@@ -107,7 +107,7 @@ use  \App\Entity\Arquivo;
 if(isset($_POST['titulo'])){
   $obProjeto->id_prof      =  $user['id'];
   $obProjeto->nome_prof    =  $user['nome'];
-  $obProjeto->tipo_exten   =  $_POST['tipo_exten'];
+  $obProjeto->tipo_exten   =  $t;
   $obProjeto->titulo       =  $_POST['titulo'];
   $obProjeto->tide         =  $_POST['tide'];
   $obProjeto->vigen_ini    =  $_POST['vigen_ini'];
@@ -149,6 +149,10 @@ if(isset($_POST['titulo'])){
   $obProjeto->acec            =  $_POST['acec'];
   $obProjeto->vinculo         =  $_POST['vinculo'];
   $obProjeto->tituloprogvinc  =  $_POST['tituloprogvinc'];
+
+  $obProjeto->finac            =  $_POST['finac'];
+  $obProjeto->finacorgao       =  $_POST['finacorgao'];
+  $obProjeto->finacval         =  $_POST['finacval'];
 
 
   // sempre que cadastrar "para avaliar" ficará com o valor de -1.

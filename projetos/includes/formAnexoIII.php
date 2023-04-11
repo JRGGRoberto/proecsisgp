@@ -232,28 +232,28 @@
             <label>
               <h6>Financiamento?</h6>
             </label>
-            <select name="financiamento" id="financiamento" class="form-control" onchange="showFinac();">
-              <option value="s" <?= ($obProjeto->tide == 's') ? 'selected' : ' ' ?>>Sim</option>
-              <option value="n" <?= ($obProjeto->tide == 'n') ? 'selected' : ' ' ?>>Não</option>
+            <select name="finac" id="finac" class="form-control" onchange="showFinac();">
+              <option value="s" <?= ($obProjeto->finac == 's') ? 'selected' : ' ' ?>>Sim</option>
+              <option value="n" <?= ($obProjeto->finac == 'n') ? 'selected' : ' ' ?>>Não</option>
             </select>
           </div>
           <div class="col-5" id="orgaoFinac">
             <label>
               <h6>Órgão de Financiamento</h6>
             </label>
-            <input type="text" class="form-control" id="orgao_finacInput" name="orgao_finac" value="<?= $obProjeto->orgao_finac ?>">
+            <input type="text" class="form-control" id="orgao_finacInput" name="finacorgao" value="<?= $obProjeto->finacorgao ?>">
           </div>
           <div class="col-5" id="valorFinac">
             <label>
               <h6>Valor do Financiamento</h6>
             </label>
-            <input type="text" class="form-control" id="valor_finacInput" name="valor_finac" value="<?= $obProjeto->valor_finac ?>">
+            <input type="text" class="form-control" id="valor_finacInput" name="finacval" value="<?= $obProjeto->finacval ?>">
           </div>
 
           <script type="text/javascript">
             const divFinac1 = document.getElementById('orgaoFinac');
             const divFinac2 = document.getElementById('valorFinac');
-            const opcaoF = document.getElementById('financiamento');
+            const opcaoF = document.getElementById('finac');
 
             function showFinac() {
 
