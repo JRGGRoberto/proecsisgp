@@ -51,6 +51,9 @@ class Projeto{
   public $finacval;
 
   public $justificativa;
+  public $cronograma;
+  public $referencia;
+  
 
   public $created_at;
   public $updated_at;
@@ -114,6 +117,9 @@ class Projeto{
 
                            'justificativa' => $this->justificativa,
 
+                           'cronograma' => $this->cronograma,
+                           'referencia' => $this->referencia,
+
                            'outs_info' => $this->outs_info,
                            'para_avaliar' => $aval,
                            'last_result' => $lr,
@@ -174,6 +180,8 @@ class Projeto{
                                        'municipios_abr' => $this->municipios_abr,
 
                                        'justificativa' => $this->justificativa,
+                                       'cronograma' => $this->cronograma,
+                                       'referencia' => $this->referencia,
 
                                        'outs_info' => $this->outs_info,
                                        'para_avaliar' => $this->para_avaliar,

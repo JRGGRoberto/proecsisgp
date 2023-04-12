@@ -416,10 +416,10 @@
         <div class="row">
           <div class="col">
             <div class="form-group">
-              <label for="referencias">
+              <label for="referencia">
                 <h5><?= ++$n ?>. Referências</h5>
               </label>
-              <textarea class="form-control" name="referencias" rows="10" ><?= $obProjeto->referencias ?></textarea>
+              <textarea class="form-control" name="referencia" rows="10" ><?= $obProjeto->referencia ?></textarea>
             </div>
           </div>
         </div>
