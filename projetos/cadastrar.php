@@ -159,6 +159,11 @@ if(isset($_POST['titulo'])){
   $obProjeto->referencia       =  $_POST['referencia'];
 
 
+  $obProjeto->parceria = $_POST['parceria'];
+  $obProjeto->parcaatribuic = $_POST['parcaatribuic'];
+  $obProjeto->parcanomes  = $_POST['parcanomes '];
+
+
   // sempre que cadastrar "para avaliar" ficará com o valor de -1.
   $obProjeto->para_avaliar    =  -1;
  // 'created_at' => $this->created_at,
@@ -187,9 +192,15 @@ $anex = '';
 
 include '../includes/header.php';
 
+
+
+
 $scriptVars  = 
 "<script>
-  document.getElementById('dateAssing').valueAsDate = new Date();
+  let dataAtual = new Date();
+  document.getElementByName('vigen_ini').valueAsDate = dataAtual;
+  document.getElementByName('vigen_fim').valueAsDate = dataAtual + 364;
+  document.getElementById('dateAssing').valueAsDate = dataAtual;
   let equipe = []; 
 </script>";
 

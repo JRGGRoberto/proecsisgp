@@ -53,8 +53,11 @@ class Projeto{
   public $justificativa;
   public $cronograma;
   public $referencia;
-  
 
+  public $parceria;
+  public $parcaatribuic;
+  public $parcanomes;
+  
   public $created_at;
   public $updated_at;
   public $user;
@@ -120,6 +123,10 @@ class Projeto{
                            'cronograma' => $this->cronograma,
                            'referencia' => $this->referencia,
 
+                           'parceria' => $this->parceria,
+                           'parcaatribuic' => $this->parcaatribuic,
+                           'parcanomes ' => $this->parcanomes,
+
                            'outs_info' => $this->outs_info,
                            'para_avaliar' => $aval,
                            'last_result' => $lr,
@@ -182,6 +189,10 @@ class Projeto{
                                        'justificativa' => $this->justificativa,
                                        'cronograma' => $this->cronograma,
                                        'referencia' => $this->referencia,
+
+                                       'parceria' => $this->parceria,
+                                       'parcaatribuic' => $this->parcaatribuic,
+                                       'parcanomes ' => $this->parcanomes,
 
                                        'outs_info' => $this->outs_info,
                                        'para_avaliar' => $this->para_avaliar,

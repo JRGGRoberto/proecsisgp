@@ -12,8 +12,8 @@
 
   <h3 class="mt-3"><?= TITLE ?></h3>
   <h2><s>remover depois formAnexoIII</s></h2>
-
-    <form id="upload" method="post" enctype="multipart/form-data">
+  
+    <form name="formAnexo" id="formAnexo"  method="post" enctype="multipart/form-data">
       <input type="hidden" name="id_prof" value="<?= $obProjeto->id_prof ?>">
       <input type="hidden" name="tabela" value="projetos">
       <hr>
@@ -178,7 +178,7 @@
               <input type="date" name="vigen_ini" class="form-control" value="<?= substr($obProjeto->vigen_ini, 0, 10) ?>" required>
             </div>
           </div>
-
+          
           <div class="col-3">
             <div class="form-group">
               <label>Fim vigência</label>
@@ -247,7 +247,7 @@
             <label>
               <h6>Valor do Financiamento</h6>
             </label>
-            <input type="text" class="form-control" id="valor_finacInput" name="finacval" value="<?= $obProjeto->finacval ?>">
+            <input type="number" class="form-control" id="valor_finacInput" name="finacval" value="<?= $obProjeto->finacval?? 0 ?>" step=0.01>
           </div>
 
           <script type="text/javascript">
@@ -277,28 +277,28 @@
         <div class="row">
           <div class="col-1">
             <label><h6>Parcerias?</h6></label>
-            <select name="parcerias" id="parcerias" class="form-control" onchange="showParcas();">
-              <option value="S" <?= ($obProjeto->parcerias == 'S') ? 'selected' : ' ' ?>>Sim</option>
-              <option value="N" <?= ($obProjeto->parcerias == 'N') ? 'selected' : ' ' ?>>Não</option>
+            <select name="parceria" id="parceria" class="form-control" onchange="showParcas();">
+              <option value="S" <?= ($obProjeto->parceria == 'S') ? 'selected' : ' ' ?>>Sim</option>
+              <option value="N" <?= ($obProjeto->parceria == 'N') ? 'selected' : ' ' ?>>Não</option>
             </select>
           </div>
           <div class="col-6" id="parcaEntidades">
             <label>
               <h6>Nome(s) da(s) Entidade(s)</h6>
             </label>
-            <input type="text" class="form-control" id="par_entidades" name="par_entidades" value="<?= $obProjeto->par_entidades ?>">
+            <input type="text" class="form-control" id="par_entidades" name="parcanomes" value="<?= $obProjeto->parcanomes ?>">
           </div>
           <div class="col-5" id="AtribuEnti">
             <label>
               <h6>Atribuição(ões) da(s) Entidade(s)</h6>
             </label>
-            <input type="text" class="form-control" id="par_atribu" name="par_atribu" value="<?= $obProjeto->par_atribu ?>">
+            <input type="text" class="form-control" id="par_atribu" name="parcaatribuic" value="<?= $obProjeto->parcaatribuic ?>">
           </div>
 
           <script type="text/javascript">
             const divParcas1 = document.getElementById('parcaEntidades');
             const divParcas2 = document.getElementById('AtribuEnti');
-            const opcaoParcas = document.getElementById('parcerias');
+            const opcaoParcas = document.getElementById('parceria');
 
             function showParcas() {
 
@@ -443,7 +443,7 @@
     </div>
 -->
         <div class="form-group">
-          <input type="submit" name="enviar" class="btn btn-success" value="Salvar">
+          <a href="javascript: submitSalvar()" class="btn btn-success" >✔️ Salvar</a>
         </div>
 
         <div class="row">
@@ -495,3 +495,14 @@
 
 </main>
 <script src="equipe.js"></script>
+<script>
+
+function submitSalvar()
+{
+  console.log(equipe);
+
+
+  document.formAnexo.submit();
+}
+</script>
+</script>
