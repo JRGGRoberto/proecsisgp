@@ -154,6 +154,8 @@ if(isset($_POST['titulo'])){
   $obProjeto->finacorgao       =  $_POST['finacorgao'];
   $obProjeto->finacval         =  $_POST['finacval'];
 
+  $obProjeto->justificativa         =  $_POST['justificativa'];
+
 
   // sempre que cadastrar "para avaliar" ficará com o valor de -1.
   $obProjeto->para_avaliar    =  -1;

@@ -192,7 +192,10 @@ if(isset( $_POST['titulo']) ) {
   $obProjeto->finac            =  $_POST['finac'];
   $obProjeto->finacorgao       =  $_POST['finacorgao'];
   $obProjeto->finacval         =  $_POST['finacval'];
- 
+
+
+  $obProjeto->justificativa         =  $_POST['justificativa'];
+
   //$obProjeto->para_avaliar    =  $_POST['para_avaliar'];
   $obProjeto->updated_at = date("Y-m-d H:i:s");
   $obProjeto->user = $user['id'];

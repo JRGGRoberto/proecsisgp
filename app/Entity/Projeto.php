@@ -50,6 +50,8 @@ class Projeto{
   public $finacorgao;
   public $finacval;
 
+  public $justificativa;
+
   public $created_at;
   public $updated_at;
   public $user;
@@ -110,6 +112,8 @@ class Projeto{
                            'finacorgao' => $this->finacorgao,
                            'finacval' => $this->finacval,
 
+                           'justificativa' => $this->justificativa,
+
                            'outs_info' => $this->outs_info,
                            'para_avaliar' => $aval,
                            'last_result' => $lr,
@@ -168,6 +172,8 @@ class Projeto{
                                        'finacval' => $this->finacval,
 
                                        'municipios_abr' => $this->municipios_abr,
+
+                                       'justificativa' => $this->justificativa,
 
                                        'outs_info' => $this->outs_info,
                                        'para_avaliar' => $this->para_avaliar,

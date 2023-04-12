@@ -61,8 +61,8 @@
           <h5><?= ++$n ?>. A proposta está vinculada a alguma disciplina do curso de Graduação ou Pós-Graduação (ACEC II)</h5>
         </label>
         <select name="acec" class="form-control col-1">
-          <option value="s" <?= ($obProjeto->acec == 's') ? 'selected' : ' ' ?>>Sim</option>
-          <option value="n" <?= ($obProjeto->acec == 'n') ? 'selected' : ' ' ?>>Não</option>
+          <option value="S" <?= ($obProjeto->acec == 'S') ? 'selected' : ' ' ?>>Sim</option>
+          <option value="N" <?= ($obProjeto->acec == 'N') ? 'selected' : ' ' ?>>Não</option>
         </select>
       </div>
       <hr>
@@ -77,8 +77,8 @@
               <h6>É vinculado?</h6>
             </label>
             <select name="vinculo" id="vinculo" class="form-control col-8" onchange="showTitProg();">
-              <option value="s" <?= ($obProjeto->vinculo == 's') ? 'selected' : ' ' ?>>Sim</option>
-              <option value="n" <?= ($obProjeto->vinculo == 'n') ? 'selected' : ' ' ?>>Não</option>
+              <option value="S" <?= ($obProjeto->vinculo == 'S') ? 'selected' : ' ' ?>>Sim</option>
+              <option value="N" <?= ($obProjeto->vinculo == 'N') ? 'selected' : ' ' ?>>Não</option>
             </select>
           </div>
           <div class="col-10" id="titProgDIV">
@@ -95,7 +95,7 @@
 
             function showTitProg() {
 
-              if (opcao.value == 's') {
+              if (opcao.value == 'S') {
                 titProgDIV.hidden = false;
               } else {
                 Tex_Prog_vinc.value = '';
@@ -198,8 +198,8 @@
             <div class="form-group">
               <label for="tide">TIDE</label>
               <select name="tide" class="form-control">
-                <option value="s" <?= ($obProjeto->tide == 's') ? 'selected' : ' ' ?>>Sim</option>
-                <option value="n" <?= ($obProjeto->tide == 'n') ? 'selected' : ' ' ?>>Não</option>
+                <option value="S" <?= ($obProjeto->tide == 'S') ? 'selected' : ' ' ?>>Sim</option>
+                <option value="N" <?= ($obProjeto->tide == 'N') ? 'selected' : ' ' ?>>Não</option>
               </select>
             </div>
           </div>
@@ -233,8 +233,8 @@
               <h6>Financiamento?</h6>
             </label>
             <select name="finac" id="finac" class="form-control" onchange="showFinac();">
-              <option value="s" <?= ($obProjeto->finac == 's') ? 'selected' : ' ' ?>>Sim</option>
-              <option value="n" <?= ($obProjeto->finac == 'n') ? 'selected' : ' ' ?>>Não</option>
+              <option value="S" <?= ($obProjeto->finac == 'S') ? 'selected' : ' ' ?>>Sim</option>
+              <option value="N" <?= ($obProjeto->finac == 'N') ? 'selected' : ' ' ?>>Não</option>
             </select>
           </div>
           <div class="col-5" id="orgaoFinac">
@@ -257,7 +257,7 @@
 
             function showFinac() {
 
-              if (opcaoF.value == 's') {
+              if (opcaoF.value == 'S') {
                 divFinac1.hidden = false;
                 divFinac2.hidden = false;
               } else {
@@ -278,8 +278,8 @@
           <div class="col-1">
             <label><h6>Parcerias?</h6></label>
             <select name="parcerias" id="parcerias" class="form-control" onchange="showParcas();">
-              <option value="s" <?= ($obProjeto->parcerias == 's') ? 'selected' : ' ' ?>>Sim</option>
-              <option value="n" <?= ($obProjeto->parcerias == 'n') ? 'selected' : ' ' ?>>Não</option>
+              <option value="S" <?= ($obProjeto->parcerias == 'S') ? 'selected' : ' ' ?>>Sim</option>
+              <option value="N" <?= ($obProjeto->parcerias == 'N') ? 'selected' : ' ' ?>>Não</option>
             </select>
           </div>
           <div class="col-6" id="parcaEntidades">
@@ -302,7 +302,7 @@
 
             function showParcas() {
 
-              if (opcaoParcas.value == 's') {
+              if (opcaoParcas.value == 'S') {
                 divParcas1.hidden = false;
                 divParcas2.hidden = false;
               } else {
