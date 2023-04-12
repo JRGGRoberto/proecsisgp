@@ -198,6 +198,9 @@ if(isset( $_POST['titulo']) ) {
   $obProjeto->cronograma       =  $_POST['cronograma'];
   $obProjeto->referencia       =  $_POST['referencia'];
 
+  $obProjeto->parceria       =  $_POST['parceria'];
+  $obProjeto->parcaatribuic  =  $_POST['parcaatribuic'];
+  $obProjeto->parcanomes     =  $_POST['parcanomes'];
 
   //$obProjeto->para_avaliar    =  $_POST['para_avaliar'];
   $obProjeto->updated_at = date("Y-m-d H:i:s");

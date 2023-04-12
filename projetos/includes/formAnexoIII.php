@@ -343,13 +343,24 @@
         
             <div class="form-group">
               <label><h5><?= ++$n ?>. Resumo do Projeto e Palavras-chaves</h5></label>
-              <div class="form-group">
+              
                 <label for="resumo">Resumo do Projeto</label>
                 <textarea class="form-control" name="resumo" rows="10" placeholder="Descrever o resumo da ação de extensão (no máximo 250 palavras), destacando sua relevância na perspectiva acadêmica e social, o público a que se destina e o resultado esperado. Este texto poderá ser publicado na homepage da PROEC, portanto, recomenda-se revisá-lo corretamente."><?= $obProjeto->resumo ?></textarea>
-<br>
-                <label for="palavras">Palavras-chave: (até três)</label>
-                <input type="text" class="form-control" id="palavras" name="palavras" value="<?= $obProjeto->palavras ?>">
-                <div class="form-group">
+
+                <label for="palavras">Palavras-chave
+                  <div class="row"> 
+                    <div class="col-4">
+                        <input type="text" class="form-control" name="palav1" id="palav2" value="">
+                    </div>
+                    <div class="col-4">
+                        <input type="text" class="form-control" name="palav2" id="palav2" value="">
+                    </div>
+                    <div class="col-4">
+                        <input type="text" class="form-control" name="palav3" id="palav3" value="">
+                    </div>
+                  </div>
+                </label>
+              
             </div>
           
             
@@ -454,6 +465,8 @@
           </div>
         </div>
 
+        <input id="equipeJS" type="text" hidden>
+
 
     </form>
     
@@ -495,14 +508,18 @@
 
 </main>
 <script src="equipe.js"></script>
+
 <script>
 
-function submitSalvar()
-{
-  console.log(equipe);
+function submitEqupeJSON() {
+  document.getElementById('equipeJS').value = '';
+  var JsonEquipe = JSON.stringify(equipe);
+  document.getElementById('equipeJS').value = JsonEquipe;
+}  
 
-
+function submitSalvar(){
+  submitEqupeJSON();
   document.formAnexo.submit();
 }
-</script>
+
 </script>

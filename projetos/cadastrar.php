@@ -159,9 +159,9 @@ if(isset($_POST['titulo'])){
   $obProjeto->referencia       =  $_POST['referencia'];
 
 
-  $obProjeto->parceria = $_POST['parceria'];
-  $obProjeto->parcaatribuic = $_POST['parcaatribuic'];
-  $obProjeto->parcanomes  = $_POST['parcanomes '];
+  $obProjeto->parceria       =  $_POST['parceria'];
+  $obProjeto->parcaatribuic  =  $_POST['parcaatribuic'];
+  $obProjeto->parcanomes     =  $_POST['parcanomes'];
 
 
   // sempre que cadastrar "para avaliar" ficará com o valor de -1.
