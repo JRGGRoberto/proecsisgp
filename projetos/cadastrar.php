@@ -100,6 +100,8 @@ foreach($area_ext as $aext){
 use \App\Entity\Professor;
 $dadosProf = Professor::getDadosProf($obProjeto->id_prof);
 
+use \App\Entity\Palavras;
+
 
 use  \App\Entity\Arquivo;
 
@@ -163,7 +165,11 @@ if(isset($_POST['titulo'])){
   $obProjeto->parcaatribuic  =  $_POST['parcaatribuic'];
   $obProjeto->parcanomes     =  $_POST['parcanomes'];
 
+  $palav1 = $_POST['palav1'];
+  $palav2 = $_POST['palav2'];
+  $palav3 = $_POST['palav3'];
 
+  
   // sempre que cadastrar "para avaliar" ficará com o valor de -1.
   $obProjeto->para_avaliar    =  -1;
  // 'created_at' => $this->created_at,
@@ -171,6 +177,13 @@ if(isset($_POST['titulo'])){
   $obProjeto->user = $user['id'];
 
   $obProjeto->cadastrar();
+
+  $ObjPalav1 = new Palavras();
+
+  $ObjPalav2 = new Palavras();
+
+  $ObjPalav3 = new Palavras();
+
  /* $arqs = $_POST['anexos'];
 
   foreach($arqs as $arq){

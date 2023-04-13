@@ -350,13 +350,13 @@
                 <label for="palavras">Palavras-chave
                   <div class="row"> 
                     <div class="col-4">
-                        <input type="text" class="form-control" name="palav1" id="palav2" value="">
+                        <input type="text" class="form-control" name="palav1" id="palav1" value="<?= $palav1 ?>">
                     </div>
                     <div class="col-4">
-                        <input type="text" class="form-control" name="palav2" id="palav2" value="">
+                        <input type="text" class="form-control" name="palav2" id="palav2" value="<?= $palav2 ?>">
                     </div>
                     <div class="col-4">
-                        <input type="text" class="form-control" name="palav3" id="palav3" value="">
+                        <input type="text" class="form-control" name="palav3" id="palav3" value="<?= $palav3 ?>">
                     </div>
                   </div>
                 </label>
