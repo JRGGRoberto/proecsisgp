@@ -216,20 +216,37 @@ if(isset( $_POST['titulo']) ) {
   // $obProjeto->outs_info       =  $_POST['outs_info'];
 
   $obProjeto->acec            =  $_POST['acec'];
+  
   $obProjeto->vinculo         =  $_POST['vinculo'];
-  $obProjeto->tituloprogvinc  =  $_POST['tituloprogvinc'];
+  if($obProjeto->vinculo == 'S'){
+    $obProjeto->tituloprogvinc  =  $_POST['tituloprogvinc'];
+  } else {
+    $obProjeto->tituloprogvinc  =  null;
+  }
 
-  $obProjeto->finac           =  $_POST['finac'];
-  $obProjeto->finacorgao      =  $_POST['finacorgao'];
-  $obProjeto->finacval        =  $_POST['finacval'];
+  $obProjeto->finac            =  $_POST['finac'];
+  if($obProjeto->finac == 'S'){
+    $obProjeto->finacorgao = $_POST['finacorgao'];
+    $obProjeto->finacval   = $_POST['finacval'];
+  } else {
+    $obProjeto->finacorgao = null;
+    $obProjeto->finacval   = null;
+  }
 
 
   $obProjeto->justificativa    =  $_POST['justificativa'];
   $obProjeto->cronograma       =  $_POST['cronograma'];
   
   $obProjeto->parceria       =  $_POST['parceria'];
-  $obProjeto->parcaatribuic  =  $_POST['parcaatribuic'];
-  $obProjeto->parcanomes     =  $_POST['parcanomes'];
+  if($obProjeto->parceria == 'S'){
+    $obProjeto->parcaatribuic  =  $_POST['parcaatribuic'];
+    $obProjeto->parcanomes     =  $_POST['parcanomes'];
+  } else {
+    $obProjeto->parcaatribuic  =  null;
+    $obProjeto->parcanomes     =  null;
+  }
+
+  
 
   //$obProjeto->para_avaliar    =  $_POST['para_avaliar'];
   $obProjeto->updated_at = date("Y-m-d H:i:s");

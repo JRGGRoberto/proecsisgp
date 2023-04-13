@@ -40,9 +40,6 @@ switch($t) {
 
 ?>
 
-
-
-
   <h2 class="mt-3"><?=TITLE?></h2>
 
   <form  id="upload" method="" enctype="">
@@ -80,10 +77,6 @@ switch($t) {
           </select>
         </div>
       </div>
-
-      
-
-
     </div>
 <hr>
 <h4> Período de Realização e Carga Horária</h4>

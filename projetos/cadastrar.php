@@ -155,21 +155,32 @@ if(isset($_POST['titulo'])){
   $obProjeto->outs_info       =  $_POST['outs_info'];
 
   $obProjeto->acec            =  $_POST['acec'];
+
   $obProjeto->vinculo         =  $_POST['vinculo'];
-  $obProjeto->tituloprogvinc  =  $_POST['tituloprogvinc'];
+  if($obProjeto->vinculo == 'S'){
+    $obProjeto->tituloprogvinc  =  $_POST['tituloprogvinc'];
+  }
+  
 
   $obProjeto->finac            =  $_POST['finac'];
-  $obProjeto->finacorgao       =  $_POST['finacorgao'];
-  $obProjeto->finacval         =  $_POST['finacval'];
+  if($obProjeto->finac == 'S'){
+    $obProjeto->finacorgao = $_POST['finacorgao'];
+    $obProjeto->finacval   = $_POST['finacval'];
+  }
+  
 
-  $obProjeto->justificativa         =  $_POST['justificativa'];
+  $obProjeto->justificativa    =  $_POST['justificativa'];
   $obProjeto->cronograma       =  $_POST['cronograma'];
   $obProjeto->referencia       =  $_POST['referencia'];
 
 
   $obProjeto->parceria       =  $_POST['parceria'];
-  $obProjeto->parcaatribuic  =  $_POST['parcaatribuic'];
-  $obProjeto->parcanomes     =  $_POST['parcanomes'];
+  if($obProjeto->parceria == 'S'){
+    $obProjeto->parcaatribuic  =  $_POST['parcaatribuic'];
+    $obProjeto->parcanomes     =  $_POST['parcanomes'];
+  }
+
+  
 
   $palav1 = $_POST['palav1'];
   $palav2 = $_POST['palav2'];
