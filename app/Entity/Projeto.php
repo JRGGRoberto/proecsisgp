@@ -208,9 +208,9 @@ class Projeto{
    * @return boolean
    */
   public function excluir(){
-
+    (new Database('equipe'))->delete('idproj = "'.$this->id.'"');
+    (new Database('palavras'))->delete('idproj = "'.$this->id.'"');
     return (new Database('projetos'))->delete(' (id, ver) = ("'.$this->id.'", '. $this->ver .')');
-
   }
 
   /**

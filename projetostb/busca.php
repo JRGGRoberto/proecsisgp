@@ -47,6 +47,6 @@ $obPagination = new Pagination($qntd, $_GET['pagina']?? 1, 10);
 
 $prjs = Projetostb::getList($where, null, $obPagination->getLimite());
 
-include './includes/header.php';
+include '../includes/header.php';
 include './includes/listagem.php';
-include './includes/footer.php';
+include '../includes/footer.php';

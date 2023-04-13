@@ -143,6 +143,7 @@ $t = $obProjeto->tipo_exten;
 $anexoIII  = [1, 2];
 $anexoII   = [3, 4, 5];
 
+
 switch($t) {
   case 1: 
     define('TITLE','FORMULÁRIO PARA ELABORAÇÃO DE PROPOSTA DE CURSO');
@@ -168,29 +169,39 @@ switch($t) {
 //VALIDAÇÃO DO POST
 if(isset( $_POST['titulo']) ) {
 
-  // $obProjeto->id           =  $_POST['id'];
-  // $obProjeto->id_prof      =  $obProfessor['id'];
   $obProjeto->tipo_exten   =  $t;
   $obProjeto->titulo       =  $_POST['titulo'];
   $obProjeto->tide         =  $_POST['tide'];
   $obProjeto->vigen_ini    =  $_POST['vigen_ini'];
   $obProjeto->vigen_fim    =  $_POST['vigen_fim'];
-  $obProjeto->ch_semanal   =  $_POST['ch_semanal'];
+
+  if (in_array($t, $anexoII)) {
+    $obProjeto->ch_semanal    = $_POST['ch_semanal'];
+    $obProjeto->area_cnpq     = $_POST['area_cnpq'];
+    $obProjeto->area_tema1    = $_POST['area_tema1'];
+    $obProjeto->area_tema2    = $_POST['area_tema2'];
+    $obProjeto->area_extensao = $_POST['area_extensao'];
+    $obProjeto->linh_ext      = $_POST['linh_ext'];
+    $obProjeto->referencia    = $_POST['referencia'];
+    $obProjeto->contribuicao  = $_POST['contribuicao'];
+    
+  }
+
+  if (in_array($t, $anexoIII)) {
+    $obProjeto->ch_total     =  $_POST['ch_total'];
+    
+  }
+  
 
   /* não aceito no anexo III
-  $obProjeto->ch_total     =  $_POST['ch_total'];
+  
   $obProjeto->descricao    =  $_POST['descricao'];
   $obProjeto->prodserv_espe   =  $_POST['prodserv_espe'];
-  $obProjeto->contrap_nofinac =  $_POST['contrap_nofinac'];
   $obProjeto->n_cert_prev     =  $_POST['n_cert_prev'];
   */
 
-  // $obProjeto->situacao     =  $_POST['situacao'];
-  $obProjeto->area_cnpq    =  $_POST['area_cnpq'];
-  $obProjeto->area_tema1   =  $_POST['area_tema1'];
-  $obProjeto->area_tema2   =  $_POST['area_tema2'];
-  $obProjeto->area_extensao = $_POST['area_extensao'];
-  $obProjeto->linh_ext     =  $_POST['linh_ext'];
+
+
   $obProjeto->resumo       =  $_POST['resumo'];
   
 
@@ -198,7 +209,7 @@ if(isset( $_POST['titulo']) ) {
   $obProjeto->public_alvo  =  $_POST['public_alvo'];
   $obProjeto->metodologia  =  $_POST['metodologia'];
   
-  $obProjeto->contribuicao    =  $_POST['contribuicao'];
+  
   
   $obProjeto->municipios_abr  =  $_POST['municipios_abr'];
   $obProjeto->data            =  $_POST['data'];
@@ -215,8 +226,7 @@ if(isset( $_POST['titulo']) ) {
 
   $obProjeto->justificativa    =  $_POST['justificativa'];
   $obProjeto->cronograma       =  $_POST['cronograma'];
-  $obProjeto->referencia       =  $_POST['referencia'];
-
+  
   $obProjeto->parceria       =  $_POST['parceria'];
   $obProjeto->parcaatribuic  =  $_POST['parcaatribuic'];
   $obProjeto->parcanomes     =  $_POST['parcanomes'];

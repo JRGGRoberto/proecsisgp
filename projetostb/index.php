@@ -34,7 +34,7 @@ $obPagination = new Pagination($qntd, $_GET['pagina']?? 1, 10);
 $prjs = Projetostb::getList($where, null, $obPagination->getLimite());
 
 
-include './includes/header.php';
+include '../includes/header.php';
 
 ?>
 <section>
@@ -78,15 +78,6 @@ include './includes/header.php';
   for ($ano = $ano_atual; $ano >= 2018; $ano--) {
     echo '<option value="' . $ano . '" ' . (($ano == $_POST['ano']) ? 'selected' : '') . '>' . $ano . '</option>';
   }
-            /*
-            <option value="2023" <?= ($ano == "2023")? "selected": "" ?>>2023</option>
-            <option value="2022" <?= ($ano == "2022")? "selected": "" ?>>2022</option>
-            <option value="2021" <?= ($ano == "2021")? "selected": "" ?>>2021</option>
-            <option value="2020" <?= ($ano == "2020")? "selected": "" ?>>2020</option>
-            <option value="2019" <?= ($ano == "2019")? "selected": "" ?>>2019</option>
-            <option value="2018" <?= ($ano == "2018")? "selected": "" ?>>2018</option>
-            */
-
             ?>
       </select>
     </div>
@@ -102,4 +93,4 @@ include './includes/header.php';
 </section>
 
 <?php
-include './includes/footer.php';
+include '../includes/footer.php';

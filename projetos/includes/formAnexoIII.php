@@ -1,8 +1,6 @@
 <main>
-
-
-  <!--//$anexoII  = [3, 4, 5]; // Programa / Projeto / Serviço -->
-
+ 
+  <!--//$anexoIII  = [1, 2]; // Programa / Projeto / Serviço -->
 
   <section>
     <a href="index.php">
@@ -11,7 +9,6 @@
   </section>
 
   <h3 class="mt-3"><?= TITLE ?></h3>
-  <h2><s>remover depois formAnexoIII</s></h2>
   
     <form name="formAnexo" id="formAnexo"  method="post" enctype="multipart/form-data">
       <input type="hidden" name="id_prof" value="<?= $obProjeto->id_prof ?>">
@@ -106,68 +103,6 @@
         </div>
 
         <hr>
-
-        <label>
-          <h5><?= ++$n ?>. Classificação do Projeto ou Programa</h5>
-        </label>
-        <label><?= $n ?>.1. Área de Conhecimento CNPQ (Ver classificaçõa do CNPQ)</label>
-
-        <div class="row">
-
-          <div class="col">
-            <div class="form-group">
-              <label for="area_cnpq">Grande Área</label>
-              <select name="area_cnpq" class="form-control">
-                <?= $selectAreaCNPQ ?>
-              </select>
-            </div>
-          </div>
-
-          <div class="col">
-            <div class="form-group">
-              <label for="area_tema1">Área</label>
-              <select name="area_tema1" class="form-control">
-                <?= $areaOptions ?>
-              </select>
-            </div>
-          </div>
-
-          <div class="col">
-            <div class="form-group">
-              <label for="area_tema2">Subária</label>
-              <select name="area_tema2" class="form-control">
-                <?= $areaOptions2 ?>
-              </select>
-            </div>
-          </div>
-
-
-        </div>
-
-        <label><?= $n ?>.2. Plano Nacional de Extensão Universitária (ver <a href="https://proec.unespar.edu.br/menu-extensao/orientacoes" target="_blank">https://proec.unespar.edu.br/menu-extensao/orientacoes)</a> </label>
-        <div class="row">
-
-          <div class="col">
-            <div class="form-group">
-              <label for="area_extensao">Área de extensão</label>
-              <select name="area_extensao" class="form-control">
-                <?= $area_ext_Opt ?>
-              </select>
-            </div>
-          </div>
-
-
-          <div class="col">
-            <div class="form-group">
-              <label for="linh_ext">Linhas de extensão</label>
-              <select name="linh_ext" class="form-control">
-                <?= $area_ext_Opt ?>
-              </select>
-            </div>
-          </div>
-        </div>
-
-        <hr>
         <label>
           <h5><?= ++$n ?>. Período de vigência</h5>
         </label>
@@ -188,7 +123,7 @@
  
           <div class="col-3">
             <div class="form-group">
-              <label>Carga semanal*:</label>
+              <label>Carga Horária tatal:</label>
               <input type="number" min=0 max=44 class="form-control" name="ch_semanal" value="<?= $obProjeto->ch_semanal ?>">
               
             </div>
@@ -371,7 +306,7 @@
           <div class="col">
             <div class="form-group">
               <label for="justificativa">
-                <h5><?= ++$n ?>. Problema e Justificativa</h5>
+                <h5><?= ++$n ?>. Justificativa da proposta</h5>
               </label>
               <textarea class="form-control" name="justificativa" rows="10" placeholder="(Identificar o problema e justificaro projeto). 20 linhas máximo"><?= $obProjeto->justificativa ?></textarea>
             </div>
