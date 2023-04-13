@@ -35,7 +35,7 @@ function deleteAllRows(){
     document.getElementById("instituicao").value = myObj.instituicao;
     document.getElementById("formacao").value    = myObj.formacao;
     document.getElementById("funcao").value      = myObj.funcao;
-    document.getElementById("tel").value    = myObj.tel;
+    document.getElementById("tel").value         = myObj.tel;
             
     document.getElementById("titleMemb").innerHTML = 'Editar dados';
     document.getElementById("addMemb").hidden = true;
