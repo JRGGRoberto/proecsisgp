@@ -226,14 +226,13 @@ if(isset( $_POST['titulo']) ) {
   $obProjeto->user = $user['id'];
   $obProjeto->last_result = 'n';
 
-  $obProjeto->atualizar();
+ // $obProjeto->atualizar();
 
   $palav1 = $_POST['palav1'];
   $palav2 = $_POST['palav2'];
   $palav3 = $_POST['palav3'];
-  
-  Palavras::excluir($obProjeto->id);
 
+  Palavras::excluir($obProjeto->id);
   if(strlen($palav1) > 0 ){
     $ObjPalav1 = new Palavras();   
     $ObjPalav1->incluir($obProjeto->id, $palav1);
@@ -246,6 +245,25 @@ if(isset( $_POST['titulo']) ) {
     $ObjPalav3 = new Palavras();
     $ObjPalav3->incluir($obProjeto->id, $palav3);
   }
+
+  Equipe::excluir($obProjeto->id);
+  $equipeJS =  $_POST['equipeJS'];
+  $arrEq = json_decode($equipeJS , true);
+  $index = 1;
+  foreach($arrEq as $key => $memb) {
+    $objMembro = new Equipe();
+    $objMembro->incluir(
+      $index,
+      $obProjeto->id,
+      $memb['nome'],
+      $memb['instituicao'],
+      $memb['formacao'],
+      $memb['funcao'],
+      $memb['tel']
+    );
+    $index++;
+  }
+
   
   /*  $arqs = $_POST['anexos'];
 

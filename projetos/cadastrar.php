@@ -101,6 +101,7 @@ use \App\Entity\Professor;
 $dadosProf = Professor::getDadosProf($obProjeto->id_prof);
 
 use \App\Entity\Palavras;
+use \App\Entity\Equipe;
 
 
 use  \App\Entity\Arquivo;
@@ -191,6 +192,27 @@ if(isset($_POST['titulo'])){
     $ObjPalav3 = new Palavras();
     $ObjPalav3->incluir($idprjP, $palav3);
   }
+
+
+  Equipe::excluir($obProjeto->id);
+  $equipeJS =  $_POST['equipeJS'];
+  $arrEq = json_decode($equipeJS , true);
+  $index = 1;
+  foreach($arrEq as $key => $memb) {
+    $objMembro = new Equipe();
+    $objMembro->incluir(
+      $index,
+      $obProjeto->id,
+      $memb['nome'],
+      $memb['instituicao'],
+      $memb['formacao'],
+      $memb['funcao'],
+      $memb['tel']
+    );
+    $index++;
+  }
+
+
 
  /* $arqs = $_POST['anexos'];
 

@@ -16,7 +16,7 @@ function deleteAllRows(){
     document.getElementById("instituicao").value = "";
     document.getElementById("formacao").value = "";
     document.getElementById("funcao").value = "";
-    document.getElementById("telefone").value = "";
+    document.getElementById("tel").value = "";
   }
   
   function fecharModalEquipe(){            
@@ -35,7 +35,7 @@ function deleteAllRows(){
     document.getElementById("instituicao").value = myObj.instituicao;
     document.getElementById("formacao").value    = myObj.formacao;
     document.getElementById("funcao").value      = myObj.funcao;
-    document.getElementById("telefone").value    = myObj.telefone;
+    document.getElementById("tel").value    = myObj.tel;
             
     document.getElementById("titleMemb").innerHTML = 'Editar dados';
     document.getElementById("addMemb").hidden = true;
@@ -60,7 +60,7 @@ function deleteAllRows(){
     let instituicao = document.getElementById("instituicao").value;
     let formacao = document.getElementById("formacao").value;
     let funcao = document.getElementById("funcao").value;
-    let telefone = document.getElementById("telefone").value;
+    let tel = document.getElementById("tel").value;
      
     
     let dadosAtual = {
@@ -69,7 +69,7 @@ function deleteAllRows(){
       instituicao: instituicao,
       formacao: formacao,
       funcao: funcao,
-      telefone: telefone
+      tel: tel
     };
                 
     idx = equipe.findIndex(e => e.id === idM);
@@ -99,7 +99,7 @@ function deleteAllRows(){
     celInstituicao.innerHTML = novoContato.instituicao;
     celFormacao.innerHTML = novoContato.formacao;
     celFuncao.innerHTML = novoContato.funcao;
-    celTelefone.innerHTML = novoContato.telefone;
+    celTelefone.innerHTML = novoContato.tel;
     celDelete.innerHTML = '<center><button type="button" class="btn btn-light btn-sm" onclick="excluirContato(' + novoContato.id + ')">⛔</button><button type="button" class="btn btn-light btn-sm" onclick="formEditarMembro(' + novoContato.id + ')">✏️</button></center></center>';
   }
   
@@ -110,7 +110,7 @@ function deleteAllRows(){
     let instituicao = document.getElementById("instituicao").value;
     let formacao = document.getElementById("formacao").value;
     let funcao = document.getElementById("funcao").value;
-    let telefone = document.getElementById("telefone").value;
+    let tel = document.getElementById("tel").value;
       
     let max = Math.max.apply(Math, equipe.map(e => e.id));
     if(max == '-Infinity'){ max = 0; }
@@ -123,7 +123,7 @@ function deleteAllRows(){
         instituicao: instituicao,
         formacao: formacao,
         funcao: funcao,
-        telefone: telefone
+        tel: tel
       };
           
       // Adicionar o novo contato no array

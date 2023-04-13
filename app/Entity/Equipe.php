@@ -19,6 +19,20 @@ class Equipe {
   public $updated_at;
   public $user;
 
+    
+  
+  function incluir($id, $idproj, $nome, $instituicao, $formacao, $funcao, $tel, $email = null, $user = null){
+    $this->id = $id;
+    $this->idproj = $idproj;
+    $this->nome = $nome;
+    $this->instituicao = $instituicao;
+    $this->formacao = $formacao;
+    $this->funcao = $funcao;
+    $this->tel = $tel;
+    $this->email = $email;
+    $this->user = $user;
+    $this->cadastrar();
+  }
 
 /**
    * Método responsável por cadastrar uma nova pessoa no banco

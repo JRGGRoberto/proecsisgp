@@ -465,7 +465,7 @@
           </div>
         </div>
 
-        <input id="equipeJS" type="text" hidden>
+        <input id="equipeJS" name="equipeJS" type="text" hidden>
 
 
     </form>
@@ -489,7 +489,7 @@
               <label for="instituicao">Instituição</label>    <input type="text" class="form-control" id="instituicao">
               <label for="formacao">Formação</label>          <input type="text" class="form-control" id="formacao">
               <label for="funcao">Função na equipe</label>    <input type="text" class="form-control" id="funcao">
-              <label for="telefone">Telefone</label>          <input type="text" class="form-control" id="telefone">
+              <label for="tel">Telefone</label>               <input type="text" class="form-control" id="tel">
               <BR><center>
               <button type="button" class="btn btn-secondary btn-sm" onclick="fecharModalEquipe()">Fechar</button>
               <button type="button" id="addMemb" class="btn btn-primary btn-sm" onclick="adicionarContato()">Adicionar</button>
@@ -518,7 +518,21 @@ function submitEqupeJSON() {
 }  
 
 function submitSalvar(){
+  let palav1 = document.getElementById('palav1').value;
+  let palav2 = document.getElementById('palav2').value;
+  let palav3 = document.getElementById('palav3').value;
+  const msgA = '⚠️ As palavras chaves não devem ser iguais'
+  if((palav1.length > 0) && ((palav1 == palav2) || (palav1 == palav3))){ 
+    alert(msgA);
+    return;
+  }
+  if((palav2.length > 0) && ((palav2 == palav1) || (palav2 == palav3))){ 
+    alert(msgA);
+    return;
+  }
+
   submitEqupeJSON();
+  
   document.formAnexo.submit();
 }
 
