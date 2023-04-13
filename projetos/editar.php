@@ -1,10 +1,16 @@
 <?php
 require '../vendor/autoload.php';
 
+
+ini_set('display_errors', 1);
+ini_set('display_startup_errors', 1);
+error_reporting(E_ALL);
+
 use \App\Session\Login;
 use \App\Entity\Projeto;
 
 use \App\Entity\Equipe;
+use \App\Entity\Palavras;
 
 Login::requireLogin();
 $user = Login::getUsuarioLogado();
@@ -36,6 +42,11 @@ $ver = $_GET['v'];
 $obProjeto = new Projeto();
 $obProjeto = Projeto::getProjeto($id, $ver);
 
+$palavras = Palavras::getPalavrasByProj($obProjeto->id);
+
+$palav1 = $palavras[0]->palavra?? null;
+$palav2 = $palavras[1]->palavra?? null;
+$palav3 = $palavras[2]->palavra?? null;
 
 //VALIDAÇÃO DA TIPO
 if(!$obProjeto instanceof Projeto){
@@ -165,7 +176,15 @@ if(isset( $_POST['titulo']) ) {
   $obProjeto->vigen_ini    =  $_POST['vigen_ini'];
   $obProjeto->vigen_fim    =  $_POST['vigen_fim'];
   $obProjeto->ch_semanal   =  $_POST['ch_semanal'];
+
+  /* não aceito no anexo III
   $obProjeto->ch_total     =  $_POST['ch_total'];
+  $obProjeto->descricao    =  $_POST['descricao'];
+  $obProjeto->prodserv_espe   =  $_POST['prodserv_espe'];
+  $obProjeto->contrap_nofinac =  $_POST['contrap_nofinac'];
+  $obProjeto->n_cert_prev     =  $_POST['n_cert_prev'];
+  */
+
   // $obProjeto->situacao     =  $_POST['situacao'];
   $obProjeto->area_cnpq    =  $_POST['area_cnpq'];
   $obProjeto->area_tema1   =  $_POST['area_tema1'];
@@ -173,17 +192,17 @@ if(isset( $_POST['titulo']) ) {
   $obProjeto->area_extensao = $_POST['area_extensao'];
   $obProjeto->linh_ext     =  $_POST['linh_ext'];
   $obProjeto->resumo       =  $_POST['resumo'];
-  $obProjeto->descricao    =  $_POST['descricao'];
+  
+
   $obProjeto->objetivos    =  $_POST['objetivos'];
   $obProjeto->public_alvo  =  $_POST['public_alvo'];
   $obProjeto->metodologia  =  $_POST['metodologia'];
-  $obProjeto->prodserv_espe   =  $_POST['prodserv_espe'];
+  
   $obProjeto->contribuicao    =  $_POST['contribuicao'];
-  $obProjeto->contrap_nofinac =  $_POST['contrap_nofinac'];
+  
   $obProjeto->municipios_abr  =  $_POST['municipios_abr'];
-  $obProjeto->n_cert_prev     =  $_POST['n_cert_prev'];
   $obProjeto->data            =  $_POST['data'];
-  $obProjeto->outs_info       =  $_POST['outs_info'];
+  // $obProjeto->outs_info       =  $_POST['outs_info'];
 
   $obProjeto->acec            =  $_POST['acec'];
   $obProjeto->vinculo         =  $_POST['vinculo'];
@@ -208,6 +227,26 @@ if(isset( $_POST['titulo']) ) {
   $obProjeto->last_result = 'n';
 
   $obProjeto->atualizar();
+
+  $palav1 = $_POST['palav1'];
+  $palav2 = $_POST['palav2'];
+  $palav3 = $_POST['palav3'];
+  
+  Palavras::excluir($obProjeto->id);
+
+  if(strlen($palav1) > 0 ){
+    $ObjPalav1 = new Palavras();   
+    $ObjPalav1->incluir($obProjeto->id, $palav1);
+  }
+  if(strlen($palav2) > 0 ){
+    $ObjPalav2 = new Palavras();
+    $ObjPalav2->incluir($obProjeto->id, $palav2);
+  }
+  if(strlen($palav3) > 0 ){
+    $ObjPalav3 = new Palavras();
+    $ObjPalav3->incluir($obProjeto->id, $palav3);
+  }
+  
   /*  $arqs = $_POST['anexos'];
 
   foreach($arqs as $arq){
@@ -228,8 +267,6 @@ $scriptVars  =
 '<script>
     let equipe = '. json_encode($equipe, JSON_NUMERIC_CHECK) . '
 </script>';
-// echo json_encode($equipe);
-
 
 include '../includes/header.php';
 

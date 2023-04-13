@@ -5,22 +5,27 @@ namespace App\Entity;
 use \App\Db\Database;
 use \PDO;
 
+
+
 class Palavras{
 
   public $idproj;
   public $palavra;
- 
-/**
-   * Método responsável por obter as registros do banco de dados
-   * @param  string $where
-   * @param  string $order
-   * @param  string $limit
-   * @return array
-   */
-  public static function getRegistros($where = null, $order = null, $limit = null){
-    return (new Database('palavras'))->select($where,$order,$limit)
-                                  ->fetchAll(PDO::FETCH_CLASS,self::class);
+
+/*
+  function __construct($idproj, $palavra){
+    $this->idproj = $idproj;
+    $this->palavra = $palavra;
+    $this->cadastrar();
   }
+
+  função constructor ficou dando erro...
+*/
+function incluir($idproj, $palavra){
+  $this->idproj = $idproj;
+  $this->palavra = $palavra;
+  $this->cadastrar();
+}
 
 /**
    * Método responsável por obter as registros do banco de dados
@@ -30,8 +35,8 @@ class Palavras{
    * @return array
    */
   public static function getPalavrasByProj($idproj){
-    return (new Database('palavras'))->select('idproj = "'. $idproj ."'")
-                                  ->fetchAll(PDO::FETCH_CLASS,self::class);
+     return (new Database('palavras'))->select(' idproj = "'.$idproj.'"')
+                                   ->fetchAll(PDO::FETCH_CLASS,self::class);
   }
 
 /**
@@ -53,7 +58,8 @@ class Palavras{
    * @return boolean
    */
   public static function excluir($idproj){
-    return (new Database('pareceres'))->delete('idproj = "'. $idproj ."'");
+    return (new Database('palavras'))->delete('idproj = "'.$idproj.'"');
+                                              
   }
 
 
@@ -64,7 +70,7 @@ class Palavras{
   public function cadastrar(){
     //DEFINIR A DATA
     // $this->data = date('Y-m-d H:i:s');
-    $obDatabase = new Database('pareceres');
+    $obDatabase = new Database('palavras');
         $obDatabase->insert([
                               'idproj' => $this->idproj,
                               'palavra' => $this->palavra

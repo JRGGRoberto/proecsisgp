@@ -129,7 +129,7 @@ if(isset($_POST['titulo'])){
   // $obProjeto->situacao     =  $_POST['situacao'];
 
 //  $obProjeto->regra    =  '6204ba97-7f1a-499e-a17d-118d305bf7e4';
-  $obProjeto->ver    =  $_POST['ver'];
+  $obProjeto->ver          =  $_POST['ver'];
   $obProjeto->area_cnpq    =  $_POST['area_cnpq'];  
   $obProjeto->area_tema1   =  $_POST['area_tema1'];
   $obProjeto->area_tema2   =  $_POST['area_tema2'];
@@ -176,13 +176,21 @@ if(isset($_POST['titulo'])){
  // 'updated_at' => date("Y-m-d H:i:s"),
   $obProjeto->user = $user['id'];
 
-  $obProjeto->cadastrar();
+  $idprjP =  $obProjeto->cadastrar();
 
-  $ObjPalav1 = new Palavras();
 
-  $ObjPalav2 = new Palavras();
-
-  $ObjPalav3 = new Palavras();
+  if(strlen($palav1) > 0 ){
+    $ObjPalav1 = new Palavras();   
+    $ObjPalav1->incluir($idprjP, $palav1);
+  }
+  if(strlen($palav2) > 0 ){
+    $ObjPalav2 = new Palavras();
+    $ObjPalav2->incluir($idprjP, $palav2);
+  }
+  if(strlen($palav3) > 0 ){
+    $ObjPalav3 = new Palavras();
+    $ObjPalav3->incluir($idprjP, $palav3);
+  }
 
  /* $arqs = $_POST['anexos'];
 
@@ -203,19 +211,18 @@ if(isset($_POST['titulo'])){
 }
 $anex = '';
 
-include '../includes/header.php';
-
-
-
-
 $scriptVars  = 
 "<script>
-  let dataAtual = new Date();
-  document.getElementByName('vigen_ini').valueAsDate = dataAtual;
-  document.getElementByName('vigen_fim').valueAsDate = dataAtual + 364;
-  document.getElementById('dateAssing').valueAsDate = dataAtual;
   let equipe = []; 
+  let dataAtual = new Date();
+  document.getElementById('vigen_ini').valueAsDate = dataAtual;
+  document.getElementById('dateAssing').valueAsDate = dataAtual;
+  dataAtual.setFullYear(dataAtual.getFullYear() + 1);
+  document.getElementById('vigen_fim').valueAsDate = dataAtual;
+  
 </script>";
+
+include '../includes/header.php';
 
 if(in_array($t, $anexoII)){
   include __DIR__.'/includes/formAnexoII.php';

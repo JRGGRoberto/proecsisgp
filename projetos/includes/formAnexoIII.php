@@ -175,14 +175,14 @@
           <div class="col-3">
             <div class="form-group">
               <label>Início vigência</label>
-              <input type="date" name="vigen_ini" class="form-control" value="<?= substr($obProjeto->vigen_ini, 0, 10) ?>" required>
+              <input type="date" name="vigen_ini" id="vigen_ini" class="form-control" value="<?= substr($obProjeto->vigen_ini, 0, 10) ?>" required>
             </div>
           </div>
           
           <div class="col-3">
             <div class="form-group">
               <label>Fim vigência</label>
-              <input type="date" name="vigen_fim" class="form-control" value="<?= substr($obProjeto->vigen_fim, 0, 10) ?>" required>
+              <input type="date" name="vigen_fim" id="vigen_fim" class="form-control" value="<?= substr($obProjeto->vigen_fim, 0, 10) ?>" required>
             </div>
           </div>
  
