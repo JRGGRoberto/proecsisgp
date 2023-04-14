@@ -8,7 +8,9 @@
     </a>
   </section>
 
-  <h3 class="mt-3"><?= TITLE ?></h3>
+  <hr>
+  <h4  style="text-align: center">ANEXO III</h4>
+  <h3 class="mt-3" style="text-align: center"><?= TITLE ?></h3>
   
     <form name="formAnexo" id="formAnexo"  method="post" enctype="multipart/form-data">
       <input type="hidden" name="id_prof" value="<?= $obProjeto->id_prof ?>">
@@ -51,7 +53,7 @@
         </div>
       </div>
 
-        <hr>
+      <hr>
 
       <div class="form-group">
         <label>
@@ -62,6 +64,7 @@
           <option value="N" <?= ($obProjeto->acec == 'N') ? 'selected' : ' ' ?>>Não</option>
         </select>
       </div>
+
       <hr>
 
       <div class="form-group">
@@ -103,6 +106,7 @@
         </div>
 
         <hr>
+
         <label>
           <h5><?= ++$n ?>. Período de vigência</h5>
         </label>
@@ -147,15 +151,15 @@
           <h5><?= ++$n ?>. Dimensão</h5>
         </label>
        
-            <div class="form-group">
-              <label>Publico Alvo</label>
-              <input type="text" name="public_alvo" class="form-control" value="<?= $obProjeto->public_alvo ?>">
-            </div>
-       
-            <div class="form-group">
-              <label for="municipios_abr">Abrangência (região e/ou municípios)</label>
-              <input type="text" name="municipios_abr" class="form-control" value="<?= $obProjeto->municipios_abr ?>">
-            </div>
+        <div class="form-group">
+          <label>Publico Alvo</label>
+          <input type="text" name="public_alvo" class="form-control" value="<?= $obProjeto->public_alvo ?>">
+        </div>
+    
+        <div class="form-group">
+          <label for="municipios_abr">Abrangência (região e/ou municípios)</label>
+          <input type="text" name="municipios_abr" class="form-control" value="<?= $obProjeto->municipios_abr ?>">
+        </div>
        
         <hr>
 
@@ -204,6 +208,7 @@
             }
           </script>
         </div>
+
         <hr>
 
         <label>
@@ -251,6 +256,7 @@
         </div>
 
         <hr>
+
         <label>
           <h5><?= ++$n ?>. Equipe da prosposta</h5>
         </label>
@@ -272,33 +278,27 @@
           </table>
         </div>
 
-
         <hr>
-
-        
-            <div class="form-group">
-              <label><h5><?= ++$n ?>. Resumo do Projeto e Palavras-chaves</h5></label>
-              
-                <label for="resumo">Resumo do Projeto</label>
-                <textarea class="form-control" name="resumo" rows="10" placeholder="Descrever o resumo da ação de extensão (no máximo 250 palavras), destacando sua relevância na perspectiva acadêmica e social, o público a que se destina e o resultado esperado. Este texto poderá ser publicado na homepage da PROEC, portanto, recomenda-se revisá-lo corretamente."><?= $obProjeto->resumo ?></textarea>
-
-                <label for="palavras">Palavras-chave
-                  <div class="row"> 
-                    <div class="col-4">
-                        <input type="text" class="form-control" name="palav1" id="palav1" value="<?= $palav1 ?>">
-                    </div>
-                    <div class="col-4">
-                        <input type="text" class="form-control" name="palav2" id="palav2" value="<?= $palav2 ?>">
-                    </div>
-                    <div class="col-4">
-                        <input type="text" class="form-control" name="palav3" id="palav3" value="<?= $palav3 ?>">
-                    </div>
-                  </div>
-                </label>
-              
-            </div>
+       
+        <div class="form-group">
+          <label><h5><?= ++$n ?>. Resumo do Projeto e Palavras-chaves</h5></label>
           
-            
+        <label for="resumo">Resumo do Projeto</label>
+        <textarea class="form-control" name="resumo" rows="10" placeholder="Descrever o resumo da ação de extensão (no máximo 250 palavras), destacando sua relevância na perspectiva acadêmica e social, o público a que se destina e o resultado esperado. Este texto poderá ser publicado na homepage da PROEC, portanto, recomenda-se revisá-lo corretamente."><?= $obProjeto->resumo ?></textarea>
+        <label for="palavras">Palavras-chave
+          <div class="row"> 
+            <div class="col-4">
+                <input type="text" class="form-control" name="palav1" id="palav1" value="<?= $palav1 ?>">
+            </div>
+            <div class="col-4">
+                <input type="text" class="form-control" name="palav2" id="palav2" value="<?= $palav2 ?>">
+            </div>
+            <div class="col-4">
+                <input type="text" class="form-control" name="palav3" id="palav3" value="<?= $palav3 ?>">
+            </div>
+          </div>
+            </label>
+        </div>
 
         <hr>
 
@@ -313,6 +313,8 @@
           </div>
         </div>
 
+        <hr>
+
         <div class="row">
           <div class="col">
             <div class="form-group">
@@ -323,6 +325,8 @@
             </div>
           </div>
         </div>
+
+        <hr>
 
         <div class="row">
           <div class="col">
@@ -335,6 +339,8 @@
           </div>
         </div>
 
+        <hr>
+
         <div class="row">
           <div class="col">
             <div class="form-group">
@@ -345,6 +351,8 @@
             </div>
           </div>
         </div>
+
+        <hr>
 
         <div class="row">
           <div class="col">
@@ -359,6 +367,7 @@
 
 
         <hr>
+      
         <div class="row">
           <div class="col">
             <div class="form-group">
@@ -371,8 +380,8 @@
         </div>
 
         <hr>
-        <div class="row">
 
+        <div class="row">
           <div class="col-3">
             <div class="form-group">
               <label>Data</label>

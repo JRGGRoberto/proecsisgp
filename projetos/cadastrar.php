@@ -209,8 +209,6 @@ if(isset($_POST['titulo'])){
     $ObjPalav3->incluir($idprjP, $palav3);
   }
 
-
-  Equipe::excluir($obProjeto->id);
   $equipeJS =  $_POST['equipeJS'];
   $arrEq = json_decode($equipeJS , true);
   $index = 1;
@@ -227,8 +225,6 @@ if(isset($_POST['titulo'])){
     );
     $index++;
   }
-
-
 
  /* $arqs = $_POST['anexos'];
 
