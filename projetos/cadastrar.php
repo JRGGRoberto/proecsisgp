@@ -56,7 +56,6 @@ if (isset($_POST['acao']) == 'removeAnexo'){
     exit;
 }
 
-
 use \App\Entity\Area_Cnpq;
 $areas_cnpq1 = Area_Cnpq::getRegistros();
 $selectAreaCNPQ = '';
@@ -72,8 +71,6 @@ foreach($proposta as $prop){
   $propOptions .= '<option value="'.$prop->id.'" '.$prop->sel.'>'.$prop->nome.'</option>';
 }
 */
-use \App\Entity\Tipo_exten;
-$proposta = Tipo_exten::getRegistro($obProjeto->id);
 
 
 use \App\Entity\Area_temat;
