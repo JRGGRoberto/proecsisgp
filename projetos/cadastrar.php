@@ -105,6 +105,7 @@ use  \App\Entity\Arquivo;
 
 //VALIDAÇÃO DO POST
 if(isset($_POST['titulo'])){
+  $obProjeto->ver          =  $_POST['ver'];
   $obProjeto->id_prof      =  $user['id'];
   $obProjeto->nome_prof    =  $user['nome'];
   $obProjeto->tipo_exten   =  $t;
@@ -112,7 +113,8 @@ if(isset($_POST['titulo'])){
   $obProjeto->tide         =  $_POST['tide'];
   $obProjeto->vigen_ini    =  $_POST['vigen_ini'];
   $obProjeto->vigen_fim    =  $_POST['vigen_fim'];
-  $obProjeto->ver          =  $_POST['ver'];
+  
+  $obProjeto->referencia    = $_POST['referencia'];
   if (in_array($t, $anexoII)) {
     if($_POST['ch_semanal'] == null){
       $obProjeto->ch_semanal   =  0;  
@@ -124,9 +126,7 @@ if(isset($_POST['titulo'])){
     $obProjeto->area_tema2    = $_POST['area_tema2'];
     $obProjeto->area_extensao = $_POST['area_extensao'];
     $obProjeto->linh_ext      = $_POST['linh_ext'];
-    $obProjeto->referencia    = $_POST['referencia'];
     $obProjeto->contribuicao  = $_POST['contribuicao'];
-    
   }
 
   if (in_array($t, $anexoIII)) {
@@ -150,9 +150,7 @@ if(isset($_POST['titulo'])){
   $obProjeto->n_cert_prev     =  $_POST['n_cert_prev'];
   $obProjeto->data            =  $_POST['data'];
   $obProjeto->outs_info       =  $_POST['outs_info'];
-
   $obProjeto->acec            =  $_POST['acec'];
-
   $obProjeto->vinculo         =  $_POST['vinculo'];
   if($obProjeto->vinculo == 'S'){
     $obProjeto->tituloprogvinc  =  $_POST['tituloprogvinc'];
@@ -223,17 +221,15 @@ if(isset($_POST['titulo'])){
     $index++;
   }
 
- /* $arqs = $_POST['anexos'];
+  $arqs = $_POST['anexos'];
 
   foreach($arqs as $arq){
     $dados = Arquivo::getArquivo($arq);
-    $dados->tabela = $_POST['tabela'];
-    $dados->id_tab = $id_proj ;
-    $dados->user = $user['id'];
+    $dados->tabela = 'projetos';
+    $dados->id_tab = $idprjP ;
+    $dados->user = $obProjeto->user;
     $dados->atualizar();
-  } */
-
-  //$municios->atualiza($id_proj, $_POST['id_munic']);
+  }
 
   header('location: index.php?status=success');
   exit;

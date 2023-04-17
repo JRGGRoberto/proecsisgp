@@ -10,8 +10,8 @@
   <hr>
   <h4  style="text-align: center">ANEXO II</h4>
   <h3 class="mt-3" style="text-align: center"><?= TITLE ?></h3>
-
-    <form name="formAnexo" id="formAnexo"  method="post" enctype="multipart/form-data">
+                                     
+    <form name="formAnexo" id="formAnexo"  method="POST" enctype="multipart/form-data">
       <input type="hidden" name="id_prof" value="<?= $obProjeto->id_prof ?>">
       <input type="hidden" name="tabela" value="projetos">
       <hr>
@@ -21,6 +21,7 @@
         </label>
         <input type="text" class="form-control" required name="titulo" value="<?= $obProjeto->titulo ?>">
       </div>
+      <input type="hidden" name="tabela" value="projetos">
 
       <hr>
 
@@ -438,6 +439,14 @@
           </div>
         </div>
 
+
+        <hr>
+        <div class="form-group">
+          <h5><?= ++$n ?>. Anexos</h5>
+          <ul id="anexos"></ul>
+          <iframe src="../upload/upload.php" frameborder="0" scrolling="no"></iframe>
+          <?= $anex ?>
+        </div>
         <hr>
         <div class="row">
 
@@ -449,12 +458,6 @@
           </div>
         </div>
 
-    <div class="form-group">
-      <h5><?= ++$n ?>. Anexos</h5>
-      <ul id="anexos"></ul>
-      <iframe src="../upload/upload.php" frameborder="0" scrolling="no"></iframe>
-      <?= $anex ?>
-    </div>
 
         <div class="form-group">
           <a href="javascript: submitSalvar()" class="btn btn-success" >✔️ Salvar</a>

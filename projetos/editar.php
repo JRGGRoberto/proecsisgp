@@ -1,18 +1,14 @@
 <?php
 require '../vendor/autoload.php';
-
-
-ini_set('display_errors', 1);
-ini_set('display_startup_errors', 1);
-error_reporting(E_ALL);
-
 use \App\Session\Login;
+Login::requireLogin();
+
 use \App\Entity\Projeto;
 
 use \App\Entity\Equipe;
 use \App\Entity\Palavras;
 
-Login::requireLogin();
+
 $user = Login::getUsuarioLogado();
 
 $mensagem = '';
@@ -28,7 +24,6 @@ if(isset($_GET['status'])){
   }
 }
 
-
 //VALIDAÇÃO DO ID
 if(!isset($_GET['id'], $_GET['v'])){
   header('location: index.php?status=error');
@@ -36,7 +31,6 @@ if(!isset($_GET['id'], $_GET['v'])){
 }
 $id = $_GET['id'];
 $ver = $_GET['v'];
-
 
 //CONSULTA AO PROJETO
 $obProjeto = new Projeto();
@@ -61,7 +55,6 @@ foreach($areas_cnpq1 as $ar_cnpq){
   $selectAreaCNPQ .= '<option value="'.$ar_cnpq->id.'" '.$ar_cnpq->sel.'>'.$ar_cnpq->nome.'</option>';
 }
 
-
 use \App\Entity\Area_temat;
 $area_tem1 = Area_temat::getRegistros($obProjeto->id);
 $areaOptions = '';
@@ -83,60 +76,22 @@ foreach($area_ext as $aext){
   $area_ext_Opt .= '<option value="'.$aext->id.'" '.$aext->sel.'>'.$aext->nome.'</option>';
 }
 
-
 use \App\Entity\Professor;
 $dadosProf = Professor::getDadosProf($obProjeto->id_prof);
 
-// $x = Login::getUsuarioLogado();
-
-/*
-
-use \App\Entity\Colegiado;
-$coolSe = Colegiado::getRegistrosSelect($obProjeto->id, $x['co_id']);
-$coolSelectSend = '';
-foreach($coolSe as $co){
-  $coolSelectSend .= '<option value="'.$co->id.'" '.$co->sel.'>'.$co->nome.'</option>';
-}
-
-*/
-/*
-use \App\Entity\Tipo_exten;
-$proposta = Tipo_exten::getRegistros($obProjeto->id);
-$propOptions = '';
-foreach($proposta as $prop){
-  $propOptions .= '<option value="'.$prop->id.'" '.$prop->sel.'>'.$prop->nome.'</option>';
-}
-*/
-use \App\Entity\Tipo_exten;
-$proposta = Tipo_exten::getRegistro($obProjeto->id);
-
-
-
 use \App\Entity\Arquivo;
-
 $anexados = Arquivo::getAnexados('projetos', $obProjeto->id);
 $anex = '<ul id="anexos_edt">';
 foreach($anexados as $att){
   $anex .= 
   '<li>
-      <a href="../upload/uploads/'.$att->nome_rand.'" target="_blank">'.$att->nome_orig.'</a> 
+      <a href="/home/sistemaproec/www/sistema/upload/uploads/'.$att->nome_rand.'" target="_blank">'.$att->nome_orig.'</a> 
       <a href="../arquiv/index.php?tab='.$att->tabela. '&id='.$att->id_tab. '&arq='.$att->nome_rand.'" >  
         <span class="badge badge-danger">Excluir</span>
       </a>
   </li> ';
 }
 $anex .= '</ul>';
-
-
-
-/*CONSULTA AO PROFESSOR
-$obProfessor = Professor::getProfessor($obProjeto->id_prof);
-echo '<pre>';
-print_r($obProjeto);
-echo '<hr>';
-print_r($obProfessor);
-echo '</pre>';
-*/
 
 $t = $obProjeto->tipo_exten;
 $anexoIII  = [1, 2];
@@ -164,15 +119,28 @@ switch($t) {
     exit;
 }
 
-
 //VALIDAÇÃO DO POST
 if(isset( $_POST['titulo']) ) {
-
   $obProjeto->tipo_exten   =  $t;
   $obProjeto->titulo       =  $_POST['titulo'];
   $obProjeto->tide         =  $_POST['tide'];
   $obProjeto->vigen_ini    =  $_POST['vigen_ini'];
   $obProjeto->vigen_fim    =  $_POST['vigen_fim'];
+  $obProjeto->referencia   =  $_POST['referencia'];
+  $obProjeto->resumo       =  $_POST['resumo'];
+  $obProjeto->objetivos    =  $_POST['objetivos'];
+  $obProjeto->public_alvo  =  $_POST['public_alvo'];
+  $obProjeto->metodologia  =  $_POST['metodologia'];
+  $obProjeto->municipios_abr  =  $_POST['municipios_abr'];
+  $obProjeto->data            =  $_POST['data'];
+  $obProjeto->acec            =  $_POST['acec'];
+  $obProjeto->vinculo         =  $_POST['vinculo'];
+  $obProjeto->justificativa   =  $_POST['justificativa'];
+  $obProjeto->cronograma      =  $_POST['cronograma'];
+  $obProjeto->parceria        =  $_POST['parceria'];
+  $obProjeto->updated_at = date("Y-m-d H:i:s");
+  $obProjeto->user = $user['id'];
+  $obProjeto->last_result = 'n';
 
   if (in_array($t, $anexoII)) {
     $obProjeto->ch_semanal    = $_POST['ch_semanal'];
@@ -181,16 +149,12 @@ if(isset( $_POST['titulo']) ) {
     $obProjeto->area_tema2    = $_POST['area_tema2'];
     $obProjeto->area_extensao = $_POST['area_extensao'];
     $obProjeto->linh_ext      = $_POST['linh_ext'];
-    $obProjeto->referencia    = $_POST['referencia'];
     $obProjeto->contribuicao  = $_POST['contribuicao'];
-    
   }
 
   if (in_array($t, $anexoIII)) {
-    $obProjeto->ch_total     =  $_POST['ch_total'];
-    
+    $obProjeto->ch_total     =  $_POST['ch_total']; 
   }
-  
 
   /* não aceito no anexo III
   
@@ -198,25 +162,7 @@ if(isset( $_POST['titulo']) ) {
   $obProjeto->prodserv_espe   =  $_POST['prodserv_espe'];
   $obProjeto->n_cert_prev     =  $_POST['n_cert_prev'];
   */
-
-
-
-  $obProjeto->resumo       =  $_POST['resumo'];
   
-
-  $obProjeto->objetivos    =  $_POST['objetivos'];
-  $obProjeto->public_alvo  =  $_POST['public_alvo'];
-  $obProjeto->metodologia  =  $_POST['metodologia'];
-  
-  
-  
-  $obProjeto->municipios_abr  =  $_POST['municipios_abr'];
-  $obProjeto->data            =  $_POST['data'];
-  // $obProjeto->outs_info       =  $_POST['outs_info'];
-
-  $obProjeto->acec            =  $_POST['acec'];
-  
-  $obProjeto->vinculo         =  $_POST['vinculo'];
   if($obProjeto->vinculo == 'S'){
     $obProjeto->tituloprogvinc  =  $_POST['tituloprogvinc'];
   } else {
@@ -232,11 +178,6 @@ if(isset( $_POST['titulo']) ) {
     $obProjeto->finacval   = null;
   }
 
-
-  $obProjeto->justificativa    =  $_POST['justificativa'];
-  $obProjeto->cronograma       =  $_POST['cronograma'];
-  
-  $obProjeto->parceria       =  $_POST['parceria'];
   if($obProjeto->parceria == 'S'){
     $obProjeto->parcaatribuic  =  $_POST['parcaatribuic'];
     $obProjeto->parcanomes     =  $_POST['parcanomes'];
@@ -245,14 +186,7 @@ if(isset( $_POST['titulo']) ) {
     $obProjeto->parcanomes     =  null;
   }
 
-  
-
-  //$obProjeto->para_avaliar    =  $_POST['para_avaliar'];
-  $obProjeto->updated_at = date("Y-m-d H:i:s");
-  $obProjeto->user = $user['id'];
-  $obProjeto->last_result = 'n';
-
- // $obProjeto->atualizar();
+  $obProjeto->atualizar();
 
   $palav1 = $_POST['palav1'];
   $palav2 = $_POST['palav2'];
@@ -290,12 +224,10 @@ if(isset( $_POST['titulo']) ) {
     $index++;
   }
 
-  
   $arqs = $_POST['anexos'];
-
   foreach($arqs as $arq){
     $dados = Arquivo::getArquivo($arq);
-    $dados->tabela = 'projetos';
+    $dados->tabela = $_POST['tabela'];
     $dados->id_tab = $obProjeto->id;
     $dados->user = $obProjeto->user;
     $dados->atualizar();

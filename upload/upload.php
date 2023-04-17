@@ -11,7 +11,6 @@ error_reporting(E_ALL);
 ini_set("upload_tmp_dir", "/home/sistemaproec/www/teste/tmp");
 $tmp_dir = ini_get('upload_tmp_dir') ? ini_get('upload_tmp_dir') : sys_get_temp_dir();
 
-
 // Flag que indica se há erro ou não
 $erro = null;
 // Quando enviado o formulário
@@ -20,7 +19,8 @@ if (isset($_FILES['arquivo']))
     // Configurações
     $extensoes = array(".doc", ".txt", ".pdf", ".docx", ".jpg", ".png");
     // $caminho = "uploads/";
-    $caminho = "/home/sistemaproec/www/sist/upload/uploads/";
+    //$caminho = "/home/sistemaproec/www/sist/upload/uploads/";
+    $caminho = "/home/sistemaproec/www/sistema/upload/uploads/";
     // Recuperando informações do arquivo
     $nome = $_FILES['arquivo']['name']; 
     $temp = $_FILES['arquivo']['tmp_name'];

@@ -12,7 +12,7 @@
   <h4  style="text-align: center">ANEXO III</h4>
   <h3 class="mt-3" style="text-align: center"><?= TITLE ?></h3>
   
-    <form name="formAnexo" id="formAnexo"  method="post" enctype="multipart/form-data">
+    <form name="formAnexo" id="formAnexo"  method="POST" enctype="multipart/form-data">
       <input type="hidden" name="id_prof" value="<?= $obProjeto->id_prof ?>">
       <input type="hidden" name="tabela" value="projetos">
       <hr>
@@ -22,6 +22,7 @@
         </label>
         <input type="text" class="form-control" required name="titulo" value="<?= $obProjeto->titulo ?>">
       </div>
+      <input type="hidden" name="tabela" value="projetos">
 
       <hr>
 
@@ -127,8 +128,8 @@
  
           <div class="col-3">
             <div class="form-group">
-              <label>Carga Horária tatal:</label>
-              <input type="number" min=0 max=44 class="form-control" name="ch_semanal" value="<?= $obProjeto->ch_semanal ?>">
+              <label>Carga Horária total:</label>
+              <input type="number" min=0 max=44 class="form-control" name="ch_total" value="<?= $obProjeto->ch_total ?>">
               
             </div>
           </div>
@@ -386,8 +387,8 @@
           <iframe src="../upload/upload.php" frameborder="0" scrolling="no"></iframe>
           <?= $anex ?>
         </div>
-        <hr>
 
+        <hr>
         <div class="row">
           <div class="col-3">
             <div class="form-group">

@@ -43,8 +43,7 @@ if(isset($_POST['excluir'])){
     unlink($caminho . $objArquivo->nome_rand);
   $objArquivo->excluir();
   
-//  header('location: ../'.$objArquivo->tabela.'/editar.php?id='.$id_tab);
-  header('Location: ' . $_SERVER['HTTP_REFERER']);
+  header('location: ../'.$objArquivo->tabela.'/editar.php?id='.$id_tab);
 
   exit;
 }
