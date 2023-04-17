@@ -113,8 +113,7 @@ $proposta = Tipo_exten::getRegistro($obProjeto->id);
 
 
 use \App\Entity\Arquivo;
-/*
-use \App\Entity\Arquivo;
+
 $anexados = Arquivo::getAnexados('projetos', $obProjeto->id);
 $anex = '<ul id="anexos_edt">';
 foreach($anexados as $att){
@@ -127,7 +126,7 @@ foreach($anexados as $att){
   </li> ';
 }
 $anex .= '</ul>';
-*/
+
 
 
 /*CONSULTA AO PROFESSOR
@@ -292,16 +291,16 @@ if(isset( $_POST['titulo']) ) {
   }
 
   
-  /*  $arqs = $_POST['anexos'];
+  $arqs = $_POST['anexos'];
 
   foreach($arqs as $arq){
     $dados = Arquivo::getArquivo($arq);
-    $dados->tabela = $_POST['tabela'];
-    $dados->id_tab = $obProjeto->id; 
+    $dados->tabela = 'projetos';
+    $dados->id_tab = $obProjeto->id;
     $dados->user = $obProjeto->user;
     $dados->atualizar();
   }
-  */
+
   header('location: ./index.php?status=success');
   exit;
 }

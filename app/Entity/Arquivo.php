@@ -105,7 +105,7 @@ class Arquivo{
            anexos a
          where 
            a.tabela = '". $tabela ."'
-           and a.id_tab = ". $id_tab;
+           and a.id_tab = '". $id_tab ."'";
 
     return (new Database())->selectJ($sql)
       ->fetchAll(PDO::FETCH_CLASS,self::class);

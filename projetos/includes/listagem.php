@@ -130,12 +130,6 @@
     </div>
     <div class="row">
         <div class="col-sm"><strong>Enviado para o colegiado de:</strong> '.$col.'</div> 
-        
-    </div>
-    <div class="row">
-        
-        <div class="col-sm-6"><strong>Área de extensão:</strong> '.$proj->area_extensao.'</div> 
-        <div class="col-sm-6"><strong>Linha de extensão:</strong> '.$proj->linh_ext.'</div>
     </div>
   </div>
 

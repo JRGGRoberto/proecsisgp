@@ -448,14 +448,14 @@
             </div>
           </div>
         </div>
-        <!--
+
     <div class="form-group">
-      <h4>Anexos</h4>
+      <h5><?= ++$n ?>. Anexos</h5>
       <ul id="anexos"></ul>
       <iframe src="../upload/upload.php" frameborder="0" scrolling="no"></iframe>
       <?= $anex ?>
     </div>
--->
+
         <div class="form-group">
           <a href="javascript: submitSalvar()" class="btn btn-success" >✔️ Salvar</a>
         </div>

@@ -380,6 +380,13 @@
         </div>
 
         <hr>
+        <div class="form-group">
+          <h5><?= ++$n ?>. Anexos</h5>
+          <ul id="anexos"></ul>
+          <iframe src="../upload/upload.php" frameborder="0" scrolling="no"></iframe>
+          <?= $anex ?>
+        </div>
+        <hr>
 
         <div class="row">
           <div class="col-3">
@@ -389,14 +396,7 @@
             </div>
           </div>
         </div>
-        <!--
-    <div class="form-group">
-      <h4>Anexos</h4>
-      <ul id="anexos"></ul>
-      <iframe src="../upload/upload.php" frameborder="0" scrolling="no"></iframe>
-      <?= $anex ?>
-    </div>
--->
+
         <div class="form-group">
           <a href="javascript: submitSalvar()" class="btn btn-success" >✔️ Salvar</a>
         </div>
