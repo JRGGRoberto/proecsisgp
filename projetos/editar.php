@@ -7,6 +7,7 @@ use \App\Entity\Projeto;
 
 use \App\Entity\Equipe;
 use \App\Entity\Palavras;
+use \App\Entity\Arquivo;
 
 $user = Login::getUsuarioLogado();
 
@@ -78,8 +79,6 @@ foreach($area_ext as $aext){
 use \App\Entity\Professor;
 $dadosProf = Professor::getDadosProf($obProjeto->id_prof);
 
-
-use \App\Entity\Arquivo;
 $anexados = Arquivo::getAnexados('projetos', $obProjeto->id);
 $anex = '<ul id="anexos_edt">';
 foreach($anexados as $att){
@@ -119,6 +118,7 @@ switch($t) {
 }
 
 $equipe = Equipe::getMembProj($obProjeto->id);
+
 
 $scriptVars  = 
 '<script>
@@ -231,18 +231,44 @@ if(isset( $_POST['titulo']) ) {
   }
 
   $anexosJS = $_POST['anexosJS'];
-  $anexosJS = $_POST['anexosJS'];
+  $anexosJS = str_replace('[','(',$anexosJS);
+  $anexosJS = str_replace(']',')',$anexosJS);
+  $arr[] = $anexosJS;
+  echo $anexosJS;
+  echo '<hr>';
+  echo '<pre>';
+  print_r($anexosJS);
+  echo '</pre>';
+  echo $arr[0];
+ /* 
+  foreach($anexosJS as $key => $anx) {
+    echo "code: ". $anx . "<br>";
+  }
+
+/*
   foreach ($anexosJS as &$anx) {
-    $dados = Arquivo::getArquivo($$anx);
+    $dados = Arquivo::getArquivo($anx);
+    echo '<pre>';
+    print_r($anexosJS);
+    echo '</pre><hr>';
     $dados->tabela = $_POST['tabela'];
     $dados->id_tab = $obProjeto->id;
     $dados->user = $obProjeto->user;
     $dados->atualizar();
+    echo '<hr>After atualizar<hr>';
+    echo '<pre>';
+    print_r($dados);
+    echo '</pre><hr>';
   }
+*/
 
-  header('location: ./index.php?status=success');
+
+  //header('location: ./index.php?status=success');
   exit;
 }
+/**
+ * Chama as partes e realiza alguns testes de valiação
+ */
 
 include '../includes/header.php';
 

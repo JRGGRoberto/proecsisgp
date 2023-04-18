@@ -57,13 +57,26 @@ class Arquivo{
   }
 
   /**
-   * Método responsável por buscar uma Pessoa com base em seu ID
-   * @param  string $id
+   * Método responsável por buscar uma Arquivo com base em seu nome_rand
+   * @param  string $nome_rand
    * @return Arquivo
    */
   public static function getArquivo($nome_rand){
-    return (new Database('anexos'))->select(' nome_rand = "'.$nome_rand.'"')
-                                  ->fetchObject(self::class);
+    /*return (new Database('anexos'))->select('nome_rand = "'.$nome_rand.'"')
+               ->fetchObject(self::class);
+               */
+    $sql = "
+    select 
+      a.nome_rand,
+      a.nome_orig,
+      a.tabela,
+      a.id_tab
+    from 
+      anexos a
+    where 
+      a.nome_rand = '". $nome_rand."' limit 1";
+    return (new Database())->selectJ($sql)
+       ->fetchObject(self::class);
   }
 
   /**

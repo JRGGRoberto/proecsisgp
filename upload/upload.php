@@ -73,7 +73,7 @@ if (isset($_FILES['arquivo']))
         <?php elseif (isset($nome)): // Se não houver erro e o arquivo foi enviado ?>
         
             // Adicionamos um item na lista (ul) que tem ID igual a "anexos"
-            $('#anexos', pai).append('<li lang="<?php echo 'A'.$nomeAleatorio ?>"><?php echo $nome ?><img src="../imgs/remove.png" alt="Remover" class="remover" onclick="removeAnexo(this)" \/> </li>');
+            $('#anexos', pai).append('<li lang="<?php echo $nomeAleatorio ?>"><?php echo $nome ?><img src="../imgs/remove.png" alt="Remover" class="remover" onclick="removeAnexo(this)" \/> </li>');
             
         <?php endif ?>
         
