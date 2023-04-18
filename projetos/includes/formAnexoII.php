@@ -472,6 +472,7 @@
         </div>
 
         <input id="equipeJS" name="equipeJS" type="text" hidden>
+        <input id="anexosJS" name="anexosJS" type="text" hidden>
 
 
     </form>
@@ -517,10 +518,20 @@
 
 <script>
 
-function submitEqupeJSON() {
+function submitJSON() {
+  // Equipe
   document.getElementById('equipeJS').value = '';
   var JsonEquipe = JSON.stringify(equipe);
   document.getElementById('equipeJS').value = JsonEquipe;
+
+  //Anexos
+  document.getElementById('anexosJS').value = '';
+  let anx =[];
+  for (var i = 0; i < anexos.childElementCount; i++) {
+   anx.push(anexos.childNodes[i].lang);
+  }
+  anx = JSON.stringify(anx);
+  document.getElementById('anexosJS').value = anx;
 }  
 
 function submitSalvar(){
@@ -537,7 +548,7 @@ function submitSalvar(){
     return;
   }
 
-  submitEqupeJSON();
+  submitJSON();
   
   document.formAnexo.submit();
 }

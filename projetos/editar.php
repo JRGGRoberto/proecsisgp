@@ -8,7 +8,6 @@ use \App\Entity\Projeto;
 use \App\Entity\Equipe;
 use \App\Entity\Palavras;
 
-
 $user = Login::getUsuarioLogado();
 
 $mensagem = '';
@@ -79,6 +78,7 @@ foreach($area_ext as $aext){
 use \App\Entity\Professor;
 $dadosProf = Professor::getDadosProf($obProjeto->id_prof);
 
+
 use \App\Entity\Arquivo;
 $anexados = Arquivo::getAnexados('projetos', $obProjeto->id);
 $anex = '<ul id="anexos_edt">';
@@ -96,7 +96,6 @@ $anex .= '</ul>';
 $t = $obProjeto->tipo_exten;
 $anexoIII  = [1, 2];
 $anexoII   = [3, 4, 5];
-
 
 switch($t) {
   case 1: 
@@ -118,6 +117,13 @@ switch($t) {
     header('location: index.php?status=error');
     exit;
 }
+
+$equipe = Equipe::getMembProj($obProjeto->id);
+
+$scriptVars  = 
+'<script>
+    let equipe = '. json_encode($equipe, JSON_NUMERIC_CHECK) . '
+</script>';
 
 //VALIDAÇÃO DO POST
 if(isset( $_POST['titulo']) ) {
@@ -224,9 +230,10 @@ if(isset( $_POST['titulo']) ) {
     $index++;
   }
 
-  $arqs = $_POST['anexos'];
-  foreach($arqs as $arq){
-    $dados = Arquivo::getArquivo($arq);
+  $anexosJS = $_POST['anexosJS'];
+  $anexosJS = $_POST['anexosJS'];
+  foreach ($anexosJS as &$anx) {
+    $dados = Arquivo::getArquivo($$anx);
     $dados->tabela = $_POST['tabela'];
     $dados->id_tab = $obProjeto->id;
     $dados->user = $obProjeto->user;
@@ -236,13 +243,6 @@ if(isset( $_POST['titulo']) ) {
   header('location: ./index.php?status=success');
   exit;
 }
-
-$equipe = Equipe::getMembProj($obProjeto->id);
-
-$scriptVars  = 
-'<script>
-    let equipe = '. json_encode($equipe, JSON_NUMERIC_CHECK) . '
-</script>';
 
 include '../includes/header.php';
 

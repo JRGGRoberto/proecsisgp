@@ -309,7 +309,7 @@
 
 
 <!-- The Modal -->
-  <div class="modal" id="modalSub">
+  <div class="modal fade" id="modalSub">
     <div class="modal-dialog modal-dialog-scrollable">
       <div class="modal-content">
       
