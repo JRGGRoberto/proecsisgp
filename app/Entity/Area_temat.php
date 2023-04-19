@@ -27,7 +27,8 @@ class Area_temat{
             p.area_tema1  = a1.id 
           and 
             (p.id, p.ver) = 
-            (select id, max(ver) from projetos p2  where id = '" . $id ."')";
+            (select id, max(ver) from projetos p2  where id = '" . $id ."')
+      order by a1.nome";
 
     return (new Database('area_tematica'))->selectJ($sql)
       ->fetchAll(PDO::FETCH_CLASS,self::class);

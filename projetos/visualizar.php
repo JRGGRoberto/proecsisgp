@@ -69,22 +69,15 @@ foreach($proposta as $prop){
 }
 
 use \App\Entity\Arquivo;
-/*
-use \App\Entity\Arquivo;
 $anexados = Arquivo::getAnexados('projetos', $obProjeto->id);
 $anex = '<ul id="anexos_edt">';
 foreach($anexados as $att){
   $anex .= 
   '<li>
-      <a href="../upload/uploads/'.$att->nome_rand.'" target="_blank">'.$att->nome_orig.'</a> 
-      <a href="../arquiv/index.php?tab='.$att->tabela. '&id='.$att->id_tab. '&arq='.$att->nome_rand.'" >  
-        <span class="badge badge-danger">Excluir</span>
-      </a>
+      <a href="../upload/uploads/'.$att->nome_rand.'" target="_blank">'.$att->nome_orig.'</a>    
   </li> ';
 }
 $anex .= '</ul>';
-*/
-
 
 define('TITLE','Visualizar informações do projeto');
 

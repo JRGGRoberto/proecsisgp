@@ -190,7 +190,6 @@ if(isset($_POST['titulo'])){
 
   $idprjP =  $obProjeto->cadastrar();
 
-
   if(strlen($palav1) > 0 ){
     $ObjPalav1 = new Palavras();   
     $ObjPalav1->incluir($idprjP, $palav1);
@@ -203,6 +202,7 @@ if(isset($_POST['titulo'])){
     $ObjPalav3 = new Palavras();
     $ObjPalav3->incluir($idprjP, $palav3);
   }
+  
 
   $equipeJS =  $_POST['equipeJS'];
   $arrEq = json_decode($equipeJS , true);
@@ -211,7 +211,7 @@ if(isset($_POST['titulo'])){
     $objMembro = new Equipe();
     $objMembro->incluir(
       $index,
-      $obProjeto->id,
+      $idprjP,
       $memb['nome'],
       $memb['instituicao'],
       $memb['formacao'],
@@ -221,19 +221,18 @@ if(isset($_POST['titulo'])){
     $index++;
   }
 
-  $arqs = $_POST['anexos'];
-
-  foreach($arqs as $arq){
-    $dados = Arquivo::getArquivo($arq);
-    $dados->tabela = 'projetos';
-    $dados->id_tab = $idprjP ;
+  $anexosJS = json_decode($_POST['anexosJS']);
+  foreach ($anexosJS as &$anx) {
+    $dados = Arquivo::getArquivo($anx);
+    $dados->tabela = $_POST['tabela'];
+    $dados->id_tab = $idprjP;
     $dados->user = $obProjeto->user;
     $dados->atualizar();
   }
 
   header('location: index.php?status=success');
   exit;
-
+  
   
 }
 $anex = '';

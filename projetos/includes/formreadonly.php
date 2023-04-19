@@ -350,14 +350,13 @@ switch($t) {
     
 
 
-    <!--
+    
     <div class="form-group">
       <h4>Anexos</h4>
       <ul id="anexos"></ul>
-      <iframe src="../upload/upload.php" frameborder="0" scrolling="no"></iframe>
       <?=$anex?>
     </div>
--->
+
 <?php
 
 if ($jan != 0) { ?>

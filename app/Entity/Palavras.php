@@ -68,13 +68,11 @@ function incluir($idproj, $palavra){
    * @return boolean
    */
   public function cadastrar(){
-    //DEFINIR A DATA
-    // $this->data = date('Y-m-d H:i:s');
     $obDatabase = new Database('palavras');
-        $obDatabase->insert([
-                              'idproj' => $this->idproj,
-                              'palavra' => $this->palavra
-                           ]);
+     $obDatabase->insert([
+                          'idproj' => $this->idproj,
+                          'palavra' => $this->palavra
+                         ]);
 
     //RETORNAR SUCESSO
     return true;
