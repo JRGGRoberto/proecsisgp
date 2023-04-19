@@ -5,6 +5,7 @@ require '../vendor/autoload.php';
 
 use \App\Session\Login;
 use \App\Entity\Arquivo;
+use \App\Entity\Projeto;
 
 //Obriga o usuário a estar logado
 Login::requireLogin();
@@ -33,7 +34,6 @@ if(!$objArquivo instanceof Arquivo){
   exit;
 }
 
-
 //VALIDAÇÃO DO POST
 if(isset($_POST['excluir'])){
 
@@ -42,8 +42,20 @@ if(isset($_POST['excluir'])){
   if (file_exists($caminho . $objArquivo->nome_rand) and !empty($objArquivo->nome_rand))
     unlink($caminho . $objArquivo->nome_rand);
   $objArquivo->excluir();
-  
-  header('location: ../'.$objArquivo->tabela.'/editar.php?id='.$id_tab);
+  $comp ='';
+  if($objArquivo->tabela == 'projetos'){
+    $ProjV = Projeto::getProjetoLast($id_tab);
+
+
+    echo '<pre>';
+    print_r($ProjV);
+    echo '</pre>';
+    exit; 
+    
+    $comp = '&v=';
+  }
+
+  header('location: ../'.$objArquivo->tabela.'/editar.php?id='.$id_tab.$comp);
 
   exit;
 }

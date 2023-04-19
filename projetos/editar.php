@@ -230,40 +230,15 @@ if(isset( $_POST['titulo']) ) {
     $index++;
   }
 
-  $anexosJS = $_POST['anexosJS'];
-  $anexosJS = str_replace('[','(',$anexosJS);
-  $anexosJS = str_replace(']',')',$anexosJS);
-  $arr[] = $anexosJS;
-  echo $anexosJS;
-  echo '<hr>';
-  echo '<pre>';
-  print_r($anexosJS);
-  echo '</pre>';
-  echo $arr[0];
- /* 
-  foreach($anexosJS as $key => $anx) {
-    echo "code: ". $anx . "<br>";
-  }
-
-/*
+  $anexosJS = json_decode($_POST['anexosJS']);
   foreach ($anexosJS as &$anx) {
     $dados = Arquivo::getArquivo($anx);
-    echo '<pre>';
-    print_r($anexosJS);
-    echo '</pre><hr>';
     $dados->tabela = $_POST['tabela'];
     $dados->id_tab = $obProjeto->id;
     $dados->user = $obProjeto->user;
     $dados->atualizar();
-    echo '<hr>After atualizar<hr>';
-    echo '<pre>';
-    print_r($dados);
-    echo '</pre><hr>';
   }
-*/
-
-
-  //header('location: ./index.php?status=success');
+  header('location: ./index.php?status=success');
   exit;
 }
 /**

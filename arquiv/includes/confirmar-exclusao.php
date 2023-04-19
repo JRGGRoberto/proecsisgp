@@ -12,11 +12,10 @@
     </div>
     
     <div class="form-group">
-      <a href="../<?=$objArquivo->tabela?>/editar.php?id=<?=$id_tab?>">
-        <button type="button" class="btn btn-success">Cancelar</button>
-      </a>
+      <button type="button" class="btn btn-success btn-sm" onclick="history.back()">Cancelar</button>
+      
+      <button type="submit" name="excluir" class="btn btn-danger btn-sm">🗑️ Excluir</button>
 
-      <button type="submit" name="excluir" class="btn btn-danger">Excluir</button>
     </div>
 
   </form>

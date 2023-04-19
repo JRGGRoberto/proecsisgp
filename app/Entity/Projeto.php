@@ -248,6 +248,16 @@ class Projeto{
                                   ->fetchObject(self::class);
   }
 
+    /**
+   * Método responsável por buscar uma Projeto com base em seu ID e Versão
+   * @param  integer $id
+   * @return Projeto
+   */
+  public static function getProjetoLast($id){
+    return (new Database('proj_last'))->select('id = "'.$id.'"')
+                                  ->fetchObject(self::class);
+  }
+
 
 /**
    * Método responsável por buscar uma Projeto com base em seu ID
@@ -279,7 +289,6 @@ class Projeto{
     $this->para_avaliar = $para;
     $this->edt = 0;
     $this->atualizar();
-
 
     /*
     Quando o projeto é recusado, no professor parecerista escolhido, como é a instancia anterior que define o 
@@ -362,7 +371,6 @@ class Projeto{
     return true;
       // ->fetchAll(PDO::FETCH_CLASS,self::class);
   }
-
 
 
     /**
