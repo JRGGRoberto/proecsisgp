@@ -86,7 +86,7 @@ foreach($anexados as $att){
   '<li>
       <a href="/home/sistemaproec/www/sistema/upload/uploads/'.$att->nome_rand.'" target="_blank">'.$att->nome_orig.'</a> 
       <a href="../arquiv/index.php?tab='.$att->tabela. '&id='.$att->id_tab. '&arq='.$att->nome_rand.'" >  
-        <span class="badge badge-danger">Excluir</span>
+        <span class="badge badge-danger">🗑️ Excluir</span>
       </a>
   </li> ';
 }

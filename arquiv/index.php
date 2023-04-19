@@ -44,15 +44,8 @@ if(isset($_POST['excluir'])){
   $objArquivo->excluir();
   $comp ='';
   if($objArquivo->tabela == 'projetos'){
-    $ProjV = Projeto::getProjetoLast($id_tab);
-
-
-    echo '<pre>';
-    print_r($ProjV);
-    echo '</pre>';
-    exit; 
-    
-    $comp = '&v=';
+    $ProjV = Projeto::getProjetoLast($id_tab)->ver;
+    $comp = '&v='.$ProjV.'#attc';
   }
 
   header('location: ../'.$objArquivo->tabela.'/editar.php?id='.$id_tab.$comp);

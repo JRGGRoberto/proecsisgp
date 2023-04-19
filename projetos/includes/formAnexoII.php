@@ -442,7 +442,7 @@
 
         <hr>
         <div class="form-group">
-          <h5><?= ++$n ?>. Anexos</h5>
+          <h5 id="attc"><?= ++$n ?>. Anexos</h5>
           <ul id="anexos"></ul>
           <iframe src="../upload/upload.php" frameborder="0" scrolling="no"></iframe>
           <?= $anex ?>
