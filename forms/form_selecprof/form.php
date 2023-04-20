@@ -111,13 +111,10 @@
 
 <script>
 
-document.getElementById("dateAssing").valueAsDate = new Date();
-
 const opt = document.getElementById('id_parecerista');
 const btn = document.getElementById('btnSubmit');
            
 function ativaBTN() {
-    
         
     if((opt.value != -1 ) ){
       btn.disabled=false;
@@ -126,33 +123,7 @@ function ativaBTN() {
       btn.disabled=true;
     }
   }
-
-
-function submitSolicAlterac()
-{
-  const name = document.getElementById('resultado');
-  name.value = 'r';
-  document.myform.submit();
-}
-
-function submitSave()
-{
-  const name = document.getElementById('resultado');
-  name.value = 'e';
-  document.myform.submit();
-}
-
-function submitAprova()
-{
-  const name = document.getElementById('resultado');
-  name.value = 'a';
-  if(opt.value != -1 ){
-    document.myform.submit();
-  } else {
-    alert("Para enviar para a próxima etapa é necessário escolher um professor");
-  }
   
-}
 </script>
-
+<script src="formsBtn.js"></script>
 
