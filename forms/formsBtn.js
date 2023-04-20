@@ -2,9 +2,11 @@ document.getElementById("dateAssing").valueAsDate = new Date();
 
 function submitJSON() {
     // Equipe
+    /*
     document.getElementById('equipeJS').value = '';
     var JsonEquipe = JSON.stringify(equipe);
     document.getElementById('equipeJS').value = JsonEquipe;
+    */
   
     //Anexos
     document.getElementById('anexosJS').value = '';

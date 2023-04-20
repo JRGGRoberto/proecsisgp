@@ -331,13 +331,14 @@ switch($t) {
       </div>
     </div>
 
-
     <hr>
-
+    <div class="form-group">
+      <h4>Anexos</h4>
+      <ul id="anexos"></ul>
+      <?=$anex?>
+    </div>
     
-
-    
-
+    <hr>
     <div class="row">
 
       <div class="col-3">
@@ -348,15 +349,6 @@ switch($t) {
       </div>
     </div>
     
-
-
-    
-    <div class="form-group">
-      <h4>Anexos</h4>
-      <ul id="anexos"></ul>
-      <?=$anex?>
-    </div>
-
 <?php
 
 if ($jan != 0) { ?>

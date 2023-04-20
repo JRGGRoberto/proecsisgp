@@ -246,6 +246,7 @@
     <input type="hidden" id="resultado" name="resultado">
     <input type="hidden" name="a" value="<?=$user['id']?>">
     <input type="hidden" name="u" value="<?=$user['id']?>">
+    <input id="anexosJS" name="anexosJS" type="text" hidden>
   </form>
 
 </div>

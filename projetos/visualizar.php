@@ -71,14 +71,19 @@ foreach($proposta as $prop){
 use \App\Entity\Arquivo;
 $anexados = Arquivo::getAnexados('projetos', $obProjeto->id);
 $anex = '<ul id="anexos_edt">';
+$conutAnexo = 0;
 foreach($anexados as $att){
   $anex .= 
   '<li>
       <a href="../upload/uploads/'.$att->nome_rand.'" target="_blank">'.$att->nome_orig.'</a>    
   </li> ';
+  $conutAnexo++;
 }
-$anex .= '</ul>';
-
+if ($conutAnexo == 0) {
+  $anex = 'Sem anexos';
+} else {
+  $anex .= '</ul>';
+}
 define('TITLE','Visualizar informações do projeto');
 
 if ($jan == 'nw') {

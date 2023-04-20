@@ -63,6 +63,16 @@ if(isset($_POST['resultado'])){
       $form->cadastrar();
     } else {
       $form->atualizar();
+      $anexosJS = json_decode($_POST['anexosJS']);
+      foreach ($anexosJS as &$anx) {
+        $dados = Arquivo::getArquivo($anx);
+        $dados->tabela = $_POST['tabela'];
+        $dados->id_tab = $obProjeto->id;
+        $dados->user = $obProjeto->user;
+        $dados->atualizar();
+      }
+
+
     }
     
     switch($form->resultado) {

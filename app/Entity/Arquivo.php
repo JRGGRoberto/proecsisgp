@@ -15,7 +15,6 @@ class Arquivo{
   public $id_tab;
   public $user;
 
-
   /**
    * Método responsável por cadastrar dados de um arquivo anexo no banco
    * @return boolean

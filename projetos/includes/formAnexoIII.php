@@ -399,7 +399,8 @@
         </div>
 
         <div class="form-group">
-          <a href="javascript: submitSalvar()" class="btn btn-success" >✔️ Salvar</a>
+          <a href="javascript: submitSalvar()" class="btn btn-success btn-sm" >✔️ Salvar</a>
+          <button type="button" class="btn btn-warning btn-sm" onclick="history.back()">↩️ Voltar</button>
         </div>
 
         <div class="row">
