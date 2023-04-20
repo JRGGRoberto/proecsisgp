@@ -117,12 +117,7 @@ include '../../includes/headers.php';
                     </div>
                 </div>
 
-
-
           </div>
-
-           
-
         
         </li>
 
@@ -219,6 +214,19 @@ include '../../includes/headers.php';
             </div>
           </div>
         </li>
+
+        <li class="mb-4">
+          <h5>Anexos</h5>
+          <div class="row">
+            <div class="col">
+              <div class="form-group">
+                <ul id="anexos"></ul>
+                <?=$anex?>
+              </div>
+            </div>
+          </div>
+        </li>
+
     </ol>
 
     <div class="form-group">

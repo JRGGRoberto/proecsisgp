@@ -2,13 +2,25 @@
 
 require '../vendor/autoload.php';
 
-
-
 use \App\Entity\Avaliacoes;
 use \App\Entity\Projeto;
-
+use \App\Entity\Arquivo;
 use \App\Entity\Form_a;
+
 $form = Form_a::getRegistro($_GET['p'], $_GET['v']);
+
+$anexados = Arquivo::getAnexados('forms', $form->id_proj);
+$anex = '<ul id="anexos_edt">';
+foreach($anexados as $att){
+  $anex .= 
+  '<li>
+      <a href="/home/sistemaproec/www/sistema/upload/uploads/'.$att->nome_rand.'" target="_blank">'.$att->nome_orig.'</a> 
+      <a href="../arquiv/index.php?tab='.$att->tabela. '&id='.$att->id_tab. '&arq='.$att->nome_rand.'" >  
+        <span class="badge badge-danger">🗑️ Excluir</span>
+      </a>
+  </li> ';
+}
+$anex .= '</ul>';
 
 
 $cad = false;
