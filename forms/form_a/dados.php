@@ -9,7 +9,7 @@ use \App\Entity\Form_a;
 
 $form = Form_a::getRegistro($_GET['p'], $_GET['v']);
 
-$anexados = Arquivo::getAnexados('forms', $form->id_proj);
+$anexados = Arquivo::getAnexados('forms', $id_ava);
 $anex = '<ul id="anexos_edt">';
 foreach($anexados as $att){
   $anex .= 
@@ -63,16 +63,15 @@ if(isset($_POST['resultado'])){
       $form->cadastrar();
     } else {
       $form->atualizar();
-      $anexosJS = json_decode($_POST['anexosJS']);
-      foreach ($anexosJS as &$anx) {
-        $dados = Arquivo::getArquivo($anx);
-        $dados->tabela = $_POST['tabela'];
-        $dados->id_tab = $obProjeto->id;
-        $dados->user = $obProjeto->user;
-        $dados->atualizar();
-      }
+    }
 
-
+    $anexosJS = json_decode($_POST['anexosJS']);
+    foreach ($anexosJS as &$anx) {
+      $dados = Arquivo::getArquivo($anx);
+      $dados->tabela = 'forms';
+      $dados->id_tab = $ava1->id;
+      $dados->user = $obProjeto->user;
+      $dados->atualizar();
     }
     
     switch($form->resultado) {

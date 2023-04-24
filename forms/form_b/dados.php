@@ -2,13 +2,25 @@
 
 require '../vendor/autoload.php';
 
-
-
 use \App\Entity\Avaliacoes;
 use \App\Entity\Projeto;
-
+use \App\Entity\Arquivo;
 use \App\Entity\Form_b;
+
 $form = Form_b::getRegistro($_GET['p'], $_GET['v']);
+
+$anexados = Arquivo::getAnexados('forms', $id_ava);
+$anex = '<ul id="anexos_edt">';
+foreach($anexados as $att){
+  $anex .= 
+  '<li>
+      <a href="/home/sistemaproec/www/sistema/upload/uploads/'.$att->nome_rand.'" target="_blank">'.$att->nome_orig.'</a> 
+      <a href="../arquiv/index.php?tab='.$att->tabela. '&id='.$att->id_tab. '&arq='.$att->nome_rand.'" >  
+        <span class="badge badge-danger">🗑️ Excluir</span>
+      </a>
+  </li> ';
+}
+$anex .= '</ul>';
 
 $cad = false;
 if(!$form) {
@@ -47,6 +59,15 @@ if(isset($_POST['resultado'])){
       $form->cadastrar();
     } else {
       $form->atualizar();
+    }
+
+    $anexosJS = json_decode($_POST['anexosJS']);
+    foreach ($anexosJS as &$anx) {
+      $dados = Arquivo::getArquivo($anx);
+      $dados->tabela = 'forms';
+      $dados->id_tab = $ava1->id;
+      $dados->user = $obProjeto->user;
+      $dados->atualizar();
     }
     
     switch($form->resultado) {

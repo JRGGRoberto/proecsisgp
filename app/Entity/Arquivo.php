@@ -118,7 +118,7 @@ class Arquivo{
          where 
            a.tabela = '". $tabela ."'
            and a.id_tab = '". $id_tab."'";
-
+            
     return (new Database())->selectJ($sql)
       ->fetchAll(PDO::FETCH_CLASS,self::class);
   }
