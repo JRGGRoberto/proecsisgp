@@ -3,9 +3,26 @@ require '../../vendor/autoload.php';
 
 use \App\Entity\Projeto;
 use \App\Entity\Form_d;
+use \App\Entity\Arquivo;
 
 $prj = Projeto::getProjetoView($_GET['p'], $_GET['v']);
 $form = Form_d::getRegistro($_GET['p'], $_GET['v']);
+
+$anexados = Arquivo::getAnexados('forms', $form->id_avaliacao);
+$x = 0;
+$anex = '<ul id="anexos_edt" >';
+foreach($anexados as $att){
+  $x++;
+  $anex .= 
+  ' <li>
+      <a href="/sistema/upload/uploads/'.$att->nome_rand.'" target="_blank">'.$att->nome_orig.'</a> 
+    </li> ';
+}
+$anex .= '</ul>';
+if($x == 0) {
+  $anex = 'Sem arquivos';
+}
+
 
 include '../../includes/headers.php';
 
@@ -75,6 +92,19 @@ include '../../includes/headers.php';
             </div>
           </div>
         </li>
+
+        <li class="mb-4">
+          <h5>Anexos</h5>
+          <div class="row">
+            <div class="col">
+              <div class="form-group">
+                <ul id="anexos"></ul>
+                <?=$anex?>
+              </div>
+            </div>
+          </div>
+        </li>
+
     </ol>
 
     <div class="form-group">

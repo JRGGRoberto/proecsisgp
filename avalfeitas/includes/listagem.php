@@ -100,10 +100,10 @@
       <div class="row my-2">
 
         <div class="col">
-          <label>Buscar por Nome</label> 
-          <input type="text" name="busca" class="form-control form-control-sm" value="<?=$busca?>"  id="nome"  onchange="showLimpar();">
+          <label>Buscar por titulo</label> 
+          <input type="text" name="busca" class="form-control form-control-sm" value="<?=$busca?>"  id="titulo"  onchange="showLimpar();">
         </div>
-
+<!--
         <div class="col">
           <label>Buscar Colegiado</label>
           <input type="text" name="colegiado" class="form-control form-control-sm" value="<?=$colegiado?>" id="colegiado" onChange="showLimpar();">
@@ -114,7 +114,7 @@
           <input type="text" name="centro" class="form-control form-control-sm" value="<?=$centro?>" id="centro" onChange="showLimpar();">
         </div>
 
- 
+-->
         <div class="col-1 d-flex align-items-end">
           <button type="submit" class="btn btn-primary btn-sm mr-2">Filtrar</button>
           <a href="./" id="limpar"><span class="badge badge-primary">x</span></a>
@@ -186,13 +186,10 @@
   btnX.hidden = true;
   
   function showLimpar(){
-    var nome      = document.getElementById('nome').value;
-    var campus    = document.getElementById('campus').value;
-    var centro     = document.getElementById('centro').value;
-    var colegiado = document.getElementById('colegiado').value;
+    var titulo      = document.getElementById('titulo').value;
 
-    if((nome.length > 0 ) | (campus.length > 0)| (centro.length > 0)| (colegiado.length > 0) ) {
 
+    if(titulo.length > 0 ) {
       btnX.hidden = true;
     }
   }
