@@ -71,6 +71,21 @@
             </div>
           </div>
         </li>
+
+
+        <li class="mb-4">
+          <h5 id="attc">Anexos</h5>
+          <div class="row">
+            <div class="col">
+              <div class="form-group">
+                <ul id="anexos"></ul>
+                <iframe src="../upload/upload.php" frameborder="0" scrolling="no"></iframe>
+                <?= $anex ?>                
+              </div>
+            </div>
+          </div>
+        </li>
+        
     </ol>
 
     <div class="form-group">

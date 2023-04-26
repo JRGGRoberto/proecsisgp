@@ -43,11 +43,11 @@
        switch ($la->resultado){
          case 'a': 
            $class = "table-success"; 
-           $td = '<td><a href="../forms/'. $la->form .'/vista.php?p='. $proj->id.  '&v='. $la->ver . '" target="_blank">📄 </a></td>';
+           $td = '<td><a href="../forms/'. $la->form .'/vista.php?p='. $ava->id_proj.  '&v='. $la->ver . '" target="_blank">📄 </a></td>';
            break;
          case 'r': 
            $class = "table-danger"; 
-           $td = '<td><a href="../forms/'. $la->form .'/vista.php?p='. $proj->id.  '&v='. $la->ver . '" target="_blank">📄 </a></td>';
+           $td = '<td><a href="../forms/'. $la->form .'/vista.php?p='. $ava->id_proj.  '&v='. $la->ver . '" target="_blank">📄 </a></td>';
            break;
          default: 
            $class = "table-warning"; 
@@ -55,7 +55,7 @@
        }
        $LastV .=
        '<tr class="'.$class.'">
-         <td><a href="../projetos/visualizar.php?id='. $proj->id. '&v='. $la->ver . '&w=nw" target="_blank">📄 <span class="badge badge-info">'.($la->ver +1).'</span></a></td>'
+         <td><a href="../projetos/visualizar.php?id='. $ava->id_proj. '&v='. $la->ver . '&w=nw" target="_blank">📄 <span class="badge badge-info">'.($la->ver +1).'</span></a></td>'
          
          . $td .
          

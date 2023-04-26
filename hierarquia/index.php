@@ -18,7 +18,8 @@ $opc = $_GET['hi'];
 
 /////////////////////////////////////
 
-function showAll($adm=0, $nivel=0){
+function showAll($adm=0, $nivel=0, $caU, $ceU, $coU){
+
   $qry2 = 
    'select id from campi';
 
@@ -26,7 +27,7 @@ function showAll($adm=0, $nivel=0){
 
   $listCampus = Diversos::qry($qry2);
   foreach($listCampus as $ca){ 
-    $contudo .= addInfoCa($ca->id, $adm, $nivel, 'show');
+    $contudo .= addInfoCa($ca->id, $adm, $nivel, $caU, $ceU, $coU, 'show');
   }
   
   return '
@@ -69,7 +70,7 @@ function showAll($adm=0, $nivel=0){
 
 }
 /////////////////////////////////////
-function addInfoCa($idca, $adm, $nivel, $show = ''){
+function addInfoCa($idca, $adm, $nivel, $caU, $ceU, $coU, $show = ''){
 
   $ca = Campi::getRegistro($idca);
 
@@ -87,7 +88,7 @@ function addInfoCa($idca, $adm, $nivel, $show = ''){
 
   $listCentros = Diversos::qry($qry2);
   foreach($listCentros as $cent){ 
-    $contudo .= addInfoCe($cent->id, $adm, $nivel);
+    $contudo .= addInfoCe($cent->id, $adm, $nivel, $caU, $ceU, $coU);
 
   }
 
@@ -128,7 +129,7 @@ function addInfoCa($idca, $adm, $nivel, $show = ''){
 
 /////////////////////////////////////
 
-function addInfoCe($idcen, $adm, $nivel, $show = ''){
+function addInfoCe($idcen, $adm, $nivel, $caU, $ceU, $coU, $show = ''){
 
   $ce = Centro::getRegistro($idcen);
 
@@ -146,7 +147,7 @@ function addInfoCe($idcen, $adm, $nivel, $show = ''){
 
   $listColeg = Diversos::qry($qry2);
   foreach($listColeg as $col){ 
-    $contudo .= addInfoCo($col->id, $adm, $nivel);
+    $contudo .= addInfoCo($col->id, $adm, $nivel, $caU, $ceU, $coU);
   }
 
   $user_adm = $adm;
@@ -162,7 +163,7 @@ function addInfoCe($idcen, $adm, $nivel, $show = ''){
           &nbsp; &nbsp; </span> &nbsp; <strong>'. $ce->nome .'</strong></a></div>
           <div class="col-sm-6">'. $user_adm .' Diretor(ª) de Centro de Área: &nbsp; '. $nome ;
   
-  if (($adm == 1 ) or in_array($nivel, [1])){
+  if (  ($adm == 1 ) or ((in_array($nivel, [1]))   and ( $caU == $ce->campus_id )) ){
     $texto .=  '<br><span class="badge badge-light"><a href="./ch.php?a=2&b='.$ce->id.'">Alterar</a></span>';
   } 
           
@@ -188,7 +189,7 @@ function addInfoCe($idcen, $adm, $nivel, $show = ''){
 
 /////////////////////////////////////
 
-function addInfoCo($idcol, $adm, $nivel, $show = ''){
+function addInfoCo($idcol, $adm, $nivel, $caU, $ceU, $coU, $show = ''){
 
   $co = Colegiado::getRegistro($idcol);
 
@@ -227,11 +228,20 @@ function addInfoCo($idcol, $adm, $nivel, $show = ''){
   }
 
   $alteraCO = '';
+  $printAlt = '<span class="badge badge-light"><a href="./ch.php?a=3&b='.$co->id.'">Alterar</a></span>';
 
-  
-  if (($adm == 1 ) or in_array($nivel, [1, 2])){
-    $alteraCO = '<span class="badge badge-light"><a href="./ch.php?a=3&b='.$co->id.'">Alterar</a></span>';
-  } 
+
+  if ($adm == 1 ){
+    $alteraCO = $printAlt;
+  } elseif (($ceU == $co->centro_id ) and in_array($nivel, [2])){
+    $alteraCO = $printAlt;
+  } elseif ( in_array($nivel, [1]) ){
+    $ce1 = Centro::getRegistro($co->centro_id);
+    if($caU == $ce1->campus_id){
+      $alteraCO = $printAlt;
+    }
+  }
+ 
 
   return '
     <div id="accordion_co">
@@ -268,18 +278,18 @@ $msg = '';
 
 switch ($opc) {
     case 'ca':
-      $msg =  addInfoCa($user['ca_id'], $user['adm'], $user['niveln'], "show");
+      $msg =  addInfoCa($user['ca_id'], $user['adm'], $user['niveln'], $user['ca_id'], $user['ce_id'], $user['co_id'], "show");
       
 
       break;
 
     case 'ce': 
-      $msg = addInfoCe($user['ce_id'], $user['adm'], $user['niveln'], "show");
+      $msg = addInfoCe($user['ce_id'], $user['adm'], $user['niveln'], $user['ca_id'], $user['ce_id'], $user['co_id'], "show");
             
       break;
 
     case 'co':
-      $msg = addInfoCo($user['co_id'], $user['adm'], $user['niveln'], "show");
+      $msg = addInfoCo($user['co_id'], $user['adm'], $user['niveln'], $user['ca_id'], $user['ce_id'], $user['co_id'], "show");
       
       
       break;
@@ -289,7 +299,7 @@ switch ($opc) {
         header('location: ../index.php?status=error');
         exit;
       } 
-      $msg = showAll($user['adm'], $user['niveln']);
+      $msg = showAll($user['adm'], $user['niveln'], $user['ca_id'], $user['ce_id'], $user['co_id'] );
       break;
     
     default:
@@ -306,4 +316,4 @@ echo '<h2 class="mt-2">Hierarquia</h2>';
 
 echo $msg;
 
-include '../includes/footer.php';
+include '../includes/footer.php'; 

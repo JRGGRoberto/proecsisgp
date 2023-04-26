@@ -51,7 +51,8 @@ class Login{
       'ativo' => $obUsuario->ativo,
       'adm' => $obUsuario->adm,
       'nivel' => $obUsuario->nivel,
-      'niveln' => $obUsuario->niveln
+      'niveln' => $obUsuario->niveln,
+      'tpnivel' => $obUsuario->tpnivel
     ];
 
     // redireciona usuário para Index

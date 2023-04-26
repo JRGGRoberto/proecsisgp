@@ -193,7 +193,7 @@ img.remover {
           <a class="dropdown-item btn-sm" href="../professor/editar.php?id=<?=$obUsuario['id']?>">Perfil</a>
     <!--      <a class="dropdown-item btn-sm" href="../config/">Configuração</a>  --> 
           <div class="dropdown-divider"></div>
-          <a class="dropdown-item btn-sm" href="../login/logout.php">LogOut</a>
+          <a class="dropdown-item btn-sm" href="../login/logout.php">Sair</a>
         </div>
       </div>
     </div>
