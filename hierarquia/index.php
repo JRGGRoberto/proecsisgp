@@ -12,6 +12,8 @@ use \App\Entity\Diversos;
 Login::requireLogin();
 $user = Login::getUsuarioLogado();
 
+require('../includes/msgAlert.php');
+
 
 $opc = $_GET['hi'];
 
@@ -311,7 +313,7 @@ switch ($opc) {
 
 include '../includes/header.php';
 
-echo '<h2 class="mt-2">Hierarquia</h2>';
+echo '<h2 class="mt-0">Hierarquia</h2>';
 
 echo $msgAlert;
 

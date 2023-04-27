@@ -107,7 +107,7 @@ if(isset( $_POST['selCoord']) ) {
     case 1: 
             
             if( !(in_array($user[niveln], [1]) or $user[adm] == 1 )) {
-              header('location: ../home/index.php?status=error');
+              header('location: ./index.php?hi=cnf&status=error');
               exit;
             } 
 
@@ -119,7 +119,7 @@ if(isset( $_POST['selCoord']) ) {
     case 2: 
 
             if( !(in_array($user[niveln], [1, 2]) or $user[adm] == 1 )) {
-              header('location: ../home/index.php?status=error');
+              header('location: ./index.php?hi=cnf&status=error');
               exit;
             } 
 
@@ -131,7 +131,7 @@ if(isset( $_POST['selCoord']) ) {
     case 3: 
 
             if( !(in_array($user[niveln], [1, 2, 3]) or $user[adm] == 1 )) {
-              header('location: ../home/index.php?status=error');
+              header('location: ./index.php?hi=cnf&status=error');
               exit;
             } 
 
@@ -144,9 +144,8 @@ if(isset( $_POST['selCoord']) ) {
       break;
   }
 
-  header('location: ../home/index.php?status=success');
-
-//  Login::logout();
+  header('location: ./index.php?hi=cnf&status=success');
+                                         
   exit;
 }
 
