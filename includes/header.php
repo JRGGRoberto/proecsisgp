@@ -31,7 +31,7 @@ $horas >= 12 ? (int)($horas -= 12) : (int)($horas -= 0);
     // $adminOpts .= "<a class='dropdown-item btn-sm disabled' href='#'>Passar o posto para outro professor</a>";
 
     if (($obUsuario['niveln']<3) or ($obUsuario['adm']== 1)){
-      $adminOpts .= "<a class='dropdown-item btn-sm' href='../hierarquia/index.php?hi=cnf'>Confirgurar hierarquia</a>";
+      $adminOpts .= "<a class='dropdown-item btn-sm' href='../hierarquia/index.php?hi=cnf'>Configurar hierarquia</a>";
     }
     $adminOpts .= 
       "  </div>

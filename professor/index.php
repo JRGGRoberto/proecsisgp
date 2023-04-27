@@ -42,7 +42,7 @@ $qntProfessores = Professor::getQntdProfessores($where);
 //paginação
 $obPagination = new Pagination($qntProfessores, $_GET['pagina']?? 1, 10);
 
-$professores = Professor::getProfessores($where, null, $obPagination->getLimite());
+$professores = Professor::getProfessores($where, 'nome', $obPagination->getLimite());
 
 include '../includes/header.php';
 include __DIR__.'/includes/listagem.php';

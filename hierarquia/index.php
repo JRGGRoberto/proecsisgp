@@ -279,7 +279,6 @@ $msg = '';
 switch ($opc) {
     case 'ca':
       $msg =  addInfoCa($user['ca_id'], $user['adm'], $user['niveln'], $user['ca_id'], $user['ce_id'], $user['co_id'], "show");
-      
 
       break;
 
@@ -313,6 +312,8 @@ switch ($opc) {
 include '../includes/header.php';
 
 echo '<h2 class="mt-2">Hierarquia</h2>';
+
+echo $msgAlert;
 
 echo $msg;
 

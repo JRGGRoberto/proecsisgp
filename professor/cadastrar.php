@@ -12,6 +12,7 @@ define('TITLE','Cadastrar Professor');
 
 $obProfessor = new Professor;
 $obProfessor->niveln = 0;
+$obProfessor->ativo = 1;
 
 //VALIDAÇÃO DO POST
 if(isset($_POST['nome'])){

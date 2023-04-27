@@ -195,7 +195,7 @@
 <main>
   <h2 class="mt-0">Avaliações a serem realizadas</h2>
   
-  <?=$msg?> 
+  <?=$msgAlert?>
 
   <section>
 

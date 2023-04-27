@@ -127,7 +127,7 @@
 <main>
   <h2 class="mt-0">Professores</h2>
   
-  <?=$msg?> 
+  <?=$msgAlert?> 
 
   <section>
 

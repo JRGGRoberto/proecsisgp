@@ -89,7 +89,7 @@
 
 ?>
 <main>
-  <h2 class="mt-0">Avaliaçõs realizadas</h2>
+  <h2 class="mt-0">Avaliações realizadas</h2>
   
   <?=$msg?> 
 

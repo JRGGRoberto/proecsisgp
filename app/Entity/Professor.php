@@ -21,6 +21,7 @@ class Professor {
   public $adm;
   public $created_at;
   public $updated_at;
+  public $niveln;
 //  public $colegiado;
   public $user;
 
