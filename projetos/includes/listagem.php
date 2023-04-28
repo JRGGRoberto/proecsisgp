@@ -141,14 +141,9 @@
 
         <div class="row">
           <div class="col-9">
-            <h5>Resumo</h5>
-            <p>'. $proj->resumo  .'</p>
-    
-            <h5>Descricao</h5>
-            <p>'. $proj->descricao  .'</p>
-    
-            <h5>Objetivos</h5>
-            <p>'. $proj->objetivos  .'</p>
+            <p>Resumo: '. $proj->resumo  .'</p>
+            <p>Descricao: '. $proj->descricao  .'</p>
+            <p>Objetivos: '. $proj->objetivos  .'</p>
           </div>
           <div class="col">
           '. $LastV .'

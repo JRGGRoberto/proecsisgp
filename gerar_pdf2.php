@@ -4,60 +4,21 @@
 require './vendor/autoload.php';
 
 
-// Referenciar o namespace Dompdf
-use Dompdf\Dompdf;
-
-
      //define o estilo da página pdf
-     $style='<html><head>
-        <style type="text/css">
-       @page {
-            margin: 120px 50px 80px 50px;
-        }
-        #head{
-            background-image: url("fad.jpg");
-            background-repeat: no-repeat;
-            font-size: 25px;
-            text-align: center;
-            height: 110px;
-            width: 100%;
-            position: fixed;
-            top: -100px;
-            left: 0;
-            right: 0;
-            margin: auto;
-        }
-        #corpo{
-            width: 600px;
-            position: relative;
-            margin: auto;
-        }
-        table{
-            border-collapse: collapse;
-            width: 100%;
-            position: relative;
-        }
-        td{
-            padding: 3px;
-        }
-        #footer {
-            position: fixed;
-            bottom: 0;
-            width: 100%;
-            text-align: right;
-            border-top: 1px solid gray;
-        }
-        #footer .page:after{ 
-            content: counter(page); 
-        }
-        </style></head><body>';
+     $style="<!DOCTYPE html>
+<html lang='pt-br'>
+  <head>
+  </head><body>
+  
+  <style>
+  .pagenum:before {content: counter(page);}
+  footer .pagenum:before {content: counter(page);}
+  </style> 
+  ";
 
     //define o cabeçalho da página
-    $head='<div id="head">Lista de Compras</div>
-           <div id="corpo">';
-
-    //inclui a biblioteca do dompdf
-    require_once("dompdf/dompdf_config.inc.php");
+    $head="<div id='head'>Lista de Compras</div>
+    <div id='corpo'>";
 
     //recebendo os dados do Formulário
     $quant      = 22;
@@ -76,30 +37,36 @@ use Dompdf\Dompdf;
                 <td>Obs.</td>
             </tr></thead><tbody>';
 
+
+    $cont = '';
     for ($i = 0; $i < 130; $i++) {
         $tmp='<tr>
-            <td width="15%">'.$quant.'</td>
+            <td width="15%">'.$i.'</td>
             <td width="15%">'.$tipo.'</td>
             <td width="40%">'.$produto.'</td>
             <td width="30%"> '.$obs.'</td>';   
-        $body = $body.$tmp;
+        $cont .= $tmp;
     }
 
 
     //define o rodapé da página
     $footer='</tbody>
         </table>
-        </div>dompdf
+        </div>
         <div id="footer">
             <p class="page">Página </p>
+            <div class="pagenum-container">Página <span class="pagenum"></span></div> 
         </div></body></html>  ';
 
     //concatenando as variáveis
-    $html=$head.$style.$body.$footer;
+    $html=$style.$head.$body.$cont.$footer;
 
     //gerando o pdf
-    $html = utf8_decode($html);
-    $dompdf = new DOMPDF();
-    $dompdf->load_html($html);
-    $dompdf->render();
-    $dompdf->stream("compras.pdf");
+    
+use Dompdf\Dompdf;
+$dompdf = new Dompdf(['enable_remote' => true]);
+
+$dompdf->loadHtml($html);
+$dompdf->setPaper('A4', 'portrait');
+$dompdf->render();
+$dompdf->stream();

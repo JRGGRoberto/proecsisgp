@@ -151,7 +151,7 @@
             <div class="p-1"></div>
             <a href="../forms/index.php?i='. $ava->id_ava . '&p='. $ava->id_proj . '&v='. $ava->ver . '"><button class="btn btn-primary btn-sm mb-2"> ⚖️ Avaliar</button></a>
             <div class="p-1"></div>
-            <a href="../projetos/visualizar.php?id='. $ava->id_proj . '&v='. $ava->ver . '&w=nw" target="_blank"><button class="btn btn-success btn-sm mb-2"> 👀 Visualizar</button></a>
+            <a href="../projetos/visualizar.php?id='. $ava->id_proj . '&v='. $ava->ver . '&w=nw" target="_blank"><button class="btn btn-success btn-sm mb-2"> Visualizar</button></a>
             <div class="p-1"></div>
           </div>
           

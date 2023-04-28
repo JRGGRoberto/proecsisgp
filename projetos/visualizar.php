@@ -84,7 +84,30 @@ if ($conutAnexo == 0) {
 } else {
   $anex .= '</ul>';
 }
-define('TITLE','Visualizar informações do projeto');
+
+$t = $obProjeto->tipo_exten;
+
+switch($t) {
+  case 1: 
+    define('TITLE','FORMULÁRIO PARA ELABORAÇÃO DE PROPOSTA DE CURSO');
+    break;
+  case 2:
+    define('TITLE','FORMULÁRIO PARA ELABORAÇÃO DE PROPOSTA DE EVENTO');
+    break;
+  case 3:
+    define('TITLE','FORMULÁRIO PARA ELABORAÇÃO DE PROPOSTAS DE PRESTAÇÃO DE SERVIÇO');
+    break;
+  case 4:
+    define('TITLE','FORMULÁRIO PARA ELABORAÇÃO DE PROPOSTAS DE PROGRAMA');
+    break;
+  case 5:
+    define('TITLE','FORMULÁRIO PARA ELABORAÇÃO DE PROPOSTAS DE PROJETO');
+    break;
+  default:
+    header('location: index.php?status=error');
+    exit;
+}
+
 
 if ($jan == 'nw') {
   include '../includes/headers.php';

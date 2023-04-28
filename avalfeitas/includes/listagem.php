@@ -44,7 +44,7 @@
               <div class="p-1"></div>
               <a href="../forms/'. $ava->form .'/vista.php?p='. $ava->id_proj . '&v='. $ava->ver . '" target="_blank"><button class="btn btn-primary btn-sm mb-2"> ⚖️ Ver avaliação</button></a>
               <div class="p-1"></div>
-              <a href="../projetos/visualizar.php?id='. $ava->id_proj . '&v='. $ava->ver . '&w=nw" target="_blank"><button class="btn btn-success btn-sm mb-2"> 👀 Visualizar projeto</button></a>
+              <a href="../projetos/visualizar.php?id='. $ava->id_proj . '&v='. $ava->ver . '&w=nw" target="_blank"><button class="btn btn-success btn-sm mb-2"> Visualizar projeto</button></a>
               <div class="p-1"></div>
             </div>
            
