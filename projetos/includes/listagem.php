@@ -88,6 +88,7 @@
       $LastV = '';
       $progresso = '<span class="badge badge-warning">Não submetido</span>';
     } else {
+
       $btnStatus = array_reverse($btnStatus);
 
       $btnS = [];  /// criando todos os blocos em CINZA
@@ -138,14 +139,25 @@
     <div id="p'. $proj->id  .'" class="collapse" data-parent="#accordion">
       <div class="card-body">
 
-        <h5>Resumo</h5>
-        <p>'. $proj->resumo  .'</p>
+        <div class="row">
+          <div class="col-9">
+            <h5>Resumo</h5>
+            <p>'. $proj->resumo  .'</p>
+    
+            <h5>Descricao</h5>
+            <p>'. $proj->descricao  .'</p>
+    
+            <h5>Objetivos</h5>
+            <p>'. $proj->objetivos  .'</p>
+          </div>
+          <div class="col">
+          '. $LastV .'
+          </div>
+        </div>
 
-        <h5>Descricao</h5>
-        <p>'. $proj->descricao  .'</p>
+        
 
-        <h5>Objetivos</h5>
-        <p>'. $proj->objetivos  .'</p>
+        
 
         ';
 
@@ -165,15 +177,13 @@
         }
       }
 
-      
-   
 
       if ($proj->edt == 1){
          $resultados .=  
       '<hr>
-        <div class="d-flex flex-row-reverse ">'  
-        . $btnSub .   
-      '
+         <div class="d-flex flex-row-reverse ">'  
+          . $btnSub .   
+         '
           <div class="p-1"></div>
           <a href="editar.php?id='. $proj->id . '&v='. $proj->ver . '"><button class="btn btn-success btn-sm mb-2">📄 Editar</button></a>
         </div>';
@@ -184,22 +194,9 @@
         $resultados .=  
       '<hr>
         
-        Projeto postado para o colegiado de <span class="badge badge-success">'. $nomecol->nome . '</span> 
-            <div class="row my-2">
-              <div class="col-2">
-              '. $LastV .'
-              </div>
-              <div class="col">
-               
-              </div>
-            </div>
-  
-            
-        
         <div class="d-flex flex-row-reverse ">
-          <a href="visualizar.php?id='. $proj->id . '&v='. $proj->ver . '&w=1"><button class="btn btn-success btn-sm mb-2">👀 Visualizar</button></a>
+          <a href="visualizar.php?id='. $proj->id . '&v='. $proj->ver . '&w=1"><button class="btn btn-success btn-sm mb-2">Visualizar</button></a>
         </div>';
-
       }
 
      $resultados .=  '

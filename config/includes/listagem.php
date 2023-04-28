@@ -7,7 +7,7 @@ echo 'AEE2: '. $obProjeto->tipo_exten;
 ?>
 <main>
   <h2 class="mt-3">Configuração</h2>
-  <?=$msg?>
+  <?=$msgAlert?>
 
 
   <section>

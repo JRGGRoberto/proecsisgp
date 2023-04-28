@@ -91,7 +91,7 @@
 <main>
   <h2 class="mt-0">Avaliações realizadas</h2>
   
-  <?=$msg?> 
+  <?=$msgAlert?>
 
   <section>
 
@@ -106,12 +106,12 @@
 <!--
         <div class="col">
           <label>Buscar Colegiado</label>
-          <input type="text" name="colegiado" class="form-control form-control-sm" value="<?=$colegiado?>" id="colegiado" onChange="showLimpar();">
+          <input type="text" name="colegiado" class="form-control form-control-sm" value="< ?=$colegiado?>" id="colegiado" onChange="showLimpar();">
         </div>
 
         <div class="col">
           <label>Buscar por Centro</label>
-          <input type="text" name="centro" class="form-control form-control-sm" value="<?=$centro?>" id="centro" onChange="showLimpar();">
+          <input type="text" name="centro" class="form-control form-control-sm" value="< ?=$centro?>" id="centro" onChange="showLimpar();">
         </div>
 
 -->
