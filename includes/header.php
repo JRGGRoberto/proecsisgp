@@ -37,6 +37,9 @@ $horas >= 12 ? (int)($horas -= 12) : (int)($horas -= 0);
       "  </div>
       </div>";
   }
+
+  $nome = explode(' ',trim($obUsuario['nome']));
+  $nome = $nome[0]; // will print Test
  
 ?>
 
@@ -187,7 +190,7 @@ img.remover {
 
       <div class="btn-group btn-group-sm">
         <button type="button" class="btn btn-primary dropdown-toggle" data-toggle="dropdown">
-        👤 <?=  substr($obUsuario['email'], 0, strpos($obUsuario['email'], '@') ) ?>
+        👤 <?= $nome ?>
         </button>
         <div class="dropdown-menu dropdown-menu-right">
           <a class="dropdown-item btn-sm" href="../professor/editar.php?id=<?=$obUsuario['id']?>">Perfil</a>

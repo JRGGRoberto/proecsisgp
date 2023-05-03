@@ -3,9 +3,9 @@
 // Carregar o Composer
 require './vendor/autoload.php';
 
-
-     //define o estilo da página pdf
-     $style="<!DOCTYPE html>
+  //define o estilo da página pdf
+  $style=
+"<!DOCTYPE html>
 <html lang='pt-br'>
   <head>
   </head><body>
