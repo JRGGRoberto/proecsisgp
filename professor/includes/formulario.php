@@ -31,7 +31,9 @@ $user = Login::getUsuarioLogado();
       <div class="col">
         <div class="form-group">
           <label>CPF</label>
-          <input type="text" class="form-control" name="cpf" id="cpf" maxlength="11" value="<?=$obProfessor->cpf ?>" onfocusout="valCPF()" required>
+          <a href="#" data-toggle="tooltip" title="Informe apenas os números" 
+          style="text-decoration:none;"><input type="text" class="form-control" name="cpf" id="cpf" maxlength="11" value="121" onfocusout="valCPF()" required=""></a>
+
         </div>
       </div>
 

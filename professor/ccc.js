@@ -83,6 +83,16 @@ function desativar(pos) {
 }
 
 
+function formatarCPF(cpf){   
+  var cpfValido = /^(([0-9]{3}.[0-9]{3}.[0-9]{3}-[0-9]{2}))$/;     
+  cpf = cpf.replace( /(\d{3})(\d)/ , "$1.$2"); //Coloca um ponto entre o terceiro e o quarto dígitos
+  cpf = cpf.replace( /(\d{3})(\d)/ , "$1.$2"); //Coloca um ponto entre o terceiro e o quarto dígitos
+  //de novo (para o segundo bloco de números)
+  cpf = cpf.replace( /(\d{3})(\d{1,2})$/ , "$1-$2"); //Coloca um hífen entre o terceiro e o quarto dígitos
+			    
+  return cpf;
+}
+
 
 
 const valCPF = async() => {
@@ -96,9 +106,11 @@ const valCPF = async() => {
   if(!data) return;
   if (data.length === 0){
     console.log('-1');
+    cpf.value = formatarCPF(cpf.value);
     return '-1';
   } else {
     if(id.value == data[0].id){
+      cpf.value = formatarCPF(cpf.value);
       console.log('-1');
       return '-1';
     } else {
