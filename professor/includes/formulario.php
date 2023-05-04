@@ -15,8 +15,11 @@ $user = Login::getUsuarioLogado();
 
   <h2 class="mt-3"><?=TITLE?></h2>
 
-  <form method="post">
+  <form method="post" id="formprof">
+    
     <div class="row">
+                          
+    <input id="idprf" name="idprf" type="text" hidden value="<?= $obProfessor->id ?>">
 
       <div class="col-8">
         <div class="form-group">
@@ -28,7 +31,7 @@ $user = Login::getUsuarioLogado();
       <div class="col">
         <div class="form-group">
           <label>CPF</label>
-          <input type="text" class="form-control" name="cpf" maxlength="11" value="<?=$obProfessor->cpf ?>" required>
+          <input type="text" class="form-control" name="cpf" id="cpf" maxlength="11" value="<?=$obProfessor->cpf ?>" onfocusout="valCPF()" required>
         </div>
       </div>
 
@@ -61,7 +64,7 @@ $user = Login::getUsuarioLogado();
         
         <div class="form-group">
           <label>E-mail</label>
-          <input type="email" class="form-control" name="email" maxlength="40" value="<?=$obProfessor->email?>" required>
+          <input type="email" class="form-control" name="email" id="email" maxlength="40" value="<?=$obProfessor->email?>" onfocusout="valEmail()" required>
         </div>
 
       </div>

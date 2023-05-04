@@ -134,7 +134,7 @@
 
           <div class="col">
             <div class="form-group">
-              <label for="area_tema2">Subária</label>
+              <label for="area_tema2">Subárea</label>
               <select name="area_tema2" class="form-control">
                 <?= $areaOptions2 ?>
               </select>
