@@ -188,7 +188,7 @@ img.remover {
       <button type="button" class="btn btn-primary">Projetos</button>
     -->  
 
-      <div class="btn-group btn-group-sm">
+      <div clastoasts="btn-group btn-group-sm">
         <button type="button" class="btn btn-primary dropdown-toggle" data-toggle="dropdown">
         👤 <?= $nome ?>
         </button>

@@ -3,8 +3,8 @@ use \App\Session\Login;
 Login::requireLogin();
 $user = Login::getUsuarioLogado();
 ?>
+<script src="./jquery.mask.min.js"></script>    
 <script src="./ccc.js"></script>
-
 <main>
 
   <section>

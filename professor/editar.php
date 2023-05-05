@@ -143,9 +143,6 @@ if (strcmp($user['id'],$_GET['id'])===0){
 }
 
 
-
-
-
 $script .= '</script>';
 
 if (!$acessoOk){

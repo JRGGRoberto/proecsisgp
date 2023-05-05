@@ -250,6 +250,11 @@
           <input type="text" name="titulo" class="form-control form-control-sm" value="<?=$titulo?>"  id="titulo"   onchange="showLimpar();">
         </div>
 
+        <div class="col">
+          <label>Palavra chave</label> 
+          <input type="text" name="palavra" class="form-control form-control-sm" value="<?=$palavra?>"  id="palavra"   onchange="showLimpar();">
+        </div>
+
 
         <div class="col-1 d-flex align-items-end">
           <button type="submit" class="btn btn-primary btn-sm mr-2">Filtrar</button>
@@ -349,8 +354,9 @@
   btnLimpar.hidden = true;
   function showLimpar(){
     var titulo    = document.getElementById('titulo').value;
+    var palavra   = document.getElementById('palavra').value;
 
-    if(titulo.length > 0 ) {
+    if((titulo.length > 0 ) || (palavra.length > 0 ) ) {
       btnLimpar.hidden = false;
     } 
   }

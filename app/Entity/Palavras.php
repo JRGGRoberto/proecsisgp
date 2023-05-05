@@ -47,9 +47,32 @@ function incluir($idproj, $palavra){
    * @return array
    */
   public static function getProjByPalavra($palavra){
-    return (new Database('palavras'))->select('palavra = "'. $palavra ."'")
-                                  ->fetchAll(PDO::FETCH_CLASS,self::class);
+    $sql = "select distinct(idproj)  from palavras  where palavra like '". $palavra. "%' ";
+    $idsProjs = (new Database())->selectJ($sql)->fetchAll(PDO::FETCH_CLASS,self::class);
+
+    $x = 0;
+    $list = '';
+    $lista = ' and id into (';
+    foreach($idsProjs as $idp){
+      $x++;
+      $list .= '"' . $idp->idproj . '"  ';
+    }
+    if($x > 0){
+      $list = str_replace("  ", ", ", $list);
+      $lista .= $list . ')';
+    } else {
+      $lista = '';
+    }
+
+
+    echo $sql;
+    echo $lista;
+    echo '<hr><pre>';
+    print_r($idsProjs);
+    echo '</pre><hr>';
   }
+                         
+
 
 
 
@@ -61,7 +84,6 @@ function incluir($idproj, $palavra){
     return (new Database('palavras'))->delete('idproj = "'.$idproj.'"');
                                               
   }
-
 
   /**
    * Método responsável por cadastrar um novo Registro no banco
