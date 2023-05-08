@@ -209,6 +209,7 @@
   //GETS
   unset($_GET['status']);
   unset($_GET['pagina']);
+  unset($_GET['palavra']);
   $gets = http_build_query($_GET);
 
   //Paginação
@@ -233,12 +234,10 @@
 
 ?>
 
-
 <main>
   <h2 class="mt-0">Meus projetos</h2>
   
   <?=$msg?> 
-
   <section>
 
     <form method="get">
@@ -352,6 +351,7 @@
   const btnLimpar = document.getElementById('limpar');
 
   btnLimpar.hidden = true;
+
   function showLimpar(){
     var titulo    = document.getElementById('titulo').value;
     var palavra   = document.getElementById('palavra').value;
