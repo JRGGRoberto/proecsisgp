@@ -266,8 +266,8 @@ include '../includes/footer.php';
 ?>
 <script>
 
-  alert('*O responsável pelo preenchimento e encaminhamento é o coordenador da Proposta de Extensão \n Tramitação:\n ➡️ Coordenador (Preencher o formulário e depois submete-lo)\n ➡️ Divisão de Extensão e Cultura\n ➡️ Colegiado de Curso\n ➡️ Conselho de Centro de Área\n ➡️ Divisão de Extensão e Cultura.');
-
+  alert('*O responsável pelo preenchimento e encaminhamento é o coordenador da Proposta de Extensão \n Tramitação:\n ➡️ Proponente da proposta (Tu) preencha o formulário para depois submete-lo)\n ➡️ Divisão de Extensão e Cultura\n ➡️ Colegiado de Curso\n ➡️ Conselho de Centro de Área\n ➡️ Divisão de Extensão e Cultura.');
+  
 </script>
 
 
