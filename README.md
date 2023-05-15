@@ -20,7 +20,7 @@ Este projeto tem como objetivo gerir as proposta dos projetos extensionistas da 
 
 
 
-Típo de usuário           |  Cria projeto  | Criar usuário comum | Criar usuário Coord | Criar usuário DirCA | Criar usuário CheDiv
+Típo de usuário           |  Criar projeto  | Criar usuário comum | Criar usuário Coord | Criar usuário DirCA | Criar usuário CheDiv
 --------------------------| :--------------|:-------------:|:---------------:|:---------------:|:---------------:
 Comum                     | ✔️             | :x:            | :x:             | :x:             | :x:             |
 Coordenador               | ✔️             | ✔️             | :x:             | :x:             | :x:             |
