@@ -12,8 +12,12 @@ SisGP was designed and developed by J. Roberto Góes Gomes.
 
 * **Davi C. B. de Góes Gomes**
 
-* [and many more...](https://github.com/dompdf/dompdf/graphs/contributors)
+* [and many more...](https://github.com/JRGGRoberto/proecsisgp/graphs/contributors)
 
 ### Thanks
+
+
+As this software is being developed with public money, it must always be open 
+to the public.
 
 SisGP would not have been possible without strong community support.
