@@ -1,18 +1,64 @@
 <?php
 
-//require '../vendor/autoload.php';
-require '../../vendor/autoload.php';
+// require '../vendor/autoload.php';
+// require '../../vendor/autoload.php';
 
 ini_set('display_errors', 1);
 ini_set('display_startup_errors', 1);
 error_reporting(E_ALL);
  
 use Dompdf\Dompdf;
+use \App\Entity\Projeto;
+
+
+$obProjeto = new Projeto();
+$id = "0e1294e4-cf2b-4750-8b65-25330e729610";
+$ver =  0;
+$obProjeto = Projeto::getProjeto($id, $ver);
+$t = $obProjeto->tipo_exten;
+
+$title = '';
+$title2 = '';
+switch($t) {
+  case 1: 
+    $title2 = 'FORMULÁRIO PARA ELABORAÇÃO DE PROPOSTA DE CURSO';
+    break;
+  case 2:
+    $title2 = 'FORMULÁRIO PARA ELABORAÇÃO DE PROPOSTA DE EVENTO';
+    break;
+  case 3:
+    $title2 = 'FORMULÁRIO PARA ELABORAÇÃO DE PROPOSTAS DE PRESTAÇÃO DE SERVIÇO';
+    break;
+  case 4:
+    $title2 = 'FORMULÁRIO PARA ELABORAÇÃO DE PROPOSTAS DE PROGRAMA';
+    break;
+  case 5:
+    $title2 = 'FORMULÁRIO PARA ELABORAÇÃO DE PROPOSTAS DE PROJETO';
+    break;
+  default:
+    header('location: index.php?status=error');
+    exit;
+}
+
+$anexoII = [3, 4, 5];
+$anexoIII = [1, 2];
+if (in_array($t, $anexoII)) { 
+  $title = 'ANEXO II';
+} else {
+  $title = 'ANEXO III';
+}
+
+
+
+$anexoII = [3, 4, 5];
+$anexoIII = [1, 2];
+$t = $obProjeto->tipo_exten;
+
 
 $dompdf = new Dompdf(['enable_remote' => true]);
 
 $html = '<!DOCTYPE HTML PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
-<html xml:lang="en" xmlns="http://www.w3.org/1999/xhtml" lang="en">
+<html xml:lang="pt-Br" xmlns="http://www.w3.org/1999/xhtml" lang="pt-Br">
 <head>
   <meta http-equiv="content-type" content="text/html; charset=UTF-8" />
   <title>Doc</title>
@@ -80,7 +126,9 @@ $html = '<!DOCTYPE HTML PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3
   h1,
   h2,
   h3,
-  h4 {
+  h4,
+  h5,
+  h6 {
     text-align: center;
   }
 
@@ -106,6 +154,11 @@ th {
   background-color: #eeeeee;
   font-weight: lighter;
 }
+
+
+c {
+  text-align: center;
+}
 </style>
 
 </head>
@@ -113,8 +166,7 @@ th {
   <div id="header">
     <table>
       <tr>
-        <td class="td1"><img src="https://sistemaproec.unespar.edu.br/sis/imgs/logo_unespar.png"
-            width="120px"></td>
+        <td class="td1"><img src="https://sistemaproec.unespar.edu.br/sis/imgs/logo_unespar.png" width="120px"></td>
       </tr>
     </table>
   </div>
@@ -122,9 +174,17 @@ th {
     <div class="page-number"></div>
   </div>';
 
+/**
+ * Fim cabeçalho
+ */
+
+   $html .= '<h4>'. $title .'</h4>';
+   $html .= '<h5>'. $title2 .'</h5>';
+   $html .= '<p class="c">*O responsável pelo preenchimento e encaminhamento é o coordenador da Proposta de Extensão Tramitação: Coordenador → Divisão de Extensão e Cultura → Colegiado de Curso → Conselho de Centro de Área → Divisão de Extensão e Cultura.</p>';
 
 
-   $html .= 'hi';
+   $html .= 'Título da proposta: '. $obProjeto->titulo .'<br>';
+   $html .= 'Coordenador: '. $obProjeto->nome_prof .'<br>';
 
 
 
@@ -136,8 +196,7 @@ th {
   $html .= '</body>
 </html>';
 
-
 $dompdf->loadHtml($html);
 $dompdf->setPaper('A4', 'portrait');
 $dompdf->render();
-$dompdf->stream("AE1.pdf");
+$dompdf->stream("PDF__.pdf");
