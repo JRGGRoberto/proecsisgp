@@ -1,11 +1,9 @@
 <?php
 require '../vendor/autoload.php';
 
-
-
-
 // use \App\Session\Login;
 use \App\Entity\Projeto;
+use \App\Entity\Professor;
 //Login::requireLogin();
 //$user = Login::getUsuarioLogado();
 use Dompdf\Dompdf;
@@ -26,7 +24,7 @@ $jan = $_GET['w'];
 //CONSULTA AO PROJETO
 $obProjeto = new Projeto();
 $obProjeto = Projeto::getProjeto($id, $ver);
-
+$obProfessor = Professor::getProfessor($obProjeto->id_prof);
 
 
 //VALIDAÇÃO DA TIPO
@@ -34,6 +32,9 @@ if(!$obProjeto instanceof Projeto){
   header('location: ../index.php?status=error');
   exit;
 }
+
+use \App\Entity\Colegiado;
+$coolCur = Colegiado::getRegistro($obProjeto->para_avaliar)->nome;
 
 
 use \App\Entity\Area_Cnpq;
@@ -90,22 +91,28 @@ if ($conutAnexo == 0) {
 }
 
 $t = $obProjeto->tipo_exten;
+$tpprop = '';
 
 switch($t) {
   case 1: 
     $title2 = 'FORMULÁRIO PARA ELABORAÇÃO DE PROPOSTA DE CURSO';
+    $tpprop = '( x ) Curso<br>( &nbsp ) Evento<br>';
     break;
   case 2:
     $title2 = 'FORMULÁRIO PARA ELABORAÇÃO DE PROPOSTA DE EVENTO';
+    $tpprop = '( &nbsp ) Curso<br>( x ) Evento<br>';
     break;
   case 3:
     $title2 = 'FORMULÁRIO PARA ELABORAÇÃO DE PROPOSTAS DE PRESTAÇÃO DE SERVIÇO';
+    $tpprop = '( &nbsp ) Programa<br>( &nbsp ) Projeto<br>( x ) Prestação de Serviço<br>';
     break;
   case 4:
     $title2 = 'FORMULÁRIO PARA ELABORAÇÃO DE PROPOSTAS DE PROGRAMA';
+    $tpprop = '( x ) Programa<br>( &nbsp ) Projeto<br>( &nbsp ) Prestação de Serviço<br>';
     break;
   case 5:
     $title2 = 'FORMULÁRIO PARA ELABORAÇÃO DE PROPOSTAS DE PROJETO';
+    $tpprop = '( &nbsp ) Programa<br>( x ) Projeto<br>( &nbsp ) Prestação de Serviço<br>';
     break;
   default:
     header('location: index.php?status=error');
@@ -172,7 +179,7 @@ $html = '<!DOCTYPE HTML PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3
     border-collapse: collapse;
     border: 1px;
     border-color: black;
-  }
+  }$id_prof
 
   #header td,
   #footer td {
@@ -252,25 +259,81 @@ c {
  * Fim cabeçalho
  */
 
-   $html .= '<h4>'. $title .'</h4>';
-   $html .= '<h5>'. $title2 .'</h5>';
-   $html .= '<p class="c">*O responsável pelo preenchimento e encaminhamento é o coordenador da Proposta de Extensão Tramitação: Coordenador → Divisão de Extensão e Cultura → Colegiado de Curso → Conselho de Centro de Área → Divisão de Extensão e Cultura.</p>';
 
+  $acec = $obProjeto->acec == 'S'? '( x ) Sim<br>( _ ) Não<br>' : '( _ ) Sim<br>( x ) Não<br>';
+  $vinculo = $obProjeto->vinculo == 'S'? '( x ) Sim<br>( _ ) Não<br>' : '( _ ) Sim<br>( x ) Não<br>';
 
-   $html .= 'Título da proposta: '. $obProjeto->titulo .'<br>';
-   $html .= 'Coordenador: '. $obProjeto->nome_prof .'<br>';
+  $count = 1; 
 
+  $html .= '<h4>'. $title .'</h4>';
+  $html .= '<h5>'. $title2 .'</h5>';
+  $html .= '<p class="c p">*O responsável pelo preenchimento e encaminhamento é o coordenador da Proposta de Extensão Tramitação: Coordenador -> Divisão de Extensão e Cultura -> Colegiado de Curso -> Conselho de Centro de Área -> Divisão de Extensão e Cultura.</p>';
+  
+  $html .= '<strong>'. $count++ .'. Título da proposta:</strong> '. $obProjeto->titulo .'<br>';
+  $html .= '<strong>'. $count++ .'. Coordenador:</strong> '. $obProjeto->nome_prof .'<br>';
+  $html .= '<strong>'. $count++ .'. Contato do Coordenador:</strong> <br>';
+  $html .= 'Telefone: '. $obProfessor->telefone .' -  Email: '. $obProfessor->email  .'<br>';
+  
+  $html .= '<strong>'. $count++ .'. Colegiado de Curso:</strong> '. $coolCur .'<br>';
+  $html .= '<strong>'. $count++ .'. Campus:</strong> '. $obProfessor->campus .'<br>';
+  $html .= '<strong>'. $count++ .'. Tipo de proposta:</strong> <br>';
+  $html .= $tpprop;
+  $html .= '<strong>'. $count++ .'.  A proposta está vinculada a alguma disciplina do curso de Graduação ou Pós?Graduação (ACEC II):</strong> <br>';
+  $html .= $acec;
+  $html .= '<strong>'. $count++ .'.  Vinculação à Programa de Extensão e Cultura:</strong> <br>';
+  $html .= $vinculo;
+  $html .= '<strong> Título do Programa de vinculação:</strong> '. $obProjeto->$tituloprogvinc .'<br>';
 
+  ///////////////////////
+  /*
+   1. Título da Proposta:
+   2. Coordenador(a): Sérgio Carrazedo Dantas
+   3. Contato do Coordenador:
+   4. Colegiado de Curso: Colegiado de Matemática
+   5. Campus: Apucarana
+   6. Tipo de proposta: ( ) Programa ( x ) Projeto ( ) Prestação de Serviço
+   7. A proposta está vinculada a alguma disciplina do curso de Graduação ou Pós?Graduação (ACEC II). ( ) Sim ( x ) Não
+   8. Vinculação à Programa de Extensão e Cultura ( ) Vinculado ( x ) Não vinculado Título do Programa de vinculação: ________________________________________.
+   9. Classificação do Projeto ou Programa. 
+   9.1. Áreas de Conhecimento CNPq
+     a) Grande Área: Ciências Exatas e da Terra
+     b) Área: Matemática
+     c) Subárea: Educação Matemática
+   9.2. Plano Nacional de Extensão Universitária 
+     a) Área de Extensão: Educação
+     b) Linha de Extensão: Educação Profissional
+   10. Período de vigência:  ( ) Inicial: 15 / abril / 2023 a 15 / março / 2025
+   11. Carga Horária semanal: 8 (oito) hoa TIDE: ( ) Sim ( x ) Não
+   12. Dimensão.  
+   13. Previsão de Financiamento. ( x ) Sem Financiamento ( ) Com Financiamento
+   14. Parcerias.  ( ) Sim ( x ) Não
+     Nome(s) da(s) Entidade(s): _______________________________________________.
+     Atribuição(ões) da(s) Entidade(s): __________________________________________. 
+   15. Equipe da proposta
+*/
 
 /**
  * $html .= '<p>'..'</p>';
  * Fim conteúdo
  */
 
-  $html .= '</body>
-</html>';
+
+ $html .= '</body>
+ </html>';
 $dompdf = new Dompdf(['enable_remote' => true]);
 $dompdf->loadHtml($html);
 $dompdf->setPaper('A4', 'portrait');
 $dompdf->render();
 $dompdf->stream("PDF__.pdf");
+
+/*
+echo $html;
+
+echo '<pre>';
+print_r($obProjeto);
+echo '<hr>';
+print_r($obProfessor);
+echo '</pre>';
+
+$html .= '</body>
+</html>';*/
