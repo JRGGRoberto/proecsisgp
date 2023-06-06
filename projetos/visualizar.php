@@ -96,23 +96,23 @@ $tpprop = '';
 switch($t) {
   case 1: 
     $title2 = 'FORMULÁRIO PARA ELABORAÇÃO DE PROPOSTA DE CURSO';
-    $tpprop = '( x ) Curso<br>( &nbsp ) Evento<br>';
+    $tpprop = '( x ) Curso<br>( <span> </span><span> </span>) Evento<br>';
     break;
   case 2:
     $title2 = 'FORMULÁRIO PARA ELABORAÇÃO DE PROPOSTA DE EVENTO';
-    $tpprop = '( &nbsp ) Curso<br>( x ) Evento<br>';
+    $tpprop = '( <span> </span><span> </span> ) Curso<br>( x ) Evento<br>';
     break;
   case 3:
     $title2 = 'FORMULÁRIO PARA ELABORAÇÃO DE PROPOSTAS DE PRESTAÇÃO DE SERVIÇO';
-    $tpprop = '( &nbsp ) Programa<br>( &nbsp ) Projeto<br>( x ) Prestação de Serviço<br>';
+    $tpprop = '( <span> </span><span> </span> ) Programa<br>( <span> </span><span> </span> ) Projeto<br>( x ) Prestação de Serviço<br>';
     break;
   case 4:
     $title2 = 'FORMULÁRIO PARA ELABORAÇÃO DE PROPOSTAS DE PROGRAMA';
-    $tpprop = '( x ) Programa<br>( &nbsp ) Projeto<br>( &nbsp ) Prestação de Serviço<br>';
+    $tpprop = '( x ) Programa<br>( <span> </span><span> </span> ) Projeto<br>( <span> </span><span> </span> ) Prestação de Serviço<br>';
     break;
   case 5:
     $title2 = 'FORMULÁRIO PARA ELABORAÇÃO DE PROPOSTAS DE PROJETO';
-    $tpprop = '( &nbsp ) Programa<br>( x ) Projeto<br>( &nbsp ) Prestação de Serviço<br>';
+    $tpprop = '( <span> </span><span> </span> ) Programa<br>( x ) Projeto<br>( <span> </span><span> </span> ) Prestação de Serviço<br>';
     break;
   default:
     header('location: index.php?status=error');
@@ -260,8 +260,8 @@ c {
  */
 
 
-  $acec = $obProjeto->acec == 'S'? '( x ) Sim<br>( _ ) Não<br>' : '( _ ) Sim<br>( x ) Não<br>';
-  $vinculo = $obProjeto->vinculo == 'S'? '( x ) Sim<br>( _ ) Não<br>' : '( _ ) Sim<br>( x ) Não<br>';
+  $acec = $obProjeto->acec == 'S'? '( x ) Sim<br>( <span> </span><span> </span> ) Não<br>' : '( <span> </span><span> </span> ) Sim<br>( x ) Não<br>';
+  $vinculo = $obProjeto->vinculo == 'S'? '( x ) Vinculado <span> </span> <span> </span>( <span> </span><span> </span> ) Não vinculado' : '( <span> </span><span> </span> ) Sim<br>( x ) Não';
 
   $count = 1; 
 
@@ -282,7 +282,7 @@ c {
   $html .= $acec;
   $html .= '<strong>'. $count++ .'.  Vinculação à Programa de Extensão e Cultura:</strong> <br>';
   $html .= $vinculo;
-  $html .= '<strong> Título do Programa de vinculação:</strong> '. $obProjeto->$tituloprogvinc .'<br>';
+  $html .= '<span> </span> <span> </span> <span> </span><strong> Título do Programa de vinculação:</strong> '. $obProjeto->$tituloprogvinc .'<br>';
 
   ///////////////////////
   /*
