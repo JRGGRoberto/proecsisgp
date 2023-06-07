@@ -38,41 +38,19 @@ $coolCur = Colegiado::getRegistro($obProjeto->para_avaliar)->nome;
 
 
 use \App\Entity\Area_Cnpq;
-$areas_cnpq1 = Area_Cnpq::getRegistros($obProjeto->id);
-$selectAreaCNPQ = '';
-foreach($areas_cnpq1 as $ar_cnpq){
-  $selectAreaCNPQ .= '<option value="'.$ar_cnpq->id.'" '.$ar_cnpq->sel.'>'.$ar_cnpq->nome.'</option>';
-}
+$areas_cnpq1 = Area_Cnpq::getRegistros($obProjeto->area_cnpq)->nome;
 
 
 use \App\Entity\Area_temat;
-$area_tem1 = Area_temat::getRegistros($obProjeto->id);
-$areaOptions = '';
-foreach($area_tem1 as $area){
-  $areaOptions .= '<option value="'.$area->id.'" '.$area->sel.'>'.$area->nome.'</option>';
-}
+$area_tem1 = Area_temat::getRegistro($obProjeto->area_tema1)->nome;
 
 use \App\Entity\Area_temat2;
-$area_tem2 = Area_temat2::getRegistros($obProjeto->id);
-$areaOptions2 = '';
-foreach($area_tem2 as $area){
-  $areaOptions2 .= '<option value="'.$area->id.'" '.$area->sel.'>'.$area->nome.'</option>';
-}
+$area_tem2 = Area_temat2::getRegistro($obProjeto->area_tema2)->nome;
 
+/*
 use \App\Entity\Area_Extensao;
-$area_ext = Area_Extensao::getRegistros($obProjeto->id);
-$area_ext_Opt = '';
-foreach($area_ext as $aext){
-  $area_ext_Opt .= '<option value="'.$aext->id.'" '.$aext->sel.'>'.$aext->nome.'</option>';
-}
-
-use \App\Entity\Tipo_exten;
-$proposta = Tipo_exten::getRegistros($obProjeto->id);
-$propOptions = '';
-foreach($proposta as $prop){
-  $propOptions .= '<option value="'.$prop->id.'" '.$prop->sel.'>'.$prop->nome.'</option>';
-}
-
+$area_ext = Area_Extensao::getRegistro($obProjeto->id);
+*/
 use \App\Entity\Arquivo;
 $anexados = Arquivo::getAnexados('projetos', $obProjeto->id);
 $anex = '<ul id="anexos_edt">';
@@ -263,26 +241,35 @@ c {
   $acec = $obProjeto->acec == 'S'? '( x ) Sim<br>( <span> </span><span> </span> ) Não<br>' : '( <span> </span><span> </span> ) Sim<br>( x ) Não<br>';
   $vinculo = $obProjeto->vinculo == 'S'? '( x ) Vinculado <span> </span> <span> </span>( <span> </span><span> </span> ) Não vinculado' : '( <span> </span><span> </span> ) Sim<br>( x ) Não';
 
-  $count = 1; 
+  $count = 0; 
 
   $html .= '<h4>'. $title .'</h4>';
   $html .= '<h5>'. $title2 .'</h5>';
   $html .= '<p class="c p">*O responsável pelo preenchimento e encaminhamento é o coordenador da Proposta de Extensão Tramitação: Coordenador -> Divisão de Extensão e Cultura -> Colegiado de Curso -> Conselho de Centro de Área -> Divisão de Extensão e Cultura.</p>';
   
-  $html .= '<strong>'. $count++ .'. Título da proposta:</strong> '. $obProjeto->titulo .'<br>';
-  $html .= '<strong>'. $count++ .'. Coordenador:</strong> '. $obProjeto->nome_prof .'<br>';
-  $html .= '<strong>'. $count++ .'. Contato do Coordenador:</strong> <br>';
+  $html .= '<strong>'. ++$count .'. Título da proposta:</strong> '. $obProjeto->titulo .'<br>';
+  $html .= '<strong>'. ++$count .'. Coordenador:</strong> '. $obProjeto->nome_prof .'<br>';
+  $html .= '<strong>'. ++$count .'. Contato do Coordenador:</strong> <br>';
   $html .= 'Telefone: '. $obProfessor->telefone .' -  Email: '. $obProfessor->email  .'<br>';
   
-  $html .= '<strong>'. $count++ .'. Colegiado de Curso:</strong> '. $coolCur .'<br>';
-  $html .= '<strong>'. $count++ .'. Campus:</strong> '. $obProfessor->campus .'<br>';
-  $html .= '<strong>'. $count++ .'. Tipo de proposta:</strong> <br>';
+  $html .= '<strong>'. ++$count .'. Colegiado de Curso:</strong> '. $coolCur .'<br>';
+  $html .= '<strong>'. ++$count .'. Campus:</strong> '. $obProfessor->campus .'<br>';
+  $html .= '<strong>'. ++$count .'. Tipo de proposta:</strong> <br>';
   $html .= $tpprop;
-  $html .= '<strong>'. $count++ .'.  A proposta está vinculada a alguma disciplina do curso de Graduação ou Pós?Graduação (ACEC II):</strong> <br>';
+  $html .= '<strong>'. ++$count .'.  A proposta está vinculada a alguma disciplina do curso de Graduação ou Pós?Graduação (ACEC II):</strong> <br>';
   $html .= $acec;
-  $html .= '<strong>'. $count++ .'.  Vinculação à Programa de Extensão e Cultura:</strong> <br>';
+  $html .= '<strong>'. ++$count .'.  Vinculação à Programa de Extensão e Cultura:</strong> <br>';
   $html .= $vinculo;
   $html .= '<span> </span> <span> </span> <span> </span><strong> Título do Programa de vinculação:</strong> '. $obProjeto->$tituloprogvinc .'<br>';
+
+  $html .= '<strong>'. ++$count .'.  Classificação do Projeto ou Programa.</strong> <br>';
+
+  $html .= $count . '.1. Áreas de Conhecimento CNPq<br>';
+
+  $html .= 'a) Grande Área: '. $areas_cnpq1 .'<br>';
+  $html .= 'b) Área: '. $area_tem1 .'<br>';
+  $html .= 'c) Subárea: '. $area_tem2 .'<br>';
+
 
   ///////////////////////
   /*
