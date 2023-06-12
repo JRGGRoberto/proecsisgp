@@ -289,6 +289,8 @@ c {
   $html .= 'b) Linha de Extensão: '. $linh_ext .'<br>';
   
 
+  $html .= '<strong>'. ++$count .'.  Período de vigência:</strong> <br>';
+  $html .= 'Inicial :' . substr($obProjeto->vigen_ini, 0, 10) . ' a ' . substr($obProjeto->vigen_fim, 0, 10) . ' <br> ';
 
   ///////////////////////
   /*
