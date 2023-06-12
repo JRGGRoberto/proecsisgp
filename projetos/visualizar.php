@@ -288,9 +288,14 @@ c {
   $html .= 'a) Área de Extensão: '. $area_ext  .'<br>';
   $html .= 'b) Linha de Extensão: '. $linh_ext .'<br>';
   
+  $dt1 = substr($obProjeto->vigen_ini, 0, 10);
+  $dt1 = substr($dt1, 8, 2). '/'.substr($dt1, 5, 2). '/'. substr($dt1, 0, 4);
 
+  $dt2 = substr($obProjeto->vigen_fim, 0, 10);
+  $dt2 = substr($dt2, 8, 2). '/'.substr($dt2, 5, 2). '/'. substr($dt2, 0, 4);
+  
   $html .= '<strong>'. ++$count .'.  Período de vigência:</strong> <br>';
-  $html .= 'Inicial :' . substr($obProjeto->vigen_ini, 0, 10) . ' a ' . substr($obProjeto->vigen_fim, 0, 10) . ' <br> ';
+  $html .= 'Inicial :' . $dt1 . ' a ' . $dt2 . ' <br> ';
 
   ///////////////////////
   /*
