@@ -38,7 +38,7 @@ $coolCur = Colegiado::getRegistro($obProjeto->para_avaliar)->nome;
 
 
 use \App\Entity\Area_Cnpq;
-$areas_cnpq1 = Area_Cnpq::getRegistros($obProjeto->area_cnpq)->nome;
+$areas_cnpq1 = Area_Cnpq::getRegistro($obProjeto->area_cnpq)->nome;
 
 
 use \App\Entity\Area_temat;
@@ -192,7 +192,7 @@ $html = '<!DOCTYPE HTML PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3
   }
 
   p {
-    text-align: left;
+    text-align: center;
   }
 
 .td1 {
@@ -209,14 +209,21 @@ $html = '<!DOCTYPE HTML PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3
 .time {
   width: 100%;
 }
+
 th {
   background-color: #eeeeee;
   font-weight: lighter;
 }
 
+peq {
+  font-family: "arial";
+  font-size:5px;
+}
 
 c {
   text-align: center;
+  font-family: "arial";
+  font-size:5px;
 }
 </style>
 
@@ -269,6 +276,18 @@ c {
   $html .= 'a) Grande Área: '. $areas_cnpq1 .'<br>';
   $html .= 'b) Área: '. $area_tem1 .'<br>';
   $html .= 'c) Subárea: '. $area_tem2 .'<br>';
+
+
+  use \App\Entity\Area_Extensao;
+  $area_ext = Area_Extensao::getRegistro($obProjeto->area_extensao)->nome;
+  $linh_ext = Area_Extensao::getRegistro($obProjeto->linh_ext)->nome;
+
+  
+  $html .= $count . '.2. Plano Nacional de Extensão Universitária<br>';
+
+  $html .= 'a) Área de Extensão: '. $area_ext  .'<br>';
+  $html .= 'b) Linha de Extensão: '. $linh_ext .'<br>';
+  
 
 
   ///////////////////////
