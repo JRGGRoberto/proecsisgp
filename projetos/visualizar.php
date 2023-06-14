@@ -173,7 +173,7 @@ $html = '<!DOCTYPE HTML PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3
   }
 
   .page-number::after {
-    content: " de " counter(pages);
+    content: " de " counter(page);
   }
 
   hr {
@@ -311,7 +311,10 @@ c {
 
   $html .= '<strong>'. ++$count .'.  Previsão de Financiamento.</strong> <br>';
   $finac = $obProjeto->finac == 'N'? '( x ) Sem Financiamento <span> </span> <span> </span>( <span> </span><span> </span> ) Com Financiamento' : '( <span> </span><span> </span> ) Sem Financiamento <span> </span> <span> </span>( x ) Com Financiamento';
-  $html .= $finac;
+  $html .= $finac . '<br>';
+
+  $html .= 'Órgão de Financiamento: '.$obProjeto->finacorgao.'<br>';
+  $html .= 'Valor do Financiamento: '.$obProjeto->finacval.'<br>';
 
 
   ///////////////////////
