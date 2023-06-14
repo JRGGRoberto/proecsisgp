@@ -137,7 +137,6 @@ $html = '<!DOCTYPE HTML PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3
     position: fixed;
     left: 0;
     right: 0;
-
     font-size: 0.9em;
   }
 
@@ -157,7 +156,7 @@ $html = '<!DOCTYPE HTML PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3
     border-collapse: collapse;
     border: 1px;
     border-color: black;
-  }$id_prof
+  }
 
   #header td,
   #footer td {
@@ -174,13 +173,14 @@ $html = '<!DOCTYPE HTML PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3
   }
 
   .page-number::after {
-    content: " de " counter(page);
+    content: " de " counter(pages);
   }
 
   hr {
     page-break-after: always;
     border: 0;
   }
+
 
   h1,
   h2,
@@ -225,6 +225,7 @@ c {
   font-family: "arial";
   font-size:5px;
 }
+
 </style>
 
 </head>
@@ -296,6 +297,22 @@ c {
   
   $html .= '<strong>'. ++$count .'.  Período de vigência:</strong> <br>';
   $html .= 'Inicial :' . $dt1 . ' a ' . $dt2 . ' <br> ';
+
+  $html .= '<strong>'. ++$count . ' Carga Horária semanal: </strong>'. $obProjeto->ch_semanal;
+  $html .= '<span> </span> <span> </span> <span> </span><strong>  TIDE:</strong> ';
+
+  $tide = $obProjeto->tide == 'S'? '( x ) Sim <span> </span> <span> </span>( <span> </span><span> </span> ) Não ' : '( <span> </span><span> </span> ) Sim <span> </span> <span> </span>( x ) Não ';
+
+  $html .= $tide .'<br>*Indicar a CH a ser computada no PAD, cf. regulamento próprio de distribuição de carga horária da Unespar<br>';
+
+  $html .= '<strong>'. ++$count .'.  Dimensão</strong> <br>';
+  $html .= 'Publico alvo: '. $obProjeto->public_alvo .'<br>';
+  $html .= 'Abrangência: '. $obProjeto->municipios_abr .'<br>';
+
+  $html .= '<strong>'. ++$count .'.  Previsão de Financiamento.</strong> <br>';
+  $finac = $obProjeto->finac == 'N'? '( x ) Sem Financiamento <span> </span> <span> </span>( <span> </span><span> </span> ) Com Financiamento' : '( <span> </span><span> </span> ) Sem Financiamento <span> </span> <span> </span>( x ) Com Financiamento';
+  $html .= $finac;
+
 
   ///////////////////////
   /*
