@@ -172,10 +172,6 @@ $html = '<!DOCTYPE HTML PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3
     content: "Página " counter(page);
   }
 
-  .page-number::after {
-    content: " de " counter(page);
-  }
-
   hr {
     page-break-after: always;
     border: 0;
@@ -251,9 +247,11 @@ c {
 
   $count = 0; 
 
+  
+
   $html .= '<h4>'. $title .'</h4>';
   $html .= '<h5>'. $title2 .'</h5>';
-  $html .= '<p class="c p">*O responsável pelo preenchimento e encaminhamento é o coordenador da Proposta de Extensão Tramitação: Coordenador -> Divisão de Extensão e Cultura -> Colegiado de Curso -> Conselho de Centro de Área -> Divisão de Extensão e Cultura.</p>';
+  $html .= '<p class="c p"><font size="1">*O responsável pelo preenchimento e encaminhamento é o coordenador da Proposta de Extensão Tramitação: Coordenador -> Divisão de Extensão e Cultura -> Colegiado de Curso -> Conselho de Centro de Área -> Divisão de Extensão e Cultura.</font></p>';
   
   $html .= '<strong>'. ++$count .'. Título da proposta:</strong> '. $obProjeto->titulo .'<br>';
   $html .= '<strong>'. ++$count .'. Coordenador:</strong> '. $obProjeto->nome_prof .'<br>';
@@ -324,33 +322,50 @@ c {
   $html .= 'Atribuição(ões) da(s) Entidade(s):'.$obProjeto->parcaatribuic.'<br>'; 
 
 
-  ///////////////////////
-  /*
-   1. Título da Proposta:
-   2. Coordenador(a): Sérgio Carrazedo Dantas
-   3. Contato do Coordenador:
-   4. Colegiado de Curso: Colegiado de Matemática
-   5. Campus: Apucarana
-   6. Tipo de proposta: ( ) Programa ( x ) Projeto ( ) Prestação de Serviço
-   7. A proposta está vinculada a alguma disciplina do curso de Graduação ou Pós?Graduação (ACEC II). ( ) Sim ( x ) Não
-   8. Vinculação à Programa de Extensão e Cultura ( ) Vinculado ( x ) Não vinculado Título do Programa de vinculação: ________________________________________.
-   9. Classificação do Projeto ou Programa. 
-   9.1. Áreas de Conhecimento CNPq
-     a) Grande Área: Ciências Exatas e da Terra
-     b) Área: Matemática
-     c) Subárea: Educação Matemática
-   9.2. Plano Nacional de Extensão Universitária 
-     a) Área de Extensão: Educação
-     b) Linha de Extensão: Educação Profissional
-   10. Período de vigência:  ( ) Inicial: 15 / abril / 2023 a 15 / março / 2025
-   11. Carga Horária semanal: 8 (oito) hoa TIDE: ( ) Sim ( x ) Não
-   12. Dimensão.  
-   13. Previsão de Financiamento. ( x ) Sem Financiamento ( ) Com Financiamento
-   14. Parcerias.  ( ) Sim ( x ) Não
-     Nome(s) da(s) Entidade(s): _______________________________________________.
-     Atribuição(ões) da(s) Entidade(s): __________________________________________. 
-   15. Equipe da proposta
-*/
+  $html .= '<strong>'. ++$count .'.  Equipe da proposta</strong> <br>';
+
+
+  use \App\Entity\Equipe;
+  $tblEquipe = '';
+  $equipe = Equipe::getMembProj($obProjeto->id);
+  $x = 0;
+  foreach($equipe as $pess){
+    $tblEquipe .=
+     '<tr>
+        <td>'. ++$x. '</td>
+        <td>'. $pess->nome .'</td>
+        <td>'. $pess->instituicao .'</td>
+        <td>'. $pess->formacao .'</td>
+        <td>'. $pess->funcao .'</td>
+        <td>'. $pess->tel .'</td>
+      </tr>';
+  }
+
+  if($x == 0 ){
+    $html .= 'Trabalho desenvolvido sem equipe. <br>';
+  } else {
+    $html .= '<table class="time">
+  <thead>
+    <tr>
+      <th>N</th>
+      <th>Nome</th>
+      <th>Instituição</th>
+      <th>Formação</th>
+      <th>Função na equipe</th>
+      <th>Telefone</th>
+    </tr>
+  </thead>
+    <tbody>';
+
+    $html .= $tblEquipe;
+
+  $html .= '    </tbody>
+  </table>';
+
+  }
+
+
+  
 
 /**
  * $html .= '<p>'..'</p>';
@@ -360,6 +375,8 @@ c {
 
  $html .= '</body>
  </html>';
+
+ 
 $dompdf = new Dompdf(['enable_remote' => true]);
 $dompdf->loadHtml($html);
 $dompdf->setPaper('A4', 'portrait');
