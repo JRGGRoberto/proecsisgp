@@ -309,12 +309,19 @@ c {
   $html .= 'Publico alvo: '. $obProjeto->public_alvo .'<br>';
   $html .= 'Abrangência: '. $obProjeto->municipios_abr .'<br>';
 
-  $html .= '<strong>'. ++$count .'.  Previsão de Financiamento.</strong> <br>';
+  $html .= '<strong>'. ++$count .'.  Previsão de Financiamento</strong> <br>';
   $finac = $obProjeto->finac == 'N'? '( x ) Sem Financiamento <span> </span> <span> </span>( <span> </span><span> </span> ) Com Financiamento' : '( <span> </span><span> </span> ) Sem Financiamento <span> </span> <span> </span>( x ) Com Financiamento';
   $html .= $finac . '<br>';
 
   $html .= 'Órgão de Financiamento: '.$obProjeto->finacorgao.'<br>';
   $html .= 'Valor do Financiamento: '.$obProjeto->finacval.'<br>';
+
+  $html .= '<strong>'. ++$count .'.  Parcerias</strong> <br>';
+  $parceria = $obProjeto->parceria == 'S'? '( x ) Sim <span> </span> <span> </span>( <span> </span><span> </span> ) Não' : '( <span> </span><span> </span> ) Sim <span> </span> <span> </span>( x ) Não';
+  $html .= $parceria . '<br>';
+
+  $html .= 'Nome(s) da(s) Entidade(s):'.$obProjeto->parcanomes.'<br>';  
+  $html .= 'Atribuição(ões) da(s) Entidade(s):'.$obProjeto->parcaatribuic.'<br>'; 
 
 
   ///////////////////////
@@ -357,7 +364,7 @@ $dompdf = new Dompdf(['enable_remote' => true]);
 $dompdf->loadHtml($html);
 $dompdf->setPaper('A4', 'portrait');
 $dompdf->render();
-$dompdf->stream("PDF__.pdf");
+$dompdf->stream("a_PDF__.pdf");
 
 /*
 echo $html;
