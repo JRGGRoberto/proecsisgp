@@ -383,6 +383,7 @@ $dompdf->setPaper('A4', 'portrait');
 $dompdf->render();
 $dompdf->stream("a_PDF__.pdf");
 
+//hash_file('md5', $dompdf->stream('file'));
 /*
 echo $html;
 
