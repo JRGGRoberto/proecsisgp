@@ -342,25 +342,25 @@ c {
   }
 
   if($x == 0 ){
-    $html .= 'Trabalho desenvolvido sem equipe. <br>';
+    $html .= 'Trabalho desenvolvido apenas pelo coordenador. <br>';
   } else {
     $html .= '<table class="time">
-  <thead>
-    <tr>
-      <th>N</th>
-      <th>Nome</th>
-      <th>Instituição</th>
-      <th>Formação</th>
-      <th>Função na equipe</th>
-      <th>Telefone</th>
-    </tr>
-  </thead>
-    <tbody>';
-
+    <thead>
+      <tr>
+        <th>N</th>
+        <th>Nome</th>
+        <th>Instituição</th>
+        <th>Formação</th>
+        <th>Função na equipe</th>
+        <th>Telefone</th>
+      </tr>
+    </thead>
+      <tbody>';
+  
     $html .= $tblEquipe;
-
-  $html .= '    </tbody>
-  </table>';
+  
+    $html .= '    </tbody>
+    </table>';
 
   }
 
