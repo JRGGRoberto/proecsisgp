@@ -5,7 +5,7 @@
 
 <div align="center">
 
-<img src="https://img.shields.io/github/languages/count/JRGGRoberto/proecsisgp"> <img src="https://img.shields.io/github/repo-size/JRGGRoberto/proecsisgp"> <img src="https://img.shields.io/github/languages/count/JRGGRoberto/proecsisgp"> <img src="https://img.shields.io/github/repo-size/JRGGRoberto/proecsisgp"> <img src="https://img.shields.io/github/last-commit/JRGGRoberto/proecsisgp"> <img src="https://img.shields.io/github/issues/JRGGRoberto/proecsisgp">
+<img src="https://img.shields.io/github/languages/count/JRGGRoberto/proecsisgp"> <img src="https://img.shields.io/github/repo-size/JRGGRoberto/proecsisgp"> <img src="https://img.shields.io/github/last-commit/JRGGRoberto/proecsisgp"> <img src="https://img.shields.io/github/issues/JRGGRoberto/proecsisgp">
 
 </div>
 
