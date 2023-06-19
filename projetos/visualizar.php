@@ -26,7 +26,6 @@ $obProjeto = new Projeto();
 $obProjeto = Projeto::getProjeto($id, $ver);
 $obProfessor = Professor::getProfessor($obProjeto->id_prof);
 
-
 //VALIDAÇÃO DA TIPO
 if(!$obProjeto instanceof Projeto){
   header('location: ../index.php?status=error');
@@ -105,7 +104,6 @@ if (in_array($t, $anexoII)) {
   $title = 'ANEXO III';
 }
 
-
 /*
 if ($jan == 'nw') {
   include '../includes/headers.php';
@@ -177,7 +175,6 @@ $html = '<!DOCTYPE HTML PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3
     border: 0;
   }
 
-
   h1,
   h2,
   h3,
@@ -241,13 +238,10 @@ c {
  * Fim cabeçalho
  */
 
-
   $acec = $obProjeto->acec == 'S'? '( x ) Sim<br>( <span> </span><span> </span> ) Não<br>' : '( <span> </span><span> </span> ) Sim<br>( x ) Não<br>';
   $vinculo = $obProjeto->vinculo == 'S'? '( x ) Vinculado <span> </span> <span> </span>( <span> </span><span> </span> ) Não vinculado' : '( <span> </span><span> </span> ) Sim<br>( x ) Não';
 
   $count = 0; 
-
-  
 
   $html .= '<h4>'. $title .'</h4>';
   $html .= '<h5>'. $title2 .'</h5>';
@@ -276,11 +270,9 @@ c {
   $html .= 'b) Área: '. $area_tem1 .'<br>';
   $html .= 'c) Subárea: '. $area_tem2 .'<br>';
 
-
   use \App\Entity\Area_Extensao;
   $area_ext = Area_Extensao::getRegistro($obProjeto->area_extensao)->nome;
   $linh_ext = Area_Extensao::getRegistro($obProjeto->linh_ext)->nome;
-
   
   $html .= $count . '.2. Plano Nacional de Extensão Universitária<br>';
 
@@ -321,10 +313,7 @@ c {
   $html .= 'Nome(s) da(s) Entidade(s):'.$obProjeto->parcanomes.'<br>';  
   $html .= 'Atribuição(ões) da(s) Entidade(s):'.$obProjeto->parcaatribuic.'<br>'; 
 
-
   $html .= '<strong>'. ++$count .'.  Equipe da proposta</strong> <br>';
-
-
   use \App\Entity\Equipe;
   $tblEquipe = '';
   $equipe = Equipe::getMembProj($obProjeto->id);
@@ -356,12 +345,9 @@ c {
       </tr>
     </thead>
       <tbody>';
-  
     $html .= $tblEquipe;
-  
     $html .= '    </tbody>
     </table>';
-
   }
 
   $html .= '<strong>'. ++$count .'.  Resumo</strong> <br>';
@@ -385,15 +371,19 @@ c {
   $html .= '<strong>'. ++$count .'.  Problema e justificativa da proposta:</strong> <br>';
   $html .= $obProjeto->justificativa . '<br>';
 
-
   $html .= '<strong>'. ++$count .'.  Objetivos – Geral e Específicos:</strong> <br>';
   $html .= $obProjeto->objetivos . '<br>';
   
-
   $html .= '<strong>'. ++$count .'.  Metodologia para execução da proposta:</strong> <br>';
   $html .= $obProjeto->metodologia . '<br>';
    
-   
+  $html .= '<strong>'. ++$count .'.  Contribuição científica, tecnológica e de Inovação:</strong> <br>';
+  $html .= $obProjeto->contribuicao . '<br>';
+  
+  $html .= '<strong>'. ++$count .'.  Contribuição científica, tecnológica e de Inovação:</strong> <br>';
+  $html .= $obProjeto->contribuicao . '<br>';
+  
+
 /**
  * $html .= '<p>'..'</p>';
  * Fim conteúdo
