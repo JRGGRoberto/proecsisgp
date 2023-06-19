@@ -199,6 +199,7 @@ $html = '<!DOCTYPE HTML PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3
         <td></td>
       </tr>
       <tr>
+
         <td>4</td>
         <td>ps4</td>
         <td>sony</td>
@@ -275,7 +276,8 @@ $html = '<!DOCTYPE HTML PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3
     libero eu enim. Nulla nec felis sed leo placerat imperdiet. Aenean
     suscipit nulla in justo. Suspendisse cursus rutrum augue. Nulla
     tincidunt tincidunt mi. Curabitur iaculis, lorem vel rhoncus faucibus,
-    felis magna fermentum augue, et ultricies lacus lorem varius purus.
+    felis magna fermentum augue, e
+    t ultricies lacus lorem varius purus.
     Curabitur eu amet.</p>
 
   <p>Aliquam convallis sollicitudin purus. Praesent aliquam, enim at
@@ -309,6 +311,8 @@ $html = '<!DOCTYPE HTML PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3
 
 </html>';
 
+
+
     
 use Dompdf\Dompdf;
 $dompdf = new Dompdf(['enable_remote' => true]);
@@ -317,3 +321,7 @@ $dompdf->loadHtml($html);
 $dompdf->setPaper('A4', 'portrait');
 $dompdf->render();
 $dompdf->stream("AE1.pdf");
+
+
+
+

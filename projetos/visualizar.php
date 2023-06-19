@@ -296,7 +296,7 @@ c {
   $html .= '<strong>'. ++$count .'.  Período de vigência:</strong> <br>';
   $html .= 'Inicial :' . $dt1 . ' a ' . $dt2 . ' <br> ';
 
-  $html .= '<strong>'. ++$count . ' Carga Horária semanal: </strong>'. $obProjeto->ch_semanal;
+  $html .= '<strong>'. ++$count . '. Carga Horária semanal: </strong>'. $obProjeto->ch_semanal .'h ';
   $html .= '<span> </span> <span> </span> <span> </span><strong>  TIDE:</strong> ';
 
   $tide = $obProjeto->tide == 'S'? '( x ) Sim <span> </span> <span> </span>( <span> </span><span> </span> ) Não ' : '( <span> </span><span> </span> ) Sim <span> </span> <span> </span>( x ) Não ';
@@ -364,9 +364,33 @@ c {
 
   }
 
+  $html .= '<strong>'. ++$count .'.  Resumo</strong> <br>';
+  $html .= $obProjeto->resumo . '<br>';
 
+  use \App\Entity\Palavras;
+  $lista = '';
+  $palavras = Palavras::getPalavrasByProj($obProjeto->id);
+  $x = 0;
+  foreach($palavras as $palavra){
+    $lista .= '<li>'.$palavra->palavra . '</li>';
+    ++$x;
+  }
+  if($x > 0) {
+    $html .= '<strong>Palavras-chave: </strong> <br>' ;
+    $html .= '<ul>'. $lista . '</ul>';
+  } else {
+    '<strong>Sem palavras-chave. </strong> <br>' ;
+  }
+
+  $html .= '<strong>'. ++$count .'.  Problema e justificativa da proposta:</strong> <br>';
+  $html .= $obProjeto->justificativa . '<br>';
+
+
+  $html .= '<strong>'. ++$count .'.  Objetivos – Geral e Específicos:</strong> <br>';
+  $html .= $obProjeto->objetivos . '<br>';
   
-
+  
+   
 /**
  * $html .= '<p>'..'</p>';
  * Fim conteúdo
