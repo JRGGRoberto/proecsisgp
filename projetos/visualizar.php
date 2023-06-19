@@ -389,7 +389,10 @@ c {
   $html .= '<strong>'. ++$count .'.  Objetivos – Geral e Específicos:</strong> <br>';
   $html .= $obProjeto->objetivos . '<br>';
   
-  
+
+  $html .= '<strong>'. ++$count .'.  Metodologia para execução da proposta:</strong> <br>';
+  $html .= $obProjeto->metodologia . '<br>';
+   
    
 /**
  * $html .= '<p>'..'</p>';
