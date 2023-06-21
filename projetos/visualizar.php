@@ -384,6 +384,17 @@ c {
   $html .= $obProjeto->contribuicao . '<br>';
   
 
+  $html .= '<strong>'. ++$count .'.  Cronograma da proposta:</strong> <br>';
+  $html .= $obProjeto->cronograma . '<br>';
+
+  $html .= '<strong>'. ++$count .'.  Referências:</strong> <br>';
+  $html .= nl2br($obProjeto->referencia) . '<br>';
+
+
+  $html .= '<strong>'. ++$count .'.  AEEE:</strong> <br>';
+  $html .= '<textarea class="form-control" name="referencia" rows="10" >' . nl2br($obProjeto->referencia) .'</textarea>';
+
+  
 /**
  * $html .= '<p>'..'</p>';
  * Fim conteúdo

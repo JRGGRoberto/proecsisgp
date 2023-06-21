@@ -132,7 +132,7 @@ if(isset( $_POST['titulo']) ) {
   $obProjeto->tide         =  $_POST['tide'];
   $obProjeto->vigen_ini    =  $_POST['vigen_ini'];
   $obProjeto->vigen_fim    =  $_POST['vigen_fim'];
-  $obProjeto->referencia   =  $_POST['referencia'];
+  $obProjeto->referencia   = $_POST['referencia'];
   $obProjeto->resumo       =  $_POST['resumo'];
   $obProjeto->objetivos    =  $_POST['objetivos'];
   $obProjeto->public_alvo  =  $_POST['public_alvo'];
