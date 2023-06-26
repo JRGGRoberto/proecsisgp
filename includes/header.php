@@ -54,6 +54,9 @@ $horas >= 12 ? (int)($horas -= 12) : (int)($horas -= 0);
   <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.1/dist/umd/popper.min.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.1/dist/js/bootstrap.bundle.min.js"></script>
 
+  <link href="https://sistemaproec.unespar.edu.br/sistema/includes/summernote-bs4.min.css" rel="stylesheet">
+  <script src="https://sistemaproec.unespar.edu.br/sistema/includes/summernote-bs4.min.js"></script>
+
   
     <!--multiselect CSS-->
     <link rel="stylesheet" type="text/css" href="../includes/select2.min.css" />
