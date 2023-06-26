@@ -3,87 +3,56 @@
 include '../includes/header.php';
 
 use \App\Entity\Projeto;
+
 $obProjeto = new Projeto();
 $id = '34743057-c966-4a55-9db3-76b060d9b2dd';
 $ver = 0;
 $obProjeto = Projeto::getProjeto($id, $ver);
 
+
+
+if (isset($_POST['resumo'])) {
+  $obProjeto->resumo       =  $_POST['resumo'];
+  $obProjeto->atualizar();
+  echo '<p>INFORMAÇÃO SALVA</p>';
+}
+
 ?>
 
 <div class="container">
 
-  <label>
-    <h5><?= ++$n ?>. Parcerias</h5>
-  </label>
-  <div class="row">
-    <div class="col-1">
+  <form name="formFormat" id="formFormat" method="POST" enctype="multipart/form-data">
+    
+    <hr>
+    
+    <div class="form-group">
       <label>
-        <h6>Parcerias?</h6>
+        <h5><?= $n = 1 ?>. Título da proposta</h5>
       </label>
-      <select name="parceria" id="parceria" class="form-control" >
-        <option value="S">Sim</option>
-        <option value="N">Não</option>
-      </select>
+      <input type="text" class="form-control" name="titulo" id="titulo" value="<?= $obProjeto->titulo ?>" required>
     </div>
-    <div class="col-6" id="parcaEntidades">
+    
+
+    <hr>
+
+    <div class="form-group">
       <label>
-        <h6>Nome(s) da(s) Entidade(s)</h6>
+        <h5><?= ++$n ?>. Coordenador(a)</h5>
       </label>
-      <input type="text" class="form-control" id="par_entidades" name="parcanomes">
-    </div>
-    <div class="col-5" id="AtribuEnti">
-      <label>
-        <h6>Atribuição(ões) da(s) Entidade(s)</h6>
-      </label>
-      <input type="text" class="form-control" id="par_atribu" name="parcaatribuic" >
+      <input type="text" class="form-control" name="coordNome" readonly value="<?= $obProjeto->nome_prof ?>">
     </div>
 
-    <script type="text/javascript">
-      const divParcas1 = document.getElementById('parcaEntidades');
-      const divParcas2 = document.getElementById('AtribuEnti');
-      const opcaoParcas = document.getElementById('parceria');
 
-      function showParcas() {
+    <div class="form-group">
+      <label>
+      <h5><?= ++$n ?>. Título: Texto 1</h5>
+      </label>
+      <div id="texto1"></div>
+    </div>
 
-        if (opcaoParcas.value == 'S') {
-          divParcas1.hidden = false;
-          divParcas2.hidden = false;
-        } else {
-          document.getElementById('par_entidades').value = '';
-          document.getElementById('par_atribu').value = '';
-          divParcas1.hidden = true;
-          divParcas2.hidden = true;
-        }
-      }
-    </script>
-  </div>
+    <textarea class="form-control" name="resumo" rows="10" id="resumo" hidden><?= $obProjeto->resumo ?></textarea>
 
-
-
-  <div class="form-group">
-    <label>
-      <h5>Título: Texto 1</h5>
-    </label>
-    <div id="texto1"></div>
-  </div>
-
-  <!--
-  <div class="form-group">
-    <label>
-      <h5>Título: Texto 2</h5>
-    </label>
-    <div id="texto2"></div>
-  </div>
-
-    -->
-
-  
-  <button type="button" class="btn btn-primary btn-sm" onclick="listar()">Exibir dados</button>
-
-
-  <p id="demo">A CARREGAR</p>
-
-  <textarea class="form-control" name="resumo" rows="10" id="resumo" hidden><?= $obProjeto->resumo ?></textarea>
+    </form>
 
 </div>
 
@@ -136,13 +105,14 @@ $obProjeto = Projeto::getProjeto($id, $ver);
 
 
   function toSalve() {
-   /* if ($('#texto1').summernote('isEmpty')) {
+    /* if ($('#texto1').summernote('isEmpty')) {
       alert('editor content is empty');
     } else {
 */
-      var resumo = document.getElementById("resumo")
-      resumo.value = $('#texto1').summernote('code');
-  //  }
+    var resumo = document.getElementById("resumo");
+    resumo.value = $('#texto1').summernote('code');
+    document.formFormat.submit();
+    //  }
   }
 
   CarregarDados();
