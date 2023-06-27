@@ -132,32 +132,6 @@ $('#sumnot_referencia').summernote({
   ]
 });
 
-
-function CarregarDados() {
-  var resumo = document.getElementById("resumo").value;
-  $('#sumnot_resumo').summernote('pasteHTML', resumo);
-
-  var justificativa = document.getElementById("justificativa").value;
-  $('#sumnot_justificativa').summernote('pasteHTML', justificativa);
-
-  var objetivos = document.getElementById("objetivos").value;
-  $('#sumnot_objetivos').summernote('pasteHTML', objetivos);
-
-  var metodologia = document.getElementById("metodologia").value;
-  $('#sumnot_metodologia').summernote('pasteHTML', metodologia);
-
-  var contribuicao = document.getElementById("contribuicao").value;
-  $('#sumnot_contribuicao').summernote('pasteHTML', contribuicao);
-
-  var cronograma = document.getElementById("cronograma").value;
-  $('#sumnot_cronograma').summernote('pasteHTML', cronograma);
-
-  var referencia = document.getElementById("referencia").value;
-  $('#sumnot_referencia').summernote('pasteHTML', referencia);
-
-}
-
-
 function submitJSON() {
   // Equipe
   document.getElementById('equipeJS').value = '';
@@ -219,5 +193,3 @@ function submitSalvar(){
 
   document.formAnexo.submit();
 }
-
-CarregarDados();

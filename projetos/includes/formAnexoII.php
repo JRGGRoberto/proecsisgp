@@ -346,8 +346,8 @@
         <h5><label><?= ++$n ?>. Resumo do Projeto e Palavras-chaves</label></h5>
           
             <label for="resumo">Resumo do Projeto</label>
-            <div id="sumnot_resumo"></div>
-            <textarea id="resumo" name="resumo" rows="10" hidden ><?= $obProjeto->resumo ?></textarea>
+            <div id="sumnot_resumo"><?= $obProjeto->resumo ?></div>
+            <textarea id="resumo" name="resumo" rows="10" hidden ></textarea>
             <label for="palavras">Palavras-chave
               <div class="row"> 
                 <div class="col-4">
@@ -372,8 +372,8 @@
               <label for="justificativa">
                 <h5><?= ++$n ?>. Problema e justificativa da proposta</h5>
               </label>
-              <div id="sumnot_justificativa"></div>
-              <textarea id="justificativa" name="justificativa" rows="10" hidden ><?= $obProjeto->justificativa ?></textarea>
+              <div id="sumnot_justificativa"><?= $obProjeto->justificativa ?></div>
+              <textarea id="justificativa" name="justificativa" rows="10" hidden ></textarea>
             </div>
           </div>
         </div>
@@ -386,8 +386,8 @@
               <label>
                 <h5><?= ++$n ?>. Objetivo Geral e Objetivos Específicos</h5>
               </label>
-              <div id="sumnot_objetivos"></div>
-              <textarea id="objetivos" name="objetivos" rows="10" hidden ><?= $obProjeto->objetivos ?></textarea>
+              <div id="sumnot_objetivos"><?= $obProjeto->objetivos ?></div>
+              <textarea id="objetivos" name="objetivos" rows="10" hidden ></textarea>
             </div>
           </div>
         </div>
@@ -398,8 +398,8 @@
               <label for="metodologia">
                 <h5><?= ++$n ?>. Metodologia para Execução da Proposta</h5>
               </label>
-              <div id="sumnot_metodologia"></div>
-              <textarea id="metodologia" name="metodologia" rows="10" hidden ><?= $obProjeto->metodologia ?></textarea>
+              <div id="sumnot_metodologia"><?= $obProjeto->metodologia ?></div>
+              <textarea id="metodologia" name="metodologia" rows="10" hidden ></textarea>
             </div>
           </div>
         </div>
@@ -412,8 +412,8 @@
               <label for="contribuicao">
                 <h5><?= ++$n ?>. Contribuição Científica, Tecnológica e de Inovação</h5>
               </label>
-              <div id="sumnot_contribuicao"></div>
-              <textarea id="contribuicao" name="contribuicao" rows="10" hidden><?= $obProjeto->contribuicao ?></textarea>
+              <div id="sumnot_contribuicao"><?= $obProjeto->contribuicao ?></div>
+              <textarea id="contribuicao" name="contribuicao" rows="10" hidden></textarea>
             </div>
           </div>
         </div>
@@ -426,8 +426,8 @@
               <label for="cronograma">
                 <h5><?= ++$n ?>. Cronograma da proposta</h5>
               </label>
-              <div id="sumnot_cronograma"></div>
-              <textarea id="cronograma" name="cronograma" rows="10" hidden><?= $obProjeto->cronograma ?></textarea>
+              <div id="sumnot_cronograma"><?= $obProjeto->cronograma ?></div>
+              <textarea id="cronograma" name="cronograma" rows="10" hidden></textarea>
             </div>
           </div>
         </div>
@@ -440,8 +440,8 @@
               <label for="referencia">
                 <h5><?= ++$n ?>. Referências</h5>
               </label>
-              <div id="sumnot_referencia"></div>
-              <textarea id="referencia" name="referencia" rows="10" hidden><?= $obProjeto->referencia ?></textarea>
+              <div id="sumnot_referencia"><?= $obProjeto->referencia ?></div>
+              <textarea id="referencia" name="referencia" rows="10" hidden></textarea>
             </div>
           </div>
         </div>
