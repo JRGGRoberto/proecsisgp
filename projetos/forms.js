@@ -1,3 +1,163 @@
+$('#sumnot_resumo').summernote({
+  placeholder: 'Descrever o resumo da ação de extensão (no máximo 250 palavras), destacando sua relevância na perspectiva acadêmica e social, o público a que se destina e o resultado esperado. Este texto poderá ser publicado na homepage da PROEC, portanto, recomenda-se revisá-lo corretamente.',
+  height: 250,
+  tabsize: 2,
+  toolbar: [
+    // [groupName, [list of button]]
+    ['style', ['style']],
+    ['style', ['bold', 'italic', 'underline', 'hr', 'clear']],
+    ['font', ['strikethrough', 'superscript', 'subscript']],
+    ['fontname', ['fontname']],
+    ['fontsize', ['fontsize']],
+    ['color', ['color']],
+    ['para', ['ul', 'ol', 'paragraph']],
+    ['height', ['height']],
+    ['table', ['table']],
+    ['insert', ['link', 'picture']]
+  ]
+});
+
+$('#sumnot_justificativa').summernote({
+  placeholder: '(Identificar o problema e justificaro projeto). 20 linhas máximo',
+  tabsize: 2,
+  height: 250,
+  toolbar: [
+    // [groupName, [list of button]]
+    ['style', ['style']],
+    ['style', ['bold', 'italic', 'underline', 'hr', 'clear']],
+    ['font', ['strikethrough', 'superscript', 'subscript']],
+    ['fontname', ['fontname']],
+    ['fontsize', ['fontsize']],
+    ['color', ['color']],
+    ['para', ['ul', 'ol', 'paragraph']],
+    ['height', ['height']],
+    ['table', ['table']],
+    ['insert', ['link', 'picture']]
+  ]
+});
+
+$('#sumnot_objetivos').summernote({
+  placeholder: '(O Objetivo Geral é a ação macro que se quer alcançar. E os Objetivos Específicos são as ações fracionadas, para se alcançar o Objetivo Geral). 10 linhas máximo.',
+  tabsize: 2,
+  height: 250,
+  toolbar: [
+    // [groupName, [list of button]]
+    ['style', ['style']],
+    ['style', ['bold', 'italic', 'underline', 'hr', 'clear']],
+    ['font', ['strikethrough', 'superscript', 'subscript']],
+    ['fontname', ['fontname']],
+    ['fontsize', ['fontsize']],
+    ['color', ['color']],
+    ['para', ['ul', 'ol', 'paragraph']],
+    ['height', ['height']],
+    ['table', ['table']],
+    ['insert', ['link', 'picture']]
+  ]
+});
+
+$('#sumnot_metodologia').summernote({
+  placeholder: '(Explicar os procedimentos necessários para a execução do projeto destacando o método, ou seja, a explicação do delineamento do estudo, amostra, procedimentos para a coleta de dados, bem como, o plano para a análise de dados). 20 linhas máximo.',
+  tabsize: 2,
+  height: 250,
+  toolbar: [
+    // [groupName, [list of button]]
+    ['style', ['style']],
+    ['style', ['bold', 'italic', 'underline', 'hr', 'clear']],
+    ['font', ['strikethrough', 'superscript', 'subscript']],
+    ['fontname', ['fontname']],
+    ['fontsize', ['fontsize']],
+    ['color', ['color']],
+    ['para', ['ul', 'ol', 'paragraph']],
+    ['height', ['height']],
+    ['table', ['table']],
+    ['insert', ['link', 'picture']]
+  ]
+});
+
+
+$('#sumnot_contribuicao').summernote({
+  placeholder: '(Identificar de que forma os resultados esperados do projeto contribuirão no cenário científico, tecnológicoe cultural  ). 10 linhas máximo',
+  tabsize: 2,
+  height: 250,
+  toolbar: [
+    // [groupName, [list of button]]
+    ['style', ['style']],
+    ['style', ['bold', 'italic', 'underline', 'hr', 'clear']],
+    ['font', ['strikethrough', 'superscript', 'subscript']],
+    ['fontname', ['fontname']],
+    ['fontsize', ['fontsize']],
+    ['color', ['color']],
+    ['para', ['ul', 'ol', 'paragraph']],
+    ['height', ['height']],
+    ['table', ['table']],
+    ['insert', ['link', 'picture']]
+  ]
+});
+
+$('#sumnot_cronograma').summernote({
+  placeholder: '(considerar o período de vigência do projeto)',
+  tabsize: 2,
+  height: 250,
+  toolbar: [
+    // [groupName, [list of button]]
+    ['style', ['style']],
+    ['style', ['bold', 'italic', 'underline', 'hr', 'clear']],
+    ['font', ['strikethrough', 'superscript', 'subscript']],
+    ['fontname', ['fontname']],
+    ['fontsize', ['fontsize']],
+    ['color', ['color']],
+    ['para', ['ul', 'ol', 'paragraph']],
+    ['height', ['height']],
+    ['table', ['table']],
+    ['insert', ['link']]
+  ]
+});
+
+$('#sumnot_referencia').summernote({
+  placeholder: 'Referências',
+  tabsize: 2,
+  height: 250,
+  toolbar: [
+    // [groupName, [list of button]]
+    ['style', ['style']],
+    ['style', ['bold', 'italic', 'underline', 'hr', 'clear']],
+    ['font', ['strikethrough', 'superscript', 'subscript']],
+    ['fontname', ['fontname']],
+    ['fontsize', ['fontsize']],
+    ['color', ['color']],
+    ['para', ['ul', 'ol', 'paragraph']],
+    ['height', ['height']],
+    ['table', ['table']],
+    ['insert', ['link', 'picture']]
+  ]
+});
+
+
+function CarregarDados() {
+  var resumo = document.getElementById("resumo").value;
+  $('#sumnot_resumo').summernote('pasteHTML', resumo);
+
+  var justificativa = document.getElementById("justificativa").value;
+  $('#sumnot_justificativa').summernote('pasteHTML', justificativa);
+
+  var objetivos = document.getElementById("objetivos").value;
+  $('#sumnot_objetivos').summernote('pasteHTML', objetivos);
+
+  var metodologia = document.getElementById("metodologia").value;
+  $('#sumnot_metodologia').summernote('pasteHTML', metodologia);
+
+  var contribuicao = document.getElementById("contribuicao").value;
+  $('#sumnot_contribuicao').summernote('pasteHTML', contribuicao);
+
+  var cronograma = document.getElementById("cronograma").value;
+  $('#sumnot_cronograma').summernote('pasteHTML', cronograma);
+
+  var referencia = document.getElementById("referencia").value;
+  $('#sumnot_referencia').summernote('pasteHTML', referencia);
+
+}
+
+
 function submitJSON() {
   // Equipe
   document.getElementById('equipeJS').value = '';
@@ -15,6 +175,28 @@ function submitJSON() {
 }  
 
 function submitSalvar(){
+
+  var resumo = document.getElementById("resumo");
+  resumo.value = $('#sumnot_resumo').summernote('code');
+
+  var justificativa = document.getElementById("justificativa");
+  justificativa.value = $('#sumnot_justificativa').summernote('code');
+  
+  var objetivos = document.getElementById("objetivos");
+  objetivos.value = $('#sumnot_objetivos').summernote('code');
+
+  var metodologia = document.getElementById("metodologia");
+  metodologia.value = $('#sumnot_metodologia').summernote('code');
+
+  var contribuicao = document.getElementById("contribuicao");
+  contribuicao.value = $('#sumnot_contribuicao').summernote('code');
+
+  var cronograma = document.getElementById("cronograma");
+  cronograma.value = $('#sumnot_cronograma').summernote('code');
+
+  var referencia = document.getElementById("referencia");
+  referencia.value = $('#sumnot_referencia').summernote('code');
+
   let palav1 = document.getElementById('palav1').value;
   let palav2 = document.getElementById('palav2').value;
   let palav3 = document.getElementById('palav3').value;
@@ -33,8 +215,9 @@ function submitSalvar(){
     document.getElementById("titulo").focus();
     return;
   }
-
   submitJSON();
-  
+
   document.formAnexo.submit();
 }
+
+CarregarDados();

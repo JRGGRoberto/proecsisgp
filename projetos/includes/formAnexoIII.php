@@ -285,7 +285,8 @@
           <label><h5><?= ++$n ?>. Resumo do Projeto e Palavras-chaves</h5></label>
           
         <label for="resumo">Resumo do Projeto</label>
-        <textarea class="form-control" name="resumo" rows="10" placeholder="Descrever o resumo da ação de extensão (no máximo 250 palavras), destacando sua relevância na perspectiva acadêmica e social, o público a que se destina e o resultado esperado. Este texto poderá ser publicado na homepage da PROEC, portanto, recomenda-se revisá-lo corretamente."><?= $obProjeto->resumo ?></textarea>
+        <div id="sumnot_resumo"></div>
+        <textarea id="resumo" name="resumo" rows="10" hidden ><?= $obProjeto->resumo ?></textarea>
         <label for="palavras">Palavras-chave
           <div class="row"> 
             <div class="col-4">
@@ -309,7 +310,8 @@
               <label for="justificativa">
                 <h5><?= ++$n ?>. Justificativa da proposta</h5>
               </label>
-              <textarea class="form-control" name="justificativa" rows="10" placeholder="(Identificar o problema e justificaro projeto). 20 linhas máximo"><?= $obProjeto->justificativa ?></textarea>
+              <div id="sumnot_justificativa"></div>
+              <textarea id="justificativa" name="justificativa" rows="10" hidden ><?= $obProjeto->justificativa ?></textarea>
             </div>
           </div>
         </div>
@@ -322,7 +324,8 @@
               <label>
                 <h5><?= ++$n ?>. Objetivo Geral e Objetivos Específicos</h5>
               </label>
-              <textarea class="form-control" name="objetivos" rows="10" placeholder="(O Objetivo Geral é a ação macro que se quer alcançar. E os Objetivos Específicos são as ações fracionadas, para se alcançar o Objetivo Geral). 10 linhas máximo."><?= $obProjeto->objetivos ?></textarea>
+              <div id="sumnot_objetivos"></div>
+              <textarea id="objetivos" name="objetivos" rows="10" hidden ><?= $obProjeto->objetivos ?></textarea>
             </div>
           </div>
         </div>
@@ -335,7 +338,8 @@
               <label for="metodologia">
                 <h5><?= ++$n ?>. Metodologia para Execução da Proposta</h5>
               </label>
-              <textarea class="form-control" name="metodologia" rows="10" placeholder="(Explicar os procedimentos necessários para a execução do projeto destacando o método, ou seja, a explicação do delineamento do estudo, amostra, procedimentos para a coleta de dados, bem como, o plano para a análise de dados). 20 linhas máximo."><?= $obProjeto->metodologia ?></textarea>
+              <div id="sumnot_metodologia"></div>
+              <textarea id="metodologia" name="metodologia" rows="10" hidden ><?= $obProjeto->metodologia ?></textarea>
             </div>
           </div>
         </div>
@@ -348,7 +352,8 @@
               <label for="contribuicao">
                 <h5><?= ++$n ?>. Contribuição Científica, Tecnológica e de Inovação</h5>
               </label>
-              <textarea class="form-control" name="contribuicao" rows="10" placeholder="(Identificar de que forma os resultados esperados do projeto contribuirão no cenário científico, tecnológicoe cultural  ). 10 linhas máximo"><?= $obProjeto->contribuicao ?></textarea>
+              <div id="sumnot_contribuicao"></div>
+              <textarea id="contribuicao" name="contribuicao" rows="10" hidden><?= $obProjeto->contribuicao ?></textarea>
             </div>
           </div>
         </div>
@@ -361,7 +366,8 @@
               <label for="cronograma">
                 <h5><?= ++$n ?>. Cronorama da proposta</h5>
               </label>
-              <textarea class="form-control" name="cronograma" rows="10" placeholder="(considerar o período de vigência do projeto)"><?= $obProjeto->cronograma ?></textarea>
+              <div id="sumnot_cronograma"></div>
+              <textarea id="cronograma" name="cronograma" rows="10" hidden><?= $obProjeto->cronograma ?></textarea>
             </div>
           </div>
         </div>
@@ -375,7 +381,8 @@
               <label for="referencia">
                 <h5><?= ++$n ?>. Referências</h5>
               </label>
-              <textarea class="form-control" name="referencia" rows="10" ><?= $obProjeto->referencia ?></textarea>
+              <div id="sumnot_referencia"></div>
+              <textarea id="referencia" name="referencia" rows="10" hidden><?= $obProjeto->referencia ?></textarea>
             </div>
           </div>
         </div>
