@@ -175,18 +175,11 @@ $html = '<!DOCTYPE HTML PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3
     border: 0;
   }
 
-  h1,
-  h2,
-  h3,
-  h4,
-  h5,
-  h6 {
+  .centralizado {
     text-align: center;
   }
 
-  p {
-    text-align: center;
-  }
+ 
 
 .td1 {
   border: 0;
@@ -203,7 +196,7 @@ $html = '<!DOCTYPE HTML PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3
   width: 100%;
 }
 
-th {
+.th_cinza {
   background-color: #eeeeee;
   font-weight: lighter;
 }
@@ -243,26 +236,26 @@ c {
 
   $count = 0; 
 
-  $html .= '<h4>'. $title .'</h4>';
-  $html .= '<h5>'. $title2 .'</h5>';
-  $html .= '<p class="c p"><font size="1">*O responsável pelo preenchimento e encaminhamento é o coordenador da Proposta de Extensão Tramitação: Coordenador -> Divisão de Extensão e Cultura -> Colegiado de Curso -> Conselho de Centro de Área -> Divisão de Extensão e Cultura.</font></p>';
+  $html .= '<h4 class="centralizado">'. $title .'</h4>';
+  $html .= '<h5 class="centralizado">'. $title2 .'</h5>';
+  $html .= '<p class="c p centralizado"><font size="1">*O responsável pelo preenchimento e encaminhamento é o coordenador da Proposta de Extensão Tramitação: Coordenador -> Divisão de Extensão e Cultura -> Colegiado de Curso -> Conselho de Centro de Área -> Divisão de Extensão e Cultura.</font></p>';
   
-  $html .= '<strong>'. ++$count .'. Título da proposta:</strong> '. $obProjeto->titulo .'<br>';
-  $html .= '<strong>'. ++$count .'. Coordenador:</strong> '. $obProjeto->nome_prof .'<br>';
-  $html .= '<strong>'. ++$count .'. Contato do Coordenador:</strong> <br>';
-  $html .= 'Telefone: '. $obProfessor->telefone .' -  Email: '. $obProfessor->email  .'<br>';
+  $html .= '<p><strong>'. ++$count .'. Título da proposta:</strong> '. $obProjeto->titulo .'</p>';
+  $html .= '<p><strong>'. ++$count .'. Coordenador:</strong> '. $obProjeto->nome_prof .'</p>';
+  $html .= '<p><strong>'. ++$count .'. Contato do Coordenador:</strong> </p>';
+  $html .= '<p>Telefone: '. $obProfessor->telefone .' -  Email: '. $obProfessor->email  .'</p>';
   
-  $html .= '<strong>'. ++$count .'. Colegiado de Curso:</strong> '. $coolCur .'<br>';
-  $html .= '<strong>'. ++$count .'. Campus:</strong> '. $obProfessor->campus .'<br>';
-  $html .= '<strong>'. ++$count .'. Tipo de proposta:</strong> <br>';
+  $html .= '<p><strong>'. ++$count .'. Colegiado de Curso:</strong> '. $coolCur .'</p>';
+  $html .= '<p><strong>'. ++$count .'. Campus:</strong> '. $obProfessor->campus .'</p>';
+  $html .= '<p><strong>'. ++$count .'. Tipo de proposta:</strong> </p>';
   $html .= $tpprop;
-  $html .= '<strong>'. ++$count .'.  A proposta está vinculada a alguma disciplina do curso de Graduação ou Pós?Graduação (ACEC II):</strong> <br>';
+  $html .= '<p><strong>'. ++$count .'.  A proposta está vinculada a alguma disciplina do curso de Graduação ou Pós?Graduação (ACEC II):</strong> </p>';
   $html .= $acec;
-  $html .= '<strong>'. ++$count .'.  Vinculação à Programa de Extensão e Cultura:</strong> <br>';
+  $html .= '<p><strong>'. ++$count .'.  Vinculação à Programa de Extensão e Cultura:</strong> </p>';
   $html .= $vinculo;
-  $html .= '<span> </span> <span> </span> <span> </span><strong> Título do Programa de vinculação:</strong> '. $obProjeto->$tituloprogvinc .'<br>';
+  $html .= '<p><span> </span> <span> </span> <span> </span><strong> Título do Programa de vinculação:</strong> '. $obProjeto->$tituloprogvinc .'</p>';
 
-  $html .= '<strong>'. ++$count .'.  Classificação do Projeto ou Programa.</strong> <br>';
+  $html .= '<p><strong>'. ++$count .'.  Classificação do Projeto ou Programa.</strong> </p>';
 
   $html .= $count . '.1. Áreas de Conhecimento CNPq<br>';
 
@@ -274,10 +267,10 @@ c {
   $area_ext = Area_Extensao::getRegistro($obProjeto->area_extensao)->nome;
   $linh_ext = Area_Extensao::getRegistro($obProjeto->linh_ext)->nome;
   
-  $html .= $count . '.2. Plano Nacional de Extensão Universitária<br>';
+  $html .= '<p>'. $count . '.2. Plano Nacional de Extensão Universitária</p>';
 
-  $html .= 'a) Área de Extensão: '. $area_ext  .'<br>';
-  $html .= 'b) Linha de Extensão: '. $linh_ext .'<br>';
+  $html .= '<p>a) Área de Extensão: '. $area_ext  .'</p>';
+  $html .= '<p>b) Linha de Extensão: '. $linh_ext .'</p>';
   
   $dt1 = substr($obProjeto->vigen_ini, 0, 10);
   $dt1 = substr($dt1, 8, 2). '/'.substr($dt1, 5, 2). '/'. substr($dt1, 0, 4);
@@ -285,15 +278,15 @@ c {
   $dt2 = substr($obProjeto->vigen_fim, 0, 10);
   $dt2 = substr($dt2, 8, 2). '/'.substr($dt2, 5, 2). '/'. substr($dt2, 0, 4);
   
-  $html .= '<strong>'. ++$count .'.  Período de vigência:</strong> <br>';
-  $html .= 'Inicial :' . $dt1 . ' a ' . $dt2 . ' <br> ';
+  $html .= '<p><strong>'. ++$count .'.  Período de vigência:</strong> </p>';
+  $html .= '<p>Inicial :' . $dt1 . ' a ' . $dt2 . ' </p> ';
 
-  $html .= '<strong>'. ++$count . '. Carga Horária semanal: </strong>'. $obProjeto->ch_semanal .'h ';
-  $html .= '<span> </span> <span> </span> <span> </span><strong>  TIDE:</strong> ';
+  $html .= '<p><strong>'. ++$count . '. Carga Horária semanal: </strong>'. $obProjeto->ch_semanal .'h ';
+  $html .= '<span> </span> <span> </span> <span> </span><strong>  TIDE:</strong> </p>';
 
-  $tide = $obProjeto->tide == 'S'? '( x ) Sim <span> </span> <span> </span>( <span> </span><span> </span> ) Não ' : '( <span> </span><span> </span> ) Sim <span> </span> <span> </span>( x ) Não ';
+  $tide = $obProjeto->tide == 'S'? '<p>( x ) Sim <span> </span> <span> </span>( <span> </span><span> </span> ) Não </p>' : '<p>( <span> </span><span> </span> ) Sim <span> </span> <span> </span>( x ) Não </p>';
 
-  $html .= $tide .'<br>*Indicar a CH a ser computada no PAD, cf. regulamento próprio de distribuição de carga horária da Unespar<br>';
+  $html .= $tide .'<p>*Indicar a CH a ser computada no PAD, cf. regulamento próprio de distribuição de carga horária da Unespar</p>';
 
   $html .= '<strong>'. ++$count .'.  Dimensão</strong> <br>';
   $html .= 'Publico alvo: '. $obProjeto->public_alvo .'<br>';
@@ -306,14 +299,14 @@ c {
   $html .= 'Órgão de Financiamento: '.$obProjeto->finacorgao.'<br>';
   $html .= 'Valor do Financiamento: '.$obProjeto->finacval.'<br>';
 
-  $html .= '<strong>'. ++$count .'.  Parcerias</strong> <br>';
+  $html .= '<p><strong>'. ++$count .'.  Parcerias</strong> </p>';
   $parceria = $obProjeto->parceria == 'S'? '( x ) Sim <span> </span> <span> </span>( <span> </span><span> </span> ) Não' : '( <span> </span><span> </span> ) Sim <span> </span> <span> </span>( x ) Não';
-  $html .= $parceria . '<br>';
+  $html .= '<p>'. $parceria . '</p>';
 
   $html .= 'Nome(s) da(s) Entidade(s):'.$obProjeto->parcanomes.'<br>';  
   $html .= 'Atribuição(ões) da(s) Entidade(s):'.$obProjeto->parcaatribuic.'<br>'; 
 
-  $html .= '<strong>'. ++$count .'.  Equipe da proposta</strong> <br>';
+  $html .= '<p><strong>'. ++$count .'.  Equipe da proposta</strong> </p>';
   use \App\Entity\Equipe;
   $tblEquipe = '';
   $equipe = Equipe::getMembProj($obProjeto->id);
@@ -336,12 +329,12 @@ c {
     $html .= '<table class="time">
     <thead>
       <tr>
-        <th>N</th>
-        <th>Nome</th>
-        <th>Instituição</th>
-        <th>Formação</th>
-        <th>Função na equipe</th>
-        <th>Telefone</th>
+        <th class="th_cinza">N</th>
+        <th class="th_cinza">Nome</th>
+        <th class="th_cinza">Instituição</th>
+        <th class="th_cinza">Formação</th>
+        <th class="th_cinza">Função na equipe</th>
+        <th class="th_cinza">Telefone</th>
       </tr>
     </thead>
       <tbody>';
@@ -350,8 +343,8 @@ c {
     </table>';
   }
 
-  $html .= '<strong>'. ++$count .'.  Resumo</strong> <br>';
-  $html .= $obProjeto->resumo . '<br>';
+  $html .= '<p><strong>'. ++$count .'.  Resumo</strong> </p>';
+  $html .= '<p>' . $obProjeto->resumo . '</p>';
 
   use \App\Entity\Palavras;
   $lista = '';
@@ -368,27 +361,27 @@ c {
     '<strong>Sem palavras-chave. </strong> <br>' ;
   }
 
-  $html .= '<strong>'. ++$count .'.  Problema e justificativa da proposta:</strong> <br>';
-  $html .= $obProjeto->justificativa . '<br>';
+  $html .= '<p><strong>'. ++$count .'.  Problema e justificativa da proposta:</strong> </p>';
+  $html .= '<p>' . $obProjeto->justificativa . '</p>';
 
-  $html .= '<strong>'. ++$count .'.  Objetivos – Geral e Específicos:</strong> <br>';
-  $html .= $obProjeto->objetivos . '<br>';
+  $html .= '<p><strong>'. ++$count .'.  Objetivos – Geral e Específicos:</strong> </p>';
+  $html .= '<p>' . $obProjeto->objetivos . '</p>';
   
-  $html .= '<strong>'. ++$count .'.  Metodologia para execução da proposta:</strong> <br>';
-  $html .= $obProjeto->metodologia . '<br>';
+  $html .= '<p><strong>'. ++$count .'.  Metodologia para execução da proposta:</strong> </p>';
+  $html .= '<p>'. $obProjeto->metodologia . '</p>';
    
-  $html .= '<strong>'. ++$count .'.  Contribuição científica, tecnológica e de Inovação:</strong> <br>';
-  $html .= $obProjeto->contribuicao . '<br>';
+  $html .= '<p><strong>'. ++$count .'.  Contribuição científica, tecnológica e de Inovação:</strong> </p>';
+  $html .= '<p>'. $obProjeto->contribuicao . '</p>';
   
-  $html .= '<strong>'. ++$count .'.  Contribuição científica, tecnológica e de Inovação:</strong> <br>';
-  $html .= $obProjeto->contribuicao . '<br>';
+  $html .= '<p><strong>'. ++$count .'.  Contribuição científica, tecnológica e de Inovação:</strong> </p>';
+  $html .= '<p>'. $obProjeto->contribuicao . '</p>';
   
 
-  $html .= '<strong>'. ++$count .'.  Cronograma da proposta:</strong> <br>';
-  $html .= $obProjeto->cronograma . '<br>';
+  $html .= '<p><strong>'. ++$count .'.  Cronograma da proposta:</strong> </p>';
+  $html .= '<p>' .$obProjeto->cronograma . '</p>';
 
-  $html .= '<strong>'. ++$count .'.  Referências:</strong> <br>';
-  $html .= $obProjeto->referencia . '<br>';
+  $html .= '<p><strong>'. ++$count .'.  Referências:</strong> </p>';
+  $html .= '<p>' . $obProjeto->referencia . '</p>';
 
 
   
