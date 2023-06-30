@@ -121,12 +121,12 @@ $html = '<!DOCTYPE HTML PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3
   <title>Doc</title>
   <style type="text/css">
   @page {
-    margin: 1.5cm 2cm;
+    margin: 1cm 2cm;
   }
 
   body {
     font-family: sans-serif;
-    margin: 3.8cm 0 1.5cm 0;
+    margin: 4.5cm 0 1.5cm 0;
     text-align: justify;
   }
 
@@ -199,7 +199,6 @@ table, th, td {
 .table-bordered {
   width: 100%;
 }
-
 
 .th_cinza {
   background-color: #eeeeee;
@@ -399,22 +398,5 @@ c {
  $html .= '</body>
  </html>';
 
- 
-$dompdf = new Dompdf(['enable_remote' => true]);
-$dompdf->loadHtml($html);
-$dompdf->setPaper('A4', 'portrait');
-$dompdf->render();
-$dompdf->stream("a_PDF__.pdf");
-
-//hash_file('md5', $dompdf->stream('file'));
-/*
 echo $html;
 
-echo '<pre>';
-print_r($obProjeto);
-echo '<hr>';
-print_r($obProfessor);
-echo '</pre>';
-
-$html .= '</body>
-</html>';*/

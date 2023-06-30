@@ -4,7 +4,7 @@ $('#sumnot_resumo').summernote({
   tabsize: 2,
   toolbar: [
     // [groupName, [list of button]]
-    ['style', ['style']],
+    
     ['style', ['bold', 'italic', 'underline', 'hr', 'clear']],
     ['font', ['strikethrough', 'superscript', 'subscript']],
     ['fontname', ['fontname']],
@@ -23,7 +23,7 @@ $('#sumnot_justificativa').summernote({
   height: 250,
   toolbar: [
     // [groupName, [list of button]]
-    ['style', ['style']],
+    
     ['style', ['bold', 'italic', 'underline', 'hr', 'clear']],
     ['font', ['strikethrough', 'superscript', 'subscript']],
     ['fontname', ['fontname']],
@@ -42,7 +42,7 @@ $('#sumnot_objetivos').summernote({
   height: 250,
   toolbar: [
     // [groupName, [list of button]]
-    ['style', ['style']],
+    
     ['style', ['bold', 'italic', 'underline', 'hr', 'clear']],
     ['font', ['strikethrough', 'superscript', 'subscript']],
     ['fontname', ['fontname']],
@@ -61,7 +61,7 @@ $('#sumnot_metodologia').summernote({
   height: 250,
   toolbar: [
     // [groupName, [list of button]]
-    ['style', ['style']],
+    
     ['style', ['bold', 'italic', 'underline', 'hr', 'clear']],
     ['font', ['strikethrough', 'superscript', 'subscript']],
     ['fontname', ['fontname']],
@@ -81,7 +81,7 @@ $('#sumnot_contribuicao').summernote({
   height: 250,
   toolbar: [
     // [groupName, [list of button]]
-    ['style', ['style']],
+    
     ['style', ['bold', 'italic', 'underline', 'hr', 'clear']],
     ['font', ['strikethrough', 'superscript', 'subscript']],
     ['fontname', ['fontname']],
@@ -100,7 +100,7 @@ $('#sumnot_cronograma').summernote({
   height: 250,
   toolbar: [
     // [groupName, [list of button]]
-    ['style', ['style']],
+    
     ['style', ['bold', 'italic', 'underline', 'hr', 'clear']],
     ['font', ['strikethrough', 'superscript', 'subscript']],
     ['fontname', ['fontname']],
@@ -119,7 +119,7 @@ $('#sumnot_referencia').summernote({
   height: 250,
   toolbar: [
     // [groupName, [list of button]]
-    ['style', ['style']],
+    
     ['style', ['bold', 'italic', 'underline', 'hr', 'clear']],
     ['font', ['strikethrough', 'superscript', 'subscript']],
     ['fontname', ['fontname']],
