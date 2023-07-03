@@ -162,24 +162,23 @@ $html = '<!DOCTYPE HTML PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3
     width: 50%;
   }
 
-  .page-number {
-    text-align: center;
-  }
+.page-number {
+  text-align: center;
+}
 
-  .page-number:before {
-    content: "Página " counter(page);
-  }
+.page-number:before {
+  content: "Página " counter(page);
+}
 
-  hr {
-    page-break-after: always;
-    border: 0;
-  }
+ hr {
+  page-break-after: always;
+  border: 0;
+ }
 
-  .centralizado {
-    text-align: center;
-  }
+.centralizado {
+  text-align: center;
+}
 
- 
 
 .td1 {
   border: 0;

@@ -372,21 +372,6 @@
           </div>
         </div>
 
-
-        <hr>
-      
-        <div class="row">
-          <div class="col">
-            <div class="form-group">
-              <label for="referencia">
-                <h5><?= ++$n ?>. Referências</h5>
-              </label>
-              <div id="sumnot_referencia"><?= $obProjeto->referencia ?></div>
-              <textarea id="referencia" name="referencia" rows="10" hidden></textarea>
-            </div>
-          </div>
-        </div>
-
         <hr>
         <div class="form-group">
           <h5 id="attc"><?= ++$n ?>. Anexos</h5>

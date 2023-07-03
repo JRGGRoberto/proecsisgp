@@ -166,8 +166,10 @@ if(isset($_POST['titulo'])){
 
   $obProjeto->justificativa    =  $_POST['justificativa'];
   $obProjeto->cronograma       =  $_POST['cronograma'];
-  $obProjeto->referencia       =  $_POST['referencia'];
 
+  if (in_array($t, $anexoII)) {
+    $obProjeto->referencia       =  $_POST['referencia'];
+  }
 
   $obProjeto->parceria       =  $_POST['parceria'];
   if($obProjeto->parceria == 'S'){

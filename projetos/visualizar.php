@@ -383,10 +383,18 @@ c {
     '<strong>Sem palavras-chave. </strong> <br>' ;
   }
 
-  $html .= '<p><strong>'. ++$count .'.  Problema e justificativa da proposta:</strong> </p>';
+  if (in_array($t, $anexoII)) {
+    $html .= '<p><strong>'. ++$count .'.  Problema e justificativa da proposta:</strong> </p>';
+  } elseif (in_array($t, $anexoIII)) {
+    $html .= '<p><strong>'. ++$count .'.  Justificativa da proposta:</strong> </p>';
+  }
   $html .= '<p>' . $obProjeto->justificativa . '</p>';
 
-  $html .= '<p><strong>'. ++$count .'.  Objetivos – Geral e Específicos:</strong> </p>';
+  if (in_array($t, $anexoII)) {
+    $html .= '<p><strong>'. ++$count .'.  Objetivos – Geral e Específicos:</strong> </p>';
+  } elseif (in_array($t, $anexoIII)) {
+    $html .= '<p><strong>'. ++$count .'.  Objetivos:</strong> </p>';
+  }
   $html .= '<p>' . $obProjeto->objetivos . '</p>';
   
   $html .= '<p><strong>'. ++$count .'.  Metodologia para execução da proposta:</strong> </p>';
@@ -400,6 +408,10 @@ c {
 
   $html .= '<p><strong>'. ++$count .'.  Referências:</strong> </p>';
   $html .= '<p>' . $obProjeto->referencia . '</p>';
+
+  if (in_array($t, $anexoII)) {
+    $html .= '<p><strong>'. ++$count .'.  Problema e justificativa da proposta:</strong> </p>';
+  }
 
 
   
