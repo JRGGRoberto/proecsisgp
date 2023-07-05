@@ -204,6 +204,7 @@ table, th, td {
 .th_cinza {
   background-color: #eeeeee;
   font-weight: lighter;
+  text-align: left;
 }
 
 peq {
@@ -236,6 +237,7 @@ c {
  * Fim cabeçalho
  */
 
+ 
 
 
  
@@ -250,8 +252,49 @@ c {
   $html .= '<h5 class="centralizado">'. $title2 .'</h5>';
   $html .= '<p class="c p centralizado"><font size="1">*O responsável pelo preenchimento e encaminhamento é o coordenador da Proposta de Extensão Tramitação: Coordenador -> Divisão de Extensão e Cultura -> Colegiado de Curso -> Conselho de Centro de Área -> Divisão de Extensão e Cultura.</font></p>';
   
-  $html .= '<p><strong>'. ++$count .'. Título da proposta:</strong> '. $obProjeto->titulo .'</p>';
-  $html .= '<p><strong>'. ++$count .'. Coordenador:</strong> '. $obProjeto->nome_prof .'</p>';
+/*
+  <table>
+   <thead><tr><th class="th_cinza">N</th></tr></thead>
+  <tbody><tr><td></tbody>
+  </table>
+
+  
+  */
+
+  $html .= 
+  '<table class="time">
+   <thead><tr><th class="th_cinza"><strong>'. ++$count .'. Título da proposta</strong></th></tr></thead>
+  <tbody><tr><td>'. $obProjeto->titulo .'</td></tr></tbody>
+  </table>'
+  ;
+
+  $html .= 
+  '<table class="time">
+   <thead><tr><th class="th_cinza"><strong>'. ++$count .'. Coordenador</strong></th></tr></thead>
+   <tbody><tr><td>'. $obProjeto->nome_prof .'</td></tr></tbody>
+  </table>'
+  ;
+
+
+  $html .= 
+  '<table class="time">
+    <thead>
+      <tr>
+        <th class="th_cinza" colspan="4"><strong>'. ++$count .'. Contato do Coordenador</strong></th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+         <td><strong>Telefone</strong></td>
+         <td>'. $obProfessor->telefone .'</td>
+         <td><strong>Email</strong></td>
+         <td>'. $obProfessor->email .'</td>
+      </tr>
+    </tbody>
+  </table>'
+  ;
+
+  
   $html .= '<p><strong>'. ++$count .'. Contato do Coordenador:</strong> </p>';
   $html .= '<p>Telefone: '. $obProfessor->telefone .' -  Email: '. $obProfessor->email  .'</p>';
   
