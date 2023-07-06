@@ -293,10 +293,6 @@ c {
     </tbody>
   </table>'
   ;
-
-  
-  $html .= '<p><strong>'. ++$count .'. Contato do Coordenador:</strong> </p>';
-  $html .= '<p>Telefone: '. $obProfessor->telefone .' -  Email: '. $obProfessor->email  .'</p>';
   
   $html .= '<p><strong>'. ++$count .'. Colegiado de Curso:</strong> '. $coolCur .'</p>';
   $html .= '<p><strong>'. ++$count .'. Campus:</strong> '. $obProfessor->campus .'</p>';
