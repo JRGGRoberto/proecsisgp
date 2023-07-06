@@ -326,7 +326,6 @@ c {
   } 
 
   
-
   
   $html .= '<p><strong>'. ++$count .'.  Vinculação à Programa de Extensão e Cultura:</strong> </p>';
   $html .= $vinculo;
@@ -334,22 +333,43 @@ c {
 
 
   use \App\Entity\Area_Extensao;
-  if (in_array($t, $anexoII)) { 
-    $html .= '<p><strong>'. ++$count .'.  Classificação do Projeto ou Programa.</strong> </p>';
+  $area_ext = Area_Extensao::getRegistro($obProjeto->area_extensao)->nome;
+  $linh_ext = Area_Extensao::getRegistro($obProjeto->linh_ext)->nome;
 
-    $html .= $count . '.1. Áreas de Conhecimento CNPq<br>';
   
-    $html .= 'a) Grande Área: '. $areas_cnpq1 .'<br>';
-    $html .= 'b) Área: '. $area_tem1 .'<br>';
-    $html .= 'c) Subárea: '. $area_tem2 .'<br>';
-  
-    $area_ext = Area_Extensao::getRegistro($obProjeto->area_extensao)->nome;
-    $linh_ext = Area_Extensao::getRegistro($obProjeto->linh_ext)->nome;
-    
-    $html .= '<p>'. $count . '.2. Plano Nacional de Extensão Universitária</p>';
-  
-    $html .= '<p>a) Área de Extensão: '. $area_ext  .'</p>';
-    $html .= '<p>b) Linha de Extensão: '. $linh_ext .'</p>';
+  if (in_array($t, $anexoII)) { 
+    $html .= 
+    '<table class="time">
+      <thead>
+        <tr>
+          <th class="th_cinza" colspan="2"><strong>'. ++$count .'. Classificação do Projeto ou Programa</strong></th>
+        </tr>
+        <tr>
+          <th class="th_cinza" colspan="2"><strong>'. $count . '.1. Áreas de Conhecimento CNPq</strong></th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>  
+           <td><strong>a) Grande Área</strong></td>    <td>'. $areas_cnpq1 .'</td>
+        </tr><tr>
+           <td><strong>b) Área</strong></td>           <td>'. $area_tem1 .'</td>
+        </tr><tr>
+           <td><strong>c) Subárea</strong></td>        <td>'. $area_tem2 .'</td>
+        </tr>
+        
+        <thead>
+          <tr>
+            <th class="th_cinza" colspan="2"><strong>'. $count . '.2. Plano Nacional de Extensão Universitária</strong></th>
+          </tr>
+        </thead>
+        <tr>
+           <td><strong>a) Área de Extensão</strong></td>    <td>'. $area_ext .'</td>
+        </tr><tr>
+           <td><strong>b) Linha de Extensão</strong></td>   <td>'. $linh_ext .'</td>
+        </tr>
+      </tbody>
+    </table>'
+    ;
   
   }
   
