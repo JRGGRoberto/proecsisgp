@@ -294,8 +294,20 @@ c {
   </table>'
   ;
   
-  $html .= '<p><strong>'. ++$count .'. Colegiado de Curso:</strong> '. $coolCur .'</p>';
-  $html .= '<p><strong>'. ++$count .'. Campus:</strong> '. $obProfessor->campus .'</p>';
+  $html .= 
+  '<table class="time">
+   <thead><tr><th class="th_cinza"><strong>'. ++$count .'. Colegiado de Curso</strong></th></tr></thead>
+  <tbody><tr><td>'. $coolCur .'</td></tr></tbody>
+  </table>'
+  ;
+
+  $html .= 
+  '<table class="time">
+   <thead><tr><th class="th_cinza"><strong>'. ++$count .'. Campus</strong></th></tr></thead>
+  <tbody><tr><td>'. $obProfessor->campus .'</td></tr></tbody>
+  </table>'
+  ;
+
   $html .= '<p><strong>'. ++$count .'. Tipo de proposta:</strong> </p>';
   $html .= $tpprop;
   if (in_array($t, $anexoII)) { 
