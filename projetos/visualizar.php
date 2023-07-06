@@ -308,12 +308,25 @@ c {
   </table>'
   ;
 
-  $html .= '<p><strong>'. ++$count .'. Tipo de proposta:</strong> </p>';
-  $html .= $tpprop;
+  $html .= 
+  '<table class="time">
+   <thead><tr><th class="th_cinza"><strong>'. ++$count .'. Tipo de proposta</strong></th></tr></thead>
+  <tbody><tr><td>'. $tpprop .'</td></tr></tbody>
+  </table>'
+  ;
+
+
   if (in_array($t, $anexoII)) { 
-    $html .= '<p><strong>'. ++$count .'.  A proposta está vinculada a alguma disciplina do curso de Graduação ou Pós?Graduação (ACEC II):</strong> </p>';
-    $html .= $acec;
+    $html .= 
+    '<table class="time">
+     <thead><tr><th class="th_cinza"><strong>'. ++$count .'. A proposta está vinculada a alguma disciplina do curso de Graduação ou Pós?Graduação (ACEC II)</strong></th></tr></thead>
+    <tbody><tr><td>'. $acec .'</td></tr></tbody>
+    </table>'
+    ;
   } 
+
+  
+
   
   $html .= '<p><strong>'. ++$count .'.  Vinculação à Programa de Extensão e Cultura:</strong> </p>';
   $html .= $vinculo;
