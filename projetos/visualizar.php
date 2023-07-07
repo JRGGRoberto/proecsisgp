@@ -537,21 +537,36 @@ c {
   </table>'
   ;
   
+  $titulo = '';
+
+  if (in_array($t, $anexoII)) {
+    $titulo ='.  Problema e justificativa da proposta';
+  } elseif (in_array($t, $anexoIII)) {
+    $titulo ='.  Justificativa da proposta';
+  }
+
+  $html .= 
+  '<table class="time">
+   <thead><tr><th class="th_cinza"><strong>'. ++$count .'. '. $titulo .'</strong></th></tr></thead>
+  <tbody><tr><td>'.  $obProjeto->justificativa .'</td></tr></tbody>
+  </table>'
+  ;
 
 
   if (in_array($t, $anexoII)) {
-    $html .= '<p><strong>'. ++$count .'.  Problema e justificativa da proposta:</strong> </p>';
+    $titulo = '.  Objetivos – Geral e Específicos';
   } elseif (in_array($t, $anexoIII)) {
-    $html .= '<p><strong>'. ++$count .'.  Justificativa da proposta:</strong> </p>';
+    $titulo = '.  Objetivos';
   }
-  $html .= '<p>' . $obProjeto->justificativa . '</p>';
+  
 
-  if (in_array($t, $anexoII)) {
-    $html .= '<p><strong>'. ++$count .'.  Objetivos – Geral e Específicos:</strong> </p>';
-  } elseif (in_array($t, $anexoIII)) {
-    $html .= '<p><strong>'. ++$count .'.  Objetivos:</strong> </p>';
-  }
-  $html .= '<p>' . $obProjeto->objetivos . '</p>';
+
+  $html .= 
+  '<table class="time">
+   <thead><tr><th class="th_cinza"><strong>'. ++$count .'. '. $titulo .'</strong></th></tr></thead>
+  <tbody><tr><td>'.  $obProjeto->objetivos .'</td></tr></tbody>
+  </table>'
+  ;
 
 
   $html .= 
