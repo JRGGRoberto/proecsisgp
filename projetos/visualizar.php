@@ -355,9 +355,6 @@ c {
 
   $html .= '</table>';
 
-
-
-
   use \App\Entity\Area_Extensao;
   $area_ext = Area_Extensao::getRegistro($obProjeto->area_extensao)->nome;
   $linh_ext = Area_Extensao::getRegistro($obProjeto->linh_ext)->nome;
@@ -405,21 +402,49 @@ c {
 
   $dt2 = substr($obProjeto->vigen_fim, 0, 10);
   $dt2 = substr($dt2, 8, 2). '/'.substr($dt2, 5, 2). '/'. substr($dt2, 0, 4);
-  
-  $html .= '<p><strong>'. ++$count .'.  Período de vigência:</strong> </p>';
-  $html .= '<p>Inicial :' . $dt1 . ' a ' . $dt2 . ' </p> ';
+
+  $html .= 
+  '<table class="time">
+   <thead><tr><th class="th_cinza"><strong>'. ++$count .'. Período de vigência</strong></th></tr></thead>
+  <tbody><tr><td>'.  $dt1 . ' a ' . $dt2 .'</td></tr></tbody>
+  </table>'
+  ;
 
   if (in_array($t, $anexoII)) {
-    $html .= '<p><strong>'. ++$count . '. Carga Horária semanal*: </strong>'. $obProjeto->ch_semanal .'h ';
-    $html .= '<span> </span> <span> </span> <span> </span><strong>  TIDE:</strong> <span> </span>';
-    $tide = $obProjeto->tide == 'S'? '( x ) Sim <span> </span> <span> </span>( <span> </span><span> </span> ) Não </p>' : '( <span> </span><span> </span> ) Sim <span> </span> <span> </span>( x ) Não </p>';  
-    $html .= $tide .'<p><sup>*Indicar a CH a ser computada no PAD, cf. regulamento próprio de distribuição de carga horária da Unespar</sup></p>';
-  } elseif (in_array($t, $anexoIII)) {
-    $html .= '<p><strong>'. ++$count . '. Carga Horária total: </strong>'. $obProjeto->ch_total .'h ';
-    $html .= '<span> </span> <span> </span> <span> </span><strong>  TIDE:</strong> </p>';
+    $tide = $obProjeto->tide == 'S'? '( x ) Sim <span> </span> <span> </span>( <span> </span><span> </span> ) Não' : '( <span> </span><span> </span> ) Sim <span> </span> <span> </span>( x ) Não';  
+    $html .= 
+    '<table class="time">
+      <thead>
+        <tr>
+          <th class="th_cinza" colspan="4"><strong>'. ++$count .'. Carga Horária</strong></th>
+        </tr>
+      </thead>
+      <tr>
+        <th class="th_cinza"><strong>Horas por semana*</strong></th> <td>'. $obProjeto->ch_semanal.'</td>
+        <th class="th_cinza"><strong>TIDE</strong></th> <td>'. $tide.'</td>
+      </tr>
+      <tr>
+          <th class="th_cinza" colspan="4"><sup>*Indicar a CH a ser computada no PAD, cf. regulamento próprio de distribuição de carga horária da Unespar</sup></strong></th>
+        </tr>
+     </table>';
 
+  } elseif (in_array($t, $anexoIII)) {
+    $html .= 
+    '<table class="time">
+      <thead>
+        <tr>
+          <th class="th_cinza" colspan="2"><strong>'. ++$count .'. Carga Horária</strong></th>
+        </tr>
+      </thead>
+      <tr>
+        <th class="th_cinza"><strong>Total de horas</strong></th> 
+        <td>'. $obProjeto->ch_total.'</td>
+      </tr>
+      
+     </table>';
   }
 
+  
   
   $html .= '<p><strong>'. ++$count .'.  Dimensão</strong> <br>';
   $html .= 'Publico alvo: '. $obProjeto->public_alvo .'<br>';
@@ -475,8 +500,6 @@ c {
     </table>';
   }
 
-  $html .= '<p><strong>'. ++$count .'.  Resumo</strong> </p>';
-  $html .= '<p>' . $obProjeto->resumo . '</p>';
 
   use \App\Entity\Palavras;
   $lista = '';
@@ -487,11 +510,22 @@ c {
     ++$x;
   }
   if($x > 0) {
-    $html .= '<strong>Palavras-chave: </strong> <br>' ;
-    $html .= '<ul>'. $lista . '</ul>';
+    $lista = '<ul>'. $lista . '</ul>';
   } else {
-    '<strong>Sem palavras-chave. </strong> <br>' ;
+    $lista = 'Sem palavras-chave.' ;
   }
+
+  $html .= 
+  '<table class="time">
+   <thead><tr><th class="th_cinza"><strong>'. ++$count .'.  Resumo</strong></th></tr></thead>
+   <tbody><tr><td>'. $obProjeto->resumo .'</td></tr></tbody>
+
+   <thead><tr><th class="th_cinza"><strong>'. ++$count .'.  Palavras-chave</strong></th></tr></thead>
+   <tbody><tr><td>'. $lista .'</td></tr></tbody>
+  </table>'
+  ;
+  
+
 
   if (in_array($t, $anexoII)) {
     $html .= '<p><strong>'. ++$count .'.  Problema e justificativa da proposta:</strong> </p>';
@@ -506,20 +540,39 @@ c {
     $html .= '<p><strong>'. ++$count .'.  Objetivos:</strong> </p>';
   }
   $html .= '<p>' . $obProjeto->objetivos . '</p>';
-  
-  $html .= '<p><strong>'. ++$count .'.  Metodologia para execução da proposta:</strong> </p>';
-  $html .= '<p>'. $obProjeto->metodologia . '</p>';
-   
-  $html .= '<p><strong>'. ++$count .'.  Contribuição científica, tecnológica e de Inovação:</strong> </p>';
-  $html .= '<p>'. $obProjeto->contribuicao . '</p>';
-  
-  $html .= '<p><strong>'. ++$count .'.  Cronograma da proposta:</strong> </p>';
-  $html .= '<p>' .$obProjeto->cronograma . '</p>';
 
-  $html .= '<p><strong>'. ++$count .'.  Referências:</strong> </p>';
-  $html .= '<p>' . $obProjeto->referencia . '</p>';
+
+  $html .= 
+  '<table class="time">
+   <thead><tr><th class="th_cinza"><strong>'. ++$count .'.  Metodologia para execução da proposta</strong></th></tr></thead>
+  <tbody><tr><td>'. $obProjeto->metodologia .'</td></tr></tbody>
+  </table>'
+  ;
+
+  $html .= 
+  '<table class="time">
+   <thead><tr><th class="th_cinza"><strong>'. ++$count .'.  Contribuição científica, tecnológica e de Inovação</strong></th></tr></thead>
+  <tbody><tr><td>'. $obProjeto->contribuicao .'</td></tr></tbody>
+  </table>'
+  ;
+
+  $html .= 
+  '<table class="time">
+   <thead><tr><th class="th_cinza"><strong>'. ++$count .'. Cronograma da proposta</strong></th></tr></thead>
+  <tbody><tr><td>'. $obProjeto->cronograma .'</td></tr></tbody>
+  </table>'
+  ;
+
+  $html .= 
+  '<table class="time">
+   <thead><tr><th class="th_cinza"><strong>'. ++$count .'. Referências</strong></th></tr></thead>
+  <tbody><tr><td>'. $obProjeto->referencia .'</td></tr></tbody>
+  </table>'
+  ;
+
 
   if (in_array($t, $anexoII)) {
+    
     $html .= '<p><strong>'. ++$count .'.  Problema e justificativa da proposta:</strong> </p>';
   }
 
