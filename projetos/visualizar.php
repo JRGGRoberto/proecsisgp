@@ -244,7 +244,7 @@ c {
 
 
   $acec = $obProjeto->acec == 'S'? '( x ) Sim<br>( <span> </span><span> </span> ) Não<br>' : '( <span> </span><span> </span> ) Sim<br>( x ) Não<br>';
-  $vinculo = $obProjeto->vinculo == 'S'? '( x ) Vinculado <span> </span> <span> </span>( <span> </span><span> </span> ) Não vinculado' : '( <span> </span><span> </span> ) Sim<br>( x ) Não';
+  
 
   $count = 0; 
 
@@ -325,11 +325,37 @@ c {
     ;
   } 
 
-  
-  
-  $html .= '<p><strong>'. ++$count .'.  Vinculação à Programa de Extensão e Cultura:</strong> </p>';
-  $html .= $vinculo;
-  $html .= '<p><span> </span> <span> </span> <span> </span><strong> Título do Programa de vinculação:</strong> '. $obProjeto->$tituloprogvinc .'</p>';
+  $vinculo = $obProjeto->vinculo == 'S'? '( x ) Vinculado <span> </span> <span> </span>( <span> </span><span> </span> ) Não vinculado' : '( <span> </span><span> </span> ) Sim<br>( x ) Não';
+    $html .= 
+    '<table class="time">
+      <thead>
+        <tr>
+          <th class="th_cinza" colspan="2"><strong>'. ++$count .'. Vinculação à Programa de Extensão e Cultura</strong></th>
+        </tr>
+      </thead>
+      <tr>
+        <th class="th_cinza"><strong>'. $count . '.1. É vinculado?</strong></th> <td>'.$vinculo.'</td>
+      </tr>';
+      
+      
+
+
+    if ($obProjeto->vinculo == 'S'){
+      $html .= '  <thead>
+      <tr>
+        <th class="th_cinza" colspan="2"><strong>'. $count . '.2. Título do Programa de vinculação</strong></th>
+      </tr>
+      </thead>
+      <tr>
+        <td  colspan="2">Olá'.  $obProjeto->$tituloprogvinc .'</td>
+      </tr>';
+
+    }
+
+
+  $html .= '</table>';
+
+
 
 
   use \App\Entity\Area_Extensao;
