@@ -444,11 +444,23 @@ c {
      </table>';
   }
 
-  
-  
-  $html .= '<p><strong>'. ++$count .'.  Dimensão</strong> <br>';
-  $html .= 'Publico alvo: '. $obProjeto->public_alvo .'<br>';
-  $html .= 'Abrangência: '. $obProjeto->municipios_abr .'</p>';
+
+  $html .= 
+  '<table class="time">
+   <thead><tr><th class="th_cinza" colspan="2"><strong>'. ++$count .'. Dimensão</strong></th></tr></thead>
+   <tbody>
+      <tr>
+        <th class="th_cinza" style=" width: 30px;"><strong>Publico alvo</strong></th> 
+        <td>'.  $obProjeto->public_alvo .'</td>
+      </tr>
+      <tr>
+        <th class="th_cinza"><strong>Abrangência</strong></th> 
+        <td>'.  $obProjeto->municipios_abr .'</td>
+        </tr>
+   </tbody>
+  </table>'
+  ;
+
 
   $html .= '<p><strong>'. ++$count .'.  Previsão de Financiamento</strong> ';
   $finac = $obProjeto->finac == 'N'? '( x ) Sem Financiamento <span> </span> <span> </span>( <span> </span><span> </span> ) Com Financiamento' : '( <span> </span><span> </span> ) Sem Financiamento <span> </span> <span> </span>( x ) Com Financiamento';
@@ -571,10 +583,6 @@ c {
   ;
 
 
-  if (in_array($t, $anexoII)) {
-    
-    $html .= '<p><strong>'. ++$count .'.  Problema e justificativa da proposta:</strong> </p>';
-  }
 
 
   
