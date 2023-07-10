@@ -8,7 +8,6 @@ use \App\Entity\Professor;
 //$user = Login::getUsuarioLogado();
 use Dompdf\Dompdf;
 
-
 $mensagem = '';
 $jan = 'sem';
 
@@ -46,10 +45,7 @@ $area_tem1 = Area_temat::getRegistro($obProjeto->area_tema1)->nome;
 use \App\Entity\Area_temat2;
 $area_tem2 = Area_temat2::getRegistro($obProjeto->area_tema2)->nome;
 
-/*
-use \App\Entity\Area_Extensao;
-$area_ext = Area_Extensao::getRegistro($obProjeto->id);
-*/
+
 use \App\Entity\Arquivo;
 $anexados = Arquivo::getAnexados('projetos', $obProjeto->id);
 $anex = '<ul id="anexos_edt">';
@@ -285,9 +281,9 @@ c {
     </thead>
     <tbody>
       <tr>
-         <td><strong>Telefone</strong></td>
+         <td class="th_cinza"><strong>Telefone</strong></td>
          <td>'. $obProfessor->telefone .'</td>
-         <td><strong>Email</strong></td>
+         <td class="th_cinza"><strong>Email</strong></td>
          <td>'. $obProfessor->email .'</td>
       </tr>
     </tbody>
@@ -494,15 +490,6 @@ c {
     </table>'
   ;
 
-  /*
-
-  $html .= '<p><strong>'. ++$count .'.  Parcerias</strong> </p> Possui parcerias <span> </span> <span> ';
-  $parceria = $obProjeto->parceria == 'S'? '( x ) Sim <span> </span> <span> </span>( <span> </span><span> </span> ) Não' : '( <span> </span><span> </span> ) Sim <span> </span> <span> </span>( x ) Não';
-  $html .= $parceria . '<br>';
-  $html .= 'Nome(s) da(s) Entidade(s):'.$obProjeto->parcanomes.'<br>';  
-  $html .= 'Atribuição(ões) da(s) Entidade(s):'.$obProjeto->parcaatribuic.'</p>'; 
-
-*/
   $parca = $obProjeto->parceria == 'S'? '( x ) Sim <span> </span> <span> </span>( <span> </span><span> </span> ) Não' : '( <span> </span><span> </span> ) Sim <span> </span> <span> </span>( x ) Não';
   $parcInfo = '';
 
@@ -537,7 +524,16 @@ c {
 
 
 
-  $html .= '<p><strong>'. ++$count .'.  Equipe da proposta</strong> </p>';
+
+
+  $html .= 
+  '<table class="time">
+   <thead><tr><th class="th_cinza" colspan="6"><strong>'. ++$count .'. Equipe da proposta</strong></th></tr></thead>';
+ 
+
+
+
+
   use \App\Entity\Equipe;
   $tblEquipe = '';
   $equipe = Equipe::getMembProj($obProjeto->id);
@@ -555,10 +551,14 @@ c {
   }
 
   if($x == 0 ){
-    $html .= 'Trabalho desenvolvido apenas pelo coordenador. <br>';
+    $html .= 
+  '<tbody> <tr>  <td colspan="6">Trabalho desenvolvido apenas pelo coordenador</td>  </tr>  </tbody>
+  </table>'
+;
+
   } else {
-    $html .= '<table class="time">
-    <thead>
+    $html .= '
+    </thead>
       <tr>
         <th class="th_cinza">N</th>
         <th class="th_cinza">Nome</th>
@@ -621,8 +621,6 @@ c {
     $titulo = '.  Objetivos';
   }
   
-
-
   $html .= 
   '<table class="time">
    <thead><tr><th class="th_cinza"><strong>'. ++$count .'. '. $titulo .'</strong></th></tr></thead>
@@ -658,16 +656,6 @@ c {
   <tbody><tr><td>'. $obProjeto->referencia .'</td></tr></tbody>
   </table>'
   ;
-
-
-
-
-  
-/**
- * $html .= '<p>'..'</p>';
- * Fim conteúdo
- */
-
 
  $html .= '</body>
  </html>';
