@@ -462,12 +462,40 @@ c {
   ;
 
 
-  $html .= '<p><strong>'. ++$count .'.  Previsão de Financiamento</strong> ';
-  $finac = $obProjeto->finac == 'N'? '( x ) Sem Financiamento <span> </span> <span> </span>( <span> </span><span> </span> ) Com Financiamento' : '( <span> </span><span> </span> ) Sem Financiamento <span> </span> <span> </span>( x ) Com Financiamento';
-  $html .= $finac . '</p>';
+  
+  $finac = $obProjeto->finac == 'N'? '( x ) Sem  <span> </span> <span> </span>( <span> </span><span> </span> ) Com ' : '( <span> </span><span> </span> ) Sem  <span> </span> <span> </span>( x ) Com ';
+  $finacInfo = '';
 
-  $html .= 'Órgão de Financiamento: '.$obProjeto->finacorgao.'<br>';
-  $html .= 'Valor do Financiamento: '.$obProjeto->finacval.'<br>';
+  if ($obProjeto->finac == 'S'){
+    $finacInfo = '
+    <tr>
+      <th class="th_cinza" style=" width: 30px;"><strong>Órgão de Financiamento</strong></th> 
+      <td>'.  $obProjeto->finacorgao .'</td>
+    </tr>
+    <tr>
+      <th class="th_cinza"><strong>Valor do Financiamento</strong></th> 
+      <td>'.  $obProjeto->finacval .'</td>
+    </tr>
+    ';
+  }
+
+
+
+    $html .= 
+  '<table class="time">
+   <thead><tr><th class="th_cinza" colspan="2"><strong>'. ++$count .'. Previsão de Financiamento</strong></th></tr></thead>
+   <tbody>
+      <tr>
+        <th class="th_cinza" style=" width: 30px;"><strong>Financiamento</strong></th> 
+        <td>'.  $finac .'</td>
+      </tr>';
+
+    $html .= $finacInfo;
+    $html .= '
+      </tbody>
+    </table>'
+  ;
+
 
   $html .= '<p><strong>'. ++$count .'.  Parcerias</strong> </p> Possui parcerias <span> </span> <span> ';
   $parceria = $obProjeto->parceria == 'S'? '( x ) Sim <span> </span> <span> </span>( <span> </span><span> </span> ) Não' : '( <span> </span><span> </span> ) Sim <span> </span> <span> </span>( x ) Não';
