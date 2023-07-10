@@ -479,14 +479,12 @@ c {
     ';
   }
 
-
-
     $html .= 
   '<table class="time">
    <thead><tr><th class="th_cinza" colspan="2"><strong>'. ++$count .'. Previsão de Financiamento</strong></th></tr></thead>
    <tbody>
       <tr>
-        <th class="th_cinza" style=" width: 30px;"><strong>Financiamento</strong></th> 
+        <th class="th_cinza" style=" width: 100px;"><strong>Financiamento</strong></th> 
         <td>'.  $finac .'</td>
       </tr>';
 
@@ -496,12 +494,48 @@ c {
     </table>'
   ;
 
+  /*
 
   $html .= '<p><strong>'. ++$count .'.  Parcerias</strong> </p> Possui parcerias <span> </span> <span> ';
   $parceria = $obProjeto->parceria == 'S'? '( x ) Sim <span> </span> <span> </span>( <span> </span><span> </span> ) Não' : '( <span> </span><span> </span> ) Sim <span> </span> <span> </span>( x ) Não';
   $html .= $parceria . '<br>';
   $html .= 'Nome(s) da(s) Entidade(s):'.$obProjeto->parcanomes.'<br>';  
   $html .= 'Atribuição(ões) da(s) Entidade(s):'.$obProjeto->parcaatribuic.'</p>'; 
+
+*/
+  $parca = $obProjeto->parceria == 'S'? '( x ) Sim <span> </span> <span> </span>( <span> </span><span> </span> ) Não' : '( <span> </span><span> </span> ) Sim <span> </span> <span> </span>( x ) Não';
+  $parcInfo = '';
+
+  if ($obProjeto->parceria == 'S'){
+    $parcInfo = '
+    <tr>
+      <th class="th_cinza" style=" width: 30px;"><strong>Nome(s) da(s) Entidade(s)</strong></th> 
+      <td>'.  $obProjeto->parcanomes .'</td>
+    </tr>
+    <tr>
+      <th class="th_cinza"><strong>Atribuição(ões) da(s) Entidade(s)</strong></th> 
+      <td>'.  $obProjeto->parcaatribuic .'</td>
+    </tr>
+    ';
+  }
+
+    $html .= 
+  '<table class="time">
+   <thead><tr><th class="th_cinza" colspan="2"><strong>'. ++$count .'.Parcerias</strong></th></tr></thead>
+   <tbody>
+      <tr>
+        <th class="th_cinza" style=" width: 100px;"><strong>Possui parcerias</strong></th> 
+        <td>'.  $parca .'</td>
+      </tr>';
+
+    $html .= $parcInfo;
+    $html .= '
+      </tbody>
+    </table>'
+  ;
+
+
+
 
   $html .= '<p><strong>'. ++$count .'.  Equipe da proposta</strong> </p>';
   use \App\Entity\Equipe;
