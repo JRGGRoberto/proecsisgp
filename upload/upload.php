@@ -18,8 +18,7 @@ if (isset($_FILES['arquivo']))
 {
     // Configurações
     $extensoes = array(".doc", ".txt", ".pdf", ".docx", ".jpg", ".png");
-    // $caminho = "uploads/";
-    //$caminho = "/home/sistemaproec/www/sist/upload/uploads/";
+    
     $caminho = "/home/sistemaproec/www/sistema/upload/uploads/";
     // Recuperando informações do arquivo
     $nome = $_FILES['arquivo']['name']; 
