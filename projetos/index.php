@@ -27,17 +27,22 @@ if (strlen($palavra)) {
   $palavra = "";
 }
 
-/*
 
-$qry = 'select ccc.co_id as id, ccc.colegiado as nome  from ca_ce_co ccc where1 ccc.ca_id  = "'. $user['ca_id'] .'"';
+
+$qry = 'select 
+          ccc.co_id as id, 
+          ccc.colegiado as nome,
+          IFNULL(ccc.coord_id, "disabled") coord,
+          IFNULL(ccc.coord_id, "[sem coordenador]") coordInf
+        from ca_ce_co ccc where ccc.ca_id  = "'. $user['ca_id'] .'"';
 use \App\Entity\Diversos;
 $sendColegiado = Diversos::qry($qry);
 $coolSelectSend = '';
 foreach($sendColegiado as $co){
-  $coolSelectSend .= '<option value="'.$co->id.'">'.$co->nome.'</option>';
+  $coolSelectSend .= '<option value="'.$co->id.'"  '. $co->coord . '>'.$co->nome.' '.$co->coordInf.'</option>';
 }
 
-*/
+
 
 
 //Filtro de status
