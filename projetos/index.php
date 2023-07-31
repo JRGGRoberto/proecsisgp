@@ -32,14 +32,21 @@ if (strlen($palavra)) {
 $qry = 'select 
           ccc.co_id as id, 
           ccc.colegiado as nome,
-          IFNULL(ccc.coord_id, "disabled") coord,
-          IFNULL(ccc.coord_id, "[sem coordenador]") coordInf
+          IFNULL(ccc.coord_id, "disabled") coord
         from ca_ce_co ccc where ccc.ca_id  = "'. $user['ca_id'] .'"';
 use \App\Entity\Diversos;
 $sendColegiado = Diversos::qry($qry);
 $coolSelectSend = '';
+
 foreach($sendColegiado as $co){
-  $coolSelectSend .= '<option value="'.$co->id.'"  '. $co->coord . '>'.$co->nome.' '.$co->coordInf.'</option>';
+  $dis = '';
+  $info = '';
+  if($co->coord =='disabled'){
+    $dis = 'disabled';
+    $info = '[Sem coordenador]';
+  }
+
+  $coolSelectSend .= '<option value="'.$co->id.'"  '. $dis . '>'.$co->nome.' '.$info.'</option>';
 }
 
 
