@@ -92,7 +92,6 @@ class Campi{
     return (new Database('campi'))->delete('id = "'.$this->id.'"');
   }
 
-
   ////////////////////////////
 
 }

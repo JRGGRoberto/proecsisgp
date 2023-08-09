@@ -44,7 +44,14 @@ $user = Login::getUsuarioLogado();
 
         <div class="form-group">
           <label>Titulação</label>
-          <input type="text" class="form-control" name="titulacao" maxlength="65" value="<?=$obProfessor->titulacao?>" >
+          <!--<input type="text" class="form-control" name="titulacao" maxlength="65" value="< ?=$obProfessor->titulacao?>" >  -->
+
+          <select  class="form-control" name="titulacao" id="titulacao" maxlength="65" value="<?=$obProfessor->titulacao?>">
+            <option value="Mestre">Mestre</option>
+            <option value="Doutor">Doutor</option>
+            <option value="Bacharel">Bacharel</option>
+            <option value="Especialista">Especialista</option>
+          </select>
         </div>
 
       </div>
