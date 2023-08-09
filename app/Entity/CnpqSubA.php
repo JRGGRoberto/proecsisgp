@@ -5,10 +5,10 @@ namespace App\Entity;
 use \App\Db\Database;
 use \PDO;
 
-class CnpqArea{
+class CnpqSubA{
 
   public $id;
-  public $id_garea;
+  public $id_area;
   public $id_avalia;
   public $nome;
   public $created_at;
@@ -24,7 +24,7 @@ class CnpqArea{
    * @return array
    */
   public static function getRegistros($where = null, $order = null, $limit = null){
-    return (new Database('cnpq_area'))->select($where,$order,$limit)
+    return (new Database('cnpq_subarea'))->select($where,$order,$limit)
                                   ->fetchAll(PDO::FETCH_CLASS,self::class);
   }
 
@@ -34,7 +34,7 @@ class CnpqArea{
    * @return integer
    */
   public static function getQntdRegistros($where = null){
-    return (new Database('cnpq_area'))->select($where, null, null, 'COUNT(*) as qtd')
+    return (new Database('cnpq_subarea'))->select($where, null, null, 'COUNT(*) as qtd')
                                   ->fetchObject()
                                   ->qtd;
   }
@@ -42,13 +42,10 @@ class CnpqArea{
   /**
    * Método responsável por buscar um Registro com base em seu ID
    * @param  integer $id
-   * @return CnpqArea
+   * @return CnpqSubA
    */
   public static function getRegistro($id){
-        return (new Database('cnpq_area'))->select('id = "'.$id.'"')
+        return (new Database('cnpq_subarea'))->select('id = "'.$id.'"')
                                   ->fetchObject(self::class);
-  }
-
-
-  
+  }  
 }

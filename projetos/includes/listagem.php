@@ -150,10 +150,6 @@
           </div>
         </div>
 
-        
-
-        
-
         ';
 
        $verAnt = $proj->ver - 1;
