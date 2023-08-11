@@ -1,9 +1,6 @@
-var ga = document.querySelector("#ga");
-var ar = document.querySelector("#ar");
-var sa = document.querySelector("#sa");
-
-pegarGA();
-
+var ga = document.querySelector("#cnpq_garea");
+var ar = document.querySelector("#cnpq_area");
+var sa = document.querySelector("#cnpq_sarea");
 
 const pegarGA = async() => {
     const data = await fetch(`../api/cnpqGA.php`)

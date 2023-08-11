@@ -120,6 +120,13 @@
               <select name="area_cnpq" class="form-control">
                 <?= $selectAreaCNPQ ?>
               </select>
+
+<!--         -->
+              <label for="cnpq_garea">Grande Área</label>
+              <select name="cnpq_garea" id="cnpq_garea" class="form-control">
+                 <option>Selecione</option>
+              </select>
+<!--         -->
             </div>
           </div>
 
@@ -129,6 +136,15 @@
               <select name="area_tema1" class="form-control">
                 <?= $areaOptions ?>
               </select>
+
+              <!--         -->
+              <label for="cnpq_area">Área</label>
+              <select name="cnpq_area" id="cnpq_area" class="form-control">
+                 <option>N/A</option>
+              </select>
+<!--         -->
+
+
             </div>
           </div>
 
@@ -138,6 +154,19 @@
               <select name="area_tema2" class="form-control">
                 <?= $areaOptions2 ?>
               </select>
+
+
+              <!--         -->
+              <label for="cnpq_sarea">Área</label>
+              <select name="cnpq_sarea" id="scnpq_sarea" class="form-control">
+                 <option>N/A</option>
+              </select>
+<!--         -->
+<script src="cnpq.js">
+  alert('xpto');
+  pegarGA();
+</script>
+
             </div>
           </div>
         </div>
