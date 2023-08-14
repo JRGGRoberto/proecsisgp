@@ -1,14 +1,12 @@
-var ga = document.querySelector("#cnpq_garea");
-var ar = document.querySelector("#cnpq_area");
-var sa = document.querySelector("#cnpq_sarea");
 
-const pegarGA = async() => {
+
+  const pegarGA = async() => {
     const data = await fetch(`../api/cnpqGA.php`)
       .then(resp => resp.json()).catch(error => false)
   
     if(!data) return;
   
-    ar.innerHTML = ``;
+//    ar.innerHTML = '';
   
     inserirGA(data);
   }
@@ -21,7 +19,7 @@ const pegarGA = async() => {
     });
   
     ga.addEventListener("change", e => {
-      ar.innerHTML = '';
+      sa.innerHTML = '';
       pegarAr(ga.value)
     });
     
@@ -62,10 +60,13 @@ const pegarGA = async() => {
   
   const inserirSA = (data) => {
   
-    ar.innerHTML = `<option value="">Selecione</option>`;
+    sa.innerHTML = `<option value="">Selecione</option>`;
     data.forEach(e => {
-     ar.innerHTML += `<option value="${e["id"]}">${e["nome"]}</option>`
+     sa.innerHTML += `<option value="${e["id"]}">${e["nome"]}</option>`
     });
   }
   
   
+
+  // ga.addEventListener("change",pegarGA());
+

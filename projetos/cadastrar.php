@@ -121,9 +121,9 @@ if(isset($_POST['titulo'])){
     } else{
       $obProjeto->ch_semanal   =  $_POST['ch_semanal'];
     }
-    $obProjeto->area_cnpq     = $_POST['area_cnpq'];
-    $obProjeto->area_tema1    = $_POST['area_tema1'];
-    $obProjeto->area_tema2    = $_POST['area_tema2'];
+    $obProjeto->cnpq_garea     = $_POST['cnpq_garea'];
+    $obProjeto->cnpq_area    = $_POST['cnpq_area'];
+    $obProjeto->cnpq_sarea    = $_POST['cnpq_sarea'];
     $obProjeto->area_extensao = $_POST['area_extensao'];
     $obProjeto->linh_ext      = $_POST['linh_ext'];
     $obProjeto->contribuicao  = $_POST['contribuicao'];
@@ -254,6 +254,20 @@ include '../includes/header.php';
 
 if(in_array($t, $anexoII)){
   include __DIR__.'/includes/formAnexoII.php';
+
+  echo ('<script src="cnpq.js"></script>');
+
+  echo ( '<script>
+
+var ga = document.querySelector("#cnpq_garea");
+var ar = document.querySelector("#cnpq_area");
+var sa = document.querySelector("#cnpq_sarea");
+pegarGA();
+  
+</script>');
+
+
+
 } elseif (in_array($t, $anexoIII)){
   include __DIR__.'/includes/formAnexoIII.php';
 } else {

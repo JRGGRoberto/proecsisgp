@@ -195,7 +195,6 @@ function mostraDialogo (mensagem, tipo, tempo) {
 }
 
 
-
 //pegarCA();
 
 // pegarCE();

@@ -21,9 +21,17 @@ class Projeto{
   public $ch_semanal;
   public $ch_total;
   public $situacao;
+
+  public $cnpq_garea;
+  public $cnpq_area;
+  public $cnpq_sarea;
+
+  /*
   public $area_cnpq;
   public $area_tema1;
   public $area_tema2;
+
+  */
   public $area_extensao;
   public $linh_ext;
   public $resumo;
@@ -92,9 +100,12 @@ class Projeto{
                            'ch_semanal' => $this->ch_semanal,
                            'ch_total' => $this->ch_total,
                            'situacao' => $this->situacao,
-                           'area_cnpq' => $this->area_cnpq,
-                           'area_tema1' => $this->area_tema1,
-                           'area_tema2' => $this->area_tema2,
+
+
+                           '$cnpq_garea' => $this->cnpq_garea,
+                           '$cnpq_area' => $this->cnpq_area,
+                           '$cnpq_sarea' => $this->cnpq_sarea,
+
                            'area_extensao' => $this->area_extensao,
                            'linh_ext' => $this->linh_ext,
                            'resumo' => $this->resumo,
@@ -160,9 +171,9 @@ class Projeto{
                                        'ch_semanal' => $this->ch_semanal,
                                        'ch_total' => $this->ch_total,
                                        'situacao' => $this->situacao,
-                                       'area_cnpq' => $this->area_cnpq,
-                                       'area_tema1' => $this->area_tema1,
-                                       'area_tema2' => $this->area_tema2,
+                                       '$cnpq_garea' => $this->cnpq_garea,
+                                       '$cnpq_area' => $this->cnpq_area,
+                                       '$cnpq_sarea' => $this->cnpq_sarea,
                                        'linh_ext' => $this->linh_ext,
                                        'resumo' => $this->resumo,
                                        'descricao' => $this->descricao,
