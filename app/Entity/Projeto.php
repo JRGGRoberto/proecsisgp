@@ -102,9 +102,9 @@ class Projeto{
                            'situacao' => $this->situacao,
 
 
-                           '$cnpq_garea' => $this->cnpq_garea,
-                           '$cnpq_area' => $this->cnpq_area,
-                           '$cnpq_sarea' => $this->cnpq_sarea,
+                           'cnpq_garea' => $this->cnpq_garea,
+                           'cnpq_area' => $this->cnpq_area,
+                           'cnpq_sarea' => $this->cnpq_sarea,
 
                            'area_extensao' => $this->area_extensao,
                            'linh_ext' => $this->linh_ext,
@@ -171,9 +171,9 @@ class Projeto{
                                        'ch_semanal' => $this->ch_semanal,
                                        'ch_total' => $this->ch_total,
                                        'situacao' => $this->situacao,
-                                       '$cnpq_garea' => $this->cnpq_garea,
-                                       '$cnpq_area' => $this->cnpq_area,
-                                       '$cnpq_sarea' => $this->cnpq_sarea,
+                                       'cnpq_garea' => $this->cnpq_garea,
+                                       'cnpq_area' => $this->cnpq_area,
+                                       'cnpq_sarea' => $this->cnpq_sarea,
                                        'linh_ext' => $this->linh_ext,
                                        'resumo' => $this->resumo,
                                        'descricao' => $this->descricao,

@@ -9,7 +9,7 @@ use \App\Entity\CnpqArea;
 
 $ga = $_GET["ga"];
 $where = ' id_garea = '.$ga;
-$order = 'id';
+$order = 'nome';
 
 $registros = CnpqArea::getRegistros($where,$order);
 echo json_encode($registros);

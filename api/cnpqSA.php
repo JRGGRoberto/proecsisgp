@@ -9,7 +9,7 @@ use \App\Entity\CnpqSubA;
 
 $ar = $_GET["ar"];
 $where = ' id_area = '.$ar;
-$order = 'id';
+$order = 'nome';
 
 $registros = CnpqSubA::getRegistros($where, $order);
 echo json_encode($registros);
