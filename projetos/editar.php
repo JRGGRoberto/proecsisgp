@@ -50,27 +50,6 @@ if(!$obProjeto instanceof Projeto){
   exit;
 }
 
-use \App\Entity\Area_Cnpq;
-$areas_cnpq1 = Area_Cnpq::getRegistros($obProjeto->id);
-$selectAreaCNPQ = '';
-foreach($areas_cnpq1 as $ar_cnpq){
-  $selectAreaCNPQ .= '<option value="'.$ar_cnpq->id.'" '.$ar_cnpq->sel.'>'.$ar_cnpq->nome.'</option>';
-}
-
-use \App\Entity\Area_temat;
-$area_tem1 = Area_temat::getRegistros($obProjeto->id);
-$areaOptions = '';
-foreach($area_tem1 as $area){
-  $areaOptions .= '<option value="'.$area->id.'" '.$area->sel.'>'.$area->nome.'</option>';
-}
-
-use \App\Entity\Area_temat2;
-$area_tem2 = Area_temat2::getRegistros($obProjeto->id);
-$areaOptions2 = '';
-foreach($area_tem2 as $area){
-  $areaOptions2 .= '<option value="'.$area->id.'" '.$area->sel.'>'.$area->nome.'</option>';
-}
-
 use \App\Entity\Area_Extensao;
 $area_ext = Area_Extensao::getRegistros($obProjeto->id);
 $area_ext_Opt = '';
@@ -267,22 +246,79 @@ if ($user['id'] == $obProjeto->id_prof){
   } else {
    
     if(in_array($t, $anexoII)){
-      $qryAEO = 
-      "select p.cnpq_garea, p.cnpq_area, p.cnpq_sarea  
-      FROM projetos p
-      where  cnpq_sarea  = ".  $obProjeto->cnpq_sarea ;
+      $qryAEO = '';
+      $scriptS .= '';
+      if (empty($obProjeto->cnpq_sarea)){
+        $qryAEO = 
+           "select cnpq_garea, cnpq_area
+           FROM projetos
+           where  cnpq_area  = ".  $obProjeto->cnpq_area ;
 
-      $Caeo = Diversos::q($qryAEO);
+           $Caeo = Diversos::q($qryAEO);
 
+           $scriptS .= '
+           pegarGA().then( 
+               (onResolved) => {
+                   selectOpt("cnpq_garea","'.$Caeo->cnpq_garea .'")
+               }, (onRejected) => { }
+           ).then(
+             (onResolved) => {
+                   pegarAr("'.$Caeo->cnpq_garea .'").then(
+                     (onResolved) => {
+                       selectOpt("cnpq_area","'.$Caeo->cnpq_area .'")
+                     }, (onRejected) => { }
+                   )
+               }, (onRejected) => { }
+           )
+           ';
+
+      } else {
+
+        $qryAEO = 
+            "select cnpq_garea, cnpq_area, cnpq_sarea  
+            FROM projetos
+            where  cnpq_sarea  = ".  $obProjeto->cnpq_sarea ;
+
+            $Caeo = Diversos::q($qryAEO);
+
+            $scriptS .= '
+            pegarGA().then( 
+                (onResolved) => {
+                    selectOpt("cnpq_garea","'.$Caeo->cnpq_garea .'")
+                }, (onRejected) => { }
+            ).then(
+              (onResolved) => {
+                    pegarAr("'.$Caeo->cnpq_garea .'").then(
+                      (onResolved) => {
+                        selectOpt("cnpq_area","'.$Caeo->cnpq_area .'")
+                      }, (onRejected) => { }
+                    )
+                }, (onRejected) => { }
+            ).then(
+              (onResolved) => {
+                    pegarSA("'.$Caeo->cnpq_area .'").then(
+                      (onResolved) => {
+                        selectOpt("cnpq_sarea","'.$Caeo->cnpq_sarea .'")
+                      }, (onRejected) => { }
+                    )
+                }, (onRejected) => { }
+            )
+            ';
+      }
 
 
       include __DIR__.'/includes/formAnexoII.php';
+      echo ('<script src="cnpq.js"></script>');
+      
       echo ( '<script>
 
       var ga = document.querySelector("#cnpq_garea");
       var ar = document.querySelector("#cnpq_area");
       var sa = document.querySelector("#cnpq_sarea");
-      pegarGA();
+
+      ' .
+      $scriptS
+      .'      
         
       </script>');
       

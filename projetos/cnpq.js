@@ -66,6 +66,10 @@
     });
   }
   
+
+  function selectOpt (pos, id) {
+    var el = document.getElementById(pos).value = id;
+  }
   
 
   // ga.addEventListener("change",pegarGA());
