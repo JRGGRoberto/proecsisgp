@@ -151,25 +151,41 @@ function submitJSON() {
 function submitSalvar(){
 
   var resumo = document.getElementById("resumo");
-  resumo.value = $('#sumnot_resumo').summernote('code');
+  if(resumo){
+    resumo.value = $('#sumnot_resumo').summernote('code');
+  }
+  
 
   var justificativa = document.getElementById("justificativa");
-  justificativa.value = $('#sumnot_justificativa').summernote('code');
+  if(justificativa){
+    justificativa.value = $('#sumnot_justificativa').summernote('code');
+  }
+  
   
   var objetivos = document.getElementById("objetivos");
-  objetivos.value = $('#sumnot_objetivos').summernote('code');
+  if(objetivos){
+    objetivos.value = $('#sumnot_objetivos').summernote('code');
+  }
 
   var metodologia = document.getElementById("metodologia");
-  metodologia.value = $('#sumnot_metodologia').summernote('code');
+  if(metodologia){
+    metodologia.value = $('#sumnot_metodologia').summernote('code');
+  }
 
   var contribuicao = document.getElementById("contribuicao");
-  contribuicao.value = $('#sumnot_contribuicao').summernote('code');
+  if(contribuicao){
+    contribuicao.value = $('#sumnot_contribuicao').summernote('code');
+  }
 
   var cronograma = document.getElementById("cronograma");
-  cronograma.value = $('#sumnot_cronograma').summernote('code');
+  if(cronograma){
+    cronograma.value = $('#sumnot_cronograma').summernote('code');
+  }
 
   var referencia = document.getElementById("referencia");
-  referencia.value = $('#sumnot_referencia').summernote('code');
+  if(referencia){
+    referencia.value = $('#sumnot_referencia').summernote('code');
+  } 
 
   let palav1 = document.getElementById('palav1').value;
   let palav2 = document.getElementById('palav2').value;

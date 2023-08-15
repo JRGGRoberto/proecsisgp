@@ -4,6 +4,12 @@ require '../vendor/autoload.php';
 
 use \App\Session\Login;
 
+
+ini_set('display_errors', 1);
+ini_set('display_startup_errors', 1);
+error_reporting(E_ALL);
+
+
 //Obriga o usuário a estar logado
 Login::requireLogin();
 $user = Login::getUsuarioLogado();
@@ -13,6 +19,9 @@ $anexoII   = [3, 4, 5];
 
 $t = $_GET['t'];
 
+$palav1 ='';
+$palav2 ='';
+$palav3 ='';
 
 switch($t) {
   case 1: 
@@ -105,7 +114,7 @@ use  \App\Entity\Arquivo;
 
 //VALIDAÇÃO DO POST
 if(isset($_POST['titulo'])){
-  $obProjeto->ver          =  $_POST['ver'];
+ // $obProjeto->ver          =  $_POST['ver'];
   $obProjeto->id_prof      =  $user['id'];
   $obProjeto->nome_prof    =  $user['nome'];
   $obProjeto->tipo_exten   =  $t;
@@ -114,20 +123,25 @@ if(isset($_POST['titulo'])){
   $obProjeto->vigen_ini    =  $_POST['vigen_ini'];
   $obProjeto->vigen_fim    =  $_POST['vigen_fim'];
   
-  $obProjeto->referencia    = $_POST['referencia'];
+  
   if (in_array($t, $anexoII)) {
     if($_POST['ch_semanal'] == null){
       $obProjeto->ch_semanal   =  0;  
     } else{
       $obProjeto->ch_semanal   =  $_POST['ch_semanal'];
     }
+
+    $obProjeto->referencia    = $_POST['referencia'];
+
     $obProjeto->cnpq_garea     = $_POST['cnpq_garea'];
     $obProjeto->cnpq_area    = $_POST['cnpq_area'];
     $obProjeto->cnpq_sarea    = $_POST['cnpq_sarea'];
+
     $obProjeto->area_extensao = $_POST['area_extensao'];
     $obProjeto->linh_ext      = $_POST['linh_ext'];
-    $obProjeto->contribuicao  = $_POST['contribuicao'];
   }
+
+  $obProjeto->contribuicao  = $_POST['contribuicao'];
 
   if (in_array($t, $anexoIII)) {
     if($_POST['ch_total'] == null ){
@@ -139,19 +153,20 @@ if(isset($_POST['titulo'])){
   }
 
   $obProjeto->resumo       =  $_POST['resumo'];
-  $obProjeto->descricao    =  $_POST['descricao'];
+  // $obProjeto->descricao    =  $_POST['descricao'];
   $obProjeto->objetivos    =  $_POST['objetivos'];
   $obProjeto->public_alvo  =  $_POST['public_alvo'];
   $obProjeto->metodologia  =  $_POST['metodologia'];
-  $obProjeto->prodserv_espe   =  $_POST['prodserv_espe'];
+  // $obProjeto->prodserv_espe   =  $_POST['prodserv_espe'];
 
-  $obProjeto->contrap_nofinac =  $_POST['contrap_nofinac'];
+  //$obProjeto->contrap_nofinac =  $_POST['contrap_nofinac'];
   $obProjeto->municipios_abr  =  $_POST['municipios_abr'];
-  $obProjeto->n_cert_prev     =  $_POST['n_cert_prev'];
+  //$obProjeto->n_cert_prev     =  $_POST['n_cert_prev'];
   $obProjeto->data            =  $_POST['data'];
-  $obProjeto->outs_info       =  $_POST['outs_info'];
+  //$obProjeto->outs_info       =  $_POST['outs_info'];
   $obProjeto->acec            =  $_POST['acec'];
   $obProjeto->vinculo         =  $_POST['vinculo'];
+
   if($obProjeto->vinculo == 'S'){
     $obProjeto->tituloprogvinc  =  $_POST['tituloprogvinc'];
   }
@@ -189,6 +204,7 @@ if(isset($_POST['titulo'])){
  // 'created_at' => $this->created_at,
  // 'updated_at' => date("Y-m-d H:i:s"),
   $obProjeto->user = $user['id'];
+
 
   $idprjP =  $obProjeto->cadastrar();
 

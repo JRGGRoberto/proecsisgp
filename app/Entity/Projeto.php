@@ -5,6 +5,11 @@ namespace App\Entity;
 use \App\Db\Database;
 use \PDO;
 
+ini_set('display_errors', 1);
+ini_set('display_startup_errors', 1);
+error_reporting(E_ALL);
+
+
 class Projeto{
   
   public $id;
@@ -83,6 +88,10 @@ class Projeto{
     is_null($this->edt) ? $edt = 1 : $edt = $this->edt;
     is_null($this->para_avaliar) ? $aval = -1 : $aval = $this->para_avaliar;
     is_null($this->last_result) ? $lr = 'n' : $lr = $this->last_result;
+
+    is_null($this->cnpq_garea) ? $cnpq_garea = 0 :  $cnpq_garea = $this->cnpq_garea;
+    is_null($this->cnpq_area) ?  $cnpq_area = 0 :   $cnpq_area = $this->cnpq_area;
+    is_null($this->cnpq_sarea) ? $cnpq_sarea = 0 : $cnpq_sarea = $this->cnpq_sarea;
     
     //$this->id = 
     $obDatabase->insert([
@@ -102,9 +111,9 @@ class Projeto{
                            'situacao' => $this->situacao,
 
 
-                           'cnpq_garea' => $this->cnpq_garea,
-                           'cnpq_area' => $this->cnpq_area,
-                           'cnpq_sarea' => $this->cnpq_sarea,
+                           'cnpq_garea' => $cnpq_garea,
+                           'cnpq_area' => $cnpq_area,
+                           'cnpq_sarea' => $cnpq_sarea,
 
                            'area_extensao' => $this->area_extensao,
                            'linh_ext' => $this->linh_ext,

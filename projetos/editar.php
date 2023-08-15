@@ -3,6 +3,12 @@ require '../vendor/autoload.php';
 use \App\Session\Login;
 Login::requireLogin();
 
+
+ini_set('display_errors', 1);
+ini_set('display_startup_errors', 1);
+error_reporting(E_ALL);
+
+
 use \App\Entity\Projeto;
 
 use \App\Entity\Equipe;
@@ -127,6 +133,8 @@ if(isset( $_POST['titulo']) ) {
   $obProjeto->updated_at = date("Y-m-d H:i:s");
   $obProjeto->user = $user['id'];
   $obProjeto->last_result = 'n';
+  $obProjeto->contribuicao  = $_POST['contribuicao'];
+
 
   if (in_array($t, $anexoII)) {
     $obProjeto->ch_semanal    = $_POST['ch_semanal'];
@@ -135,7 +143,6 @@ if(isset( $_POST['titulo']) ) {
     $obProjeto->cnpq_sarea    = $_POST['cnpq_sarea'];
     $obProjeto->area_extensao = $_POST['area_extensao'];
     $obProjeto->linh_ext      = $_POST['linh_ext'];
-    $obProjeto->contribuicao  = $_POST['contribuicao'];
     $obProjeto->referencia    = $_POST['referencia'];
   }
 
@@ -163,7 +170,10 @@ if(isset( $_POST['titulo']) ) {
   } else {
     $obProjeto->finacorgao = null;
     $obProjeto->finacval   = null;
-  }
+  }ini_set('display_errors', 1);
+  ini_set('display_startup_errors', 1);
+  error_reporting(E_ALL);
+  
 
   if($obProjeto->parceria == 'S'){
     $obProjeto->parcaatribuic  =  $_POST['parcaatribuic'];
@@ -247,7 +257,7 @@ if ($user['id'] == $obProjeto->id_prof){
    
     if(in_array($t, $anexoII)){
       $qryAEO = '';
-      $scriptS .= '';
+      $scriptS = '';
       if (empty($obProjeto->cnpq_sarea)){
         $qryAEO = 
            "select cnpq_garea, cnpq_area
