@@ -8,5 +8,5 @@ Login::requireLogin();
 use \App\Entity\CnpqGArea;
 $order = 'nome';
 
-$registros = CnpqGArea::getRegistros($order);
+$registros = CnpqGArea::getRegistros(null, $order);
 echo json_encode($registros);

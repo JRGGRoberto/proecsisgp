@@ -129,7 +129,7 @@
           <div class="form-group">
             <!--         -->
             <label for="cnpq_area">Área</label>
-            <select name="cnpq_area" id="cnpq_area" class="form-control">
+            <select name="cnpq_area" id="cnpq_area" class="form-control" required>
               <option>N/A</option>
             </select>
             <!--         -->

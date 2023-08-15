@@ -9,6 +9,8 @@ use \App\Entity\Equipe;
 use \App\Entity\Palavras;
 use \App\Entity\Arquivo;
 
+use \App\Entity\Diversos;
+
 $user = Login::getUsuarioLogado();
 
 $mensagem = '';
@@ -265,7 +267,28 @@ if ($user['id'] == $obProjeto->id_prof){
   } else {
    
     if(in_array($t, $anexoII)){
+      $qryAEO = 
+      "select p.cnpq_garea, p.cnpq_area, p.cnpq_sarea  
+      FROM projetos p
+      where  cnpq_sarea  = ".  $obProjeto->cnpq_sarea ;
+
+      $Caeo = Diversos::q($qryAEO);
+
+
+
       include __DIR__.'/includes/formAnexoII.php';
+      echo ( '<script>
+
+      var ga = document.querySelector("#cnpq_garea");
+      var ar = document.querySelector("#cnpq_area");
+      var sa = document.querySelector("#cnpq_sarea");
+      pegarGA();
+        
+      </script>');
+      
+
+
+
     } elseif (in_array($t, $anexoIII)){
       include __DIR__.'/includes/formAnexoIII.php';
     } else {
