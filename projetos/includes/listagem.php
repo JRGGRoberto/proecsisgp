@@ -233,7 +233,7 @@
 <main>
   <h2 class="mt-0">Meus projetos</h2>
   
-  <?=$msg?> 
+  <?=$msgAlert?> 
   <section>
 
     <form method="get">
