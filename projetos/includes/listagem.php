@@ -75,7 +75,6 @@
         
         '<td>'.$la->fase_seq.'/'.$la->etapas.'</td>
        </tr>';
-    
 
        $etapas = $la->etapas;
 
@@ -110,8 +109,6 @@
         $progresso .= '<button type="button" class="btn btn-'. $btn->cor .'" disabled></button>';
       }
 
-
-     
      $progresso .= 
        ' </div>
        </span>';
@@ -119,7 +116,6 @@
     }
 
    /********************/
-
     
     $resultados .=  '
 <div class="card mt-2">
@@ -142,7 +138,6 @@
         <div class="row">
           <div class="col-9">
             <p>Resumo: '. $proj->resumo  .'</p>
-            <p>Descricao: '. $proj->descricao  .'</p>
             <p>Objetivos: '. $proj->objetivos  .'</p>
           </div>
           <div class="col">

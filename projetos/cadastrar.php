@@ -4,11 +4,11 @@ require '../vendor/autoload.php';
 
 use \App\Session\Login;
 
-
+/*
 ini_set('display_errors', 1);
 ini_set('display_startup_errors', 1);
 error_reporting(E_ALL);
-
+*/
 
 //Obriga o usuário a estar logado
 Login::requireLogin();

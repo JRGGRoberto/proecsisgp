@@ -6,12 +6,14 @@ use \App\Entity\Projeto;
 use \App\Entity\Professor;
 //Login::requireLogin();
 //$user = Login::getUsuarioLogado();
-use \App\Entity\Diversos;
 use Dompdf\Dompdf;
+
+
 
 ini_set('display_errors', 1);
 ini_set('display_startup_errors', 1);
 error_reporting(E_ALL);
+
 
 $mensagem = '';
 $jan = 'sem';
@@ -27,7 +29,7 @@ $jan = $_GET['w'];
 
 //CONSULTA AO PROJETO
 $obProjeto = new Projeto();
-$obProjeto = Projeto::getProjetoView($id, $ver);
+$obProjeto = Projeto::getProjeto($id, $ver);
 $obProfessor = Professor::getProfessor($obProjeto->id_prof);
 
 //VALIDAÇÃO DA TIPO
@@ -38,6 +40,33 @@ if(!$obProjeto instanceof Projeto){
 
 use \App\Entity\Colegiado;
 $coolCur = Colegiado::getRegistro($obProjeto->para_avaliar)->nome;
+
+use \App\Entity\CnpqGArea;
+$areas_cnpq1 = CnpqGArea::getRegistro($obProjeto->cnpq_garea);
+if(isset($areas_cnpq1)){
+  $areas_cnpq1 = $areas_cnpq1->nome;
+} else {
+  $areas_cnpq1 = '';
+}
+
+
+use \App\Entity\CnpqArea;
+$area_tem1 = CnpqArea::getRegistro($obProjeto->cnpq_area);
+if(isset($area_tem1)){
+  $area_tem1 =  $area_tem1['nome'];
+} else {
+  $area_tem1 = '';
+}
+
+use \App\Entity\CnpqSubA;
+$area_tem2 = CnpqSubA::getRegistro($obProjeto->cnpq_sarea);
+if(isset($area_tem2)){
+  $area_tem2 = $area_tem2['nome'];
+} else {
+  $area_tem2 = '';
+}
+
+
 
 use \App\Entity\Arquivo;
 $anexados = Arquivo::getAnexados('projetos', $obProjeto->id);
@@ -56,7 +85,7 @@ if ($conutAnexo == 0) {
   $anex .= '</ul>';
 }
 
-$t = $obProjeto->tipo_ext;
+$t = $obProjeto->tipo_exten;
 $tpprop = '';
 
 switch($t) {
@@ -84,7 +113,6 @@ switch($t) {
     header('location: index.php?status=error');
     exit;
 }
-
 
 $anexoII = [3, 4, 5];
 $anexoIII = [1, 2];
@@ -227,6 +255,11 @@ c {
  * Fim cabeçalho
  */
 
+ 
+
+
+ 
+
 
   $acec = $obProjeto->acec == 'S'? '( x ) Sim<br>( <span> </span><span> </span> ) Não<br>' : '( <span> </span><span> </span> ) Sim<br>( x ) Não<br>';
   
@@ -344,6 +377,11 @@ entre os tr de baixo
 
   $html .= '</table>';
 
+  use \App\Entity\Area_Extensao;
+  $area_ext = Area_Extensao::getRegistro($obProjeto->area_extensao)->nome;
+  $linh_ext = Area_Extensao::getRegistro($obProjeto->linh_ext)->nome;
+
+  
   if (in_array($t, $anexoII)) { 
     $html .= 
     '<table class="time">
@@ -357,11 +395,11 @@ entre os tr de baixo
       </thead>
       <tbody>
         <tr>  
-           <td><strong>a) Grande Área</strong></td>    <td>'. $obProjeto->cnpq_garea .'</td>
+           <td><strong>a) Grande Área</strong></td>    <td>'. $areas_cnpq1 .'</td>
         </tr><tr>
-           <td><strong>b) Área</strong></td>           <td>'. $obProjeto->cnpq_area .'</td>
+           <td><strong>b) Área</strong></td>           <td>'. $area_tem1 .'</td>
         </tr><tr>
-           <td><strong>c) Subárea</strong></td>        <td>'. $obProjeto->cnpq_sarea .'</td>
+           <td><strong>c) Subárea</strong></td>        <td>'. $area_tem2 .'</td>
         </tr>
         
         <thead>
@@ -370,14 +408,14 @@ entre os tr de baixo
           </tr>
         </thead>
         <tr>
-           <td><strong>a) Área de Extensão</strong></td>    <td>'. $obProjeto->area_extensao .'</td>
+           <td><strong>a) Área de Extensão</strong></td>    <td>'. $area_ext .'</td>
         </tr><tr>
-           <td><strong>b) Linha de Extensão</strong></td>   <td>'. $obProjeto->linh_ext .'</td>
+           <td><strong>b) Linha de Extensão</strong></td>   <td>'. $linh_ext .'</td>
         </tr>
       </tbody>
     </table>'
     ;
-
+  
   }
   
 
@@ -509,10 +547,17 @@ entre os tr de baixo
     </table>'
   ;
 
+
+
+
+
+
   $html .= 
   '<table class="time">
    <thead><tr><th class="th_cinza" colspan="6"><strong>'. ++$count .'. Equipe da proposta</strong></th></tr></thead>';
  
+
+
 
 
   use \App\Entity\Equipe;
@@ -642,38 +687,13 @@ entre os tr de baixo
  </html>';
 
 
-$sql = "
-Select 
-   CONCAT(
-     IFNULL(ccc.codcam, 'wh') ,
-     '-',
-     IFNULL(SUBSTRING(p.`data`, 1, 4), 9999),
-     '-',
-     SUBSTRING(uuid(), 5,4),
-     '-',
-     case 
-       when tipo_ext = 1 then 'cur'
-       when tipo_ext = 2 then 'eve'
-       when tipo_ext = 3 then 'ser'
-       when tipo_ext = 4 then 'pro'
-       when tipo_ext = 5 then 'prj'
-     end
-     ) codigo
-from 
-   proj_inf p
-   left join ca_ce_co ccc on p.para_avaliar = ccc.co_id
-where (p.id, p.ver) = ('". $obProjeto->id ."', ". $obProjeto->ver ." ) ";
-
-
-$filename = Diversos::q($sql);
-
-/*  */
+/*
  
 $dompdf = new Dompdf(['enable_remote' => true]);
 $dompdf->loadHtml($html);
 $dompdf->setPaper('A4', 'portrait');
 $dompdf->render();
-$dompdf->stream($filename->codigo .".pdf");
+$dompdf->stream("a_PDF__.pdf");
 
 //hash_file('md5', $dompdf->stream('file'));
  /*/
@@ -686,26 +706,6 @@ print_r($obProfessor);
 echo '</pre>';
 
 $html .= '</body>
-
-
-
-
-
-echo '<pre>';
-print_r($obProjeto);
-echo('<hr>');
-print_r($anexados);
-echo('<hr>');
-echo $coolCur;
-echo('<hr>');
-echo $title2 ;
-echo '</pre>';
-exit;
-
-
 </html>';
-
-
-
 
 /*/

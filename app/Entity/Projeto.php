@@ -19,6 +19,9 @@ class Projeto{
   public $nome_prof;
   public $id_colegiado;
   public $tipo_exten;
+  public $tipo_ext;
+
+
   public $titulo;
   public $tide;
   public $vigen_ini;
@@ -31,12 +34,12 @@ class Projeto{
   public $cnpq_area;
   public $cnpq_sarea;
 
-  /*
+  
   public $area_cnpq;
   public $area_tema1;
   public $area_tema2;
 
-  */
+  
   public $area_extensao;
   public $linh_ext;
   public $resumo;
