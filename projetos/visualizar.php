@@ -39,23 +39,6 @@ if(!$obProjeto instanceof Projeto){
 use \App\Entity\Colegiado;
 $coolCur = Colegiado::getRegistro($obProjeto->para_avaliar)->nome;
 
-use \App\Entity\Arquivo;
-$anexados = Arquivo::getAnexados('projetos', $obProjeto->id);
-$anex = '<ul id="anexos_edt">';
-$conutAnexo = 0;
-foreach($anexados as $att){
-  $anex .= 
-  '<li>
-      <a href="../upload/uploads/'.$att->nome_rand.'" target="_blank">'.$att->nome_orig.'</a>    
-  </li> ';
-  $conutAnexo++;
-}
-if ($conutAnexo == 0) {
-  $anex = 'Sem anexos';
-} else {
-  $anex .= '</ul>';
-}
-
 $t = $obProjeto->tipo_ext;
 $tpprop = '';
 
@@ -637,6 +620,36 @@ entre os tr de baixo
   <tbody><tr><td>'. $obProjeto->referencia .'</td></tr></tbody>
   </table>'
   ;
+
+
+use \App\Entity\Arquivo;
+$anexados = Arquivo::getAnexados('projetos', $obProjeto->id);
+$anex = '<ul id="anexos_edt">';
+$conutAnexo = 0;
+foreach($anexados as $att){
+  $anex .= 
+  '<li>
+      <a href="../upload/uploads/'.$att->nome_rand.'" target="_blank">'.$att->nome_orig.'</a>    
+  </li> ';
+  $conutAnexo++;
+}
+if ($conutAnexo == 0) {
+  $anex = 'Sem anexos';
+} else {
+  $anex .= '</ul>';
+}
+
+
+$html .= 
+'<table class="time">
+ <thead><tr><th class="th_cinza"><strong>'. ++$count .'. Anexos</strong></th></tr></thead>
+<tbody><tr><td>'. $anex .'</td></tr></tbody>
+</table>'
+;
+
+
+
+
 
  $html .= '</body>
  </html>';
