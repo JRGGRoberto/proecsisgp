@@ -331,9 +331,6 @@ if ($user['id'] == $obProjeto->id_prof){
       .'      
         
       </script>');
-      
-
-
 
     } elseif (in_array($t, $anexoIII)){
       include __DIR__.'/includes/formAnexoIII.php';

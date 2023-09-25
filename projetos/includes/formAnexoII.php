@@ -118,7 +118,7 @@
           <div class="form-group">
             <!--         -->
             <label for="cnpq_garea">Grande Área</label>
-            <select name="cnpq_garea" id="cnpq_garea" class="form-control">
+            <select name="cnpq_garea" id="cnpq_garea" class="form-control" required>
               <option>Selecione</option>
             </select>
             <!--         -->
