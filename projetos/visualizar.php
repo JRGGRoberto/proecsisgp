@@ -680,7 +680,7 @@ where (p.id, p.ver) = ('". $obProjeto->id ."', ". $obProjeto->ver ." ) ";
 
 $filename = Diversos::q($sql);
 
-/*  */
+/*  
  
 $dompdf = new Dompdf(['enable_remote' => true]);
 $dompdf->loadHtml($html);
@@ -690,35 +690,9 @@ $dompdf->stream($filename->codigo .".pdf");
 
 //hash_file('md5', $dompdf->stream('file'));
  /*/
+
+
 echo $html;
-
-echo '<pre>';
-print_r($obProjeto);
-echo '<hr>';
-print_r($obProfessor);
-echo '</pre>';
-
-$html .= '</body>
-
-
-
-
-
-echo '<pre>';
-print_r($obProjeto);
-echo('<hr>');
-print_r($anexados);
-echo('<hr>');
-echo $coolCur;
-echo('<hr>');
-echo $title2 ;
-echo '</pre>';
-exit;
-
-
-</html>';
-
-
 
 
 /*/
