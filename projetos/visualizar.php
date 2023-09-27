@@ -629,7 +629,7 @@ $conutAnexo = 0;
 foreach($anexados as $att){
   $anex .= 
   '<li>
-      <a href="../upload/uploads/'.$att->nome_rand.'" target="_blank">'.$att->nome_orig.'</a>    
+    <a href="https://sistemaproec.unespar.edu.br/sistema/upload/uploads/'.$att->nome_rand.'" target="_blank">'.$att->nome_orig.'</a>   
   </li> ';
   $conutAnexo++;
 }
@@ -638,7 +638,13 @@ if ($conutAnexo == 0) {
 } else {
   $anex .= '</ul>';
 }
-
+/*
+ 
+<a href="https://sistemaproec.unespar.edu.br/sistema/upload/uploads/'.$att->nome_rand.'" target="_blank">'.$att->nome_orig.'</a>
+ 
+https://sistemaproec.unespar.edu.br/sistema/upload/uploads/
+  
+ */
 
 $html .= 
 '<table class="time">
@@ -680,7 +686,7 @@ where (p.id, p.ver) = ('". $obProjeto->id ."', ". $obProjeto->ver ." ) ";
 
 $filename = Diversos::q($sql);
 
-/*  
+/**/  
  
 $dompdf = new Dompdf(['enable_remote' => true]);
 $dompdf->loadHtml($html);
