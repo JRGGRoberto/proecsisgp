@@ -72,7 +72,7 @@ if ($user['adm'] != 1){
 }
 $script .= '</script>';
 
-
+$padsv ='';
 
 include '../includes/header.php';
 include __DIR__.'/includes/formulario.php';

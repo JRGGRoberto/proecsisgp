@@ -6,6 +6,7 @@ use \App\Entity\Professor;
 use \App\Entity\Outros;
 Login::requireLogin();
 $user = Login::getUsuarioLogado();
+use \App\Entity\Vinculo;
 
 use \App\Entity\Diversos;
 
@@ -26,6 +27,31 @@ if(!$obProfessor instanceof Professor){
   header('location: ../index.php?status=error');
   exit;
 }
+
+$whereVinc = 'id_prof = "'. $obProfessor->id .'"' ;
+$vinculos = Vinculo::gets($whereVinc );
+$padsv = '';
+$countv = 0;
+foreach($vinculos as $vinc){
+  if ($user['adm'] == 1){
+    $padsv .=  $vinc->ano .'  RT: '. $vinc->rt .' <a href="../vinc/editar.php?id='. $obProfessor->id.'">✏️</a> 
+    <a href="../vinc/del.php?id='. $obProfessor->id.'">⛔</a><br>';
+  } else {
+    $padsv .=  $vinc->ano .'  RT: '. $vinc->rt .'<br>';
+  } 
+  $countv++;
+}
+if ($countv == 0){
+  if ($user['adm'] == 1){
+    $padsv =  '<a href="../vinc/add.php?id='. $obProfessor->id.'">➕</a> vinculo PAD 2024'; 
+  } else {
+    $padsv =  'Sem vinculo';
+  }
+}
+ 
+
+
+// if ($user['adm'] == 1)
 
 $qryAEO = 
 "select ca_id, campus, ce_id, centros, co_id, colegiado 
