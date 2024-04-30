@@ -32,7 +32,7 @@
     }
 
     $linkProj;
-    if($prj->versao == 'n'){
+    if($prj->versao != 'n' ){
       $linkProj = '<a href="'.$prj->arq_projeto.'" target="_blank">📄</a>';
     } elseif ($prj->versao == 'o'){
       $linkProj = '<a href="../../projetos/doc/'.$prj->arq_projeto.'.pdf" target="_blank">📄</a>';

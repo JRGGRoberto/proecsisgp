@@ -254,7 +254,7 @@ c {
     <tbody>
       <tr>
          <td class="th_cinza"><strong>Telefone</strong></td>
-         <td>'. $obProfessor->telefone .'</td>
+         <td>** *********</td>
          <td class="th_cinza"><strong>Email</strong></td>
          <td>'. $obProfessor->email .'</td>
       </tr>
@@ -692,7 +692,8 @@ $dompdf = new Dompdf(['enable_remote' => true]);
 $dompdf->loadHtml($html);
 $dompdf->setPaper('A4', 'portrait');
 $dompdf->render();
-$dompdf->stream($filename->codigo .".pdf");
+//$dompdf->stream($filename->codigo .".pdf");
+$dompdf->stream($filename->codigo,array('Attachment'=>0));
 
 //hash_file('md5', $dompdf->stream('file'));
  /*/

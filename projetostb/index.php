@@ -74,7 +74,7 @@ include '../includes/header.php';
       <select name="ano" class="form-control">
         <option value=""></option>
         <?php
- $ano_atual = date("Y") + 1;
+ $ano_atual = date("Y") ;
   for ($ano = $ano_atual; $ano >= 2018; $ano--) {
     echo '<option value="' . $ano . '" ' . (($ano == $_POST['ano']) ? 'selected' : '') . '>' . $ano . '</option>';
   }
