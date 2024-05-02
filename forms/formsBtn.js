@@ -35,7 +35,7 @@ function submitSave() {
 
 function submitAprova() {
 
-  if(typeof esseFormSelecProf !== 'undefined'){
+  if(esseFormSelecProf){
     const selecao = document.getElementById('id_parecerista');
     if(selecao.value == -1){
       alert('Selecione um professor');

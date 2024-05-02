@@ -35,6 +35,7 @@ if (!$user['adm'] == 1){
   exit;
 }
 
+
 $ano = '2024';
 define('TITLE','Adicionar vinculo de '. $ano);
 $vinculo = new Vinculo();

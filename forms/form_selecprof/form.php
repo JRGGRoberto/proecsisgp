@@ -126,6 +126,7 @@
 </div>
 
 <script>
+const esseFormSelecProf = true;
 
 const opt = document.getElementById('id_parecerista');
 const btn = document.getElementById('btnSubmit');

@@ -9,12 +9,11 @@
 
     <div class="col text-center">
 
-        <h2>PROEC</h2>
         <img src="../imgs/logo_unespar.png" width="150" height="160">
         <hr>
-        <h3>Administração de projetos de extensão</h3>
-        <h4><span class="badge badge-warning">Envio de Projetos</span></h4>  
-        <span>PROEC</span>
+        <h3>Sistema de Gestão de Projetos de Extensão</h3>
+        
+        <h2>PROEC</h2>
 
     </div>
 
@@ -41,11 +40,6 @@
 
       </form>
 
-      <br>
-      
-      <a href="../projetostb/" class="btn btn-success" id="projEfet">📑 Propostas efetivadas</a>
-      <label for="projEfet">Acessar projetos que já passaram por todos os crivos estabelecidos</label>
-    
 
     </div>
 

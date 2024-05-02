@@ -9,7 +9,6 @@ class Campi{
 
   public $id;
   public $nome;
-  public $codigo;
   public $chef_div_id;
   public $created_at;
   public $updated_at;
@@ -28,7 +27,6 @@ class Campi{
     $obDatabase = new Database('campi');
     $this->id = $obDatabase->insert([
                                       'nome' => $this->nome,
-                                      'codigo' => $this->codigo,
                                       'user' => $this->user
                                     ]);
 
@@ -44,7 +42,6 @@ class Campi{
     return (new Database('campi'))->update(
                                            'id = "'.$this->id.'" ',[
                                                                 'nome'    => $this->nome,
-                                                                'codigo' => $this->codigo,
                                                                 'chef_div_id' => $this->chef_div_id,
                                                                 'updated_at' => date("Y-m-d H:i:s"),
                                                                 'user' => $this->user
@@ -91,6 +88,7 @@ class Campi{
   public function excluir(){
     return (new Database('campi'))->delete('id = "'.$this->id.'"');
   }
+
 
   ////////////////////////////
 

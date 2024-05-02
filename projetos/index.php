@@ -49,6 +49,9 @@ foreach($sendColegiado as $co){
   $coolSelectSend .= '<option value="'.$co->id.'"  '. $dis . '>'.$co->nome.' '.$info.'</option>';
 }
 
+
+
+
 //Filtro de status
 $filtroStatus = filter_input(INPUT_GET, 'filtroStatus', FILTER_SANITIZE_STRING);
 

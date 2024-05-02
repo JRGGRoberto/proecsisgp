@@ -1,6 +1,7 @@
 <?php
 require '../vendor/autoload.php';
 
+
 // use \App\Session\Login;
 use \App\Entity\Projeto;
 use \App\Entity\Professor;
@@ -25,6 +26,7 @@ $id = $_GET['id'];
 $ver = $_GET['v'];
 $jan = $_GET['w'];
 
+
 //CONSULTA AO PROJETO
 $obProjeto = new Projeto();
 $obProjeto = Projeto::getProjetoView($id, $ver);
@@ -36,11 +38,13 @@ if(!$obProjeto instanceof Projeto){
   exit;
 }
 
+
 use \App\Entity\Colegiado;
 $coolCur = Colegiado::getRegistro($obProjeto->para_avaliar)->nome;
 
-$t = $obProjeto->tipo_ext;
+$t = $obProjeto->tipo_exten;
 $tpprop = '';
+
 
 switch($t) {
   case 1: 

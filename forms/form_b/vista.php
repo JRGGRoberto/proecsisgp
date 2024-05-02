@@ -192,6 +192,8 @@ include '../../includes/headers.php';
 
 </div>
 
+<a href="../../projetos" class="btn btn-primary btn-sm mr-2">Voltar</a>
+
 
 <?php
 

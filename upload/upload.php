@@ -3,6 +3,7 @@
 require '../vendor/autoload.php';
 use \App\Entity\Arquivo;
 
+
 ini_set('display_errors', 1);
 ini_set('display_startup_errors', 1);
 error_reporting(E_ALL);
@@ -17,7 +18,8 @@ if (isset($_FILES['arquivo']))
 {
     // Configurações
     $extensoes = array(".doc", ".txt", ".pdf", ".docx", ".jpg", ".png");
-    
+    // $caminho = "uploads/";
+    //$caminho = "/home/sistemaproec/www/sist/upload/uploads/";
     $caminho = "/home/sistemaproec/www/sistema/upload/uploads/";
     // Recuperando informações do arquivo
     $nome = $_FILES['arquivo']['name']; 

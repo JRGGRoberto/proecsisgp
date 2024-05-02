@@ -4,11 +4,11 @@ require '../vendor/autoload.php';
 
 use \App\Session\Login;
 
-/*
+
 ini_set('display_errors', 1);
 ini_set('display_startup_errors', 1);
 error_reporting(E_ALL);
-*/
+
 
 //Obriga o usuário a estar logado
 Login::requireLogin();
@@ -298,7 +298,7 @@ include '../includes/footer.php';
 ?>
 <script>
 
-  alert('*O responsável pelo preenchimento e encaminhamento é o coordenador da Proposta de Extensão \n Tramitação:\n ➡️ Proponente da proposta (Tu) preencha o formulário para depois submete-lo)\n ➡️ Divisão de Extensão e Cultura\n ➡️ Colegiado de Curso\n ➡️ Conselho de Centro de Área\n ➡️ Divisão de Extensão e Cultura.');
+  alert('*O responsável pelo preenchimento e encaminhamento é o coordenador da Proposta de Extensão \n Tramitação:\n ➡️ Coordenador da proposta  \n ➡️ Divisão de Extensão e Cultura\n ➡️ Colegiado de Curso\n ➡️ Conselho de Centro de Área\n ➡️ Divisão de Extensão e Cultura.');
   
 </script>
 

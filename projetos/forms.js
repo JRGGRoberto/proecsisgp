@@ -148,7 +148,52 @@ function submitJSON() {
   document.getElementById('anexosJS').value = anx;
 }  
 
+
+function submitSumbeter(){
+  $('#modalSub').modal('show');
+  modalTitle.innerText = 'Submissão de projeto';
+  modalBody.innerHTML = `
+        <div class="modal-body" id="modalBody">
+          <h4>Titulo</h4>
+          <p>Ao submeter o projeto à PROEC, estás a aceitar que este será avaliado pelas instâncias competentes.</p>
+          <p>Não será mais possível editá-lo a não ser que haja uma solicitação para isso.</p>
+          <p>Concordando com o informado, selecione o colegiado o qual julga ser relacionado a ele e clique em Submeter.</p>
+          
+           <div class="row">
+             <div class="col-12">
+               <div class="form-group">
+                  <label for="para_avaliar">Enviar para o colegiado de </label>
+                  <select name="para_avaliar" id="selPara" class="form-control" onchange="ativaBTN();">
+                    <option value="-1">Selecione</option>
+                   //{optspara}
+                  </select>
+               </div>
+             </div>
+           </div>
+        </div>
+        `;
+        modalFooter.innerHTML = data.innerHTML = `
+                <form method="post" action="submeter.php?">
+                    <input type="hidden" name="selecOpt"   value="" id="selecOpt">
+                    <button type="submit" class="btn btn-primary btn-sm mb-2" id="btnSubmitN">📤 Submeter nova versão</button>
+                </form>                    
+                <button type="button" class="btn btn-secondary btn-sm mb-2" data-dismiss="modal">Fechar</button>
+        `;
+}
+
 function submitSalvar(){
+
+  if( formulario == 2 ){
+    var cnpq = document.getElementById("cnpq_garea").value;
+    var cnpq_area = document.getElementById("cnpq_area").value;
+    var cnpq_sarea = document.getElementById("cnpq_sarea").value;
+    if((cnpq ==="") ||(cnpq_area ==="") ||(cnpq_sarea ==="")  ){
+      alert('Preencha o item 6');
+      window.location.href = "#cnpq_garea";
+      return;
+    }
+  }
+  
 
   var resumo = document.getElementById("resumo");
   if(resumo){

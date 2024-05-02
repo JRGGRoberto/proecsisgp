@@ -2,10 +2,12 @@
 
 header('location: ./home');
 exit;
-/*
+
 require './vendor/autoload.php';
 
-// use \App\Entity\Menu;
+
+
+use \App\Entity\Menu;
 use \App\Session\Login;
 
 $usuarioLogado = Login::getUsuarioLogado();
@@ -13,7 +15,7 @@ $usuarioLogado = Login::getUsuarioLogado();
 $usuario = $usuarioLogado ? $usuarioLogado['nome'].' <a href="../login/logout.php" class"text-light front-weight-bold ml-2">Sair</a>':
 'Visitante <a href="login.php" class"text-light front-weight-bold ml-2">Entrar</a>' ;
 
-//$menu = Menu::getRegistros();
+$menu = Menu::getRegistros();
 $menus = '';
 foreach($menu as  $regs){
    $menus.=

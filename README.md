@@ -1,41 +1,36 @@
-<h1 align="center">
-    <span style="background-color: green; border-radius: 18px; padding: 8px; marging: 2px;">SisGP 🕖</span>
-</h1>
+# CRUD com PHP orientado a objetos, PDO e MySQL - WDEV
+Código da implementação de um CRUD com PHP orientado a objetos e MySQL apresentado no canal [WDEV](http://wstore.io/wdev).
 
+## Vídeo WDEV
+Para assistir o vídeo dessa implementação, acesse: [CRUD com PHP orientado a objetos, PDO e MySQL (YouTube)](https://www.youtube.com/watch?v=uG64BgrlX7o)
 
-<div align="center">
+## Banco de dados
+Crie um banco de dados e execute as instruções SQLs abaixo para criar a tabela `vagas`:
+```sql
+  CREATE TABLE `vagas` (
+  	`id` INT(11) NOT NULL AUTO_INCREMENT,
+  	`titulo` VARCHAR(255) NOT NULL COLLATE 'utf8_general_ci',
+  	`descricao` TEXT(65535) NOT NULL COLLATE 'utf8_general_ci',
+  	`ativo` ENUM('s','n') NOT NULL COLLATE 'utf8_general_ci',
+  	`data` TIMESTAMP NOT NULL DEFAULT current_timestamp() ON UPDATE current_timestamp(),
+  	PRIMARY KEY (`id`) USING BTREE
+  )
+  COLLATE='utf8_general_ci'
+  ENGINE=InnoDB
+  AUTO_INCREMENT=1;
+```
 
-<img src="https://img.shields.io/github/languages/count/JRGGRoberto/proecsisgp"> <img src="https://img.shields.io/github/repo-size/JRGGRoberto/proecsisgp"> <img src="https://img.shields.io/github/last-commit/JRGGRoberto/proecsisgp"> <img src="https://img.shields.io/github/issues/JRGGRoberto/proecsisgp">
+## Configuração
+As credenciais do banco de dados estão no arquivo `./app/Db/Database.php` e você deve alterar para as configurações do seu ambiente (HOST, NAME, USER e PASS).
 
-</div>
+## Composer
+Para a aplicação funcionar, é necessário rodar o Composer para que sejam criados os arquivos responsáveis pelo autoload das classes.
 
+Caso não tenha o Composer instalado, baixe pelo site oficial: [https://getcomposer.org/download](https://getcomposer.org/download/)
 
-> **Warning** This project is under development.
+Para rodar o composer, basta acessar a pasta do projeto e executar o comando abaixo em seu terminal:
+```shell
+ composer install
+```
 
-
-## Tecnologias
-
-Este projeto esta sendo desenvolvido com as seguintes tecnologias:
-
-<img height="30" src="https://raw.githubusercontent.com/github/explore/80688e429a7d4ef2fca1e82350fe8e3517d3494d/topics/php/php.png"> <img height="30" src="https://raw.githubusercontent.com/github/explore/80688e429a7d4ef2fca1e82350fe8e3517d3494d/topics/mysql/mysql.png"> <img height="30" src="https://raw.githubusercontent.com/github/explore/80688e429a7d4ef2fca1e82350fe8e3517d3494d/topics/html/html.png"> <img height="30" src="https://raw.githubusercontent.com/github/explore/80688e429a7d4ef2fca1e82350fe8e3517d3494d/topics/css/css.png"> <img height="30" src="https://raw.githubusercontent.com/github/explore/80688e429a7d4ef2fca1e82350fe8e3517d3494d/topics/javascript/javascript.png"> <img height="30" src="https://raw.githubusercontent.com/github/explore/80688e429a7d4ef2fca1e82350fe8e3517d3494d/topics/json/json.png"> <img height="30" src="https://raw.githubusercontent.com/github/explore/80688e429a7d4ef2fca1e82350fe8e3517d3494d/topics/bootstrap/bootstrap.png"> 
-
-
-## Projeto
-
-Este projeto tem como objetivo gerir as proposta dos projetos extensionistas da PROEC UNESPAR.
-
-
-## Níveis de acesso
-
-
-
-
-Típo de usuário           |  Cria projeto  | Criar usuário comum | Criar usuário Coord | Criar usuário DirCA | Criar usuário CheDiv
---------------------------| :--------------|:-------------:|:---------------:|:---------------:|:---------------:
-Comum                     | ✔️             | :x:            | :x:             | :x:             | :x:             |
-Coordenador               | ✔️             | ✔️             | :x:             | :x:             | :x:             |
-Diretorde Centro de Área  | ✔️             | ✔️             | ✔️             | :x:             | :x:             |
-Chefe de Divisão          | ✔️             | ✔️             | ✔️             | ✔️             | :x:             |
-Administrador             | ✔️             | ✔️             | ✔️             | ✔️             |✔️             |
-
-
+Após essa execução uma pasta com o nome `vendor` será criada na raiz do projeto e você já poderá acessar pelo seu navegador.

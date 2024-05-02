@@ -112,6 +112,7 @@ error_reporting(E_ALL);
           <option value="40"   <?= $vinculo->rt == 40     ? 'selected' : '' ?> >40</option>
           <option value="24"   <?= $vinculo->rt == 24     ? 'selected' : '' ?> >24</option>
           <option value="20"   <?= $vinculo->rt == 20     ? 'selected' : '' ?> >20</option>
+          <option value="12"   <?= $vinculo->rt == 12     ? 'selected' : '' ?> >12</option>
           <option value="10"   <?= $vinculo->rt == 10     ? 'selected' : '' ?> >10</option>
         </select>
     </div>

@@ -137,8 +137,8 @@
 
         <div class="row">
           <div class="col-9">
-            <p>Resumo: '. $proj->resumo  .'</p>
-            <p>Objetivos: '. $proj->objetivos  .'</p>
+            <p>Resumo: '. strip_tags($proj->resumo)  .'</p>
+            <p>Objetivos: '. strip_tags($proj->objetivos)  .'</p>
           </div>
           <div class="col">
           '. $LastV .'

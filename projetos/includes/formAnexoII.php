@@ -1,6 +1,9 @@
 <main>
 
   <!--//$anexoII  = [3, 4, 5]; // Programa / Projeto / Serviço -->
+  <script>
+    let formulario = 2;
+  </script>
 
   <section>
     <a href="index.php">
@@ -279,54 +282,7 @@
         </script>
       </div>
 
-      <hr>
-
-      <label>
-        <h5><?= ++$n ?>. Parcerias</h5>
-      </label>
-      <div class="row">
-        <div class="col-1">
-          <label>
-            <h6>Parcerias?</h6>
-          </label>
-          <select name="parceria" id="parceria" class="form-control" onchange="showParcas();">
-            <option value="S" <?= ($obProjeto->parceria == 'S') ? 'selected' : ' ' ?>>Sim</option>
-            <option value="N" <?= ($obProjeto->parceria == 'N') ? 'selected' : ' ' ?>>Não</option>
-          </select>
-        </div>
-        <div class="col-6" id="parcaEntidades">
-          <label>
-            <h6>Nome(s) da(s) Entidade(s)</h6>
-          </label>
-          <input type="text" class="form-control" id="par_entidades" name="parcanomes" value="<?= $obProjeto->parcanomes ?>">
-        </div>
-        <div class="col-5" id="AtribuEnti">
-          <label>
-            <h6>Atribuição(ões) da(s) Entidade(s)</h6>
-          </label>
-          <input type="text" class="form-control" id="par_atribu" name="parcaatribuic" value="<?= $obProjeto->parcaatribuic ?>">
-        </div>
-
-        <script type="text/javascript">
-          const divParcas1 = document.getElementById('parcaEntidades');
-          const divParcas2 = document.getElementById('AtribuEnti');
-          const opcaoParcas = document.getElementById('parceria');
-
-          function showParcas() {
-
-            if (opcaoParcas.value == 'S') {
-              divParcas1.hidden = false;
-              divParcas2.hidden = false;
-            } else {
-              document.getElementById('par_entidades').value = '';
-              document.getElementById('par_atribu').value = '';
-              divParcas1.hidden = true;
-              divParcas2.hidden = true;
-            }
-          }
-        </script>
-      </div>
-
+     
       <hr>
 
       <label>
@@ -465,7 +421,7 @@
         <?= $anex ?>
       </div>
       <hr>
-      <div class="row">
+      <div class="row" hidden>
 
         <div class="col-3">
           <div class="form-group">
@@ -477,7 +433,8 @@
 
 
       <div class="form-group">
-        <a href="javascript: submitSalvar()" class="btn btn-success btn-sm">✔️ Salvar</a>
+        <a href="javascript: submitSalvar()" class="btn btn-primary  btn-sm">✔️ Salvar, para submeter depois</a>
+        <a href="javascript: submitSumbeter()" class="btn btn-success btn-sm" hidden>↗️ Submeter agora</a>
         <button type="button" class="btn btn-warning btn-sm" onclick="history.back()"> ↩️ Voltar</button>
       </div>
 
@@ -530,6 +487,32 @@
   </div>
   <!-- The Modal Fim-->
   <?= $scriptVars ?>
+
+
+
+<!-- The Modal -->
+<div class="modal fade" id="modalSub">
+    <div class="modal-dialog modal-dialog-scrollable">
+      <div class="modal-content">
+        <!-- Modal Header -->
+        <div class="modal-header">
+          <h4 class="modal-title" id="modalTitle">Título</h4>
+          <button type="button" class="close" data-dismiss="modal">×</button>
+        </div>
+        <!-- Modal body -->
+        <div class="modal-body" id="modalBody">
+         </div>
+        <!-- Modal footer -->
+        <div class="modal-footer" id="modalFooter">
+        </div>
+      </div>
+    </div>
+  </div>
+  <!-- The Modal -->
+
+ 
+
+
 
 </main>
 <script src="equipe.js"></script>
