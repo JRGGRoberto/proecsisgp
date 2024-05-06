@@ -406,7 +406,7 @@
             <label for="referencia">
               <h5><?= ++$n ?>. Referências</h5>
             </label>
-            <div id="sumnot_referencia"><?= $obProjeto->referencia ?></div>
+            <div id="sumnot_referencia" style="text-align: justify"><?= $obProjeto->referencia ?></div>
             <textarea id="referencia" name="referencia" rows="10" hidden></textarea>
           </div>
         </div>

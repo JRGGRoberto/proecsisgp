@@ -159,7 +159,7 @@
         if($proj->last_result == 'r'){
           $btnSub = '<a href="../forms/'.$proj->form.'/vista.php?p='. $proj->id .'&v='. $verAnt .'"><button class="btn btn-danger btn-sm mb-2" >📑 Informações de adequações</button></a>';
         } else {
-          $btnSub = '<button id="Alt'. $proj->id . 'v'. $proj->ver . '" class="btn btn-primary btn-sm mb-2" onclick="writeNumber(this)">📤 Enviar alterações</button>';
+          $btnSub = '<button id="Alt'. $proj->id . 'v'. $proj->ver . '" class="btn btn-primary btn-sm mb-2" onclick="writeNumber(this)">📤 Submeter novamente</button>';
         }
       }
 
@@ -181,7 +181,7 @@
       '<hr>
         
         <div class="d-flex flex-row-reverse ">
-          <a href="visualizar.php?id='. $proj->id . '&v='. $proj->ver . '&w=1"><button class="btn btn-success btn-sm mb-2">Visualizar</button></a>
+          <a href="visualizar.php?id='. $proj->id . '&v='. $proj->ver . '&w=1" target="_blank"><button class="btn btn-success btn-sm mb-2">Visualizar</button></a>
         </div>';
       }
 
@@ -389,9 +389,7 @@
     modalBody.innerHTML = `
           <div class="modal-body" id="modalBody">
             <h4>${data.titulo}</h4>
-            <p>Estás confirmar que realizaste as solicitações de adequasões as quais foram propostas, feito isto, terás tudo para que seu projeto avance para o próximo etapa. Ele será reavaliado pelas instâncias competentes.</p>
-            <p>Não será mais possível editá-lo a não ser que haja uma solicitação para isso.</p>
-            <p>Concordando com o informado, clique em Submeter.</p>
+            <p>Ao confirmar que realizou as solicitações de alterações, clique para submeter a nova versão.</p>
               <div class="row">
                 <div class="col-12">
                   <div class="form-group">

@@ -28,7 +28,7 @@ if ($cent_cood == 1){
              select id, nome,
                 if(niveln > 0, " SELECTED ", "") sel
              from  userprof
-             where ativo  = 1 and niveln in (0, 1) and ca_id =  "'.$local .'"';
+             where ativo  = 1 and niveln in (0, 1) and ca_id =  "'.$local .'" order by nome';
         
   $options = Diversos::qry($query);
 
@@ -43,7 +43,7 @@ if ($cent_cood == 1){
              select id, nome, 
                 if(niveln > 0, " SELECTED ", "") sel
              from  userprof
-             where ativo  = 1 and niveln in (0, 2) and ce_id =  "'.$local .'"';
+             where ativo  = 1 and niveln in (0, 2) and ce_id =  "'.$local .'" order by nome';
   
   $options = Diversos::qry($query);
 
@@ -61,7 +61,7 @@ if ($cent_cood == 1){
              select id, nome,
                 if(niveln > 0, " SELECTED ", "") sel
              from  userprof
-             where ativo  = 1 and niveln in (0, 3) and co_id =  "'.$local .'"';
+             where ativo  = 1 and niveln in (0, 3) and co_id =  "'.$local .'" order by nome';
    
   $options = Diversos::qry($query);
 
