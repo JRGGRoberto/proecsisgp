@@ -5,11 +5,6 @@ namespace App\Entity;
 use \App\Db\Database;
 use \PDO;
 
-ini_set('display_errors', 1);
-ini_set('display_startup_errors', 1);
-error_reporting(E_ALL);
-
-
 class Projeto{
   
   public $id;

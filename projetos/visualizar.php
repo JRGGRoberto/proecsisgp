@@ -5,6 +5,11 @@ require '../vendor/autoload.php';
 // use \App\Session\Login;
 use \App\Entity\Projeto;
 use \App\Entity\Professor;
+use \App\Entity\Area_Cnpq;
+use \App\Entity\CnpqArea;
+use \App\Entity\CnpqSubA;
+use \App\Entity\Area_Extensao;
+
 //Login::requireLogin();
 //$user = Login::getUsuarioLogado();
 use \App\Entity\Diversos;
@@ -17,20 +22,28 @@ error_reporting(E_ALL);
 $mensagem = '';
 $jan = 'sem';
 
+
+
 //VALIDAÇÃO DO ID
 if(!isset($_GET['id'], $_GET['v'])){
   header('location: index.php?status=error');
   exit;
 }
+
 $id = $_GET['id'];
 $ver = $_GET['v'];
 $jan = $_GET['w'];
 
 
+
+
 //CONSULTA AO PROJETO
 $obProjeto = new Projeto();
-$obProjeto = Projeto::getProjetoView($id, $ver);
+$obProjeto = Projeto::getProjeto($id, $ver); // getProjetoView($id, $ver);
 $obProfessor = Professor::getProfessor($obProjeto->id_prof);
+
+
+
 
 //VALIDAÇÃO DA TIPO
 if(!$obProjeto instanceof Projeto){
@@ -39,11 +52,16 @@ if(!$obProjeto instanceof Projeto){
 }
 
 
+
+
+
 use \App\Entity\Colegiado;
 $coolCur = Colegiado::getRegistro($obProjeto->para_avaliar)->nome;
 
 $t = $obProjeto->tipo_exten;
 $tpprop = '';
+
+
 
 
 switch($t) {
@@ -73,8 +91,10 @@ switch($t) {
 }
 
 
+
 $anexoII = [3, 4, 5];
 $anexoIII = [1, 2];
+
 if (in_array($t, $anexoII)) { 
   $title = 'ANEXO II';
 } else {
@@ -215,7 +235,7 @@ c {
  */
 
 
-  $acec = $obProjeto->acec == 'S'? '( x ) Sim<br>( <span> </span><span> </span> ) Não<br>' : '( <span> </span><span> </span> ) Sim<br>( x ) Não<br>';
+  
   
 
   $count = 0; 
@@ -289,15 +309,19 @@ c {
 
 
   if (in_array($t, $anexoII)) { 
+    $acec = ($obProjeto->acec == 'S'? 
+    '( x ) Sim<br>( <span> </span><span> </span> ) Não<br>' : 
+    '( <span> </span><span> </span> ) Sim<br>( x ) Não<br>');
+
     $html .= 
     '<table class="time">
      <thead><tr><th class="th_cinza"><strong>'. ++$count .'. A proposta está vinculada a alguma disciplina do curso de Graduação ou Pós?Graduação (ACEC II)</strong></th></tr></thead>
-    <tbody><tr><td>'. $acec .'</td></tr></tbody>
+    <tbody><tr><td>'. $acec . '</td></tr></tbody>
     </table>'
     ;
   } 
 
-  $vinculo = $obProjeto->vinculo == 'S'? '( x ) Vinculado <span> </span> <span> </span>( <span> </span><span> </span> ) Não vinculado' : '( <span> </span><span> </span> ) Sim<br>( x ) Não';
+  $vinculo = ($obProjeto->vinculo === 'S'? '( x ) Vinculado <span> </span> <span> </span>( <span> </span><span> </span> ) Não vinculado' : '( <span> </span><span> </span> ) Sim<br>( x ) Não');
     $html .= 
     '<table class="time">
       <thead>
@@ -316,7 +340,7 @@ entre os tr de baixo
 <td  colspan="2">Olá'.  $obProjeto->$tituloprogvinc .'</td>
 **/
 
-    if ($obProjeto->vinculo == 'S'){
+    if ($obProjeto->vinculo === 'S'){
       $html .= '  <thead>
       <tr>
         <th class="th_cinza" colspan="2"><strong>'. $count . '.2. Título do Programa de vinculação</strong></th>
@@ -342,13 +366,14 @@ entre os tr de baixo
           <th class="th_cinza" colspan="2"><strong>'. $count . '.1. Áreas de Conhecimento CNPq</strong></th>
         </tr>
       </thead>
-      <tbody>
+      <tbody> 
         <tr>  
-           <td><strong>a) Grande Área</strong></td>    <td>'. $obProjeto->cnpq_garea .'</td>
+           <td><strong>a) Grande Área</strong></td>    <td>'. Area_Cnpq::getRegistro($obProjeto->cnpq_garea)->nome .'</td>
         </tr><tr>
-           <td><strong>b) Área</strong></td>           <td>'. $obProjeto->cnpq_area .'</td>
+           <td><strong>b) Área</strong></td>           <td>'. CnpqArea::getRegistro($obProjeto->cnpq_area)->nome .'</td>
+
         </tr><tr>
-           <td><strong>c) Subárea</strong></td>        <td>'. $obProjeto->cnpq_sarea .'</td>
+           <td><strong>c) Subárea</strong></td>        <td>'. CnpqSubA::getRegistro( $obProjeto->cnpq_sarea)->nome .'</td>
         </tr>
         
         <thead>
@@ -357,9 +382,9 @@ entre os tr de baixo
           </tr>
         </thead>
         <tr>
-           <td><strong>a) Área de Extensão</strong></td>    <td>'. $obProjeto->area_extensao .'</td>
+           <td><strong>a) Área de Extensão</strong></td>    <td>'. Area_Extensao::getRegistro($obProjeto->area_extensao)->nome .'</td>
         </tr><tr>
-           <td><strong>b) Linha de Extensão</strong></td>   <td>'. $obProjeto->linh_ext .'</td>
+           <td><strong>b) Linha de Extensão</strong></td>   <td>'. Area_Extensao::getRegistro($obProjeto->linh_ext)->nome .'</td>
         </tr>
       </tbody>
     </table>'
@@ -434,7 +459,7 @@ entre os tr de baixo
 
 
   
-  $finac = $obProjeto->finac == 'N'? '( x ) Sem  <span> </span> <span> </span>( <span> </span><span> </span> ) Com ' : '( <span> </span><span> </span> ) Sem  <span> </span> <span> </span>( x ) Com ';
+  $finac = ($obProjeto->finac == 'S'? '( <span> </span><span> </span> ) Sem  <span> </span> <span> </span>( x ) Com ' : '( x ) Sem  <span> </span> <span> </span>( <span> </span><span> </span> ) Com ');
   $finacInfo = '';
 
   if ($obProjeto->finac == 'S'){
