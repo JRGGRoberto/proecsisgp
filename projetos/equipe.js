@@ -17,6 +17,9 @@ function deleteAllRows(){
     document.getElementById("formacao").value = "";
     document.getElementById("funcao").value = "";
     document.getElementById("tel").value = "";
+
+    document.getElementById("dtinicio").value = "";
+    document.getElementById("dtfim").value = "";
   }
   
   function fecharModalEquipe(){            
@@ -36,6 +39,9 @@ function deleteAllRows(){
     document.getElementById("formacao").value    = myObj.formacao;
     document.getElementById("funcao").value      = myObj.funcao;
     document.getElementById("tel").value         = myObj.tel;
+
+    document.getElementById("dtinicio").value    = myObj.dtinicio.substr(0, 10);
+    document.getElementById("dtfim").value       = myObj.dtfim.substr(0, 10);
             
     document.getElementById("titleMemb").innerHTML = 'Editar dados';
     document.getElementById("addMemb").hidden = true;
@@ -61,6 +67,9 @@ function deleteAllRows(){
     let formacao = document.getElementById("formacao").value;
     let funcao = document.getElementById("funcao").value;
     let tel = document.getElementById("tel").value;
+
+    let dtinicio = document.getElementById("dtinicio").value;
+    let dtfim = document.getElementById("dtfim").value;
      
     
     let dadosAtual = {
@@ -69,7 +78,10 @@ function deleteAllRows(){
       instituicao: instituicao,
       formacao: formacao,
       funcao: funcao,
-      tel: tel
+      tel: tel,
+      
+      dtinicio: dtinicio,
+      dtfim: dtfim,
     };
                 
     idx = equipe.findIndex(e => e.id === idM);
@@ -80,6 +92,14 @@ function deleteAllRows(){
     carregarDados();
     clearModalEquipe();
     fecharModalEquipe();
+  }
+
+  function formataDate(dataTexo){
+    let ano =  dataTexo.substr(0, 4);
+    let mes =  dataTexo.substr(5, 2);
+    let dia = dataTexo.substr(8, 2);
+    return dia +'/'+ mes +'/'+ ano;
+
   }
   
   function insereTable(novoContato){
@@ -92,7 +112,11 @@ function deleteAllRows(){
       let celFormacao = novaLinha.insertCell(3);
       let celFuncao = novaLinha.insertCell(4);
       let celTelefone = novaLinha.insertCell(5);
-      let celDelete = novaLinha.insertCell(6);
+
+      let celDtinicio = novaLinha.insertCell(6);
+      let celDtfim = novaLinha.insertCell(7);
+
+      let celDelete = novaLinha.insertCell(8);
   
     celId.innerHTML = novoContato.id;
     celNome.innerHTML = novoContato.nome;
@@ -100,6 +124,11 @@ function deleteAllRows(){
     celFormacao.innerHTML = novoContato.formacao;
     celFuncao.innerHTML = novoContato.funcao;
     celTelefone.innerHTML = novoContato.tel;
+    celDtinicio.innerHTML =formataDate(novoContato.dtinicio);
+    celDtfim.innerHTML = formataDate(novoContato.dtfim);
+
+
+
     celDelete.innerHTML = '<center><button type="button" class="btn btn-light btn-sm" onclick="excluirContato(' + novoContato.id + ')">⛔</button><button type="button" class="btn btn-light btn-sm" onclick="formEditarMembro(' + novoContato.id + ')">✏️</button></center></center>';
   }
   
@@ -111,6 +140,8 @@ function deleteAllRows(){
     let formacao = document.getElementById("formacao").value;
     let funcao = document.getElementById("funcao").value;
     let tel = document.getElementById("tel").value;
+    let dtinicio = document.getElementById("dtinicio").value;
+    let dtfim = document.getElementById("dtfim").value;
       
     let max = Math.max.apply(Math, equipe.map(e => e.id));
     if(max == '-Infinity'){ max = 0; }
@@ -123,7 +154,9 @@ function deleteAllRows(){
         instituicao: instituicao,
         formacao: formacao,
         funcao: funcao,
-        tel: tel
+        tel: tel,
+        dtinicio: dtinicio,
+        dtfim: dtfim,
       };
           
       // Adicionar o novo contato no array

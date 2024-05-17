@@ -186,13 +186,13 @@ if(isset($_POST['titulo'])){
     $obProjeto->referencia       =  $_POST['referencia'];
   }
 
+  /*
   $obProjeto->parceria       =  $_POST['parceria'];
   if($obProjeto->parceria == 'S'){
     $obProjeto->parcaatribuic  =  $_POST['parcaatribuic'];
     $obProjeto->parcanomes     =  $_POST['parcanomes'];
   }
-
-  
+*/ 
 
   $palav1 = $_POST['palav1'];
   $palav2 = $_POST['palav2'];
@@ -234,7 +234,9 @@ if(isset($_POST['titulo'])){
       $memb['instituicao'],
       $memb['formacao'],
       $memb['funcao'],
-      $memb['tel']
+      $memb['tel'],
+      $memb['dtinicio'],
+      $memb['dtfim']
     );
     $index++;
   }

@@ -298,6 +298,9 @@
               <th>Formação</th>
               <th>Função na equipe</th>
               <th>Telefone</th>
+              
+              <th>Inicio de vigência</th>
+              <th>Fim de vigência</th>
               <th style="width:20px"><button type="button" class="btn btn-primary btn-sm" onclick="formAddEquipe()">Adicionar</button></th>
             </tr>
           </thead>
@@ -452,40 +455,9 @@
 
   </form>
 
-  <!-- The Modal -->
-  <div class="modal fade" id="modalEquipe">
-    <div class="modal-dialog">
-      <div class="modal-content">
-
-        <!-- Modal Header -->
-        <div class="modal-header" style="background-color: #3385ff; color: white">
-          <h4 class="modal-title" id="titleMemb">Adicionar membros a equipe</h4>
-          <button type="button" class="close" data-dismiss="modal">×</button>
-        </div>
-
-        <!-- Modal body -->
-        <div class="modal-body">
-          <form class="form-group">
-
-            <label for="nome">Nome</label> <input type="text" class="form-control" id="nome">
-            <label for="instituicao">Instituição</label> <input type="text" class="form-control" id="instituicao">
-            <label for="formacao">Formação</label> <input type="text" class="form-control" id="formacao">
-            <label for="funcao">Função na equipe</label> <input type="text" class="form-control" id="funcao">
-            <label for="tel">Telefone</label> <input type="text" class="form-control" id="tel">
-            <BR>
-            <center>
-              <button type="button" class="btn btn-secondary btn-sm" onclick="fecharModalEquipe()">Fechar</button>
-              <button type="button" id="addMemb" class="btn btn-primary btn-sm" onclick="adicionarContato()">Adicionar</button>
-              <button type="button" name="altMemb" class="btn btn-primary btn-sm" onclick="updatMembro(this)">Alterar</button>
-            </center>
-
-          </form>
-        </div>
-
-      </div>
-    </div>
-  </div>
-  <!-- The Modal Fim-->
+  <?php 
+include './includes/modalMembro.php';
+   ?>
   <?= $scriptVars ?>
 
 

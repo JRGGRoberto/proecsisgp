@@ -36,8 +36,6 @@ $('#sumnot_justificativa').summernote({
   ]
 });
 
- 
-
 $('#sumnot_objetivos').summernote({
   placeholder: '(O Objetivo Geral é a ação macro que se quer alcançar. E os Objetivos Específicos são as ações fracionadas, para se alcançar o Objetivo Geral). 10 linhas máximo.',
   tabsize: 2,

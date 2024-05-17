@@ -15,13 +15,13 @@ class Equipe {
   public $funcao;
   public $tel;
   public $email;
+  public $dtinicio;
+  public $dtfim;
   public $created_at;
   public $updated_at;
   public $user;
 
-    
-  
-  function incluir($id, $idproj, $nome, $instituicao, $formacao, $funcao, $tel, $email = null, $user = null){
+  function incluir($id, $idproj, $nome, $instituicao, $formacao, $funcao, $tel, $dtinicio, $dtfim, $email = null, $user = null){
     $this->id = $id;
     $this->idproj = $idproj;
     $this->nome = $nome;
@@ -31,6 +31,10 @@ class Equipe {
     $this->tel = $tel;
     $this->email = $email;
     $this->user = $user;
+
+    $this->dtfim = $dtfim;
+    $this->dtinicio = $dtinicio;
+
     $this->cadastrar();
   }
 
@@ -49,7 +53,10 @@ class Equipe {
                          'funcao'       => $this->funcao,
                          'tel'          => $this->tel,
                          'email'        => $this->email,
-                         'user'         => $this->user
+                         'user'         => $this->user,
+
+                         'dtinicio'     => $this->dtinicio,
+                         'dtfim'        => $this->dtfim,
                        ]);
 
     //RETORNAR SUCESSO

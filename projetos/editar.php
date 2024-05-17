@@ -129,7 +129,7 @@ if(isset( $_POST['titulo']) ) {
   $obProjeto->vinculo         =  $_POST['vinculo'];
   $obProjeto->justificativa   =  $_POST['justificativa'];
   $obProjeto->cronograma      =  $_POST['cronograma'];
-  $obProjeto->parceria        =  $_POST['parceria'];
+ // $obProjeto->parceria        =  $_POST['parceria'];
   $obProjeto->updated_at = date("Y-m-d H:i:s");
   $obProjeto->user = $user['id'];
   $obProjeto->last_result = 'n';
@@ -216,7 +216,10 @@ if(isset( $_POST['titulo']) ) {
       $memb['instituicao'],
       $memb['formacao'],
       $memb['funcao'],
-      $memb['tel']
+      $memb['tel'],
+      $memb['dtinicio'],
+      $memb['dtfim']
+      
     );
     $index++;
   }
