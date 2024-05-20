@@ -23,7 +23,7 @@
         <label>
           <h5><?= $n = 1 ?>. Título da proposta</h5>
         </label>
-        <input type="text" class="form-control" name="titulo" id="titulo" value="<?= $obProjeto->titulo ?>" required>
+        <input type="text" class="form-control" name="titulo" id="titulo" maxlength="265" value="<?= $obProjeto->titulo ?>" required>
       </div>
       <input type="hidden" name="tabela" value="projetos">
 

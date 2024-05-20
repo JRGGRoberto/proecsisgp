@@ -22,7 +22,7 @@
       <label>
         <h5><?= $n = 1 ?>. Título da proposta</h5>
       </label>
-      <input type="text" class="form-control" name="titulo" id="titulo" value="<?= $obProjeto->titulo ?>" required>
+      <input type="text" class="form-control" name="titulo" id="titulo"  maxlength="265" value="<?= $obProjeto->titulo ?>" required>
     </div>
     <input type="hidden" name="tabela" value="projetos">
 
@@ -132,7 +132,7 @@
           <div class="form-group">
             <!--         -->
             <label for="cnpq_area">Área</label>
-            <select name="cnpq_area" id="cnpq_area" class="form-control" required>
+            <select name="cnpq_area" id="cnpq_area" class="form-control" >
               <option>N/A</option>
             </select>
             <!--         -->

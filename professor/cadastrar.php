@@ -8,6 +8,11 @@ use \App\Entity\Professor;
 Login::requireLogin();
 $user = Login::getUsuarioLogado();
 
+if(!$user['admin'] == 1){
+  header('location: ../');
+  exit;
+}
+
 define('TITLE','Cadastrar Professor');
 
 $obProfessor = new Professor;

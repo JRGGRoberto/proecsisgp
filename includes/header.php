@@ -15,26 +15,17 @@ $horas >= 12 ? (int)($horas -= 12) : (int)($horas -= 0);
 
 
   $adminOpts = '';
-  // if ($obUsuario[adm] == 1 or in_array($obUsuario[nivel], $cargAdm ) ){
   if ($obUsuario['adm'] == 1  ){
     $adminOpts = 
       "<div class='btn-group btn-group-sm'>
         <button type='button' class='btn btn-primary dropdown-toggle' data-toggle='dropdown'>
         🔧 Administração
         </button>
-        <div class='dropdown-menu'>";
-  /* Todos os Adminstradores ou de nível de chefia pode Listar professores, cadastrá-los ou [excluí-los]**?
-  E passar seu cargo
-  */
-    $adminOpts .= "<a class='dropdown-item btn-sm' href='../professor'>Listar Professores</a>";
-    $adminOpts .= "<a class='dropdown-item btn-sm' href='../professor/cadastrar.php'>Cadastrar Professor</a>";
-    // $adminOpts .= "<a class='dropdown-item btn-sm disabled' href='#'>Passar o posto para outro professor</a>";
-
-    if (($obUsuario['niveln']<3) or ($obUsuario['adm']== 1)){
-      $adminOpts .= "<a class='dropdown-item btn-sm' href='../hierarquia/index.php?hi=cnf'>Configurar hierarquia</a>";
-    }
-    $adminOpts .= 
-      "  </div>
+        <div class='dropdown-menu'>
+          <a class='dropdown-item btn-sm' href='../professor'>Listar Professores</a>
+          <a class='dropdown-item btn-sm' href='../professor/cadastrar.php'>Cadastrar Professor</a>
+          <a class='dropdown-item btn-sm' href='../hierarquia/index.php?hi=cnf'>Configurar hierarquia</a>
+      </div>
       </div>";
   }
 
@@ -177,13 +168,17 @@ img.remover {
       </div>
 
       <div class="btn-group btn-group-sm">
-        <button type="button" class="btn btn-primary dropdown-toggle" data-toggle="dropdown">
+      <button type="button" class="btn btn-primary dropdown-toggle" data-toggle="dropdown">
+        Manutenção temporária
+        </button>
+    <!--    <button type="button" class="btn btn-primary dropdown-toggle" data-toggle="dropdown">
         Avaliações
         </button>
         <div class="dropdown-menu">
           <a class="dropdown-item btn-sm" href="../avalareal">A realizar</a>
           <a class="dropdown-item btn-sm" href="../avalfeitas">Realizadas</a>
         </div>
+    -->
       </div>
 
       <?=$adminOpts?>
@@ -197,7 +192,7 @@ img.remover {
         </button>
         <div class="dropdown-menu dropdown-menu-right">
           <?
-            $tipoUser = $obUsuario['nivel'] == 'agente' ? 'agente': 'professor';
+            $tipoUser = $obUsuario['tipo'] == 'agente' ? 'agente': 'professor';
           ?>
           
         
@@ -221,18 +216,28 @@ img.remover {
 <?php 
 
     if (!is_null($obUsuario['nome'])){
-      echo "<a href='../hierarquia/index.php?hi=ca' data-toggle='tooltip' title='Hierarquia do campus' style='text-decoration:none;'><span class='badge badge-primary' id='bca'>",   $obUsuario['campus'];
-      if($obUsuario['nivel'] != 'agente'){
-        echo "</span></a><a href='../hierarquia/index.php?hi=ce' data-toggle='tooltip' title='Hierarquia do centro de área' style='text-decoration:none;'><span class='badge badge-secondary' id='bce'>", $obUsuario['centros'],
-            "</span></a><a href='../hierarquia/index.php?hi=co' data-toggle='tooltip' title='Hierarquia do colegiado' style='text-decoration:none;'><span class='badge badge-success' id='bco'>",   $obUsuario['colegiado'];
+      echo "<a href='../hierarquia/index.php?hi=ca' data-toggle='tooltip' title='Hierarquia do campus' style='text-decoration:none;'>",
+              "<span class='badge badge-primary' id='bca'>",   
+              $obUsuario['ca_nome'], "</span></a>";
+      if($obUsuario['tipo'] != 'agente'){
+        echo "<a href='../hierarquia/index.php?hi=ce' data-toggle='tooltip' title='Hierarquia do centro de área' style='text-decoration:none;'>",
+                "<span class='badge badge-secondary' id='bce'>", $obUsuario['ce_nome'], 
+                "</span></a>",
+            "<a href='../hierarquia/index.php?hi=co' data-toggle='tooltip' title='Hierarquia do colegiado' style='text-decoration:none;'>",
+            "<span class='badge badge-success' id='bco'>",   $obUsuario['co_nome'],
+            "</span></a>";
 
+      } else {
+        echo "<span class='badge badge-success'>Agente</span>";
       }
-      echo"</span></a><a href='../professor/editar.php?id=", $obUsuario['id'],"' data-toggle='tooltip' title='Perfil do usuário' style='text-decoration:none;'><span class='badge badge-info'>",      $obUsuario['nome'],"</span></a>";
+      echo"<a href='../", $tipoUser,"/editar.php?id=", $obUsuario['id'],"' data-toggle='tooltip' title='Perfil do usuário' style='text-decoration:none;'><span class='badge badge-info'>",      $obUsuario['nome'],"</span></a>";
 
-      if($obUsuario['niveln'] > 0){
-        echo "<span class='badge badge-warning float-right'>", $obUsuario['nivel'],"</span>";
+      $a = $obUsuario['config'];
+      $cargo = ['Coordenador',  'Centro de Área', 'Chefe de Divisão'];
+
+      if($obUsuario['config'] > 0){
+        echo "<span class='badge badge-warning float-right'>", $cargo[$a-1],"</span>";
       }
-
       if($obUsuario['adm'] == 1){
         echo "<span class='badge badge-danger float-right'>Admin</span>";
       }
@@ -240,3 +245,4 @@ img.remover {
     }
 
   ?>
+

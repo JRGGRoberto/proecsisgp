@@ -38,6 +38,7 @@ class Login{
 
     //sessão de usuário
     $_SESSION['proecunespar'] =[
+      /*
       'id'    => $obUsuario->id,
       'nome'  => $obUsuario->nome,
       'email' => $obUsuario->email,
@@ -53,6 +54,25 @@ class Login{
       'nivel' => $obUsuario->nivel,
       'niveln' => $obUsuario->niveln,
       'tpnivel' => $obUsuario->tpnivel
+      
+*/
+      'id' => $obUsuario->id,
+      'nome' => $obUsuario->nome,
+      'email' => $obUsuario->email,
+      'senha' => $obUsuario->senha,
+      'config' => $obUsuario->config,
+      'ce_id' => $obUsuario->ce_id,
+      'ce_cod' => $obUsuario->ce_cod,
+      'ce_nome' => $obUsuario->ce_nome,
+      'co_id' => $obUsuario->co_id,
+      'co_nome' => $obUsuario->co_nome,
+      'ca_id' => $obUsuario->ca_id,
+      'ca_cod' => $obUsuario->ca_cod,
+      'ca_nome' => $obUsuario->ca_nome,
+      'tipo' => $obUsuario->tipo,
+      'adm' => $obUsuario->adm,
+      'ativo' => $obUsuario->ativo
+      
     ];
 
     // redireciona usuário para Index
