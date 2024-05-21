@@ -43,6 +43,12 @@ class Area_Extensao{
                                   ->fetchObject(self::class);
   }
 
+
+  public static function getRegs(){
+    return (new Database('area_extensao'))->select()
+                                  ->fetchObject(self::class);
+  }
+
 }
 
 

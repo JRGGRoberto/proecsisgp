@@ -30,8 +30,6 @@
                   </div>
               </div>
 -->
-              
-              
 
               <BR><center>
               <button type="button" class="btn btn-secondary btn-sm" onclick="fecharModalEquipe()">Fechar</button>
@@ -47,3 +45,33 @@
     </div>
   </div>
 <!-- The Modal Fim-->
+
+
+
+
+<!-- The Modal -->
+<div class="modal fade" id="sair">
+    <div class="modal-dialog modal-dialog-scrollable">
+      <div class="modal-content">
+      
+        <!-- Modal Header -->
+        <div class="modal-header">
+          <h4 class="modal-title" id="modalTitle">Título</h4>
+          <button type="button" class="close" data-dismiss="modal">×</button>
+        </div>
+        
+        <!-- Modal body -->
+        <div class="modal-body" id="modalBody">
+          
+
+        </div>
+        
+        <!-- Modal footer -->
+        <div class="modal-footer" id="modalFooter">
+          
+        </div>
+        
+      </div>
+    </div>
+  </div>
+  <!-- The Modal -->

@@ -42,6 +42,7 @@ class Projeto{
   
   public $area_extensao;
   public $linh_ext;
+
   public $resumo;
   public $descricao;
   public $objetivos;
@@ -186,7 +187,10 @@ class Projeto{
                                        'cnpq_garea' => $this->cnpq_garea,
                                        'cnpq_area' => $this->cnpq_area,
                                        'cnpq_sarea' => $this->cnpq_sarea,
+
+                                       'area_extensao' => $this->area_extensao,
                                        'linh_ext' => $this->linh_ext,
+
                                        'resumo' => $this->resumo,
                                        'descricao' => $this->descricao,
                                        'objetivos' => $this->objetivos,

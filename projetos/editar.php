@@ -57,11 +57,19 @@ if(!$obProjeto instanceof Projeto){
 }
 
 use \App\Entity\Area_Extensao;
+
 $area_ext = Area_Extensao::getRegistros($obProjeto->id);
 $area_ext_Opt = '';
 foreach($area_ext as $aext){
   $area_ext_Opt .= '<option value="'.$aext->id.'" '.$aext->sel.'>'.$aext->nome.'</option>';
 }
+/*
+$area_ext = Area_Extensao::getRegs();
+$area_ext_Opt = '';
+foreach($area_ext as $aext){
+  $area_ext_Opt .= '<option value="'.$aext->id.'" >'.$aext->nome.'</option>';
+}*/
+
 
 use \App\Entity\Professor;
 $dadosProf = Professor::getDadosProf($obProjeto->id_prof);
@@ -360,6 +368,19 @@ if ($user['id'] == $obProjeto->id_prof){
   echo 'Data time: '.date("d-m-Y h:i:sa").'<br>';
   echo '</div>';
 }
+
+echo "
+<script>
+let area_extensao   = document.getElementById('area_extensao');
+let linh_ext   = document.getElementById('linh_ext');
+
+area_extensao.value = ".  $obProjeto->area_extensao .";
+linh_ext.value = ". $obProjeto->linh_ext .";
+</script>
+";
+
+
+
 
 include '../includes/footer.php';
 

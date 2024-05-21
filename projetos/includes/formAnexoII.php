@@ -161,7 +161,7 @@
         <div class="col">
           <div class="form-group">
             <label for="area_extensao">Área de extensão</label>
-            <select name="area_extensao" class="form-control">
+            <select name="area_extensao" id="area_extensao" class="form-control">
               <?= $area_ext_Opt ?>
             </select>
           </div>
@@ -171,7 +171,7 @@
         <div class="col">
           <div class="form-group">
             <label for="linh_ext">Linhas de extensão</label>
-            <select name="linh_ext" class="form-control">
+            <select name="linh_ext" id="linh_ext"  class="form-control">
               <?= $area_ext_Opt ?>
             </select>
           </div>
