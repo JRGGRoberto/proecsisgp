@@ -215,31 +215,15 @@
 
         <hr>
 
-          <label>
-            <h5><?= ++$n ?>. Equipe da prosposta</h5>
-          </label>
-          <div class="form-group table-responsive-sm">
-            <table id="tabela-equipe" class="table table-bordered table-sm">
-              <thead class="thead-light">
-                <tr>
-                  <th>N</th>
-                  <th>Nome</th>
-                  <th>Instituição</th>
-                  <th>Formação</th>
-                  <th>Função na equipe</th>
-                  <th>Telefone</th>
+        <label>
+        <h5><?= ++$n ?>. Equipe da prosposta</h5>
+         </label>
+         
+      <?php
+      include './includes/equipeProposta.php';
+      ?>
 
-                  <th>Inicio de vigência</th>
-                  <th>Fim de vigência</th>
-                  <th style="width:20px"><button type="button" class="btn btn-primary btn-sm" onclick="formAddEquipe()">Adicionar</button></th>
-                </tr>
-              </thead>
-              <tbody>
-              </tbody>
-            </table>
-          </div>
-
-        <hr>
+      <hr>
        
         <div class="form-group">
           <label><h5><?= ++$n ?>. Resumo do Projeto e Palavras-chaves</h5></label>

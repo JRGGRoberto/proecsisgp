@@ -18,6 +18,7 @@
               <label for="formacao">Formação</label>          <input type="text" class="form-control" id="formacao">
               <label for="funcao">Função na equipe</label>    <input type="text" class="form-control" id="funcao">
               <label for="tel">Telefone</label>               <input type="text" class="form-control" id="tel">
+            <!--
               <div class="row">
                   <div class="col-6">
                      <label for="dtinicio">Início de vigência</label>
@@ -28,7 +29,7 @@
 
                   </div>
               </div>
-
+-->
               
               
 
