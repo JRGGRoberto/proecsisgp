@@ -11,7 +11,7 @@ $user = Login::getUsuarioLogado();
 use \App\Entity\Professor;
 use \App\Db\Pagination;
 
-if(!$user['admin'] == 1){
+if(!$user['adm'] == 1){
   header('location: ../');
   exit;
 }
