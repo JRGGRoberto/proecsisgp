@@ -364,6 +364,14 @@ entre os tr de baixo
 
 
   $html .= '</table>';
+ 
+
+ 
+  $cnpq_sarea = '';
+  $cnpq_sarea1 = CnpqSubA::getRegistro( $obProjeto->cnpq_sarea);
+  if($cnpq_sarea1 instanceof CnpqSubA){
+    $cnpq_sarea = $cnpq_sarea1->nome;
+  }
 
   if (in_array($t, $anexoII)) { 
     $html .= 
@@ -383,7 +391,7 @@ entre os tr de baixo
            <td><strong>b) Área</strong></td>           <td>'. CnpqArea::getRegistro($obProjeto->cnpq_area)->nome .'</td>
 
         </tr><tr>
-           <td><strong>c) Subárea</strong></td>        <td>'. CnpqSubA::getRegistro( $obProjeto->cnpq_sarea)["nome"] .'</td>
+           <td><strong>c) Subárea</strong></td>        <td>'. $cnpq_sarea .'</td>
         </tr>
         
         <thead>
