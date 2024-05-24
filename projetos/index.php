@@ -28,22 +28,36 @@ if (strlen($palavra)) {
 }
 
 
+$qry = '';
+if(($user['tipo'] == 'professor') || $user['tipo'] == 'prof'){
+  $qry = 'select 
+            ccc.co_id as id, 
+            CONCAT("Colegiado de ", ccc.colegiado) as nome,
+            IFNULL(ccc.coord_id, "disabled") coord
+          from ca_ce_co ccc where ccc.ca_id  = "'. $user['ca_id'] .'"';
 
-$qry = 'select 
-          ccc.co_id as id, 
-          ccc.colegiado as nome,
-          IFNULL(ccc.coord_id, "disabled") coord
-        from ca_ce_co ccc where ccc.ca_id  = "'. $user['ca_id'] .'"';
+} elseif ($user['tipo'] == 'agente'){
+  $qry = 'select 
+            c.id as id,
+            c.nome as nome,
+            IFNULL(c.dir_ca_id, "disabled")  coord
+          from centros c
+          where c.campus_id = "'. $user['ca_id'] .'"';
+}
+
+
 use \App\Entity\Diversos;
 $sendColegiado = Diversos::qry($qry);
 $coolSelectSend = '';
+
+
 
 foreach($sendColegiado as $co){
   $dis = '';
   $info = '';
   if($co->coord =='disabled'){
     $dis = 'disabled';
-    $info = '[Sem coordenador]';
+    $info = ($user['tipo'] == 'professor' || $user['tipo'] == 'prof') ? '[Sem coordenador]': '[Sem diretor de centro]';
   }
 
   $coolSelectSend .= '<option value="'.$co->id.'"  '. $dis . '>'.$co->nome.' '.$info.'</option>';

@@ -36,6 +36,7 @@
         </thead>
         <tbody>';
      $a =0;
+     $tp_proposta = ['?','Curso', 'Evento', 'Prestação de serviço', 'Programa', 'Projeto'];
      foreach($ListaVerAnts as $la){
        $a++;
        $class = '';
@@ -92,7 +93,7 @@
         <h5>Tipo de Proposta</h5>
 
         <div class="form-group">
-            <input type="text" class="form-control" name="tp_proposta" value="'. $ava->tipo_exten .'" readonly>
+            <input type="text" class="form-control" name="tp_proposta" value="'. $tp_proposta[ $ava->tipo_exten ] .'" readonly>
         </div>
       
   

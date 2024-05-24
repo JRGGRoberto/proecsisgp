@@ -1,6 +1,10 @@
 <?php
 require '../vendor/autoload.php';
 
+ini_set('display_errors', 1);
+ini_set('display_startup_errors', 1);
+error_reporting(E_ALL);
+
 
 // use \App\Session\Login;
 use \App\Entity\Projeto;
@@ -35,8 +39,6 @@ $ver = $_GET['v'];
 $jan = $_GET['w'];
 
 
-
-
 //CONSULTA AO PROJETO
 $obProjeto = new Projeto();
 $obProjeto = Projeto::getProjeto($id, $ver); // getProjetoView($id, $ver);
@@ -50,8 +52,6 @@ if(!$obProjeto instanceof Projeto){
   header('location: ../index.php?status=error');
   exit;
 }
-
-
 
 
 
@@ -234,10 +234,6 @@ c {
  * Fim cabeçalho
  */
 
-
-  
-  
-
   $count = 0; 
 
   $html .= '<h4 class="centralizado">'. $title .'</h4>';
@@ -267,6 +263,20 @@ c {
   </table>'
   ;
 
+  $telefone= '';
+  $email = '';
+
+  use \App\Entity\Agente;
+  if($obProjeto->regras == "6204ba97-7f1a-499e-a17d-118d305bf7e4"){
+    $telefone = $obProfessor->telefone;
+    $email =    $obProfessor->email;
+  } elseif ($obProjeto->regras == "a45daba2-12ec-11ef-b2c8-0266ad9885af"){
+    $dadosAgentes = Agente::get($obProjeto->id_prof);
+    $telefone = $dadosAgentes->telefone;
+    $email =    $dadosAgentes->email;
+  }
+
+
 
   $html .= 
   '<table class="time">
@@ -280,7 +290,7 @@ c {
          <td class="th_cinza"><strong>Telefone</strong></td>
          <td>** *********</td>
          <td class="th_cinza"><strong>Email</strong></td>
-         <td>'. $obProfessor->email .'</td>
+         <td>'. $email.'</td>
       </tr>
     </tbody>
   </table>'
@@ -373,7 +383,7 @@ entre os tr de baixo
            <td><strong>b) Área</strong></td>           <td>'. CnpqArea::getRegistro($obProjeto->cnpq_area)->nome .'</td>
 
         </tr><tr>
-           <td><strong>c) Subárea</strong></td>        <td>'. CnpqSubA::getRegistro( $obProjeto->cnpq_sarea)->nome .'</td>
+           <td><strong>c) Subárea</strong></td>        <td>'. CnpqSubA::getRegistro( $obProjeto->cnpq_sarea)["nome"] .'</td>
         </tr>
         
         <thead>
@@ -490,6 +500,8 @@ entre os tr de baixo
     </table>'
   ;
 
+
+/*
   $parca = $obProjeto->parceria == 'S'? '( x ) Sim <span> </span> <span> </span>( <span> </span><span> </span> ) Não' : '( <span> </span><span> </span> ) Sim <span> </span> <span> </span>( x ) Não';
   $parcInfo = '';
 
@@ -505,6 +517,7 @@ entre os tr de baixo
     </tr>
     ';
   }
+  
 
     $html .= 
   '<table class="time">
@@ -520,6 +533,8 @@ entre os tr de baixo
       </tbody>
     </table>'
   ;
+*/
+
 
   $html .= 
   '<table class="time">

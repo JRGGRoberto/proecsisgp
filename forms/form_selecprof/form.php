@@ -90,13 +90,14 @@
 
     <div class="form-group">
       <div class="row">
-        <div class="col-3"><input type="text" class="form-control" name="cidade"  value="<?=$user['campus']?>"></div>
+        <div class="col-3"><input type="text" class="form-control" name="cidade"  value="<?=$user['ca_nome']?>"></div>
         <div class="col-2"> <input type="date" class="form-control" name="dateAssing" id="dateAssing" readonly> </div>
       </div>
     </div>
     
     <div class="form-group">
-      <input type="text" class="form-control" name="whosigns"  value="<?=$user['nome']?> - <?=$user['nivel']?>" readonly>
+      <? $cargo = ['Prof/AG','Coordenador',  'Centro de Área', 'Chefe de Divisão']; ?>
+      <input type="text" class="form-control" name="whosigns"  value="<?=$user['nome']?> - <?= $cargo[ $user['config'] ]?>" readonly>
     </div>
       <p> </p><hr><p> </p>
     <div class="form-group form-group d-flex justify-content-around">

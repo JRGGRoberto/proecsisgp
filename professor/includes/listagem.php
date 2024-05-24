@@ -64,8 +64,13 @@
 <div class="card mt-2">
   <div class="card-header" '. $estiloD .'>
      <div class="row">
-        <div class="col-sm-6"><a class="collapsed card-link" data-toggle="collapse" href="#p'. $prof->id .'">👤 '. $prof->nome .'</a></div>
-        <div class="col-sm-6"> '.$colegNome->nome.'</div>
+        <div class="col-sm-6"><a class="collapsed card-link" data-toggle="collapse" href="#p'. $prof->id .'">👤 '. $prof->nome .'</a></div>';
+   if ($prof->nivel == 'agente'){
+     $resultados .= '<div class="col-sm-6"> Agente - '.$prof->campus.'</div>';
+   } else {
+     $resultados .= '<div class="col-sm-6"> '.$colegNome->nome.'</div>';
+   }
+   $resultados .= '        
      </div>
   </div>
     <div id="p'. $prof->id .'" class="collapse" data-parent="#accordion">
@@ -83,9 +88,16 @@
         </ul>';
 /// se for coordenador 
         if ($acessoOk){
-           $resultados .=  
-        '<a href="editar.php?id='. $prof->id .'"><button class="btn btn-success float-right btn-sm mb-2">Editar</button></a>
+
+          if ($prof->nivel === 'agente'){
+            $resultados .=  
+           '<a href="../agente/editar.php?id='. $prof->id .'"><button class="btn btn-success float-right btn-sm mb-2">Editar</button></a>
                                 <button id="excluir1" data-target="#myModal" class="btn btn-danger float-right btn-sm mb-2  mr-2" disabled>🗑 Excluir</button>';
+          } else {
+            $resultados .=  
+           '<a href="editar.php?id='. $prof->id .'"><button class="btn btn-success float-right btn-sm mb-2">Editar</button></a>
+                                <button id="excluir1" data-target="#myModal" class="btn btn-danger float-right btn-sm mb-2  mr-2" disabled>🗑 Excluir</button>';
+          }
         }
 
      $resultados .=  '

@@ -49,7 +49,7 @@ if(isset($_POST['nome'])){
   $obAgente->cat_func = $_POST['cat_func'];
   $obAgente->ativo = $_POST['ativo'];
   $obAgente->lotacao = $_POST['lotacao'];
-  $obAgente->config = $_POST['config'];
+//  $obAgente->config = $_POST['config'];
   $obAgente->updated_at =  date('Y-m-d H:i:s');
   $obAgente->user = $user['id'];
   if(strlen($_POST['senha']) > 0 ){

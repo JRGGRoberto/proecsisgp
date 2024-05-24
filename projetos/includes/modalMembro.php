@@ -13,11 +13,11 @@
         <div class="modal-body">
             <form class="form-group">
       
-              <label for="nome">Nome</label>                  <input type="text" class="form-control" id="nome">
-              <label for="instituicao">Instituição</label>    <input type="text" class="form-control" id="instituicao">
-              <label for="formacao">Formação</label>          <input type="text" class="form-control" id="formacao">
-              <label for="funcao">Função na equipe</label>    <input type="text" class="form-control" id="funcao">
-              <label for="tel">Telefone</label>               <input type="text" class="form-control" id="tel">
+              <label for="nome">Nome</label>                  <input type="text" maxlength="255" class="form-control" id="nome">
+              <label for="instituicao">Instituição</label>    <input type="text" maxlength="255" class="form-control" id="instituicao">
+              <label for="formacao">Formação</label>          <input type="text" maxlength="255" class="form-control" id="formacao">
+              <label for="funcao">Função na equipe</label>    <input type="text" maxlength="255" class="form-control" id="funcao">
+              <label for="tel">Telefone</label>               <input type="text" maxlength="20" class="form-control" id="tel">
             <!--
               <div class="row">
                   <div class="col-6">

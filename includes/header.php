@@ -43,6 +43,7 @@ $horas >= 12 ? (int)($horas -= 12) : (int)($horas -= 0);
     <!-- Required meta tags -->
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="robots" content="noindex">
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.1/dist/css/bootstrap.min.css">
   <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.1/dist/umd/popper.min.js"></script>
@@ -171,17 +172,15 @@ img.remover {
       </div>
 
       <div class="btn-group btn-group-sm">
-      <button type="button" class="btn btn-primary dropdown-toggle" data-toggle="dropdown">
-        Manutenção temporária
-        </button>
-    <!--    <button type="button" class="btn btn-primary dropdown-toggle" data-toggle="dropdown">
+    <!--    <button type="button" class="btn btn-primary dropdown-toggle" data-toggle="dropdown">Manutenção temporária</button>-->
+        <button type="button" class="btn btn-primary dropdown-toggle" data-toggle="dropdown">
         Avaliações
         </button>
         <div class="dropdown-menu">
           <a class="dropdown-item btn-sm" href="../avalareal">A realizar</a>
           <a class="dropdown-item btn-sm" href="../avalfeitas">Realizadas</a>
         </div>
-    -->
+    
       </div>
 
       <?=$adminOpts?>
@@ -236,10 +235,10 @@ img.remover {
       echo"<a href='../", $tipoUser,"/editar.php?id=", $obUsuario['id'],"' data-toggle='tooltip' title='Perfil do usuário' style='text-decoration:none;'><span class='badge badge-info'>",      $obUsuario['nome'],"</span></a>";
 
       $a = $obUsuario['config'];
-      $cargo = ['Coordenador',  'Centro de Área', 'Chefe de Divisão'];
+      $cargo = ['Prof/AG','Coordenador',  'Centro de Área', 'Chefe de Divisão'];
 
       if($obUsuario['config'] > 0){
-        echo "<span class='badge badge-warning float-right'>", $cargo[$a-1],"</span>";
+        echo "<span class='badge badge-warning float-right'>", $cargo[$a],"</span>";
       }
       if($obUsuario['adm'] == 1){
         echo "<span class='badge badge-danger float-right'>Admin</span>";

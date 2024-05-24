@@ -19,6 +19,15 @@
   $qnt1 = 0;
   $col;
 
+  function resumirTexto(string $texto, int $limite = 256): string
+  {
+      $textoLimpo = trim(strip_tags($texto));
+      if (mb_strlen($textoLimpo) <= $limite) {
+          return $textoLimpo;
+      }
+      return (substr($textoLimpo, 0, $limite) . ' <span class="badge badge-pill badge-success">(continua...)</span>');
+   }
+
   $resultados = '<div id="accordion">';
   foreach($projetos as $proj){
     $qnt1++;
@@ -33,7 +42,7 @@
        <thead class="thead-dark">
          <tr>
            <th>Projeto</th>
-           <th>Relatório</th>
+           <th>Parecere(s)</th>
            <th>Parte</th>
          </tr>
        </thead>
@@ -135,15 +144,15 @@
     <div id="p'. $proj->id  .'" class="collapse" data-parent="#accordion">
       <div class="card-body">
 
-        <div class="row">
-          <div class="col-9">
-            <p>Resumo: '. strip_tags($proj->resumo)  .'</p>
-            <p>Objetivos: '. strip_tags($proj->objetivos)  .'</p>
-          </div>
-          <div class="col">
-          '. $LastV .'
-          </div>
-        </div>
+      <div class="row">
+      <div class="col-9">
+        <p><strong>Resumo:</strong> '. resumirTexto($proj->resumo)  .'</p>
+        <p><strong>Objetivos:</strong> '. resumirTexto($proj->objetivos)  .'</p>
+      </div>
+      <div class="col">
+      '. $LastV .'
+      </div>
+    </div>
 
         ';
 
@@ -393,7 +402,7 @@
               <div class="row">
                 <div class="col-12">
                   <div class="form-group">
-                    <label for="para_avaliar">Colegiado de </label>
+                    <label for="para_avaliar">Enviar para </label>
                     <select name="para_avaliar" id="selPara" class="form-control" onchange="ativaBTN();">
                       <option value="${data.para_avaliar}" selected>${data.colegiado}</option>
                     </select>
@@ -430,7 +439,7 @@
              <div class="row">
                <div class="col-12">
                  <div class="form-group">
-                    <label for="para_avaliar">Enviar para o colegiado de </label>
+                    <label for="para_avaliar">Enviar para </label>
                     <select name="para_avaliar" id="selPara" class="form-control" onchange="ativaBTN();">
                       <option value="-1">Selecione</option>
                       ${optspara}

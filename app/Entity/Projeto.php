@@ -101,7 +101,7 @@ class Projeto{
     $obDatabase->insert([
                            'id' => $ida,
                            'ver' =>   $v,
-                           'regras' =>  "6204ba97-7f1a-499e-a17d-118d305bf7e4", //$this->regras,
+                           'regras' =>  $this->regras,
                            'id_prof' => $this->id_prof,
                            'nome_prof' => $this->nome_prof,
                            'id_colegiado' => $this->id_colegiado,

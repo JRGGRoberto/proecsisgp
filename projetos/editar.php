@@ -70,9 +70,23 @@ foreach($area_ext as $aext){
   $area_ext_Opt .= '<option value="'.$aext->id.'" >'.$aext->nome.'</option>';
 }*/
 
+$telefone = '';
+$email = '';
 
 use \App\Entity\Professor;
-$dadosProf = Professor::getDadosProf($obProjeto->id_prof);
+use \App\Entity\Agente;
+
+
+if(($user['tipo'] == 'professor')||$user['tipo'] == 'prof'){
+  $dadosProf = Professor::getDadosProf($obProjeto->id_prof);
+  $telefone = $dadosProf->telefone;
+  $email =    $dadosProf->email;
+} elseif ($user['tipo'] == 'agente'){
+  $dadosAgentes = Agente::get($obProjeto->id_prof);
+  $telefone = $dadosAgentes->telefone;
+  $email =    $dadosAgentes->email;
+}
+
 
 $anexados = Arquivo::getAnexados('projetos', $obProjeto->id);
 $anex = '<ul id="anexos_edt">';
@@ -142,6 +156,14 @@ if(isset( $_POST['titulo']) ) {
   $obProjeto->user = $user['id'];
   $obProjeto->last_result = 'n';
   $obProjeto->contribuicao  = $_POST['contribuicao'];
+
+  if(($user['tipo'] == 'professor')||$user['tipo'] == 'prof'){
+    $regra = "6204ba97-7f1a-499e-a17d-118d305bf7e4";
+  } elseif ($user['tipo'] == 'agente'){
+    $regra = "a45daba2-12ec-11ef-b2c8-0266ad9885af";
+  }
+  $obProjeto->regras = $regra;
+  
 
 
   if (in_array($t, $anexoII)) {

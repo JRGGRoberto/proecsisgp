@@ -46,14 +46,14 @@
           <label>
             <h6><?= $n ?>.1. Telefone</h6>
           </label>
-          <input type="text" class="form-control" name="tel" readonly value="<?= $dadosProf->telefone ?>">
+          <input type="text" class="form-control" name="tel" readonly value="<?= $telefone ?>">
         </div>
 
         <div class="form-group col">
           <label>
             <h6><?= $n ?>.2. Email</h6>
           </label>
-          <input type="text" class="form-control" name="email" readonly value="<?= $dadosProf->email ?>">
+          <input type="text" class="form-control" name="email" readonly value="<?= $email ?>">
         </div>
       </div>
 

@@ -489,7 +489,7 @@ entre os tr de baixo
       </tbody>
     </table>'
   ;
-
+/*
   $parca = $obProjeto->parceria == 'S'? '( x ) Sim <span> </span> <span> </span>( <span> </span><span> </span> ) Não' : '( <span> </span><span> </span> ) Sim <span> </span> <span> </span>( x ) Não';
   $parcInfo = '';
 
@@ -520,7 +520,7 @@ entre os tr de baixo
       </tbody>
     </table>'
   ;
-
+*/
   $html .= 
   '<table class="time">
    <thead><tr><th class="th_cinza" colspan="6"><strong>'. ++$count .'. Equipe da proposta</strong></th></tr></thead>';

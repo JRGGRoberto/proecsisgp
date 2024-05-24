@@ -301,14 +301,14 @@ c {
 
   $html .= 'Órgão de Financiamento: '.$obProjeto->finacorgao.'<br>';
   $html .= 'Valor do Financiamento: '.$obProjeto->finacval.'<br>';
-
+/*
   $html .= '<p><strong>'. ++$count .'.  Parcerias</strong> </p>';
   $parceria = $obProjeto->parceria == 'S'? '( x ) Sim <span> </span> <span> </span>( <span> </span><span> </span> ) Não' : '( <span> </span><span> </span> ) Sim <span> </span> <span> </span>( x ) Não';
   $html .= '<p>'. $parceria . '</p>';
 
   $html .= 'Nome(s) da(s) Entidade(s):'.$obProjeto->parcanomes.'<br>';  
   $html .= 'Atribuição(ões) da(s) Entidade(s):'.$obProjeto->parcaatribuic.'<br>'; 
-
+*/
   $html .= '<p><strong>'. ++$count .'.  Equipe da proposta</strong> </p>';
   use \App\Entity\Equipe;
   $tblEquipe = '';

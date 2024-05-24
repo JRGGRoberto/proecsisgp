@@ -19,6 +19,17 @@
   $qnt1 = 0;
   $col;
 
+  function resumirTexto(string $texto, int $limite = 256): string
+  {
+      $textoLimpo = trim(strip_tags($texto));
+      if (mb_strlen($textoLimpo) <= $limite) {
+          return $textoLimpo;
+      }
+      return (substr($textoLimpo, 0, $limite) . ' <span class="badge badge-pill badge-success">(continua...)</span>');
+   }
+
+
+
   $resultados = '<div id="accordion">';
   foreach($projetos as $proj){
     $qnt1++;
@@ -33,7 +44,7 @@
        <thead class="thead-dark">
          <tr>
            <th>Projeto</th>
-           <th>Relatório</th>
+           <th>Parecere(s)</th>
            <th>Parte</th>
          </tr>
        </thead>
@@ -63,7 +74,7 @@
           break;
         default: 
           $class = "table-warning"; 
-          $td = '<td>➖</td>';
+          $td = '<td><span class="badge badge-light">Espera de parecer...</span></td>';
 
           array_push($btnStatus, new Blocos($la->fase_seq,'warning'));
       }
@@ -148,8 +159,8 @@
 
         <div class="row">
           <div class="col-9">
-            <p>Resumo: '. strip_tags($proj->resumo)  .'</p>
-            <p>Objetivos: '. strip_tags($proj->objetivos)  .'</p>
+            <p><strong>Resumo:</strong> '. resumirTexto($proj->resumo)  .'</p>
+            <p><strong>Objetivos:</strong> '. resumirTexto($proj->objetivos)  .'</p>
           </div>
           <div class="col">
           '. $LastV .'
