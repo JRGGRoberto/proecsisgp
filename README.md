@@ -1,3 +1,50 @@
+```mermaid
+erDiagram
+    Campi {
+        int id
+        string name
+    }
+
+    Centros {
+        int id
+        string name
+        int campi_id
+    }
+
+    Agentes {
+        int id
+        string name
+        int campi_id
+    }
+
+    Professores {
+        int id
+        string name
+        int centro_id
+    }
+
+    Usuarios {
+        int id
+        string name
+    }
+
+    Projetos {
+        int id
+        string title
+        int user_id
+    }
+
+    Campi ||--o{ Centros : contains
+    Campi ||--o{ Agentes : contains
+    Centros ||--o{ Professores : contains
+    Professores ||--o{ Usuarios : "forms"
+    Agentes ||--o{ Usuarios : "forms"
+    Usuarios ||--o{ Projetos : creates
+
+
+```
+```
+
 # CRUD com PHP orientado a objetos, PDO e MySQL - WDEV
 Código da implementação de um CRUD com PHP orientado a objetos e MySQL apresentado no canal [WDEV](http://wstore.io/wdev).
 
