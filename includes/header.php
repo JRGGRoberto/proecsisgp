@@ -27,8 +27,21 @@ $horas >= 12 ? (int)($horas -= 12) : (int)($horas -= 0);
           <a class='dropdown-item btn-sm' href='../hierarquia/index.php?hi=cnf'>Configurar hierarquia</a>
           <div class='dropdown-divider'></div>
           <a class='dropdown-item btn-sm' href='../projetos/indexAll.php'>Todos os Projetos</a>
-          
-      </div>
+
+                        
+          <button class='btn btn-light dropdown-toggle' type='button' id='dropdownMenuButton' data-toggle='dropdown' aria-haspopup='true' aria-expanded='false'>
+                Propostas ADM
+          </button>
+         
+          <div class='dropdown-menu dropdown-menu-right' aria-labelledby='dropdownMenuButton'>
+                <a class='dropdown-item btn-sm' href='../projetos/cadastrarADM.php?t=4'>Novo Programa ADM</a>
+                <a class='dropdown-item btn-sm' href='../projetos/cadastrarADM.php?t=5'>Novo Projeto ADM</a>
+                <a class='dropdown-item btn-sm' href='../projetos/cadastrarADM.php?t=3'>Nova Prestação de Serviço ADM</a>
+                <div class='dropdown-divider'></div>
+                <a class='dropdown-item btn-sm' href='../projetos/cadastrarADM.php?t=1'>Novo Curso ADM</a>
+                <a class='dropdown-item btn-sm' href='../projetos/cadastrarADM.php?t=2'>Novo Evento ADM</a>
+          </div>
+        </div>
       </div>";
   }
 

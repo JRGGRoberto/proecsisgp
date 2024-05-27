@@ -170,6 +170,8 @@ if(isset($_POST['titulo'])){
     
   }
 
+  $obProjeto->obs       =  $_POST['obs'];
+
   $obProjeto->resumo       =  $_POST['resumo'];
   // $obProjeto->descricao    =  $_POST['descricao'];
   $obProjeto->objetivos    =  $_POST['objetivos'];

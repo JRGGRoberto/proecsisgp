@@ -132,6 +132,29 @@ $('#sumnot_referencia').summernote({
   ]
 });
 
+
+
+$('#sumnot_obs').summernote({
+  placeholder: 'Observações',
+  tabsize: 2,
+  height: 250,
+  toolbar: [
+    // [groupName, [list of button]]
+    
+    ['style', ['bold', 'italic', 'underline', 'hr', 'clear']],
+    ['font', ['strikethrough', 'superscript', 'subscript']],
+    ['fontname', ['fontname']],
+    ['fontsize', ['fontsize']],
+    ['color', ['color']],
+    ['para', ['ul', 'ol', 'paragraph']],
+    ['height', ['height']],
+    ['table', ['table']],
+    ['insert', ['link', 'picture']]
+  ]
+});
+
+
+
 function submitJSON() {
   // Equipe
   document.getElementById('equipeJS').value = '';
@@ -225,6 +248,12 @@ function submitSalvar(){
   var cronograma = document.getElementById("cronograma");
   if(cronograma){
     cronograma.value = $('#sumnot_cronograma').summernote('code');
+  }
+
+
+  var obs = document.getElementById("obs");
+  if(obs){
+    obs.value = $('#sumnot_obs').summernote('code');
   }
 
   var referencia = document.getElementById("referencia");

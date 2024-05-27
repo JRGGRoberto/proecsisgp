@@ -75,6 +75,8 @@ class Projeto{
   public $parcaatribuic;
   public $parcanomes;
   
+  public $obs;
+
   public $created_at;
   public $updated_at;
   public $user;
@@ -151,6 +153,8 @@ class Projeto{
                            'parcaatribuic' => $this->parcaatribuic,
                            'parcanomes ' => $this->parcanomes,
 
+                           'obs' =>$this->obs,
+
                            'outs_info' => $this->outs_info,
                            'para_avaliar' => $aval,
                            'last_result' => $lr,
@@ -220,6 +224,8 @@ class Projeto{
                                        'parceria' => $this->parceria,
                                        'parcaatribuic' => $this->parcaatribuic,
                                        'parcanomes ' => $this->parcanomes,
+
+                                       'obs' =>$this->obs,
 
                                        'outs_info' => $this->outs_info,
                                        'para_avaliar' => $this->para_avaliar,

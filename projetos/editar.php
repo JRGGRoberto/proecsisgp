@@ -157,6 +157,8 @@ if(isset( $_POST['titulo']) ) {
   $obProjeto->last_result = 'n';
   $obProjeto->contribuicao  = $_POST['contribuicao'];
 
+  $obProjeto->obs       =  $_POST['obs'];
+
   if(($user['tipo'] == 'professor')||$user['tipo'] == 'prof'){
     $regra = "6204ba97-7f1a-499e-a17d-118d305bf7e4";
   } elseif ($user['tipo'] == 'agente'){
