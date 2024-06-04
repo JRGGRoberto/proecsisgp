@@ -6,7 +6,7 @@ ini_set('display_startup_errors', 1);
 error_reporting(E_ALL);
 
 
-// use \App\Session\Login;
+
 use \App\Entity\Projeto;
 use \App\Entity\Professor;
 use \App\Entity\Area_Cnpq;
@@ -14,10 +14,8 @@ use \App\Entity\CnpqArea;
 use \App\Entity\CnpqSubA;
 use \App\Entity\Area_Extensao;
 
-//Login::requireLogin();
-//$user = Login::getUsuarioLogado();
 use \App\Entity\Diversos;
-use Dompdf\Dompdf;
+// use Dompdf\Dompdf;
 
 ini_set('display_errors', 1);
 ini_set('display_startup_errors', 1);
@@ -45,23 +43,17 @@ $obProjeto = Projeto::getProjeto($id, $ver); // getProjetoView($id, $ver);
 $obProfessor = Professor::getProfessor($obProjeto->id_prof);
 
 
-
-
 //VALIDAÇÃO DA TIPO
 if(!$obProjeto instanceof Projeto){
   header('location: ../index.php?status=error');
   exit;
 }
 
-
-
 use \App\Entity\Colegiado;
-$coolCur = Colegiado::getRegistro($obProjeto->para_avaliar)->nome;
+$coolCur = Colegiado::getRegistro($obProjeto->para_avaliar)['nome'];
 
 $t = $obProjeto->tipo_exten;
 $tpprop = '';
-
-
 
 
 switch($t) {
@@ -111,11 +103,37 @@ include __DIR__.'/includes/formreadonly.php';
 include '../includes/footer.php';
 */
 
+
+$sql = "
+Select 
+   CONCAT(
+     IFNULL(ccc.codcam, 'wh') ,
+     '-',
+     IFNULL(SUBSTRING(p.`data`, 1, 4), 9999),
+     '-',
+     SUBSTRING(uuid(), 5,4),
+     '-',
+     case 
+       when tipo_ext = 1 then 'cur'
+       when tipo_ext = 2 then 'eve'
+       when tipo_ext = 3 then 'ser'
+       when tipo_ext = 4 then 'pro'
+       when tipo_ext = 5 then 'prj'
+     end
+     ) codigo
+from 
+   proj_inf p
+   left join ca_ce_co ccc on p.para_avaliar = ccc.co_id
+where (p.id, p.ver) = ('". $obProjeto->id ."', ". $obProjeto->ver ." ) ";
+
+
+$filename = Diversos::q($sql);
+
 $html = '<!DOCTYPE HTML PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
 <html xml:lang="pt-Br" xmlns="http://www.w3.org/1999/xhtml" lang="pt-Br">
 <head>
   <meta http-equiv="content-type" content="text/html; charset=UTF-8" />
-  <title>Doc</title>
+  <title>'. $filename->codigo .'</title>
   <style type="text/css">
   @page {
     margin: 1.5cm 2cm;
@@ -123,7 +141,7 @@ $html = '<!DOCTYPE HTML PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3
 
   body {
     font-family: sans-serif;
-    margin: 3.8cm 0 1.5cm 0;
+    margin: 0.2cm 0 1.5cm 0;
     text-align: justify;
   }
 
@@ -135,10 +153,7 @@ $html = '<!DOCTYPE HTML PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3
     font-size: 0.9em;
   }
 
-  #header {
-    top: 0;
-    height: 100px;
-  }
+
 
   #footer {
     bottom: 0;
@@ -164,7 +179,7 @@ $html = '<!DOCTYPE HTML PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3
   }
 
   .page-number:before {
-    content: "Página " counter(page);
+    
   }
 
   hr {
@@ -219,13 +234,6 @@ c {
 
 </head>
 <body>
-  <div id="header">
-    <table>
-      <tr>
-        <td class="td1"><img src="https://sistemaproec.unespar.edu.br/sis/imgs/logo_unespar.png" width="120px"></td>
-      </tr>
-    </table>
-  </div>
   <div id="footer">
     <div class="page-number"></div>
   </div>';
@@ -234,8 +242,11 @@ c {
  * Fim cabeçalho
  */
 
+ 
+
   $count = 0; 
 
+  $html .= '<img src="https://sistemaproec.unespar.edu.br/sis/imgs/logo_unespar.png" width="120px" style="display: block;  margin-left: auto;  margin-right: auto;">';
   $html .= '<h4 class="centralizado">'. $title .'</h4>';
   $html .= '<h5 class="centralizado">'. $title2 .'</h5>';
   $html .= '<p class="c p centralizado"><font size="1">*O responsável pelo preenchimento e encaminhamento é o coordenador da Proposta de Extensão Tramitação: Coordenador -> Divisão de Extensão e Cultura -> Colegiado de Curso -> Conselho de Centro de Área -> Divisão de Extensão e Cultura.</font></p>';
@@ -710,35 +721,14 @@ $html .=
 
 
  $html .= '</body>
+ <script language="JavaScript">
+     window.print()
+  </script>
  </html>';
 
 
-$sql = "
-Select 
-   CONCAT(
-     IFNULL(ccc.codcam, 'wh') ,
-     '-',
-     IFNULL(SUBSTRING(p.`data`, 1, 4), 9999),
-     '-',
-     SUBSTRING(uuid(), 5,4),
-     '-',
-     case 
-       when tipo_ext = 1 then 'cur'
-       when tipo_ext = 2 then 'eve'
-       when tipo_ext = 3 then 'ser'
-       when tipo_ext = 4 then 'pro'
-       when tipo_ext = 5 then 'prj'
-     end
-     ) codigo
-from 
-   proj_inf p
-   left join ca_ce_co ccc on p.para_avaliar = ccc.co_id
-where (p.id, p.ver) = ('". $obProjeto->id ."', ". $obProjeto->ver ." ) ";
 
-
-$filename = Diversos::q($sql);
-
-/**/  
+/*  
  
 $dompdf = new Dompdf(['enable_remote' => true]);
 $dompdf->loadHtml($html);
@@ -748,7 +738,7 @@ $dompdf->render();
 $dompdf->stream($filename->codigo,array('Attachment'=>0));
 
 //hash_file('md5', $dompdf->stream('file'));
- /*/
+*/
 
 
 echo $html;
