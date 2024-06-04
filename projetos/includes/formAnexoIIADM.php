@@ -32,7 +32,8 @@
       <label>
         <h5><?= ++$n ?>. Coordenador(a)</h5>
       </label>
-      <input type="text" class="form-control" name="coordNome" readonly value="<?= $obProjeto->nome_prof ?>">
+      <?= $id_profLIsta ?>
+        <input type="text" class="form-control" name="coordNome" id="coordNome" readonly value="">
     </div>
 
     <hr>

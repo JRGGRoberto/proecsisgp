@@ -386,6 +386,21 @@
 
 
       <hr>
+
+      <div class="row">
+        <div class="col">
+          <div class="form-group">
+            <label for="obs">
+              <h5><?= ++$n ?>. Observação</h5>
+            </label>
+            <div id="sumnot_obs"><?= $obProjeto->obs ?></div>
+            <textarea id="obs" name="obs" rows="10" hidden></textarea>
+          </div>
+        </div>
+      </div>
+
+
+      <hr>
       <div class="row">
         <div class="col">
           <div class="form-group">
