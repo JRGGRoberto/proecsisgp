@@ -7,6 +7,7 @@ use \App\Entity\Projeto;
 use \App\Entity\Professor;
 use \App\Entity\Arquivo;
 use \App\Entity\Form_Selecprof;
+use \App\Entity\Outros;
 
 $form = Form_Selecprof::getRegistro($_GET['p'], $_GET['v']);
 
@@ -32,7 +33,24 @@ if(!$form) {
 $prjS = Projeto::getRegistros("(id, ver)= ('".$_GET['p']."', ".$_GET['v'].")");
 $prj = $prjS[0];
 
-$listaProf = Professor::getProfessores("id_colegiado  = '".$prj->para_avaliar ."'  and ativo = 1 ");
+$sql1 = 
+"select 
+  p.id, CONCAT(p.nome, ' | ', co.nome) as nome
+from 
+   professores p
+   inner join colegiados co ON co.id = p.id_colegiado   
+   inner join centros ce on ce.id  = co.centro_id 
+   inner join campi ca on ca.id = ce.campus_id 
+   inner join centros ce2 on ce2.campus_id  = ca.id 
+   inner join colegiados co2 on co2.centro_id = ce2.id 
+   inner join professores p2 on co2.id = p2.id_colegiado 
+where 
+   p2.id ='".  $prj->id_prof . "'
+   and p.ativo = 1
+   and p2.ativo  = 1";
+
+$listaProf = Outros::qry($sql1);
+// $listaProf = Professor::getProfessores("id_colegiado  = '".$prj->para_avaliar ."'  and ativo = 1 ");
 
 $opc = '';
 foreach($listaProf as $l){

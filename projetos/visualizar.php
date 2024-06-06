@@ -15,7 +15,7 @@ use \App\Entity\CnpqSubA;
 use \App\Entity\Area_Extensao;
 
 use \App\Entity\Diversos;
-// use Dompdf\Dompdf;
+use Dompdf\Dompdf;
 
 ini_set('display_errors', 1);
 ini_set('display_startup_errors', 1);
@@ -50,7 +50,14 @@ if(!$obProjeto instanceof Projeto){
 }
 
 use \App\Entity\Colegiado;
-$coolCur = Colegiado::getRegistro($obProjeto->para_avaliar)['nome'];
+$coolCur = '';
+
+$coleg = Colegiado::getRegistro($obProjeto->para_avaliar);
+if($coleg  instanceof Colegiado){
+   //$coolCur = Colegiado::getRegistro($obProjeto->para_avaliar)['nome'];
+   $coolCur = $coleg ->nome;
+}
+
 
 $t = $obProjeto->tipo_exten;
 $tpprop = '';
@@ -137,6 +144,17 @@ $html = '<!DOCTYPE HTML PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3
   <style type="text/css">
   @page {
     margin: 1.5cm 2cm;
+  }
+
+  @media print {
+    #print {
+      visibility: hidden;
+    }
+    @page {
+      margin: 1.5cm 2cm;
+      size: portrait;
+    }
+
   }
 
   body {
@@ -245,7 +263,7 @@ c {
  
 
   $count = 0; 
-
+  $html .= '<span id="print" onclick="printIT();" style="text-decoration:underline;cursor:pointer;">🖨️</span>';
   $html .= '<img src="https://sistemaproec.unespar.edu.br/sis/imgs/logo_unespar.png" width="120px" style="display: block;  margin-left: auto;  margin-right: auto;">';
   $html .= '<h4 class="centralizado">'. $title .'</h4>';
   $html .= '<h5 class="centralizado">'. $title2 .'</h5>';
@@ -721,8 +739,12 @@ $html .=
 
 
  $html .= '</body>
- <script language="JavaScript">
-     window.print()
+ <script>
+
+ function printIT(){
+    window.print();
+ }
+
   </script>
  </html>';
 
