@@ -45,7 +45,7 @@ from
    inner join colegiados co2 on co2.centro_id = ce2.id 
    inner join professores p2 on co2.id = p2.id_colegiado 
 where 
-   p2.id ='".  $prj->id_prof . "'
+   p2.id = '".  $prj->id_prof . "'
    and p.ativo = 1
    and p2.ativo  = 1";
 
