@@ -289,7 +289,7 @@ select
 from 
   usuarios u
 where u.ativo = 1
-order by 1 
+order by 2 
 " ;
  $listaUsuarios = Outros::qry($sqlListaUSUA);
  $id_profLIsta ='<select name="id_prof" id="id_prof" class="form-control"  onchange="justName()" >';
