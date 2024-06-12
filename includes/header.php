@@ -2,8 +2,10 @@
   
 require '../vendor/autoload.php';
 
+use App\Db\Database;
 use \App\Session\Login;
 $obUsuario = Login::getUsuarioLogado();
+
 
 $clock = [
   '🕛', '🕐', '🕑', '🕒', '🕓', '🕔', '🕕', '🕖', '🕗', '🕘', '🕙', '🕚'
@@ -12,7 +14,7 @@ $clock = [
 $horas = date('H');
 $horas >= 12 ? (int)($horas -= 12) : (int)($horas -= 0);
 
-
+  
 
   $adminOpts = '';
   if ($obUsuario['adm'] == 1  ){
@@ -140,7 +142,7 @@ img.remover {
                     Pró-Reitoria de
                   </div>
                   <div class="text-left">
-                      <a  href="../" style="color: #002661;"><strong>Extensão e Cultura - PROEC</strong></a>
+                      <a  href="../" style="color: #002661;"><strong>Extensão e Cultura - PROEC  </strong></a>
                   </div>
                   <div class="text-left">
                     Universidade Estadual do Paraná
@@ -152,7 +154,7 @@ img.remover {
             <div class="col">
                   
                   <div>
-                      <span class="badge badge-success">SisGP <?=$clock[$horas]?></span>
+                      <span class="badge badge-success">SisGP <?= $clock[$horas] ?> </span>
                   </div>
                   <div>
                     Sistema para Gerir Projetos

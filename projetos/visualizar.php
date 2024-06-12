@@ -402,6 +402,8 @@ entre os tr de baixo
     $cnpq_sarea = $cnpq_sarea1->nome;
   }
 
+  use \App\Entity\Area_temat;
+
   if (in_array($t, $anexoII)) { 
     $html .= 
     '<table class="time">
@@ -431,7 +433,7 @@ entre os tr de baixo
         <tr>
            <td><strong>a) Área de Extensão</strong></td>    <td>'. Area_Extensao::getRegistro($obProjeto->area_extensao)->nome .'</td>
         </tr><tr>
-           <td><strong>b) Linha de Extensão</strong></td>   <td>'. Area_Extensao::getRegistro($obProjeto->linh_ext)->nome .'</td>
+           <td><strong>b) Linha de Extensão</strong></td>   <td>'. Area_temat::getRegistro($obProjeto->linh_ext )->nome  .'</td>
         </tr>
       </tbody>
     </table>'

@@ -88,7 +88,7 @@
           <label>
             <h6>Título do Programa de vinculação</h6>
           </label>
-          <input type="text" class="form-control" name="tituloprogvinc" id="tituloprogvinc" value="<?= $obProjeto->tituloprogvinc ?>">
+          <input type="text" class="form-control" name="tituloprogvinc" id="tituloprogvinc" value="<?= $obProjeto->tituloprogvinc ?>"  maxlength="200">
         </div>
 
         <script type="text/javascript">
@@ -172,7 +172,7 @@
           <div class="form-group">
             <label for="linh_ext">Linhas de extensão</label>
             <select name="linh_ext" id="linh_ext"  class="form-control">
-              <?= $area_ext_Opt ?>
+              <?= $areaOptions ?>
             </select>
           </div>
         </div>

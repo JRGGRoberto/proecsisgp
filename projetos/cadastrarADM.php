@@ -103,6 +103,12 @@ foreach($area_ext as $aext){
   $area_ext_Opt .= '<option value="'.$aext->id.'" '.$aext->sel.'>'.$aext->nome.'</option>';
 }
 
+$area_ext = Area_Extensao::getRegistros();
+$area_ext_Opt2 = '';
+foreach($area_ext as $aext){
+  $area_ext_Opt2 .= '<option value="'.$aext->id.'" '.$aext->sel.'>'.$aext->nome.'</option>';
+}
+
 
 $telefone = '';
 $email = '';
@@ -247,9 +253,7 @@ if(isset($_POST['titulo'])){
       $memb['instituicao'],
       $memb['formacao'],
       $memb['funcao'],
-      $memb['tel'],
-      $memb['dtinicio'],
-      $memb['dtfim']
+      $memb['tel']
     );
     $index++;
   }

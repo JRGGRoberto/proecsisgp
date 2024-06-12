@@ -106,7 +106,7 @@ class Login{
     self::init();
 
     //validação da sessão
-    return isset($_SESSION['proecunespar']['id']);
+    return isset($_SESSION['proecunespar2']['id']);
   }
 
   /**

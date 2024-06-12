@@ -91,7 +91,7 @@
             <label>
               <h6>Título do Programa de vinculação</h6>
             </label>
-            <input type="text" class="form-control" name="tituloprogvinc" id="tituloprogvinc" value="<?= $obProjeto->tituloprogvinc ?>">
+            <input type="text" class="form-control" name="tituloprogvinc" id="tituloprogvinc" value="<?= $obProjeto->tituloprogvinc ?>"  maxlength="200">
           </div>
 
           <script type="text/javascript">

@@ -21,7 +21,7 @@ class Equipe {
   public $updated_at;
   public $user;
 
-  function incluir($id, $idproj, $nome, $instituicao, $formacao, $funcao, $tel, $dtinicio, $dtfim, $email = null, $user = null){
+  function incluir($id, $idproj, $nome, $instituicao, $formacao, $funcao, $tel, $dtinicio = null, $dtfim = null, $email = null, $user = null){
     $this->id = $id;
     $this->idproj = $idproj;
     $this->nome = $nome;
