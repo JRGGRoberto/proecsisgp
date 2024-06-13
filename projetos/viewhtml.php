@@ -268,7 +268,7 @@ c {
 
   use \App\Entity\Area_Extensao;
   $area_ext = Area_Extensao::getRegistro($obProjeto->area_extensao)->nome;
-  $linh_ext = Area_Extensao::getRegistro($obProjeto->linh_ext)->nome;
+    $linh_ext = Area_Extensao::getRegistro($obProjeto->linh_ext)->nome;
   
   $html .= '<p>'. $count . '.2. Plano Nacional de Extensão Universitária</p>';
 

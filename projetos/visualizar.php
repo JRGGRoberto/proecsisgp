@@ -287,6 +287,13 @@ c {
 
   $html .= 
   '<table class="time">
+   <thead><tr><th class="th_cinza"><strong>'. ++$count .'. Protocolo da proposta</strong></th></tr></thead>
+  <tbody><tr><td>'. $obProjeto->protocolo .'</td></tr></tbody>
+  </table>'
+  ;
+
+  $html .= 
+  '<table class="time">
    <thead><tr><th class="th_cinza"><strong>'. ++$count .'. Coordenador</strong></th></tr></thead>
    <tbody><tr><td>'. $obProjeto->nome_prof .'</td></tr></tbody>
   </table>'

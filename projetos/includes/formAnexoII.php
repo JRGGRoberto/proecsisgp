@@ -30,6 +30,15 @@
 
     <div class="form-group">
       <label>
+        <h5><?= ++$n ?>. Protocolo da proposta</h5>
+      </label>
+      <input type="text" class="form-control" name="protocolo" readonly value="<?= $obProjeto->protocolo ?>">
+    </div>
+
+    <hr>
+
+    <div class="form-group">
+      <label>
         <h5><?= ++$n ?>. Coordenador(a)</h5>
       </label>
       <input type="text" class="form-control" name="coordNome" readonly value="<?= $obProjeto->nome_prof ?>">

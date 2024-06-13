@@ -14,6 +14,9 @@ class Projeto{
   
   public $id;
   public $ver;
+
+  public $protocolo;
+
   public $regras;
   public $id_prof;
   public $nome_prof;
@@ -103,6 +106,7 @@ class Projeto{
     $obDatabase->insert([
                            'id' => $ida,
                            'ver' =>   $v,
+                           'protocolo' => $this->protocolo,
                            'regras' =>  $this->regras,
                            'id_prof' => $this->id_prof,
                            'nome_prof' => $this->nome_prof,
@@ -176,6 +180,7 @@ class Projeto{
   public function atualizar(){
     return (new Database('projetos'))->update('(id, ver) = ( "'.$this->id.'", '.$this->ver.' )',
                                      [
+                                      'protocolo' => $this->protocolo,
                                        'regras' =>  $this->regras,
                                        'id_prof' => $this->id_prof,
                                        'nome_prof' => $this->nome_prof,
@@ -350,6 +355,14 @@ class Projeto{
 
     $a = new Database(); 
     $a->execute($sql);
+
+    // Quando o projeto é enviado ganha um número de protocolo
+
+    $sql = "insert into numprotocolo (idproj)   values ('". $this->id ."')";
+
+    $b = new Database(); 
+    $b->execute($sql);
+
     return true;
       // ->fetchAll(PDO::FETCH_CLASS,self::class);
   }
