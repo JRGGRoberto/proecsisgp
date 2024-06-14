@@ -263,7 +263,7 @@
           <label>
             <h6>Órgão de Financiamento</h6>
           </label>
-          <input type="text" class="form-control" id="orgao_finacInput" name="finacorgao" value="<?= $obProjeto->finacorgao ?>">
+          <input type="text" class="form-control" id="orgao_finacInput" name="finacorgao" value="<?= $obProjeto->finacorgao ?>" maxlength="255">
         </div>
         <div class="col-5" id="valorFinac">
           <label>
