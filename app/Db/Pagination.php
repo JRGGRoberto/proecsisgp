@@ -40,8 +40,9 @@ class Pagination{
     $this->currentPage = (is_numeric($currentPage) and $currentPage > 0) ? $currentPage : 1;
     $this->calculate();
   }
+  
 
-  /**
+    /**
    * Método responsável por calcular a páginação
    */
   private function calculate(){
@@ -60,6 +61,10 @@ class Pagination{
     return $offset.','.$this->limit;
   }
 
+  public function getQntPages(){
+    return $this->pages;
+  }
+
   /**
    * Método responsável por retornar as opções de páginas disponíveis
    * @return array
@@ -68,9 +73,15 @@ class Pagination{
     //Não retornar paginas
     if($this->pages == 1) return [];
 
+    $firstPage = max($this->currentPage - 12, 1);
+    $lastPage = min($this->currentPage  + 12 , $this->pages );
+    
+
     //Páginas
     $paginas = [];
-    for($i =1; $i <= $this->pages; $i++){
+    // for($i =1; $i <= $this->pages; $i++){
+    
+    for($i =$firstPage; $i <= $lastPage; $i++){
       $paginas[] = [
         'pagina' => $i,
         'atual' => $i == $this->currentPage

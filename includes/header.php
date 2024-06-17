@@ -193,7 +193,7 @@ img.remover {
         </button>
         <div class="dropdown-menu">
           <a class="dropdown-item btn-sm" href="../avalareal">A realizar</a>
-          <a class="dropdown-item btn-sm" href="../avalfeitas">Realizadas</a>
+          <a class="dropdown-item btn-sm" href="../avalfeitas">Realizadas [Histórico]</a>
         </div>
     
       </div>
