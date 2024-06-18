@@ -63,29 +63,7 @@
   $qnt1 > 0 ? $resultados : $resultados = 'Nenhum registro encontrado.';
 
 
-  //GETS
-  unset($_GET['status']);
-  unset($_GET['pagina']);
-  $gets = http_build_query($_GET);
-
-  //Paginação
-  $paginacao = '';
-  $paginas   = $obPagination->getPages();
-  $paginacao .= '<nav aria-label="Page navigation" >
-                  <ul class="pagination pagination-sm">'; 
-  foreach($paginas as $key=>$pagina){
-    $class = $pagina['atual'] ? 'page-item active': 'page-item';
-    $paginacao .= 
-      '<li class="'.$class.'">
-        <a class="page-link" href="?pagina='.$pagina['pagina'].'&'.$gets.'">'
-        .$pagina['pagina']
-      .'</a>
-       </li>';
-  }
-
-  $paginacao .= '</ul>
-  </nav>
-  ';
+  include '../includes/paginacao.php';
 
 ?>
 <main>
