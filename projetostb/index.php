@@ -2,95 +2,101 @@
 
 require '../vendor/autoload.php';
 
-use \App\Entity\Projetostb;
+use \App\Session\Login;
 use \App\Db\Pagination;
+use \App\Entity\Projeto;
+use \App\Entity\Palavras;
 
-//Filtros
-$coord  = filter_input(INPUT_GET, 'coord', FILTER_SANITIZE_STRING);
+//Obriga o usuário a estar logado
+Login::requireLogin();
+$user = Login::getUsuarioLogado();
+
+//Busca
+$nome_prof = filter_input(INPUT_GET, 'nome_prof', FILTER_SANITIZE_STRING);
 $titulo = filter_input(INPUT_GET, 'titulo', FILTER_SANITIZE_STRING);
-$campus = filter_input(INPUT_GET, 'campus', FILTER_SANITIZE_STRING);
-$ano    = filter_input(INPUT_GET, 'ano', FILTER_SANITIZE_STRING);
+$palavra  = filter_input(INPUT_GET, 'palavra', FILTER_SANITIZE_STRING); 
+/*
+$colegiado = filter_input(INPUT_GET, 'colegiado', FILTER_SANITIZE_STRING);
+$area = filter_input(INPUT_GET, 'area', FILTER_SANITIZE_STRING);
+$linh_ext = filter_input(INPUT_GET, 'linh_ext', FILTER_SANITIZE_STRING);
+*/
+$palavOrig = $palavra;
+
+if (strlen($palavra)) {
+  $palavra = Palavras::getProjByPalavra($palavra);
+} else {
+  $palavra = "";
+}
+
+
+
+$qry = 'select 
+          ccc.co_id as id, 
+          ccc.colegiado as nome,
+          IFNULL(ccc.coord_id, "disabled") coord
+        from ca_ce_co ccc where ccc.ca_id  = "'. $user['ca_id'] .'"';
+use \App\Entity\Diversos;
+$sendColegiado = Diversos::qry($qry);
+$coolSelectSend = '';
+
+foreach($sendColegiado as $co){
+  $dis = '';
+  $info = '';
+  if($co->coord =='disabled'){
+    $dis = 'disabled';
+    $info = '[Sem coordenador]';
+  }
+
+  $coolSelectSend .= '<option value="'.$co->id.'"  '. $dis . '>'.$co->nome.' '.$info.'</option>';
+}
+
+
+
+
+//Filtro de status
+$filtroStatus = filter_input(INPUT_GET, 'filtroStatus', FILTER_SANITIZE_STRING);
 
 //Condições SQL
 $condicoes = [
-  strlen($coord) ? 'coordenador LIKE "%'.str_replace(' ','%',$coord).'%"': null,
-  strlen($titulo) ? 'titulo LIKE "%'.str_replace(' ','%',$titulo).'%"': null,
-  strlen($campus) ? "campus = '$campus'": null,
-  strlen($ano) ? "ano = '$ano'": null
+  strlen($titulo) ? ' titulo LIKE "%'.str_replace(' ','%',$titulo).'%"': null,
+  strlen($palavra) ? $palavra : null,
+  strlen($nome_prof) ? ' nome_prof LIKE "%'.str_replace(' ','%',$nome_prof).'%"': null
+
+  /*,
+  strlen($colegiado) ? 'colegiado LIKE "%'.str_replace(' ','%',$colegiado).'%"': null,
+  strlen($area) ? "area_extensao = '$area_extensao'": null,  
+  strlen($linh_ext) ? 'linh_ext LIKE "%'.str_replace(' ','%',$linh_ext).'%"': null */
 ];
+
+array_push($condicoes, ' last_result = "a" and ( ( fase_seq = etapas) or (etapas = 0 and fase_seq is null) )');
 
 //Remove posições vazias
 $condicoes = array_filter($condicoes);
 
 // Cláusula WHERE
-$where = implode(' AND ', $condicoes);
+$where1 = implode(' AND ', $condicoes);
+
+
+
+$palavra = $palavOrig;
 
 //Qntd total de registros
-$qntd = Projetostb::getQntd($where);
+$qntdProjetos = Projeto::getQntdRegistros($where1);
 
 //paginação
-$obPagination = new Pagination($qntd, $_GET['pagina']?? 1, 10);
+$obPagination = new Pagination($qntdProjetos, $_GET['pagina']?? 1, 5);
 
-$prjs = Projetostb::getList($where, null, $obPagination->getLimite());
+$projetos = Projeto::getRegistros($where1, null, $obPagination->getLimite());
 
+/*
+use \App\Entity\Tipo_exten;
+$proposta = Tipo_exten::getRegistros();
+$propOptions = '';
+foreach($proposta as $prop){
+  $propOptions .= '<option value="'.$prop->nome.'"   >'.$prop->nome.'</option>';
+}
+*/
 
 include '../includes/header.php';
-
-?>
-<section>
-
-<form method="get" action="busca.php">
-
-  <div class="row my-4">
-
-  <div class="col">
-      <label>Nome do coordenador(ª)</label>
-      <input type="text" name="coord" class="form-control" value="<?=$coord?>"  style="text-transform: uppercase">
-    </div>
-
-
-    <div class="col">
-      <label>Título</label>
-      <input type="text" name="titulo" class="form-control" value="<?=$titulo?>">
-    </div>
-
-    <div class="col">
-      <label>Campus</label>
-      <select name="campus" class="form-control">
-        <option value=""></option>
-        <option value="APUCARANA"    <?= ($campus == "APUCARANA")? "selected": "" ?>>Apucarana</option>
-        <option value="PARANAGUÁ"    <?= ($campus == "PARANAGUÁ")? "selected": "" ?>>Paranaguá</option>
-        <option value="CAMPO MOURÃO" <?= ($campus == "CAMPO MOURÃO")? "selected": "" ?> >Campo Mourão</option>
-        <option value="CURITIBA I"   <?= ($campus == "CURITIBA I")? "selected": "" ?>>Curitiba I (EMBAP)</option>
-        <option value="CURITIBA II"   <?= ($campus == "CURITIBA II")? "selected": "" ?>>Curitiba II (FAP)</option>
-        <option value="PARANAVAÍ"    <?= ($campus == "PARANAVAÍ")? "selected": "" ?>>Paranavaí</option>
-        <option value="UNIÃO DA VITÓRIA"  <?= ($campus == "UNIÃO DA VITÓRIA")? "selected": "" ?>>União da Vitória</option>
-      </select>
-    </div>
-
-
-    <div class="col">
-      <label>Ano</label>
-      <select name="ano" class="form-control">
-        <option value=""></option>
-        <?php
- $ano_atual = date("Y") ;
-  for ($ano = $ano_atual; $ano >= 2018; $ano--) {
-    echo '<option value="' . $ano . '" ' . (($ano == $_POST['ano']) ? 'selected' : '') . '>' . $ano . '</option>';
-  }
-            ?>
-      </select>
-    </div>
-
-    <div class="col d-flex align-items-end">
-      <button type="submit" class="btn btn-primary">Filtrar</button>
-    </div>
-
-  </div>
-
-</form>
-
-</section>
-
-<?php
+include __DIR__.'/includes/listagemAll.php';
 include '../includes/footer.php';
