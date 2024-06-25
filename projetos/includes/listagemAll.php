@@ -17,7 +17,8 @@
   
 
   $qnt1 = 0;
-  $col;
+  $col= '';
+  $LastV = '';
 
   function resumirTexto(string $texto, int $limite = 256): string
   {
@@ -34,97 +35,111 @@
   foreach($projetos as $proj){
     $qnt1++;
 
-    is_null($proj->colegiado) ? $col = 'A definir' : $col = $proj->colegiado;
+    if(
+      ($proj->regras == 'e341e624-0715-11ef-b2c8-0266ad9885af') && 
+      ($proj->para_avaliar == -1) && 
+      ($proj->last_result == 'a') &&
+      ($proj->edt ==  0)
+    ){
 
-   $where = 'id_proj = "'. $proj->id. '"';
-   $order = "ver desc, fase_seq desc";
-   $ListaVerAnts = Avaliacoes::getRegistros($where, $order, null);
-   $LastV = 
-      '<table class="table table-bordered table-sm">
-       <thead class="thead-dark">
-         <tr>
-           <th>Projeto</th>
-           <th>Parecere(s)</th>
-           <th>Parte</th>
-         </tr>
-       </thead>
-       <tbody>';
+      $progresso = '<span class="badge badge-success ">Em execução/Excutado</span>';
 
-    
-    $a =0;
-    $etapas = 0;
-    $btnStatus = [];
-    foreach($ListaVerAnts as $la){
-      
-      $a++;
-      $class = '';
-      $td = '';
-      switch ($la->resultado){
-        case 'a': 
-          $class = "table-success"; 
-          $td = '<td><a href="../forms/'. $la->form .'/vista.php?p='. $proj->id.  '&v='. $la->ver . '" target="_blank">📄 </a></td>';
-
-          array_push($btnStatus, new Blocos($la->fase_seq,'success'));
-          break;
-        case 'r': 
-          $class = "table-danger"; 
-          $td = '<td><a href="../forms/'. $la->form .'/vista.php?p='. $proj->id.  '&v='. $la->ver . '" target="_blank">📄 </a></td>';
-
-          array_push($btnStatus, new Blocos($la->fase_seq,'danger'));
-          break;
-        default: 
-          $class = "table-warning"; 
-          $td = '<td><span class="badge badge-light">Espera de parecer...</span></td>';
-
-          array_push($btnStatus, new Blocos($la->fase_seq,'warning'));
-      }
-      $LastV .=
-      '<tr class="'.$class.'">
-        <td><a href="../projetos/visualizar.php?id='. $proj->id. '&v='. $la->ver . '&w=nw" target="_blank">📄 <span class="badge badge-info">'.($la->ver +1).'</span></a></td>'
-        
-        . $td .
-        
-        '<td>'.$la->fase_seq.'/'.$la->etapas.'</td>
-       </tr>';
-
-       $etapas = $la->etapas;
-
-    }
-    $LastV .=
-      '</tbody>
-    </table>';
-
-    if($a==0){
-      $LastV = '';
-      $progresso = '<span class="badge badge-warning">Não submetido</span>';
     } else {
 
-      $btnStatus = array_reverse($btnStatus);
+      is_null($proj->colegiado) ? $col = 'A definir' : $col = $proj->colegiado;
 
-      $btnS = [];  /// criando todos os blocos em CINZA
-      for ($x = 0; $x <= $etapas -1; $x++) {
-        array_push($btnS, new Blocos($x,'secondary'));
-      }
-
-      $progresso = 
-       '<span class="badge badge-light">Processo<br>
-         <div class="btn-group">';
-
-      foreach($btnStatus as $btn){
-        $btnS[$btn->pos -1] = $btn;
-      }
-
-
-      foreach($btnS as $btn){
-
-        $progresso .= '<button type="button" class="btn btn-'. $btn->cor .'" disabled></button>';
-      }
-
-     $progresso .= 
-       ' </div>
-       </span>';
+      $where = 'id_proj = "'. $proj->id. '"';
+      $order = "ver desc, fase_seq desc";
+      $ListaVerAnts = Avaliacoes::getRegistros($where, $order, null);
+      $LastV = 
+         '<table class="table table-bordered table-sm">
+          <thead class="thead-dark">
+            <tr>
+              <th>Projeto</th>
+              <th>Parecere(s)</th>
+              <th>Parte</th>
+            </tr>
+          </thead>
+          <tbody>';
+   
+       
+       $a =0;
+       $etapas = 0;
+       $btnStatus = [];
+       foreach($ListaVerAnts as $la){
+         
+         $a++;
+         $class = '';
+         $td = '';
+         switch ($la->resultado){
+           case 'a': 
+             $class = "table-success"; 
+             $td = '<td><a href="../forms/'. $la->form .'/vista.php?p='. $proj->id.  '&v='. $la->ver . '" target="_blank">📄 </a></td>';
+   
+             array_push($btnStatus, new Blocos($la->fase_seq,'success'));
+             break;
+           case 'r': 
+             $class = "table-danger"; 
+             $td = '<td><a href="../forms/'. $la->form .'/vista.php?p='. $proj->id.  '&v='. $la->ver . '" target="_blank">📄 </a></td>';
+   
+             array_push($btnStatus, new Blocos($la->fase_seq,'danger'));
+             break;
+           default: 
+             $class = "table-warning"; 
+             $td = '<td><span class="badge badge-light">Espera de parecer...</span></td>';
+   
+             array_push($btnStatus, new Blocos($la->fase_seq,'warning'));
+         }
+         $LastV .=
+         '<tr class="'.$class.'">
+           <td><a href="../projetos/visualizar.php?id='. $proj->id. '&v='. $la->ver . '&w=nw" target="_blank">📄 <span class="badge badge-info">'.($la->ver +1).'</span></a></td>'
+           
+           . $td .
+           
+           '<td>'.$la->fase_seq.'/'.$la->etapas.'</td>
+          </tr>';
+   
+          $etapas = $la->etapas;
+   
+       }
+       $LastV .=
+         '</tbody>
+       </table>';
+   
+       if($a==0){
+         $LastV = '';
+         $progresso = '<span class="badge badge-warning">Não submetido</span>';
+       } else {
+   
+         $btnStatus = array_reverse($btnStatus);
+   
+         $btnS = [];  /// criando todos os blocos em CINZA
+         for ($x = 0; $x <= $etapas -1; $x++) {
+           array_push($btnS, new Blocos($x,'secondary'));
+         }
+   
+         $progresso = 
+          '<span class="badge badge-light">Processo<br>
+            <div class="btn-group">';
+   
+         foreach($btnStatus as $btn){
+           $btnS[$btn->pos -1] = $btn;
+         }
+   
+   
+         foreach($btnS as $btn){
+   
+           $progresso .= '<button type="button" class="btn btn-'. $btn->cor .'" disabled></button>';
+         }
+   
+        $progresso .= 
+          ' </div>
+          </span>';
+   
+       }
 
     }
+
 
    /********************/
     
@@ -234,12 +249,17 @@ include '../includes/paginacao.php';
 
       <div class="row my-2">
 
-        <div class="col-5">
+      <div class="col-4">
           <label>Titulo</label> 
           <input type="text" name="titulo" class="form-control form-control-sm" value="<?=$titulo?>"  id="titulo"   onchange="showLimpar();">
         </div>
 
-        <div class="col">
+        <div class="col-4">
+          <label>Coordenador</label> 
+          <input type="text" name="nome_prof" class="form-control form-control-sm" value="<?=$nome_prof?>"  id="nome_prof"   onchange="showLimpar();">
+        </div>
+
+        <div class="col-3">
           <label>Palavra chave</label> 
           <input type="text" name="palavra" class="form-control form-control-sm" value="<?=$palavra?>"  id="palavra"   onchange="showLimpar();">
         </div>

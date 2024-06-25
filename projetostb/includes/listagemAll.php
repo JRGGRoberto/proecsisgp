@@ -38,13 +38,13 @@
     </div>
     <div class="row">
         <div class="col-sm">
-          Coordenador: '.$proj->nome_prof. '
+          <strong>Coordenador:</strong> '.$proj->nome_prof. '
         </div>
         <div class="col-sm">
-          Campus: '.$proj->campus. '
+          <strong>Campus:</strong> '.$proj->campus. '
         </div>
         <div class="col-sm">
-          TIDE: '.$proj->tide. '
+          <strong>TIDE:</strong> '.$proj->tide. '
         </div>
     </div>
   </div>

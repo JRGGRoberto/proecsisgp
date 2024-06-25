@@ -14,6 +14,7 @@ $user = Login::getUsuarioLogado();
 //Busca
 $titulo = filter_input(INPUT_GET, 'titulo', FILTER_SANITIZE_STRING);
 $palavra  = filter_input(INPUT_GET, 'palavra', FILTER_SANITIZE_STRING); 
+$nome_prof = filter_input(INPUT_GET, 'nome_prof', FILTER_SANITIZE_STRING);
 /*
 $colegiado = filter_input(INPUT_GET, 'colegiado', FILTER_SANITIZE_STRING);
 $area = filter_input(INPUT_GET, 'area', FILTER_SANITIZE_STRING);
@@ -58,7 +59,9 @@ $filtroStatus = filter_input(INPUT_GET, 'filtroStatus', FILTER_SANITIZE_STRING);
 //Condições SQL
 $condicoes = [
   strlen($titulo) ? 'titulo LIKE "%'.str_replace(' ','%',$titulo).'%"': null,
-  strlen($palavra) ? $palavra : null
+  strlen($palavra) ? $palavra : null,
+  strlen($nome_prof) ? ' nome_prof LIKE "%'.str_replace(' ','%',$nome_prof).'%"': null
+
   /*,
   strlen($colegiado) ? 'colegiado LIKE "%'.str_replace(' ','%',$colegiado).'%"': null,
   strlen($area) ? "area_extensao = '$area_extensao'": null,  
