@@ -42,7 +42,13 @@
       ($proj->edt ==  0)
     ){
 
-      $progresso = '<span class="badge badge-success ">Em execução/Excutado</span>';
+      $dt = date('Y-m-d H:i:s');
+
+      if ($proj->vigen_fim >= $dt){
+        $progresso = '<span class="badge badge-success ">Em execução</span>';
+      } else {
+        $progresso = '<span class="badge badge-success ">Excutado</span>';
+      };
 
     } else {
 
@@ -149,10 +155,12 @@
     <div class="row">
         <div class="col-sm-5">📃 <strong>Título: </strong><a class="collapsed card-link" data-toggle="collapse" href="#p'. $proj->id .'"><strong>'. $proj->titulo .'</strong></a></div>
         <div class="col-sm-5"><strong>Tipo de Proposta:</strong> '. $proj->tipo_exten .'</div>
+        
         <div class="col-sm-2">'. $progresso .'</div>
     </div>
     <div class="row">
-        <div class="col-sm"><strong>Enviado para o colegiado de:</strong> '.$col.'</div> 
+      <div class="col-sm"><strong>Protocolo:</strong> '. $proj->protocolo .'</div>
+      <div class="col-sm"><strong>Enviado para:</strong> '.$col.'</div> 
     </div>
     <div class="row">
         <div class="col-sm">

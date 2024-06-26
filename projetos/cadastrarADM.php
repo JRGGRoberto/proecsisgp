@@ -337,6 +337,35 @@ pegarGA();
   exit;
 }
 
+$id_regra = $user['tipo'] == 'agente' ? 'a45daba2-12ec-11ef-b2c8-0266ad9885af': '6204ba97-7f1a-499e-a17d-118d305bf7e4';
+
+$sqlEtapas = 
+"
+select 
+  rd.nome as nome,
+  case tp_avaliador 
+     when 'ca' then 'Chefe de Divisão'
+     when 'ce' then 'Diretor(ª) de Centro de Área'
+     when 'co' then 'Coordenador(ª) de colegiado'
+     when 'pf' then 'Professor(ª)'
+     else 'Agente' end as avaliador,
+  rd.sequencia , form 
+from regras_defin rd  
+where 
+ id_reg = '". $id_regra . "' order by sequencia  " ;
+ $etapas = Outros::qry($sqlEtapas);
+
+
+$etapsTabele ='';
+
+foreach($etapas as  $e){
+  $etapsTabele .= 
+     "<tr>
+        <td>". $e->avaliador ."</td>
+        <td>". $e->nome ." </td>
+      </tr>
+  ";
+}
 
 
 
