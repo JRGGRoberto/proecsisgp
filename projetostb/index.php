@@ -62,10 +62,6 @@ $condicoes = [
   strlen($palavra) ? $palavra : null,
   strlen($nome_prof) ? ' nome_prof LIKE "%'.str_replace(' ','%',$nome_prof).'%"': null
 
-  /*,
-  strlen($colegiado) ? 'colegiado LIKE "%'.str_replace(' ','%',$colegiado).'%"': null,
-  strlen($area) ? "area_extensao = '$area_extensao'": null,  
-  strlen($linh_ext) ? 'linh_ext LIKE "%'.str_replace(' ','%',$linh_ext).'%"': null */
 ];
 
 array_push($condicoes, ' last_result = "a" and ( ( fase_seq = etapas) or (etapas = 0 and fase_seq is null) )');

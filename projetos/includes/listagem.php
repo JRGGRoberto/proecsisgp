@@ -33,9 +33,8 @@
   $resultados = '<div id="accordion">';
   foreach($projetos as $proj){
     $qnt1++;
-
     if(
-      ($proj->regras == 'e341e624-0715-11ef-b2c8-0266ad9885af') && 
+      (in_array($proj->regras, ['e341e624-0715-11ef-b2c8-0266ad9885af', '287c102f-e5fa-11ee-b2c8-0266ad9885af'])) && 
       ($proj->para_avaliar == -1) && 
       ($proj->last_result == 'a') &&
       ($proj->edt ==  0)
