@@ -4,6 +4,8 @@ namespace App\Entity;
 
 use \App\Db\Database;
 use \PDO;
+use \App\Entity\UuiuD;
+
 
 ini_set('display_errors', 1);
 ini_set('display_startup_errors', 1);
@@ -91,7 +93,7 @@ class Projeto{
   public function cadastrar(){
     //INSERIR PROJETO NO BANCO
     $obDatabase = new Database('projetos');
-    $newId = exec('uuidgen -r');
+    $newId = UuiuD::gera();
     is_null($this->ver) ? $v = 0 : $v = $this->ver;
     is_null($this->id) ? $ida  = $newId : $ida = $this->id;
     is_null($this->edt) ? $edt = 1 : $edt = $this->edt;
