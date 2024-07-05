@@ -39,7 +39,7 @@ if(isset($_POST['nome'])){
 
    $obAgente->cadastrar();
 
-   header('location: index.php?status=success');
+   header('location: ../professor/index.php?status=success');
    exit;
  }
 

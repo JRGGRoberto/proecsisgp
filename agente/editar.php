@@ -57,7 +57,7 @@ if(isset($_POST['nome'])){
   }
   $obAgente->atualizar();
 
-  header('location: ../projetos/');
+  header('location: ../professor/');
   exit;
 }
 

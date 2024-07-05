@@ -24,8 +24,10 @@ $horas >= 12 ? (int)($horas -= 12) : (int)($horas -= 0);
         🔧 Administração
         </button>
         <div class='dropdown-menu'>
-          <a class='dropdown-item btn-sm' href='../professor'>Listar Professores</a>
+          <a class='dropdown-item btn-sm' href='../professor'>Listar Professores/Agentes</a>
           <a class='dropdown-item btn-sm' href='../professor/cadastrar.php'>Cadastrar Professor</a>
+          <a class='dropdown-item btn-sm' href='../agente/cadastrar.php'>Cadastrar Agente</a>
+          <div class='dropdown-divider'></div>
           <a class='dropdown-item btn-sm' href='../hierarquia/index.php?hi=cnf'>Configurar hierarquia</a>
           <div class='dropdown-divider'></div>
           <a class='dropdown-item btn-sm' href='../projetos/indexAll.php'>Todos os Projetos</a>

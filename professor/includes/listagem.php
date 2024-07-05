@@ -65,7 +65,7 @@
   <div class="card-header" '. $estiloD .'>
      <div class="row">
         <div class="col-sm-6"><a class="collapsed card-link" data-toggle="collapse" href="#p'. $prof->id .'">👤 '. $prof->nome .'</a></div>';
-   if ($prof->nivel == 'agente'){
+   if ($prof->tipo === 'ag'){
      $resultados .= '<div class="col-sm-6"> Agente - '.$prof->campus.'</div>';
    } else {
      $resultados .= '<div class="col-sm-6"> '.$colegNome->nome.'</div>';
@@ -83,13 +83,18 @@
         Alocado em:
         <ul class="breadcrumb p-1 mb-2"">
           <li class="breadcrumb-item"><a href="#">'. $prof->campus.'</a></li>
-          <li class="breadcrumb-item"><a href="#">'. $prof->centros.'</a></li>
-          <li class="breadcrumb-item"><a href="#">'. $prof->colegiado.'</a></li>
-        </ul>';
+          ';
+          if ($prof->tipo === 'pf'){ 
+            $resultados .='<li class="breadcrumb-item"><a href="#">'. $prof->centros.'</a></li>
+                           <li class="breadcrumb-item"><a href="#">'. $prof->colegiado.'</a></li>';
+          } else {
+            $resultados .='<li class="breadcrumb-item"><a href="#">Agente universitário</a></li>';
+          }
+         $resultados .= '</ul>';
 /// se for coordenador 
         if ($acessoOk){
 
-          if ($prof->nivel === 'agente'){
+          if ($prof->tipo === 'ag'){
             $resultados .=  
            '<a href="../agente/editar.php?id='. $prof->id .'"><button class="btn btn-success float-right btn-sm mb-2">Editar</button></a>
                                 <button id="excluir1" data-target="#myModal" class="btn btn-danger float-right btn-sm mb-2  mr-2" disabled>🗑 Excluir</button>';
@@ -115,7 +120,7 @@
 
 ?>
 <main>
-  <h2 class="mt-0">Professores</h2>
+  <h2 class="mt-0">Professores/Agentes</h2>
   
   <?=$msgAlert?> 
 

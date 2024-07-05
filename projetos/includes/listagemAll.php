@@ -80,19 +80,19 @@
          switch ($la->resultado){
            case 'a': 
              $class = "table-success"; 
-             $td = '<td><a href="../forms/'. $la->form .'/vista.php?p='. $proj->id.  '&v='. $la->ver . '" target="_blank">📄 </a></td>';
+             $td = '<td><a href="../forms/'. $la->form .'/vista.php?p='. $proj->id.  '&v='. $la->ver . '" target="_blank">📄 </a>'.$la->tp_instancia.'</td>';
    
              array_push($btnStatus, new Blocos($la->fase_seq,'success'));
              break;
            case 'r': 
              $class = "table-danger"; 
-             $td = '<td><a href="../forms/'. $la->form .'/vista.php?p='. $proj->id.  '&v='. $la->ver . '" target="_blank">📄 </a></td>';
+             $td = '<td><a href="../forms/'. $la->form .'/vista.php?p='. $proj->id.  '&v='. $la->ver . '" target="_blank">📄 </a>'.$la->tp_instancia.'</td>';
    
              array_push($btnStatus, new Blocos($la->fase_seq,'danger'));
              break;
            default: 
              $class = "table-warning"; 
-             $td = '<td><span class="badge badge-light">Espera de parecer...</span></td>';
+             $td = '<td><span class="badge badge-light">Espera de parecer... ['.$la->tp_instancia.']</span></td>';
    
              array_push($btnStatus, new Blocos($la->fase_seq,'warning'));
          }
@@ -108,9 +108,14 @@
           $etapas = $la->etapas;
    
        }
-       $LastV .=
+       $LastV .= 
          '</tbody>
-       </table>';
+       </table><span class="badge badge-dark">
+                 <span class="badge badge-secondary"> <span class="badge-light"> ca </span> Chefe de dividsão </span> 
+                 <span class="badge badge-secondary"> <span class="badge-light"> ce </span> Dir centro de área </span> 
+                 <span class="badge badge-secondary"> <span class="badge-light"> co </span> coordenador de colegiado </span> 
+                 <span class="badge badge-secondary"> <span class="badge-light"> pf </span> professor </span> 
+                </span>';
    
        if($a==0){
          $LastV = '';
