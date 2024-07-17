@@ -86,7 +86,9 @@
              break;
            case 'r': 
              $class = "table-danger"; 
-             $td = '<td><a href="../forms/'. $la->form .'/vista.php?p='. $proj->id.  '&v='. $la->ver . '" target="_blank">📄 </a>'.$la->tp_instancia.'</td>';
+             $td = '<td><span class="badge badge-light">
+                          <a href="../forms/'. $la->form .'/vista.php?p='. $proj->id.  '&v='. $la->ver . '" target="_blank">📄 </a>'.$la->tp_instancia.
+                    ' </span></td>';
    
              array_push($btnStatus, new Blocos($la->fase_seq,'danger'));
              break;
@@ -110,10 +112,10 @@
        }
        $LastV .= 
          '</tbody>
-       </table><span class="badge badge-dark">
+       </table><span class="badge badge-light">
                  <span class="badge badge-secondary"> <span class="badge-light"> ca </span> Chefe de dividsão </span> 
                  <span class="badge badge-secondary"> <span class="badge-light"> ce </span> Dir centro de área </span> 
-                 <span class="badge badge-secondary"> <span class="badge-light"> co </span> coordenador de colegiado </span> 
+                 <span class="badge badge-secondary"> <span class="badge-light"> co </span> coordenador de colegiado </span> <br>
                  <span class="badge badge-secondary"> <span class="badge-light"> pf </span> professor </span> 
                 </span>';
    
@@ -186,11 +188,11 @@
       <div class="card-body">
 
         <div class="row">
-          <div class="col-9">
+          <div class="col-8">
             <p><strong>Resumo:</strong> '. resumirTexto($proj->resumo)  .'</p>
             <p><strong>Objetivos:</strong> '. resumirTexto($proj->objetivos)  .'</p>
           </div>
-          <div class="col">
+          <div class="col-4">
           '. $LastV .'
           </div>
         </div>

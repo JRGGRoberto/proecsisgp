@@ -1,66 +1,64 @@
 <?php
+
 require '../vendor/autoload.php';
 
-use \App\Session\Login;
-use \App\Entity\Professor;
-use \App\Entity\Outros;
+use App\Entity\Professor;
+use App\Session\Login;
+
 Login::requireLogin();
 $user = Login::getUsuarioLogado();
-use \App\Entity\Vinculo;
+use App\Entity\Diversos;
+use App\Entity\Vinculo;
 
-use \App\Entity\Diversos;
+define('TITLE', 'Editar dados do Professor');
 
-define('TITLE','Editar dados do Professor');
-
-//VALIDAÇÃO DO ID
-if(!isset($_GET['id']) ){
+// VALIDAÇÃO DO ID
+if (!isset($_GET['id'])) {
     header('location: index.php?status=error');
     exit;
 }
 
-//CONSULTA AO PROJETO
+// CONSULTA AO PROJETO
 $obProfessor = new Professor();
 $obProfessor = $obProfessor::getProfessor($_GET['id']);
 
-//VALIDAÇÃO DA TIPO
-if(!$obProfessor instanceof Professor){
-  header('location: ../index.php?status=error');
-  exit;
+// VALIDAÇÃO DA TIPO
+if (!$obProfessor instanceof Professor) {
+    header('location: ../index.php?status=error');
+    exit;
 }
 
-$whereVinc = 'id_prof = "'. $obProfessor->id .'"' ;
-$vinculos = Vinculo::gets($whereVinc );
+$whereVinc = 'id_prof = "'.$obProfessor->id.'"';
+$vinculos = Vinculo::gets($whereVinc);
 $padsv = '';
 $countv = 0;
-foreach($vinculos as $vinc){
-  if ($user['adm'] == 1){
-    $padsv .=  $vinc->ano .'  RT: '. $vinc->rt .' <a href="../vinc/editar.php?id='. $obProfessor->id.'">✏️</a> 
-    <a href="../vinc/del.php?id='. $obProfessor->id.'">⛔</a><br>';
-  } else {
-    $padsv .=  $vinc->ano .'  RT: '. $vinc->rt .'<br>';
-  } 
-  $countv++;
+foreach ($vinculos as $vinc) {
+    if ($user['adm'] == 1) {
+        $padsv .= $vinc->ano.'  RT: '.$vinc->rt.' <a href="../vinc/editar.php?id='.$obProfessor->id.'">✏️</a> 
+    <a href="../vinc/del.php?id='.$obProfessor->id.'">⛔</a><br>';
+    } else {
+        $padsv .= $vinc->ano.'  RT: '.$vinc->rt.'<br>';
+    }
+    ++$countv;
 }
-if ($countv == 0){
-  if ($user['adm'] == 1){
-    $padsv =  '<a href="../vinc/add.php?id='. $obProfessor->id.'">➕</a> vinculo PAD 2024'; 
-  } else {
-    $padsv =  'Sem vinculo';
-  }
+if ($countv == 0) {
+    if ($user['adm'] == 1) {
+        $padsv = '<a href="../vinc/add.php?id='.$obProfessor->id.'">➕</a> vinculo PAD 2024';
+    } else {
+        $padsv = 'Sem vinculo';
+    }
 }
- 
-
 
 // if ($user['adm'] == 1)
 
-$qryAEO = 
+$qryAEO =
 "select ca_id, campus, ce_id, centros, co_id, colegiado 
     from ca_ce_co ccc 
-    where  co_id = '".  $obProfessor->id_colegiado ."'";
+    where  co_id = '".$obProfessor->id_colegiado."'";
 
 $Caeo = Diversos::q($qryAEO);
 
-//VERIFICA PERMISSAO
+// VERIFICA PERMISSAO
 $acessoOk = false;
 $CAop = '';
 $CEop = '';
@@ -73,138 +71,134 @@ $script .= 'var co = document.querySelector("#co");';
 
 $msg = '?';
 
-if (strcmp($user['id'],$_GET['id'])===0){
-  $acessoOk = true;
-  $msg = 'user[id] == $_GET[id]';
-  $CAop = "<option value='".$Caeo->ca_id ."' readonly class='xpto3'>".$Caeo->campus .   "</option>";
-  $CEop = "<option value='".$Caeo->ce_id ."' readonly class='xpto3'>".$Caeo->centros .  "</option>";
-  $Coop = "<option value='".$Caeo->co_id ."' readonly class='xpto3'>".$Caeo->colegiado ."</option>";
-
-} elseif ($user['adm'] != 1){
-  switch($user['niveln']){
-    case 1 :
-      $CAop = "<option value='".$Caeo->ca_id ."' readonly class='xpto1'>". $Caeo->campus ."</option>";
-      $script .= '
-      pegarCE("'.$Caeo->ca_id .'").then(
+if (strcmp($user['id'], $_GET['id']) === 0) {
+    $acessoOk = true;
+    $msg = 'user[id] == $_GET[id]';
+    $CAop = "<option value='".$Caeo->ca_id."' readonly class='xpto3'>".$Caeo->campus.'</option>';
+    $CEop = "<option value='".$Caeo->ce_id."' readonly class='xpto3'>".$Caeo->centros.'</option>';
+    $Coop = "<option value='".$Caeo->co_id."' readonly class='xpto3'>".$Caeo->colegiado.'</option>';
+} elseif ($user['adm'] != 1) {
+    switch ($user['niveln']) {
+        case 1:
+            $CAop = "<option value='".$Caeo->ca_id."' readonly class='xpto1'>".$Caeo->campus.'</option>';
+            $script .= '
+      pegarCE("'.$Caeo->ca_id.'").then(
         (onResolved) => {
-          selectOpt("ce","'.$Caeo->ce_id .'")
+          selectOpt("ce","'.$Caeo->ce_id.'")
         }, (onRejected) => { }
       ).then(
       (onResolved) => {
-            pegarCO("'.$Caeo->ce_id .'").then(
+            pegarCO("'.$Caeo->ce_id.'").then(
               (onResolved) => {
-                selectOpt("co","'.$Caeo->co_id .'")
+                selectOpt("co","'.$Caeo->co_id.'")
               }, (onRejected) => { }
             )
         }, (onRejected) => { }
       )
       ';
-      
-      if ($user['ca_id'] == $obProfessor->ca_id ){
-        $acessoOk = true;
 
-        $msg = 'CA';
-      }
-      break;
-    case 2 :
-      $CAop = "<option value='".$Caeo->ca_id ."' readonly class='xpto2'>".$Caeo->campus ."</option>";
-      $CEop = "<option value='".$Caeo->ce_id ."' readonly class='xpto2'>".$Caeo->centros ."</option>";
+            if ($user['ca_id'] == $obProfessor->ca_id) {
+                $acessoOk = true;
 
-      $script .= '
-      pegarCO("'.$Caeo->ce_id .'").then(
+                $msg = 'CA';
+            }
+            break;
+        case 2:
+            $CAop = "<option value='".$Caeo->ca_id."' readonly class='xpto2'>".$Caeo->campus.'</option>';
+            $CEop = "<option value='".$Caeo->ce_id."' readonly class='xpto2'>".$Caeo->centros.'</option>';
+
+            $script .= '
+      pegarCO("'.$Caeo->ce_id.'").then(
         (onResolved) => {
-          selectOpt("co","'.$Caeo->co_id .'")
+          selectOpt("co","'.$Caeo->co_id.'")
         }, (onRejected) => { }
       )
       ';
-     
-      if ($user['ce_id'] == $obProfessor->ce_id ){
-        $acessoOk = true;
 
-        $msg = 'CE';
-      }
-      break;
-    case 3 :
-      $CAop = "<option value='".$Caeo->ca_id ."' readonly class='xpto3'>".$Caeo->campus .   "</option>";
-      $CEop = "<option value='".$Caeo->ce_id ."' readonly class='xpto3'>".$Caeo->centros .  "</option>";
-      $Coop = "<option value='".$Caeo->co_id ."' readonly class='xpto3'>".$Caeo->colegiado ."</option>";
-      if ($user['co_id'] == $obProfessor->co_id ){
-        $acessoOk = true;
+            if ($user['ce_id'] == $obProfessor->ce_id) {
+                $acessoOk = true;
 
-        $msg = 'CO';
-      }
-      break;
+                $msg = 'CE';
+            }
+            break;
+        case 3:
+            $CAop = "<option value='".$Caeo->ca_id."' readonly class='xpto3'>".$Caeo->campus.'</option>';
+            $CEop = "<option value='".$Caeo->ce_id."' readonly class='xpto3'>".$Caeo->centros.'</option>';
+            $Coop = "<option value='".$Caeo->co_id."' readonly class='xpto3'>".$Caeo->colegiado.'</option>';
+            if ($user['co_id'] == $obProfessor->co_id) {
+                $acessoOk = true;
+
+                $msg = 'CO';
+            }
+            break;
     }
 } elseif ($user['adm'] == 1) {
-  $acessoOk = true;
+    $acessoOk = true;
 
-  $msg = 'ADM';
+    $msg = 'ADM';
 
-  $script .= '
+    $script .= '
   pegarCA().then( 
       (onResolved) => {
-          selectOpt("ca","'.$Caeo->ca_id .'")
+          selectOpt("ca","'.$Caeo->ca_id.'")
       }, (onRejected) => { }
   ).then(
     (onResolved) => {
-          pegarCE("'.$Caeo->ca_id .'").then(
+          pegarCE("'.$Caeo->ca_id.'").then(
             (onResolved) => {
-              selectOpt("ce","'.$Caeo->ce_id .'")
+              selectOpt("ce","'.$Caeo->ce_id.'")
             }, (onRejected) => { }
           )
       }, (onRejected) => { }
   ).then(
     (onResolved) => {
-          pegarCO("'.$Caeo->ce_id .'").then(
+          pegarCO("'.$Caeo->ce_id.'").then(
             (onResolved) => {
-              selectOpt("co","'.$Caeo->co_id .'")
+              selectOpt("co","'.$Caeo->co_id.'")
             }, (onRejected) => { }
           )
       }, (onRejected) => { }
   )
   ';
 } else {
-  $acessoOk = false;
-  $msg = 'nada';
+    $acessoOk = false;
+    $msg = 'nada';
 }
-
 
 $script .= '</script>';
 
-if (!$acessoOk){
-  header('location: ../home/index.php?status=error');
-  exit;
+if (!$acessoOk) {
+    header('location: ../home/index.php?status=error');
+    exit;
 }
 
-//VALIDAÇÃO DO POST
-if(isset($_POST['nome'])){
+// VALIDAÇÃO DO POST
+if (isset($_POST['nome'])) {
+    // $obProfessor->id = $_POST['id'];
+    $obProfessor->nome = strtoupper($_POST['nome']);
+    $obProfessor->cpf = $_POST['cpf'];
+    $obProfessor->telefone = $_POST['telefone'];
+    $obProfessor->lattes = $_POST['lattes'];
+    $obProfessor->titulacao = $_POST['titulacao'];
+    $obProfessor->email = $_POST['email'];
+    $obProfessor->id_colegiado = $_POST['id_colegiado'];
+    $obProfessor->cat_func = $_POST['cat_func'];
+    $obProfessor->ativo = $_POST['ativo'];
+    if ($obProfessor->niveln > 0) {
+        $obProfessor->ativo = 1;
+    }
+    $obProfessor->adm = $_POST['adm'];
+    $obProfessor->updated_at = date('Y-m-d H:i:s');
+    $obProfessor->user = $_POST['user'];
+    if (strlen($_POST['senha']) > 0) {
+        $obProfessor->senha = password_hash($_POST['senha'], PASSWORD_DEFAULT);
+    }
+    $obProfessor->atualizar();
 
- // $obProfessor->id = $_POST['id'];
-  $obProfessor->nome = $_POST['nome'];
-  $obProfessor->cpf = $_POST['cpf'];
-  $obProfessor->telefone = $_POST['telefone'];
-  $obProfessor->lattes = $_POST['lattes'];
-  $obProfessor->titulacao = $_POST['titulacao'];
-  $obProfessor->email = $_POST['email'];
-  $obProfessor->id_colegiado = $_POST['id_colegiado'];
-  $obProfessor->cat_func = $_POST['cat_func'];
-  $obProfessor->ativo = $_POST['ativo'];
-  if ($obProfessor->niveln> 0){
-    $obProfessor->ativo = 1;
-  }
-  $obProfessor->adm = $_POST['adm'];
-  $obProfessor->updated_at =  date('Y-m-d H:i:s');
-  $obProfessor->user = $_POST['user'];
-  if(strlen($_POST['senha']) > 0 ){
-     $obProfessor->senha = password_hash($_POST['senha'], PASSWORD_DEFAULT);
-  }
-  $obProfessor->atualizar();
-
-  header('location: index.php?status=success');
-  exit;
+    header('location: index.php?status=success');
+    exit;
 }
 
 include '../includes/header.php';
 include __DIR__.'/includes/formulario.php';
 include '../includes/footer.php';
-  
