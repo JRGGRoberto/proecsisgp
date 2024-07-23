@@ -383,7 +383,7 @@ c {
 /*
 entre os tr de baixo 
 
-<td  colspan="2">Olá'.  $obProjeto->$tituloprogvinc .'</td>
+
 **/
 
     if ($obProjeto->vinculo === 'S'){
@@ -393,7 +393,7 @@ entre os tr de baixo
       </tr>
       </thead>
       <tr>
-        
+        <td  colspan="2">'.  $obProjeto->tituloprogvinc .'</td>
       </tr>';
 
     }
