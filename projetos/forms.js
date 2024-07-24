@@ -206,16 +206,18 @@ function submitSumbeter(){
 
 function submitSalvar(){
 
-  if( formulario == 2 ){
+ /* 
+ if( formulario == 2 ){
     var cnpq = document.getElementById("cnpq_garea").value;
     var cnpq_area = document.getElementById("cnpq_area").value;
     var cnpq_sarea = document.getElementById("cnpq_sarea").value;
     if((cnpq ==="") ||(cnpq_area ==="") ||(cnpq_sarea ==="")  ){
-      alert('Preencha o item 6');
+      alert('Preencha os itens de [Classificação do Projeto ou Programa] Item 7');
       window.location.href = "#cnpq_garea";
       return;
     }
   }
+    */
   
 
   var resumo = document.getElementById("resumo");
