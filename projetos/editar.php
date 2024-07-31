@@ -167,15 +167,17 @@ if (isset($_POST['titulo'])) {
 
     if (in_array($t, $anexoII)) {
         $obProjeto->ch_semanal = $_POST['ch_semanal'];
-        $cnpq_garea = 0;
-        $obProjeto->referencia = $_POST['referencia'];
-        if ($_POST['cnpq_garea'] < 1 or $_POST['cnpq_garea'] === null or $_POST['cnpq_garea'] = '') {
-            $cnpq_garea = 0;
-        } else {
-            $cnpq_garea = $_POST['cnpq_garea'];
-        }
 
-        $obProjeto->cnpq_area = $_POST['cnpq_area'];
+        $obProjeto->referencia = $_POST['referencia'];
+
+        $cnpq_garea = 0;
+        try {
+            $cnpq_garea = intval($_POST['cnpq_garea']);
+        } catch (Exception $e) {
+            $cnpq_garea = 0;
+        }
+        $obProjeto->cnpq_garea = $cnpq_garea;
+
         $obProjeto->cnpq_sarea = $_POST['cnpq_sarea'];
         $obProjeto->area_extensao = $_POST['area_extensao'];
         $obProjeto->linh_ext = $_POST['linh_ext'];
@@ -293,38 +295,16 @@ if ($user['id'] == $obProjeto->id_prof) {
         if (in_array($t, $anexoII)) {
             $qryAEO = '';
             $scriptS = '';
-            if (empty($obProjeto->cnpq_sarea)) {
-                $qryAEO =
-                   'select cnpq_garea, cnpq_area
-           FROM projetos
-           where  cnpq_area  = '.$obProjeto->cnpq_area;
+            $qryAEO =
+                    'SELECT cnpq_garea, cnpq_area, cnpq_sarea  
+                FROM projetos
+                WHERE  
+                   id  = "'.$obProjeto->id.'" 
+                   and ver = (select max(ver) from projetos where  id  = "'.$obProjeto->id.'" )';
 
-                $Caeo = Diversos::q($qryAEO);
+            $Caeo = Diversos::q($qryAEO);
 
-                $scriptS .= '
-           pegarGA().then( 
-               (onResolved) => {
-                   selectOpt("cnpq_garea","'.$Caeo->cnpq_garea.'")
-               }, (onRejected) => { }
-           ).then(
-             (onResolved) => {
-                   pegarAr("'.$Caeo->cnpq_garea.'").then(
-                     (onResolved) => {
-                       selectOpt("cnpq_area","'.$Caeo->cnpq_area.'")
-                     }, (onRejected) => { }
-                   )
-               }, (onRejected) => { }
-           )
-           ';
-            } else {
-                $qryAEO =
-                    'select cnpq_garea, cnpq_area, cnpq_sarea  
-            FROM projetos
-            where  cnpq_sarea  = '.$obProjeto->cnpq_sarea;
-
-                $Caeo = Diversos::q($qryAEO);
-
-                $scriptS .= '
+            $scriptS .= '
             pegarGA().then( 
                 (onResolved) => {
                     selectOpt("cnpq_garea","'.$Caeo->cnpq_garea.'")
@@ -347,7 +327,6 @@ if ($user['id'] == $obProjeto->id_prof) {
                 }, (onRejected) => { }
             )
             ';
-            }
 
             include __DIR__.'/includes/formAnexoII.php';
             echo '<script src="cnpq.js"></script>';
@@ -357,6 +336,9 @@ if ($user['id'] == $obProjeto->id_prof) {
       var ga = document.querySelector("#cnpq_garea");
       var ar = document.querySelector("#cnpq_area");
       var sa = document.querySelector("#cnpq_sarea");
+
+
+
 
       '.
             $scriptS
@@ -390,12 +372,14 @@ if ($user['id'] == $obProjeto->id_prof) {
 
 echo "
 <script>
+
 let area_extensao   = document.getElementById('area_extensao');
 let linh_ext   = document.getElementById('linh_ext');
 
-area_extensao.value = ".$obProjeto->area_extensao.';
-linh_ext.value = '.$obProjeto->linh_ext.';
+area_extensao.value = '$obProjeto->area_extensao';
+linh_ext.value = '$obProjeto->linh_ext';
+
 </script>
-';
+";
 
 include '../includes/footer.php';

@@ -150,15 +150,16 @@ if (isset($_POST['titulo'])) {
             $obProjeto->ch_semanal = $_POST['ch_semanal'];
         }
 
-        $cnpq_garea = 0;
         $obProjeto->referencia = $_POST['referencia'];
-        if ($_POST['cnpq_garea'] < 1 or $_POST['cnpq_garea'] === null or $_POST['cnpq_garea'] = '') {
-            $cnpq_garea = 0;
-        } else {
-            $cnpq_garea = $_POST['cnpq_garea'];
-        }
 
+        $cnpq_garea = 0;
+        try {
+            $cnpq_garea = intval($_POST['cnpq_garea']);
+        } catch (Exception $e) {
+            $cnpq_garea = 0;
+        }
         $obProjeto->cnpq_garea = $cnpq_garea;
+
         $obProjeto->cnpq_area = $_POST['cnpq_area'];
         $obProjeto->cnpq_sarea = $_POST['cnpq_sarea'];
 
