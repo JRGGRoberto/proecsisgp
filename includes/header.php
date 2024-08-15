@@ -1,24 +1,27 @@
 <?php
-  
+
 require '../vendor/autoload.php';
 
-use App\Db\Database;
-use \App\Session\Login;
+use App\Session\Login;
+
 $obUsuario = Login::getUsuarioLogado();
 
-
 $clock = [
-  '🕛', '🕐', '🕑', '🕒', '🕓', '🕔', '🕕', '🕖', '🕗', '🕘', '🕙', '🕚'
+    '🕛', '🕐', '🕑', '🕒', '🕓', '🕔', '🕕', '🕖', '🕗', '🕘', '🕙', '🕚',
 ];
 
 $horas = date('H');
-$horas >= 12 ? (int)($horas -= 12) : (int)($horas -= 0);
+$horas >= 12 ? (int) ($horas -= 12) : (int) ($horas -= 0);
 
-  
+$all = '';
+if ($obUsuario['config'] > 0) {
+    $all = "<div class='dropdown-divider'></div>
+          <a class='dropdown-item btn-sm' href='../projetos/indexAll.php'>Todos os Projetos</a>";
+}
 
-  $adminOpts = '';
-  if ($obUsuario['adm'] == 1  ){
-    $adminOpts = 
+$adminOpts = '';
+if ($obUsuario['adm'] == 1) {
+    $adminOpts =
       "<div class='btn-group btn-group-sm'>
         <button type='button' class='btn btn-primary dropdown-toggle' data-toggle='dropdown'>
         🔧 Administração
@@ -47,11 +50,11 @@ $horas >= 12 ? (int)($horas -= 12) : (int)($horas -= 0);
           </div>
         </div>
       </div>";
-  }
+}
 
-  $nome = explode(' ',trim($obUsuario['nome']));
-  $nome = $nome[0]; // will print Test
- 
+$nome = explode(' ', trim($obUsuario['nome']));
+$nome = $nome[0]; // will print Test
+
 ?>
 
 <!doctype html>
@@ -156,7 +159,7 @@ img.remover {
             <div class="col">
                   
                   <div>
-                      <span class="badge badge-success">SisGP <?= $clock[$horas] ?> </span>
+                      <span class="badge badge-success">SisGP <?php echo $clock[$horas]; ?> </span>
                   </div>
                   <div>
                     Sistema para Gerir Projetos
@@ -166,9 +169,9 @@ img.remover {
                   
               </div>
             <div class="btn-group">
-            <?php 
-    if (!is_null($obUsuario['nome'])){
-      ?>
+            <?php
+    if (!is_null($obUsuario['nome'])) {
+        ?>
       <div class="btn-group btn-group-sm float-right">   
       <div class="btn-group btn-group-sm">
         <button type="button" class="btn btn-primary dropdown-toggle" data-toggle="dropdown">
@@ -185,6 +188,8 @@ img.remover {
           <a class="dropdown-item btn-sm" href="../projetos">Listar minhas propostas</a>
           <div class="dropdown-divider"></div>
           <a class="dropdown-item btn-sm" href="../projetostb">Listar todos os projetos aprovados</a>
+
+          <?php echo $all; ?>
         </div>
       </div>
 
@@ -200,31 +205,31 @@ img.remover {
     
       </div>
 
-      <?=$adminOpts?>
+      <?php echo $adminOpts; ?>
 <!--
       <button type="button" class="btn btn-primary">Projetos</button>
     -->  
 
       <div clastoasts="btn-group btn-group-sm">
         <button type="button" class="btn btn-primary dropdown-toggle" data-toggle="dropdown">
-        👤 <?= $nome ?>
+        👤 <?php echo $nome; ?>
         </button>
         <div class="dropdown-menu dropdown-menu-right">
-          <?
-            $tipoUser = $obUsuario['tipo'] == 'agente' ? 'agente': 'professor';
-          ?>
+          <?php
+              $tipoUser = $obUsuario['tipo'] == 'agente' ? 'agente' : 'professor';
+        ?>
           
         
-          <a class="dropdown-item btn-sm" href="../<?=$tipoUser ?>/editar.php?id=<?=$obUsuario['id']?>">Perfil</a>
+          <a class="dropdown-item btn-sm" href="../<?php echo $tipoUser; ?>/editar.php?id=<?php echo $obUsuario['id']; ?>">Perfil</a>
     <!--      <a class="dropdown-item btn-sm" href="../config/">Configuração</a>  --> 
           <div class="dropdown-divider"></div>
           <a class="dropdown-item btn-sm" href="../login/logout.php">Sair</a>
         </div>
       </div>
     </div>
-<?php 
+<?php
     }
-  ?>
+?>
 
             </div>
          </div>
@@ -232,36 +237,34 @@ img.remover {
   </nav>
 
     <div class="container">
-<?php 
+<?php
 
-    if (!is_null($obUsuario['nome'])){
+  if (!is_null($obUsuario['nome'])) {
       echo "<a href='../hierarquia/index.php?hi=ca' data-toggle='tooltip' title='Hierarquia do campus' style='text-decoration:none;'>",
-              "<span class='badge badge-primary' id='bca'>",   
-              $obUsuario['ca_nome'], "</span></a>";
-      if($obUsuario['tipo'] != 'agente'){
-        echo "<a href='../hierarquia/index.php?hi=ce' data-toggle='tooltip' title='Hierarquia do centro de área' style='text-decoration:none;'>",
-                "<span class='badge badge-secondary' id='bce'>", $obUsuario['ce_nome'], 
-                "</span></a>",
-            "<a href='../hierarquia/index.php?hi=co' data-toggle='tooltip' title='Hierarquia do colegiado' style='text-decoration:none;'>",
-            "<span class='badge badge-success' id='bco'>",   $obUsuario['co_nome'],
-            "</span></a>";
-
+      "<span class='badge badge-primary' id='bca'>",
+      $obUsuario['ca_nome'], '</span></a>';
+      if ($obUsuario['tipo'] != 'agente') {
+          echo "<a href='../hierarquia/index.php?hi=ce' data-toggle='tooltip' title='Hierarquia do centro de área' style='text-decoration:none;'>",
+          "<span class='badge badge-secondary' id='bce'>", $obUsuario['ce_nome'],
+          '</span></a>',
+          "<a href='../hierarquia/index.php?hi=co' data-toggle='tooltip' title='Hierarquia do colegiado' style='text-decoration:none;'>",
+          "<span class='badge badge-success' id='bco'>",   $obUsuario['co_nome'],
+          '</span></a>';
       } else {
-        echo "<span class='badge badge-success'>Agente</span>";
+          echo "<span class='badge badge-success'>Agente</span>";
       }
-      echo"<a href='../", $tipoUser,"/editar.php?id=", $obUsuario['id'],"' data-toggle='tooltip' title='Perfil do usuário' style='text-decoration:none;'><span class='badge badge-info'>",      $obUsuario['nome'],"</span></a>";
+      echo "<a href='../", $tipoUser,'/editar.php?id=', $obUsuario['id'],"' data-toggle='tooltip' title='Perfil do usuário' style='text-decoration:none;'><span class='badge badge-info'>",      $obUsuario['nome'],'</span></a>';
 
       $a = $obUsuario['config'];
-      $cargo = ['Prof/AG','Coordenador',  'Centro de Área', 'Chefe de Divisão'];
+      $cargo = ['Prof/AG', 'Coordenador',  'Centro de Área', 'Chefe de Divisão'];
 
-      if($obUsuario['config'] > 0){
-        echo "<span class='badge badge-warning float-right'>", $cargo[$a],"</span>";
+      if ($obUsuario['config'] > 0) {
+          echo "<span class='badge badge-warning float-right'>", $cargo[$a],'</span>';
       }
-      if($obUsuario['adm'] == 1){
-        echo "<span class='badge badge-danger float-right'>Admin</span>";
+      if ($obUsuario['adm'] == 1) {
+          echo "<span class='badge badge-danger float-right'>Admin</span>";
       }
+  }
 
-    }
-
-  ?>
+?>
 
