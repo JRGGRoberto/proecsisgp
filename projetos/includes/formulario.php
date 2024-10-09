@@ -88,10 +88,11 @@ $t = $obProjeto->tipo_exten;
 </script>    
 </div>
 <hr>
+<label><h5><?=++$n?>. Classificação do Projeto ou Programa</h5></label>
+
 <?php
 if (in_array($t, $anexoII)) {
 ?>
-    <label><h5><?=++$n?>. Classificação do Projeto ou Programa</h5></label>
 
     <div class="row">
 
@@ -124,6 +125,9 @@ if (in_array($t, $anexoII)) {
 
 
     </div>
+<?php
+  }
+?>
 
     <div class="row">
 
@@ -146,9 +150,7 @@ if (in_array($t, $anexoII)) {
         </div>
       </div>
     </div>
-<?php
-}
-?>
+
 <hr>
 <label><h5><?=++$n?>. Período de Realização e Carga Horária</h5></label>
     <div class="row">

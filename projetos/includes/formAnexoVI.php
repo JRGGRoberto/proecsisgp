@@ -45,7 +45,7 @@
     </div>
 
     <hr>
-
+    
     <label>
       <h5><?= ++$n ?>. Contato do Coordenador</h5>
     </label>
@@ -64,21 +64,7 @@
         <input type="text" class="form-control" name="email" readonly value="<?= $email ?>">
       </div>
     </div>
-
-    <hr>
-
-    <div class="form-group">
-      <label>
-        <h5><?= ++$n ?>. A proposta está vinculada a alguma disciplina do curso de Graduação ou Pós-Graduação (ACEC II)</h5>
-      </label>
-      <select name="acec" class="form-control col-1">
-        <option value="N" <?= ($obProjeto->acec == 'N') ? 'selected' : ' ' ?>>Não</option>
-        <option value="S" <?= ($obProjeto->acec == 'S') ? 'selected' : ' ' ?>>Sim</option>
-      </select>
-    </div>
-
-    <hr>
-
+    
     <div class="form-group">
       <label>
         <h5><?= ++$n ?>. Vinculação à Programa de Extensão e Cultura</h5>

@@ -163,9 +163,11 @@ if (isset($_POST['titulo'])) {
         $obProjeto->cnpq_area = $_POST['cnpq_area'];
         $obProjeto->cnpq_sarea = $_POST['cnpq_sarea'];
 
-        $obProjeto->area_extensao = $_POST['area_extensao'];
-        $obProjeto->linh_ext = $_POST['linh_ext'];
+        
     }
+
+    $obProjeto->area_extensao = $_POST['area_extensao'];
+    $obProjeto->linh_ext = $_POST['linh_ext'];
 
     $obProjeto->contribuicao = $_POST['contribuicao'];
 
