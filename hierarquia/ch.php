@@ -56,12 +56,26 @@ if ($cent_cood == 1){
 
   
 } elseif($cent_cood == 3){
-
+/*
   $query = ' 
              select id, nome,
                 if(niveln > 0, " SELECTED ", "") sel
              from  userprof
              where ativo  = 1 and niveln in (0, 3) and co_id =  "'.$local .'" order by nome';
+*/
+  $query = '
+    select 
+      p.id, CONCAT(p.nome, "-  [ ", ca.nome , " - ", c.nome , " ]") nome,
+      if(c.coord_id = p.id and c.id = "'.$local .'", " SELECTED ", "") sel
+    FROM 
+      professores p 
+      inner join colegiados c on p.id_colegiado = c.id
+      inner join centros ce on ce.id = c.centro_id
+      inner join campi ca on ca.id = ce.campus_id 
+    WHERE  
+      p.ativo = 1
+    order by 2
+  ';
    
   $options = Diversos::qry($query);
 
