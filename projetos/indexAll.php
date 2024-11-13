@@ -15,6 +15,7 @@ $user = Login::getUsuarioLogado();
 $titulo = filter_input(INPUT_GET, 'titulo', FILTER_SANITIZE_STRING);
 $palavra  = filter_input(INPUT_GET, 'palavra', FILTER_SANITIZE_STRING); 
 $nome_prof = filter_input(INPUT_GET, 'nome_prof', FILTER_SANITIZE_STRING);
+$campus = filter_input(INPUT_GET, 'campus', FILTER_SANITIZE_STRING);
 /*
 $colegiado = filter_input(INPUT_GET, 'colegiado', FILTER_SANITIZE_STRING);
 $area = filter_input(INPUT_GET, 'area', FILTER_SANITIZE_STRING);
@@ -57,10 +58,10 @@ foreach($sendColegiado as $co){
 $filtroStatus = filter_input(INPUT_GET, 'filtroStatus', FILTER_SANITIZE_STRING);
 
 //Condições SQL
-$condicoes = [
-  strlen($titulo) ? 'titulo LIKE "%'.str_replace(' ','%',$titulo).'%"': null,
-  strlen($palavra) ? $palavra : null,
-  strlen($nome_prof) ? ' nome_prof LIKE "%'.str_replace(' ','%',$nome_prof).'%"': null
+$condicoes = [  strlen($titulo) ? ' titulo LIKE "%'.str_replace(' ','%',$titulo).'%"': null,
+strlen($palavra) ? $palavra : null,
+strlen($campus) ? ' campus LIKE "%'.str_replace(' ','%',$campus).'%"': null,
+strlen($nome_prof) ? ' nome_prof LIKE "%'.str_replace(' ','%',$nome_prof).'%"': null
 
   /*,
   strlen($colegiado) ? 'colegiado LIKE "%'.str_replace(' ','%',$colegiado).'%"': null,

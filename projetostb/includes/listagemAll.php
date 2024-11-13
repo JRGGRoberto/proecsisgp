@@ -25,7 +25,14 @@
 
 
    /********************/
-    
+   $dataA = '';
+   if(strlen($proj->vigen_fim) > 8){
+    $dataA = substr($proj->vigen_fim,8,2) . '/'.
+             substr($proj->vigen_fim,5,2) . '/' .
+             substr($proj->vigen_fim,0,4);
+   }
+   
+    //2023-03-09 00:00:00
     $resultados .=  '
 <div class="card mt-2">
   <div class="card-header">
@@ -34,7 +41,9 @@
     </div>
     <div class="row">
         <div class="col-sm-5"><strong>Tipo de Proposta:</strong> '. $proj->tipo_exten .'</div>
-        <div class="col-sm"><strong>Enviado para o colegiado de:</strong> '.$col.'</div> 
+        <div class="col-sm"><strong>Para:</strong> '.$col.'</div> 
+        <div class="col-sm"><strong>Fim de Vig.:</strong> '. $dataA .'</div> 
+        
     </div>
     <div class="row">
         <div class="col-sm">
@@ -112,9 +121,16 @@ include '../includes/paginacao.php';
         </div>
 
         <div class="col-3">
+          <label>Campus</label> 
+          <input type="text" name="campus" class="form-control form-control-sm" value="<?=$campus?>"  id="campus"   onchange="showLimpar();">
+        </div>
+      
+
+        <div class="col-3">
           <label>Palavra chave</label> 
           <input type="text" name="palavra" class="form-control form-control-sm" value="<?=$palavra?>"  id="palavra"   onchange="showLimpar();">
         </div>
+
 
 
         <div class="col-1 d-flex align-items-end">
@@ -217,8 +233,9 @@ include '../includes/paginacao.php';
   function showLimpar(){
     var titulo    = document.getElementById('titulo').value;
     var palavra   = document.getElementById('palavra').value;
+    var campus = document.getElementById('campus').value;
 
-    if((titulo.length > 0 ) || (palavra.length > 0 ) ) {
+    if((titulo.length > 0 ) || (campus.length > 0 ) || (palavra.length > 0 ) ) {
       btnLimpar.hidden = false;
     } 
   }

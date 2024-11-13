@@ -14,6 +14,7 @@ $user = Login::getUsuarioLogado();
 //Busca
 $nome_prof = filter_input(INPUT_GET, 'nome_prof', FILTER_SANITIZE_STRING);
 $titulo = filter_input(INPUT_GET, 'titulo', FILTER_SANITIZE_STRING);
+$campus = filter_input(INPUT_GET, 'campus', FILTER_SANITIZE_STRING);
 $palavra  = filter_input(INPUT_GET, 'palavra', FILTER_SANITIZE_STRING); 
 /*
 $colegiado = filter_input(INPUT_GET, 'colegiado', FILTER_SANITIZE_STRING);
@@ -51,8 +52,6 @@ foreach($sendColegiado as $co){
 }
 
 
-
-
 //Filtro de status
 $filtroStatus = filter_input(INPUT_GET, 'filtroStatus', FILTER_SANITIZE_STRING);
 
@@ -60,8 +59,8 @@ $filtroStatus = filter_input(INPUT_GET, 'filtroStatus', FILTER_SANITIZE_STRING);
 $condicoes = [
   strlen($titulo) ? ' titulo LIKE "%'.str_replace(' ','%',$titulo).'%"': null,
   strlen($palavra) ? $palavra : null,
+  strlen($campus) ? ' campus LIKE "%'.str_replace(' ','%',$campus).'%"': null,
   strlen($nome_prof) ? ' nome_prof LIKE "%'.str_replace(' ','%',$nome_prof).'%"': null
-
 ];
 
 array_push($condicoes, ' last_result = "a" and ( ( fase_seq = etapas) or (etapas = 0 and fase_seq is null) )');
@@ -74,7 +73,7 @@ $where1 = implode(' AND ', $condicoes);
 
 
 
-$palavra = $palavOrig;
+// $palavra = $palavOrig;
 
 //Qntd total de registros
 $qntdProjetos = Projeto::getQntdRegistros($where1);
@@ -83,6 +82,8 @@ $qntdProjetos = Projeto::getQntdRegistros($where1);
 $obPagination = new Pagination($qntdProjetos, $_GET['pagina']?? 1, 5);
 
 $projetos = Projeto::getRegistros($where1, null, $obPagination->getLimite());
+
+
 
 /*
 use \App\Entity\Tipo_exten;

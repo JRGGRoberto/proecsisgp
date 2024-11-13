@@ -201,7 +201,7 @@ foreach ($projetos as $proj) {
         }
     }
 
-    if ($proj->edt == 1) {
+/*    if ($proj->edt == 1) {
         $resultados .=
       '<hr>
          <div class="d-flex flex-row-reverse ">'
@@ -220,7 +220,7 @@ foreach ($projetos as $proj) {
           <a href="visualizar.php?id='.$proj->id.'&v='.$proj->ver.'&w=1" target="_blank"><button class="btn btn-success btn-sm mb-2">Visualizar</button></a>
         </div>';
     }
-
+*/
     $resultados .= '
       </div>
     </div>
@@ -252,6 +252,11 @@ include '../includes/paginacao.php';
         <div class="col-4">
           <label>Coordenador</label> 
           <input type="text" name="nome_prof" class="form-control form-control-sm" value="<?php echo $nome_prof; ?>"  id="nome_prof"   onchange="showLimpar();">
+        </div>
+
+        <div class="col-3">
+          <label>Campus</label> 
+          <input type="text" name="campus" class="form-control form-control-sm" value="<?=$campus?>"  id="campus"   onchange="showLimpar();">
         </div>
 
         <div class="col-3">
