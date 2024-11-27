@@ -2,13 +2,18 @@
 
 require '../vendor/autoload.php';
 
+error_reporting(E_ALL);
+error_reporting(-1);
+ini_set('error_reporting', E_ALL);
+
 use App\Entity\Professor;
 use App\Session\Login;
 
 Login::requireLogin();
 $user = Login::getUsuarioLogado();
 use App\Entity\Diversos;
-use App\Entity\Vinculo;
+
+use App\Entity\Outros;
 
 define('TITLE', 'Editar dados do Professor');
 
@@ -28,28 +33,34 @@ if (!$obProfessor instanceof Professor) {
     exit;
 }
 
-$whereVinc = 'id_prof = "'.$obProfessor->id.'"';
-$vinculos = Vinculo::gets($whereVinc);
-$padsv = '';
-$countv = 0;
-foreach ($vinculos as $vinc) {
-    if ($user['adm'] == 1) {
-        $padsv .= $vinc->ano.'  RT: '.$vinc->rt.' <a href="../vinc/editar.php?id='.$obProfessor->id.'">✏️</a> 
-    <a href="../vinc/del.php?id='.$obProfessor->id.'">⛔</a><br>';
-    } else {
-        $padsv .= $vinc->ano.'  RT: '.$vinc->rt.'<br>';
-    }
-    ++$countv;
-}
-if ($countv == 0) {
-    if ($user['adm'] == 1) {
-        $padsv = '<a href="../vinc/add.php?id='.$obProfessor->id.'">➕</a> vinculo PAD 2024';
-    } else {
-        $padsv = 'Sem vinculo';
-    }
-}
 
-// if ($user['adm'] == 1)
+$whereVinc =
+'select 
+   v.id, a.ano as ano, a.edt edt, v.id_prof, v.rt, v.aprov_co_id
+from 
+  anos a 
+  left join vinculo v on a.ano = v.ano and id_prof = "'.$obProfessor->id.'"';
+
+$padsv = '';
+$vinculos = Outros::qry($whereVinc);
+
+foreach ($vinculos as $vinc) {
+    $padsv .= $vinc->ano;
+    if(is_null($vinc->id)){
+        if (($user['adm'] == 1) ) {
+            $padsv .= '<a href="../vinc/add.php?id='.$vinc->ano . $obProfessor->id.'">➕</a> vinculo PAD ';
+        } else {
+            $padsv .= 'Sem vinculo';
+        }
+    } else {
+        if ($user['adm'] == 1) {
+            $padsv .= '  RT: '.$vinc->rt.' <a href="../vinc/editar.php?id='.$vinc->id.'">✏️</a> <a href="../vinc/del.php?id='.$vinc->id.'">⛔</a>';
+        } else {
+            $padsv .= 'Sem vinculo';
+        }
+    }
+    $padsv .= '<br>';
+}
 
 $qryAEO =
 "select ca_id, campus, ce_id, centros, co_id, colegiado 

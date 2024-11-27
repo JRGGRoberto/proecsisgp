@@ -8,9 +8,8 @@ error_reporting(E_ALL);
 use \App\Session\Login;
 Login::requireLogin();
 $user = Login::getUsuarioLogado();
-use \App\Entity\Professor;
 use \App\Entity\Vinculo;
-use \App\Entity\disciplinas;
+
 
 use \App\Entity\Outros;
 
@@ -25,32 +24,26 @@ if (!$user['adm'] == 1){
   exit;
 }
 
-
-$obProfessor = new Professor();
-$obProfessor = $obProfessor::getProfessor($_GET['id']);
-
-//VALIDAÇÃO DA TIPO
-if(!$obProfessor instanceof Professor){
-  header('location: ../index.php?status=error');
-  exit;
-}
+$objVinculo = new Vinculo();
+$objVinculo = $objVinculo::get($_GET['id']);
 
 $sql = '
 SELECT * 
 FROM pad_sucinto 
 WHERE 
-   id_prof  = "'. $obProfessor->id .'" ' ;
+   id  =  "'. $objVinculo->id .'" ' ;
+
+   
 $ativspad = Outros::qry($sql);
 
 
-$ano = '2024';
-$vinculo = Vinculo::getByAnoProf($obProfessor->id, $ano);
-define('TITLE','Remover do vinculo '. $ano);
+
+define('TITLE','Remover do vinculo '. $objVinculo->ano);
 $readonly = ' readonly ';
 
 if(isset($_POST['nome'])){
 
-  $vinculo->excluir();
+  $objVinculo->excluir();
  
     
   header('location: ../professor/index.php?status=success');
@@ -59,7 +52,7 @@ if(isset($_POST['nome'])){
 }
 
 include '../includes/header.php';
-echo '<h2 class="mt-3">Remover do vinculo 2024</h2>';
+echo '<h2 class="mt-3">Remover do vinculo '.$objVinculo->ano.'</h2>';
 echo '
 <table id="tabelaPADS" name="tabelaPADS" class="table table-bordered table-sm  table-hover">
   <thead class="thead-light" style="background: white; position: sticky; top: 0; z-index: 10;">

@@ -39,6 +39,7 @@
         </div>
 
       </form>
+      <a href="./recupera.php" class="btn btn-light btn-sm float-right">📑 Recuperar senha</a>
 
 
     </div>

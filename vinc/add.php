@@ -11,17 +11,21 @@ use \App\Entity\Vinculo;
 Login::requireLogin();
 $user = Login::getUsuarioLogado();
 
-
+/*
 //VALIDAÇÃO DO ID
 if(!isset($_GET['id']) ){
     header('location: index.php?status=error');
     exit;
 }
+    */
 
+
+$id_prof = substr( $id =$_GET['id'],4,36);
+$ano = substr( $id =$_GET['id'],0,4);
 
 //CONSULTA AO PROJETO
 $obProfessor = new Professor();
-$obProfessor = $obProfessor::getProfessor($_GET['id']);
+$obProfessor = $obProfessor::getProfessor($id_prof);
 
 
 
@@ -36,7 +40,7 @@ if (!$user['adm'] == 1){
 }
 
 
-$ano = '2024';
+
 define('TITLE','Adicionar vinculo de '. $ano);
 $vinculo = new Vinculo();
 $readonly = '';
@@ -49,7 +53,7 @@ if(isset($_POST['nome'])){
   $vinculo->tempo_cc        = $_POST['tempo_cc'];
   $vinculo->tempo_esu       = $_POST['tempo_esu'];
   $vinculo->area_concurso   = $_POST['area_concurso'];
-  $vinculo->ano = 2024;
+  $vinculo->ano = $ano;
   $vinculo->user            = $user['id'];
  
   $vinculo-> cadastrar();

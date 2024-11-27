@@ -2,8 +2,8 @@
 require '../vendor/autoload.php';
 
 use \App\Session\Login;
-use \App\Entity\Professor;
 use \App\Entity\Vinculo;
+use \App\Entity\Professor;
 Login::requireLogin();
 $user = Login::getUsuarioLogado();
 
@@ -15,27 +15,30 @@ if(!isset($_GET['id']) ){
 }
 
 
-//CONSULTA AO PROJETO
-$obProfessor = new Professor();
-$obProfessor = $obProfessor::getProfessor($_GET['id']);
+//CONSULTA AO vinculo
+$vinculo = new Vinculo();
+$vinculo = $vinculo::get($_GET['id']);
 
+$obProfessor = Professor::getProfessor($vinculo->id_prof);
 
 
 //VALIDAÇÃO DA TIPO
-if(!$obProfessor instanceof Professor){
+if(!$vinculo instanceof Vinculo){
   header('location: ../index.php?status=error');
   exit;
 }
+
 if (!$user['adm'] == 1){
   header('location: ../index.php?status=error');
   exit;
 }
 
 
-$ano = '2024';
-$vinculo = Vinculo::getByAnoProf($obProfessor->id, $ano);
-define('TITLE','Editar dados do vinculo de '. $ano);
+
+
+define('TITLE','Editar dados do vinculo de '. $vinculo->ano);
 $readonly = '';
+
 
 if(isset($_POST['nome'])){
 
