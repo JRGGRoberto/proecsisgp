@@ -14,8 +14,8 @@
                     <tr>
                         <th>Ano letivo</th>
                         <td colspan="3">2023</td>
-
                     </tr>
+
                     <tr>
                         <th>Nome</th>
                         <td></td>

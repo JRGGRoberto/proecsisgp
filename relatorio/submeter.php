@@ -44,7 +44,7 @@ if($obProjeto->id_prof != $user['id']){
   exit;
 }
 
-// $obProjeto->regra    =  '6204ba97-7f1a-499e-a17d-118d305bf7e4';
+$obProjeto->regra    =  '6204ba97-7f1a-499e-a17d-118d305bf7e4';
 
 $obProjeto->Submeter($_POST['selecOpt']);
 

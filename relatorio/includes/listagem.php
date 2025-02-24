@@ -40,11 +40,11 @@
       ($proj->edt ==  0)
     ){
 
-      $progresso = '<span class="badge badge-success ">Em execução/Excutado  </span>';
+      $progresso = '<span class="badge badge-success ">Em execução/Excutado</span>';
 
     } else {
 
-///
+
       is_null($proj->colegiado) ? $col = 'A definir' : $col = $proj->colegiado;
 
       $where = 'id_proj = "'. $proj->id. '"';
@@ -100,14 +100,8 @@
    
        }
        $LastV .=
-         ' <tr>
-             <td colspan="3">
-                
-             </td>
-           </tr>
-         </tbody>
-       </table>
-       ';
+         '</tbody>
+       </table>';
    
        if($a==0){
          $LastV = '';
@@ -137,8 +131,6 @@
           ' </div>
           </span>';
        }
-
-
    
 
     }

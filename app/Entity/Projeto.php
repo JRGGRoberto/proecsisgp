@@ -375,10 +375,13 @@ class Projeto
 
         // Quando o projeto é enviado ganha um número de protocolo
 
-        $sql = "insert into numprotocolo (idproj)   values ('".$this->id."')";
+        // $sql ="select COUNT(protocolo) from projetos p where id = '".$this->id."'";
 
-        $b = new Database();
-        $b->execute($sql);
+        if(!isset($this->protocolo)){
+            $sql = "insert into numprotocolo (idproj)   values ('".$this->id."')";
+            $b = new Database();
+            $b->execute($sql);
+        }
 
         return true;
         // ->fetchAll(PDO::FETCH_CLASS,self::class);
