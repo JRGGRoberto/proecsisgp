@@ -2,49 +2,36 @@
 
 require '../vendor/autoload.php';
 
-use App\Entity\Outros;
 use App\Session\Login;
+use App\Entity\Projeto;
+use App\Entity\Professor;
 
 // Obriga o usuário a estar logado
 Login::requireLogin();
 $user = Login::getUsuarioLogado();
 
-$anexoIII = [1, 2];
-$anexoII = [3, 4, 5];
 
 $t = $_GET['t'];
-
-$palav1 = '';
-$palav2 = '';
-$palav3 = '';
+$id = $_GET['i'];
 
 switch ($t) {
     case 1:
-        define('TITLE', 'FORMULÁRIO PARA ELABORAÇÃO DE PROPOSTA DE CURSO');
+        define('TITLE', 'RELATÓRIO PARCIAL');
         break;
     case 2:
-        define('TITLE', 'FORMULÁRIO PARA ELABORAÇÃO DE PROPOSTA DE EVENTO');
-        break;
-    case 3:
-        define('TITLE', 'FORMULÁRIO PARA ELABORAÇÃO DE PROPOSTAS DE PRESTAÇÃO DE SERVIÇO');
-        break;
-    case 4:
-        define('TITLE', 'FORMULÁRIO PARA ELABORAÇÃO DE PROPOSTAS DE PROGRAMA');
-        break;
-    case 5:
-        define('TITLE', 'FORMULÁRIO PARA ELABORAÇÃO DE PROPOSTAS DE PROJETO');
+        define('TITLE', 'RELATÓRIO FINAL');
         break;
     default:
         header('location: index.php?status=error');
         exit;
 }
 
-use App\Entity\Projeto;
-
 $obProjeto = new Projeto();
-$obProjeto->id_prof = $user['id'];
-$obProjeto->nome_prof = $user['nome'];
-$obProjeto->tipo_exten = $t;
+$obProjeto = Projeto::getProjetoLast($id);
+$obProjeto = Projeto::getProjeto($id, $obProjeto->ver);
+$obProfessor = Professor::getProfessor($obProjeto->id_prof);
+
+
 
 // Quando a ação for para remover anexo
 if (isset($_POST['acao']) == 'removeAnexo') {
@@ -61,65 +48,6 @@ if (isset($_POST['acao']) == 'removeAnexo') {
     exit;
 }
 
-use App\Entity\Area_Cnpq;
-
-$areas_cnpq1 = Area_Cnpq::getRegistros();
-$selectAreaCNPQ = '';
-foreach ($areas_cnpq1 as $ar_cnpq) {
-    $selectAreaCNPQ .= '<option value="'.$ar_cnpq->id.'" '.$ar_cnpq->sel.'>'.$ar_cnpq->nome.'</option>';
-}
-
-/*
-use \App\Entity\Tipo_exten;
-$proposta = Tipo_exten::getRegistros($obProjeto->id);
-$propOptions = '';
-foreach($proposta as $prop){
-  $propOptions .= '<option value="'.$prop->id.'" '.$prop->sel.'>'.$prop->nome.'</option>';
-}
-*/
-
-use App\Entity\Area_temat;
-
-$area_tem1 = Area_temat::getRegistros();
-$areaOptions = '';
-foreach ($area_tem1 as $area) {
-    $areaOptions .= '<option value="'.$area->id.'" '.$area->sel.'>'.$area->nome.'</option>';
-}
-
-use App\Entity\Area_temat2;
-
-$area_tem2 = Area_temat2::getRegistros();
-$areaOptions2 = '';
-foreach ($area_tem2 as $area) {
-    $areaOptions2 .= '<option value="'.$area->id.'" '.$area->sel.'>'.$area->nome.'</option>';
-}
-
-use App\Entity\Area_Extensao;
-
-$area_ext = Area_Extensao::getRegistros();
-$area_ext_Opt = '';
-foreach ($area_ext as $aext) {
-    $area_ext_Opt .= '<option value="'.$aext->id.'" '.$aext->sel.'>'.$aext->nome.'</option>';
-}
-
-$telefone = '';
-$email = '';
-
-use App\Entity\Agente;
-use App\Entity\Professor;
-
-$regra = '';
-if ($user['tipo'] == 'professor') {
-    $dadosProf = Professor::getDadosProf($obProjeto->id_prof);
-    $telefone = $dadosProf->telefone;
-    $email = $dadosProf->email;
-    $regra = '6204ba97-7f1a-499e-a17d-118d305bf7e4';
-} elseif ($user['tipo'] == 'agente') {
-    $dadosAgentes = Agente::get($obProjeto->id_prof);
-    $telefone = $dadosAgentes->telefone;
-    $email = $dadosAgentes->email;
-    $regra = 'a45daba2-12ec-11ef-b2c8-0266ad9885af';
-}
 
 use App\Entity\Arquivo;
 use App\Entity\Equipe;
@@ -292,54 +220,17 @@ $scriptVars =
 
 include '../includes/header.php';
 
-if (in_array($t, $anexoII)) {
-    include __DIR__.'/includes/formAnexoII.php';
+if ($t == 1) {
+    include __DIR__.'/includes/formParcial.php';
 
-    echo '<script src="cnpq.js"></script>';
-
-    echo '<script>
-
-var ga = document.querySelector("#cnpq_garea");
-var ar = document.querySelector("#cnpq_area");
-var sa = document.querySelector("#cnpq_sarea");
-pegarGA();
-  
-</script>';
-} elseif (in_array($t, $anexoIII)) {
-    include __DIR__.'/includes/formAnexoIII.php';
+    
+} elseif ($t == 2) {
+    include __DIR__.'/includes/formFinal.php';
 } else {
     header('location: index.php?status=error');
     exit;
 }
 
-$id_regra = $user['tipo'] == 'agente' ? 'a45daba2-12ec-11ef-b2c8-0266ad9885af' : '6204ba97-7f1a-499e-a17d-118d305bf7e4';
-
-$sqlEtapas =
-"
-select 
-  rd.nome as nome,
-  case tp_avaliador 
-     when 'ca' then 'Chefe de Divisão'
-     when 'ce' then 'Diretor(ª) de Centro de Área'
-     when 'co' then 'Coordenador(ª) de colegiado'
-     when 'pf' then 'Professor(ª)'
-     else 'Agente' end as avaliador,
-  rd.sequencia , form 
-from regras_defin rd  
-where 
- id_reg = '".$id_regra."' order by sequencia  ";
-$etapas = Outros::qry($sqlEtapas);
-
-$etapsTabele = '';
-
-foreach ($etapas as $e) {
-    $etapsTabele .=
-       '<tr>
-        <td>'.$e->avaliador.'</td>
-        <td>'.$e->nome.' </td>
-      </tr>
-  ';
-}
 
 echo '
 <!-- The Modal -->
@@ -362,7 +253,7 @@ echo '
     </tr>
   </thead>
   <tbody>'.
-  $etapsTabele
+   $a = 'aa'
   .'</tbody>
 </table>
       </div>

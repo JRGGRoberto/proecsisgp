@@ -3,110 +3,71 @@
 require '../vendor/autoload.php';
 
 use \App\Session\Login;
-use \App\Db\Pagination;
 use \App\Entity\Projeto;
-use \App\Entity\Palavras;
+use \App\entity\RelParcial;
 
-//Obriga o usuário a estar logado
-Login::requireLogin();
 $user = Login::getUsuarioLogado();
 
-//Busca
-$titulo = filter_input(INPUT_GET, 'titulo', FILTER_SANITIZE_STRING);
-$palavra  = filter_input(INPUT_GET, 'palavra', FILTER_SANITIZE_STRING); 
-/*
-$colegiado = filter_input(INPUT_GET, 'colegiado', FILTER_SANITIZE_STRING);
-$area = filter_input(INPUT_GET, 'area', FILTER_SANITIZE_STRING);
-$linh_ext = filter_input(INPUT_GET, 'linh_ext', FILTER_SANITIZE_STRING);
-*/
-$palavOrig = $palavra;
+$mensagem = '';
+if (isset($_GET['status'])) {
+    switch ($_GET['status']) {
+        case 'success':
+            $mensagem = '<div class="alert alert-success">Ação executada com sucesso!</div>';
+            break;
 
-if (strlen($palavra)) {
-  $palavra = Palavras::getProjByPalavra($palavra);
-} else {
-  $palavra = "";
+        case 'error':
+            $mensagem = '<div class="alert alert-danger">Ação não executada!</div>';
+            break;
+    }
 }
 
-
-$qry = '';
-if(($user['tipo'] == 'professor') || $user['tipo'] == 'prof'){
-  $qry = 'select 
-            ccc.co_id as id, 
-            CONCAT("Colegiado de ", ccc.colegiado) as nome,
-            IFNULL(ccc.coord_id, "disabled") coord
-          from ca_ce_co ccc where ccc.ca_id  = "'. $user['ca_id'] .'"';
-
-} elseif ($user['tipo'] == 'agente'){
-  $qry = 'select 
-            c.id as id,
-            c.nome as nome,
-            IFNULL(c.dir_ca_id, "disabled")  coord
-          from centros c
-          where c.campus_id = "'. $user['ca_id'] .'"';
+// VALIDAÇÃO DO ID
+if (!isset($_GET['id'])) {
+    header('location: index.php?status=error');
+    exit;
 }
+$id = $_GET['id'];
 
+// CONSULTA AO PROJETO
+$obProjeto = new Projeto();
+$obProjeto = Projeto::getProjetoLast($id);
+$obProjeto = Projeto::getProjeto($id, $obProjeto->ver);
 
-use \App\Entity\Diversos;
-$sendColegiado = Diversos::qry($qry);
-$coolSelectSend = '';
+$relQnt = RelParcial::getQntd('idproj = "'.$id.'"' );
 
+$relatorios = RelParcial::gets('idproj = "'.$id.'"' );
 
-
-foreach($sendColegiado as $co){
-  $dis = '';
-  $info = '';
-  if($co->coord =='disabled'){
-    $dis = 'disabled';
-    $info = ($user['tipo'] == 'professor' || $user['tipo'] == 'prof') ? '[Sem coordenador]': '[Sem diretor de centro]';
-  }
-
-  $coolSelectSend .= '<option value="'.$co->id.'"  '. $dis . '>'.$co->nome.' '.$info.'</option>';
+function formatData($data): string
+{
+    return substr($data,8,2) .'/'. substr($data,5,2).'/'.  substr($data,0,4);
 }
 
 
 
-
-//Filtro de status
-$filtroStatus = filter_input(INPUT_GET, 'filtroStatus', FILTER_SANITIZE_STRING);
-
-//Condições SQL
-$condicoes = [
-  'id_prof = "' .$user['id'] .'"',
-  strlen($titulo) ? 'titulo LIKE "%'.str_replace(' ','%',$titulo).'%"': null,
-  strlen($palavra) ? $palavra : null
-  /*,
-  strlen($colegiado) ? 'colegiado LIKE "%'.str_replace(' ','%',$colegiado).'%"': null,
-  strlen($area) ? "area_extensao = '$area_extensao'": null,  
-  strlen($linh_ext) ? 'linh_ext LIKE "%'.str_replace(' ','%',$linh_ext).'%"': null */
-];
-
-//array_push($condicoes, 'id_prof = "' .$user['id'] .'"');
-
-//Remove posições vazias
-$condicoes = array_filter($condicoes);
-
-// Cláusula WHERE
-$where1 = implode(' AND ', $condicoes);
-
-
-$palavra = $palavOrig;
-
-//Qntd total de registros
-$qntdProjetos = Projeto::getQntdRegistros($where1);
-
-//paginação
-$obPagination = new Pagination($qntdProjetos, $_GET['pagina']?? 1, 5);
-
-$projetos = Projeto::getRegistros($where1, null, $obPagination->getLimite());
-
-/*
-use \App\Entity\Tipo_exten;
-$proposta = Tipo_exten::getRegistros();
-$propOptions = '';
-foreach($proposta as $prop){
-  $propOptions .= '<option value="'.$prop->nome.'"   >'.$prop->nome.'</option>';
+$obProjeto->tipo_exten;
+$tipo = '';
+switch ($obProjeto->tipo_exten) {
+  case 1:
+      $tipo = 'Curso';
+      break;
+  case 2:
+      $tipo = 'Evento';
+      break;
+  case 3:
+      $tipo = 'Prestação de serviço';
+      break;
+  case 4:
+      $tipo = 'Programa';
+      break;
+  case 5:
+      $tipo = 'Projeto';
+      break;
+  default:
+      $tipo = '';
+      break;
+      exit;
 }
-*/
+
 
 include '../includes/header.php';
 include __DIR__.'/includes/listagem.php';

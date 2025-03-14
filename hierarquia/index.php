@@ -78,10 +78,18 @@ function addInfoCa($idca, $adm, $nivel, $caU, $ceU, $coU, $show = ''){
 
   if ($ca->chef_div_id != null){
     $prof = Professor::getProfessor($ca->chef_div_id);
-    $nome = '<strong>'. $prof->nome .'</strong>';
+    $chef_div = '<strong>'. $prof->nome .'</strong>';
   } else {
-    $nome = ' <span class="badge badge-danger">a definir</span>';
+    $chef_div = ' <span class="badge badge-danger">a definir</span>';
   }
+
+  if ($ca->dir_campus_id != null){
+    $prof = Professor::getProfessor($ca->dir_campus_id);
+    $dir_camp = '<strong>'. $prof->nome .'</strong>';
+  } else {
+    $dir_camp = ' <span class="badge badge-danger">a definir</span>';
+  }
+  
 
   $qry2 = 
    'select id from centros c where c.campus_id = "'.$ca->id .'"';
@@ -94,9 +102,11 @@ function addInfoCa($idca, $adm, $nivel, $caU, $ceU, $coU, $show = ''){
 
   }
 
-  $alteraCA = '';
+  $alteraCA_DC = '';
+  $alteraCA_CD = '';
   if ($adm == '1' ){
-    $alteraCA = '<span class="badge badge-light"><a href="./ch.php?a=1&b='.$ca->id.'">Alterar</a></span>';
+    $alteraCA_DC = '<span class="badge badge-light"><a href="./ch.php?a=0&b='.$ca->id.'">Alterar</a></span>';
+    $alteraCA_CD = '<span class="badge badge-light"><a href="./ch.php?a=1&b='.$ca->id.'">Alterar</a></span>';
   }
   
   
@@ -108,10 +118,15 @@ function addInfoCa($idca, $adm, $nivel, $caU, $ceU, $coU, $show = ''){
       <div class="card-header">
         <div class="row">
           <div class="col-sm-6">
-          <a class="collapsed card-link" data-toggle="collapse" href="#ce'. $ca->id .'"><span class="badge badge badge-primary">
-          &nbsp; &nbsp; </span> &nbsp; Campus <strong>'. $ca->nome .'</strong></a></div>
-          <div class="col-sm-6">Chefe de Divisão: &nbsp; '. $nome .'<br>'.$alteraCA .'</div>
-       </div>
+            <a class="collapsed card-link" data-toggle="collapse" href="#ce'. $ca->id .'"><span class="badge badge badge-primary">
+            &nbsp; &nbsp; </span> &nbsp; Campus <strong>'. $ca->nome .'</strong></a>
+          </div>
+          <div class="col-sm-6">
+            <div>Diretor de Campus: &nbsp; '. $dir_camp .'<br>'.$alteraCA_DC .'</div>
+            <div>Chefe de Divisão: &nbsp; '. $chef_div .'<br>'.$alteraCA_CD .'</div>
+          </div>
+          
+        </div>
 
         </a>
       </div>

@@ -161,7 +161,7 @@ if (isset($_POST['titulo'])) {
         $obProjeto->cnpq_garea = $cnpq_garea;
 
         $obProjeto->cnpq_area = $_POST['cnpq_area'];
-        $obProjeto->cnpq_sarea = $_POST['cnpq_sarea'] ?? 0;
+        $obProjeto->cnpq_sarea = $_POST['cnpq_sarea'];
 
         
     }
@@ -323,6 +323,7 @@ select
      when 'ce' then 'Diretor(ª) de Centro de Área'
      when 'co' then 'Coordenador(ª) de colegiado'
      when 'pf' then 'Professor(ª)'
+     when 'dc' then 'Diretor de Campus'
      else 'Agente' end as avaliador,
   rd.sequencia , form 
 from regras_defin rd  

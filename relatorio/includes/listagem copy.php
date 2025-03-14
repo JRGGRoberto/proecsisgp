@@ -32,7 +32,6 @@
 
   $resultados = '<div id="accordion">';
   foreach($projetos as $proj){
-    $showRelatorios = false;
     $qnt1++;
     if(
       (in_array($proj->regras, ['e341e624-0715-11ef-b2c8-0266ad9885af', '287c102f-e5fa-11ee-b2c8-0266ad9885af'])) && 
@@ -40,15 +39,12 @@
       ($proj->last_result == 'a') &&
       ($proj->edt ==  0)
     ){
-      
-      $showRelatorios = true;
-      $progresso = '<span class="badge badge-success ">Em execução/Excutado <a href="../projetos/visualizar.php?id='.$proj->id.'&amp;v='.$proj->ver.'&amp;w=nw" target="_blank">📄</a></span> ';
 
-      
+      $progresso = '<span class="badge badge-success ">Em execução/Excutado</span>';
 
     } else {
 
-///
+
       is_null($proj->colegiado) ? $col = 'A definir' : $col = $proj->colegiado;
 
       $where = 'id_proj = "'. $proj->id. '"';
@@ -200,19 +196,13 @@
       } else {
         $nomecol = Colegiado::getRegistro($proj->para_avaliar);
 
-        $reltorios ='';
-        if($showRelatorios){
-          $reltorios .=  
-          '<a href="../relatorio/index.php?id='. $proj->id . '"><button class="btn btn-success btn-sm mb-2">📊 Relatório(s) Parcial/Final</button></a> ';
-        }
+   
         $resultados .=  
-          '<hr>
-            
-            <div class="d-flex flex-row-reverse ">
-               <a href="visualizar.php?id='. $proj->id . '&v='. $proj->ver . '&w=1" target="_blank"><button class="btn btn-success btn-sm mb-2">Visualizar</button></a>
-               &nbsp;'.$reltorios .' &nbsp;  
-              
-            </div>';
+      '<hr>
+        
+        <div class="d-flex flex-row-reverse ">
+          <a href="visualizar.php?id='. $proj->id . '&v='. $proj->ver . '&w=1" target="_blank"><button class="btn btn-success btn-sm mb-2">Visualizar</button></a>
+        </div>';
       }
 
      $resultados .=  '
@@ -391,14 +381,7 @@
 
 
   function printSubAlt(data){
-    console.table(data);
-    let nomeLocal = '';
     modalTitle.innerText = 'Reenvio do projeto à PROEC';
-    if(data.colegiado === null){
-      nomeLocal = 'Campus';
-    } else {
-      nomeLocal = data.colegiado;
-    }
     modalBody.innerHTML = `
           <div class="modal-body" id="modalBody">
             <h4>${data.titulo}</h4>
@@ -408,7 +391,7 @@
                   <div class="form-group">
                     <label for="para_avaliar">Enviar para </label>
                     <select name="para_avaliar" id="selPara" class="form-control" onchange="ativaBTN();">
-                      <option value="${data.para_avaliar}" selected>${nomeLocal}</option>
+                      <option value="${data.para_avaliar}" selected>${data.colegiado}</option>
                     </select>
                   </div>
                 </div>
@@ -491,8 +474,6 @@
   function writeNumber(elementId) {
     var outputValueTo =   elementId.id;
     getProjDados(outputValueTo);
-    
-
   
   }
 

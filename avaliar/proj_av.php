@@ -153,6 +153,3 @@ if($callParecer){
 
 echo '<p>&nbsp</p>';
 include '../includes/footer.php';
-
-
-

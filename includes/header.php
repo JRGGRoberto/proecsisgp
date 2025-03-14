@@ -6,6 +6,9 @@ use App\Session\Login;
 
 $obUsuario = Login::getUsuarioLogado();
 
+use App\Entity\CompararAlunos;
+$idPermitido = CompararAlunos::getIdPermitidos();
+
 $clock = [
     '🕛', '🕐', '🕑', '🕒', '🕓', '🕔', '🕕', '🕖', '🕗', '🕘', '🕙', '🕚',
 ];
@@ -72,6 +75,8 @@ $nome = $nome[0]; // will print Test
 
   <link href="../includes/summernote-bs4.min.css" rel="stylesheet">
   <script src="../includes/summernote-bs4.min.js"></script>
+  <!-- para a inserção de leitor de xlsx -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
   <!--
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.1/dist/css/bootstrap.min.css">
   <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
@@ -232,6 +237,13 @@ img.remover {
           <a class="dropdown-item btn-sm" href="../<?php echo $tipoUser; ?>/editar.php?id=<?php echo $obUsuario['id']; ?>">Perfil</a>
     <!--      <a class="dropdown-item btn-sm" href="../config/">Configuração</a>  --> 
           <div class="dropdown-divider"></div>
+<!-- se a pessoa for permitida, ela entrará aqui para colocar as tabelas e ver se há alunos repetidos em bolsas -->
+          <!-- As pessoas permitidas estão em CompararAlunos.php -->
+          <?php if (isset($obUsuario['id']) && in_array($obUsuario['id'], $idPermitido, true)): ?>
+            <a class="dropdown-item btn-sm" href="../verificar_bolsistas/index.php">Verificar alunos bolsistas</a>
+            <div class="dropdown-divider"></div>
+          <?php endif; ?>
+
           <a class="dropdown-item btn-sm" href="../login/logout.php">Sair</a>
         </div>
       </div>

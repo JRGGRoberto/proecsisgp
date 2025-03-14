@@ -40,16 +40,9 @@ if(($user['tipo'] == 'professor') || $user['tipo'] == 'prof'){
   $qry = 'select 
             c.id as id,
             c.nome as nome,
-            IFNULL(c.dir_campus_id, "disabled")  coord
-          from campi c
-          where c.id  = "'. $user['ca_id'] .'"';
-   
- /* $qry = 'select 
-            c.id as id,
-            c.nome as nome,
             IFNULL(c.dir_ca_id, "disabled")  coord
           from centros c
-          where c.campus_id = "'. $user['ca_id'] .'"'; */
+          where c.campus_id = "'. $user['ca_id'] .'"';
 }
 
 

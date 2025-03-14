@@ -22,7 +22,28 @@ $local = $_GET['b'];
 
 define('SUBTITLE2', '<label><sup>Quem já possui algum cargo de <strong>coordenador</strong>, <strong>diretor de centro</strong> ou <strong>chefe de divisão</strong> não é listado</sup></label>');
 
-if ($cent_cood == 1){
+if ($cent_cood == 0){
+  $query = ' 
+              select 
+                p.id, p.nome, 
+                if(ccc.dir_campus_id =  p.id, " SELECTED ", "") sel
+              from 
+                professores p 
+                inner join ca_ce_co ccc 
+                  on 
+                    p.id_colegiado = ccc.co_id  and 
+                    ccc.ca_id =  "'.$local .'"
+              order by 2
+           ';
+     
+  $options = Diversos::qry($query);
+
+  $nome = Campi::getRegistro($local);
+  define('SUBTITLE', '<label>Selecione um novo <strong>Diretor de Campus:</strong> '.$nome->nome .'</label>');
+
+  define('SUB22', $nome->nome  );
+
+} elseif ($cent_cood == 1){
 
   $query = ' 
              select id, nome,
@@ -118,6 +139,18 @@ define('TITLE','Atualização de posição');
 if(isset( $_POST['selCoord']) ) {
 
   switch($cent_cood){
+    case 0: 
+                  
+            if( !(in_array($user[niveln], [1]) or $user[adm] == 1 )) {
+              header('location: ./index.php?hi=cnf&status=error');
+              exit;
+            } 
+      
+            $upd = Campi::getRegistro($local);
+            $upd->dir_campus_id = $_POST['selCoord'];
+            $upd->user = $user[id];
+            $upd->atualizar();
+          break;
     case 1: 
             
             if( !(in_array($user[niveln], [1]) or $user[adm] == 1 )) {

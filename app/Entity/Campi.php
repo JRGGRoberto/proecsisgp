@@ -9,6 +9,7 @@ class Campi{
 
   public $id;
   public $nome;
+  public $dir_campus_id;
   public $chef_div_id;
   public $created_at;
   public $updated_at;
@@ -41,9 +42,10 @@ class Campi{
   public function atualizar(){
     return (new Database('campi'))->update(
                                            'id = "'.$this->id.'" ',[
-                                                                'nome'    => $this->nome,
-                                                                'chef_div_id' => $this->chef_div_id,
-                                                                'updated_at' => date("Y-m-d H:i:s"),
+                                                                'nome'          => $this->nome,
+                                                                'dir_campus_id' => $this->dir_campus_id,
+                                                                'chef_div_id'   => $this->chef_div_id,
+                                                                'updated_at'    => date("Y-m-d H:i:s"),
                                                                 'user' => $this->user
                                                               ]);
   }

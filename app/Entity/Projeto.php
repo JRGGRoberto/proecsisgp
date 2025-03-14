@@ -340,6 +340,8 @@ class Projeto
      *
      * @return bool
      */
+
+     
     public function Submeter($para)
     {
         $this->para_avaliar = $para;
@@ -353,7 +355,7 @@ class Projeto
         $inst = 'id_instancia';
         $sqla = "select * from avalia_last al WHERE id_proj = '".$this->id."' limit 1";
         $lastAvalia = (new Database())->selectJ($sqla)->fetchAll(\PDO::FETCH_CLASS);
-        $lastAvalia0 = $lastAvalia[0];
+        $lastAvalia0 = !empty($lastAvalia) ? $lastAvalia[0] : null;
 
         if (($lastAvalia0->resultado == 'r') and ($lastAvalia0->tp_instancia == 'pf')) {
             $inst = "'".$lastAvalia0->id_instancia."'";

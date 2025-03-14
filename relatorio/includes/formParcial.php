@@ -1,6 +1,5 @@
 <main>
-
-  <!--//$anexoII  = [3, 4, 5]; // Programa / Projeto / Serviço -->
+  
   <script>
     let formulario = 2;
   </script>
@@ -11,7 +10,7 @@
     </a>
   </section>
   <hr>
-  <h4 style="text-align: center">ANEXO II</h4>
+  <h4 style="text-align: center">ANEXO IV</h4>
   <h3 class="mt-3" style="text-align: center"><?php echo TITLE; ?></h3>
 
   <form name="formAnexo" id="formAnexo" method="POST" enctype="multipart/form-data">
@@ -22,10 +21,9 @@
       <label>
         <h5><?php echo $n = 1; ?>. Título da proposta</h5>
       </label>
-      <input type="text" class="form-control" name="titulo" id="titulo"  maxlength="265" value="<?php echo $obProjeto->titulo; ?>" required>
+      <input type="text" class="form-control"  value="<?php echo $obProjeto->titulo; ?>" readonly>
     </div>
-    <input type="hidden" name="tabela" value="projetos">
-
+    
     <hr>
 
     <div class="form-group">
@@ -54,141 +52,21 @@
         <label>
           <h6><?php echo $n; ?>.1. Telefone</h6>
         </label>
-        <input type="text" class="form-control" name="tel" readonly value="<?php echo $telefone; ?>">
+        <input type="text" class="form-control" name="tel" readonly value="<?= $obProfessor->telefone; ?>">
       </div>
 
       <div class="form-group col">
         <label>
           <h6><?php echo $n; ?>.2. Email</h6>
         </label>
-        <input type="text" class="form-control" name="email" readonly value="<?php echo $email; ?>">
+        <input type="text" class="form-control" name="email" readonly value="<?= $obProfessor->email; ?>">
       </div>
     </div>
 
     <hr>
 
-    <div class="form-group">
-      <label>
-        <h5><?php echo ++$n; ?>. A proposta está vinculada a alguma disciplina do curso de Graduação ou Pós-Graduação (ACEC II)</h5>
-      </label>
-      <select name="acec" class="form-control col-1">
-        <option value="N" <?php echo ($obProjeto->acec == 'N') ? 'selected' : ' '; ?>>Não</option>
-        <option value="S" <?php echo ($obProjeto->acec == 'S') ? 'selected' : ' '; ?>>Sim</option>
-      </select>
-    </div>
-
-    <hr>
 
     <div class="form-group">
-      <label>
-        <h5><?php echo ++$n; ?>. Vinculação à Programa de Extensão e Cultura</h5>
-      </label>
-      <div class="row">
-        <div class="col-2">
-          <label>
-            <h6>É vinculado?</h6>
-          </label>
-          <select name="vinculo" id="vinculo" class="form-control col-8" onchange="showTitProg();">
-            <option value="S" <?php echo ($obProjeto->vinculo == 'S') ? 'selected' : ' '; ?>>Sim</option>
-            <option value="N" <?php echo ($obProjeto->vinculo == 'N') ? 'selected' : ' '; ?>>Não</option>
-          </select>
-        </div>
-        <div class="col-10" id="titProgDIV">
-          <label>
-            <h6>Título do Programa de vinculação</h6>
-          </label>
-          <input type="text" class="form-control" name="tituloprogvinc" id="tituloprogvinc" value="<?php echo $obProjeto->tituloprogvinc; ?>"  maxlength="200">
-        </div>
-
-        <script type="text/javascript">
-          const titProgDIV = document.getElementById('titProgDIV');
-          const Tex_Prog_vinc = document.getElementById('tituloprogvinc');
-          const opcao = document.getElementById('vinculo');
-
-          function showTitProg() {
-
-            if (opcao.value == 'S') {
-              titProgDIV.hidden = false;
-            } else {
-              Tex_Prog_vinc.value = '';
-              titProgDIV.hidden = true;
-            }
-          }
-        </script>
-      </div>
-
-      <hr>
-
-      <label>
-        <h5><?php echo ++$n; ?>. Classificação do Projeto ou Programa</h5>
-      </label>
-      <label><?php echo $n; ?>.1. Área de Conhecimento CNPQ (Ver classificaçõa do CNPQ)</label>
-
-      <div class="row">
-
-        <div class="col">
-          <div class="form-group">
-            <!--         -->
-            <label for="cnpq_garea">Grande Área</label>
-            <select name="cnpq_garea" id="cnpq_garea" class="form-control" required>
-            
-            </select>
-            <!--         -->
-          </div>
-        </div>
-
-        <div class="col">
-          <div class="form-group">
-            <!--         -->
-            <label for="cnpq_area">Área</label>
-            <select name="cnpq_area" id="cnpq_area" class="form-control" >
-              <option value="0">N/A</option>
-            </select>
-            <!--         -->
-
-          </div>
-        </div>
-
-        <div class="col">
-          <div class="form-group">
-
-            <!--         -->
-            <label for="cnpq_sarea">Subárea</label>
-            <select name="cnpq_sarea" id="cnpq_sarea" class="form-control">
-              <option value="0">N/A</option>
-            </select>
-            <!--         -->
-          </div>
-        </div>
-      </div>
-
-      <hr>
-
-      <label><?php echo $n; ?>.2. Plano Nacional de Extensão Universitária (ver <a href="https://proec.unespar.edu.br/menu-extensao/orientacoes" target="_blank">https://proec.unespar.edu.br/menu-extensao/orientacoes)</a> </label>
-      <div class="row">
-
-        <div class="col">
-          <div class="form-group">
-            <label for="area_extensao">Área de extensão</label>
-            <select name="area_extensao" id="area_extensao" class="form-control">
-              <?php echo $area_ext_Opt; ?>
-            </select>
-          </div>
-        </div>
-
-
-        <div class="col">
-          <div class="form-group">
-            <label for="linh_ext">Linhas de extensão</label>
-            <select name="linh_ext" id="linh_ext"  class="form-control">
-              <?php echo $areaOptions; ?>
-            </select>
-          </div>
-        </div>
-      </div>
-
-      <hr>
-
       <label>
         <h5><?php echo ++$n; ?>. Período de vigência</h5>
       </label>
@@ -207,91 +85,9 @@
           </div>
         </div>
 
-        <div class="col-3">
-          <div class="form-group">
-            <label>Carga semanal*:</label>
-            <input type="number" min=0 max=44 class="form-control" name="ch_semanal" value="<?php echo $obProjeto->ch_semanal; ?>">
-
-          </div>
-        </div>
-
-        <div class="col-3">
-          <div class="form-group">
-            <label for="tide">TIDE</label>
-            <select name="tide" class="form-control">
-              <option value="S" <?php echo ($obProjeto->tide == 'S') ? 'selected' : ' '; ?>>Sim</option>
-              <option value="N" <?php echo ($obProjeto->tide == 'N') ? 'selected' : ' '; ?>>Não</option>
-            </select>
-          </div>
-        </div>
-        <span class="badge badge-light">* Indicar a CH a ser computada no PAD, cf. regulamento próprio de distribuição de carga horária da Unespar.</span>
+        
       </div>
 
-      <hr>
-
-      <label>
-        <h5><?php echo ++$n; ?>. Dimensão</h5>
-      </label>
-
-      <div class="form-group">
-        <label>Publico Alvo</label>
-        <input type="text" name="public_alvo" class="form-control" value="<?php echo $obProjeto->public_alvo; ?>">
-      </div>
-
-      <div class="form-group">
-        <label for="municipios_abr">Abrangência (região e/ou municípios)</label>
-        <input type="text" name="municipios_abr" class="form-control" value="<?php echo $obProjeto->municipios_abr; ?>">
-      </div>
-
-      <hr>
-
-      <label>
-        <h5><?php echo ++$n; ?>. Previsão de Financiamento</h5>
-      </label>
-      <div class="row">
-        <div class="col-2">
-          <label>
-            <h6>Financiamento?</h6>
-          </label>
-          <select name="finac" id="finac" class="form-control" onchange="showFinac();">
-            <option value="S" <?php echo ($obProjeto->finac == 'S') ? 'selected' : ' '; ?>>Sim</option>
-            <option value="N" <?php echo ($obProjeto->finac == 'N') ? 'selected' : ' '; ?>>Não</option>
-          </select>
-        </div>
-        <div class="col-5" id="orgaoFinac">
-          <label>
-            <h6>Órgão de Financiamento</h6>
-          </label>
-          <input type="text" class="form-control" id="orgao_finacInput" name="finacorgao" value="<?php echo $obProjeto->finacorgao; ?>" maxlength="255">
-        </div>
-        <div class="col-5" id="valorFinac">
-          <label>
-            <h6>Valor do Financiamento</h6>
-          </label>
-          <input type="number" class="form-control" id="valor_finacInput" name="finacval" value="<?php echo $obProjeto->finacval ?? 0; ?>" step=0.01>
-        </div>
-
-        <script type="text/javascript">
-          const divFinac1 = document.getElementById('orgaoFinac');
-          const divFinac2 = document.getElementById('valorFinac');
-          const opcaoF = document.getElementById('finac');
-
-          function showFinac() {
-
-            if (opcaoF.value == 'S') {
-              divFinac1.hidden = false;
-              divFinac2.hidden = false;
-            } else {
-              document.getElementById('orgao_finacInput').value = '';
-              document.getElementById('valor_finacInput').value = '';
-              divFinac1.hidden = true;
-              divFinac2.hidden = true;
-            }
-          }
-        </script>
-      </div>
-
-     
       <hr>
 
       <label>

@@ -28,19 +28,20 @@ if(!$form) {
   $cad = true;
 }
 
-$anexosJS = json_decode($_POST['anexosJS']);
-foreach ($anexosJS as &$anx) {
-  $dados = Arquivo::getArquivo($anx);
-  $dados->tabela = 'forms';
-  $dados->id_tab = $ava1->id;
-  $dados->user = $obProjeto->user;
-  $dados->atualizar();
-}
-
 define('TITLE','FORM D');
 
 //VALIDAÇÃO DO POST
 if(isset($_POST['resultado'])){
+
+
+  $anexosJS = json_decode($_POST['anexosJS']);
+    foreach ($anexosJS as &$anx) {
+      $dados = Arquivo::getArquivo($anx);
+      $dados->tabela = 'forms';
+      $dados->id_tab = $ava1->id;
+      $dados->user = $obProjeto->user;
+      $dados->atualizar();
+    }
 
   $ava1 = Avaliacoes::getRegistro($_GET['i']);
   

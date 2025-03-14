@@ -49,8 +49,7 @@ foreach ($projetos as $proj) {
             $progresso = '<span class="badge badge-success ">Excutado</span>';
         }
         $progresso .= '<a href="../projetos/visualizar.php?id='.$proj->id.'&v='.$proj->ver.'&w=nw" target="_blank">📄</a>';
-        $progresso .= '<a href="../relatorio/visualizar.php?id='.$proj->id.'&w=nw" target="_blank">📈</a>';
-        $progresso .= '<a href="../relatorio/visualizar.php?id='.$proj->id.'&w=nw" target="_blank">📓</a>';
+     
         
     } else {
         is_null($proj->colegiado) ? $col = 'A definir' : $col = $proj->colegiado;

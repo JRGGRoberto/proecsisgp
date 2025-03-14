@@ -178,7 +178,7 @@ if (isset($_POST['titulo'])) {
         }
         $obProjeto->cnpq_garea = $cnpq_garea;
 
-        $obProjeto->cnpq_sarea = $_POST['cnpq_sarea'] ?? 0;
+        $obProjeto->cnpq_sarea = $_POST['cnpq_sarea'];
         $obProjeto->area_extensao = $_POST['area_extensao'];
         $obProjeto->linh_ext = $_POST['linh_ext'];
         $obProjeto->referencia = $_POST['referencia'];

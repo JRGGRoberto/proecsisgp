@@ -6,6 +6,7 @@ use \App\Db\Database;
 use \PDO;
 use \App\Entity\UuiuD;
 
+
 class RelParcial {
 
   public $id;
