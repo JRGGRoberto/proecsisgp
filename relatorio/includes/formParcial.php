@@ -1,17 +1,13 @@
 <main>
   
-  <script>
-    let formulario = 2;
-  </script>
-
   <section>
-    <a href="index.php">
+    <a href="./index.php?id=<?php echo $obProjeto->id; ?>">
       <button class="btn btn-success btn-sm float-right">Voltar</button>
     </a>
   </section>
   <hr>
   <h4 style="text-align: center">ANEXO IV</h4>
-  <h3 class="mt-3" style="text-align: center"><?php echo TITLE; ?></h3>
+  <h3 class="mt-3" style="text-align: center">RELATÓRIO PARCIAL</h3>
 
   <form name="formAnexo" id="formAnexo" method="POST" enctype="multipart/form-data">
     <input type="hidden" name="id_prof" value="<?php echo $obProjeto->id_prof; ?>">
@@ -65,23 +61,41 @@
 
     <hr>
 
-
     <div class="form-group">
       <label>
-        <h5><?php echo ++$n; ?>. Período de vigência</h5>
+        <h5><?php echo ++$n; ?>. Colegiado de Curso*/ Setor</h5>
+      </label>
+      <input type="text" class="form-control" name="cursosetor" readonly value="<?php echo $cursosetor; ?>">
+    </div>
+
+    <hr>
+
+  <?php 
+  $ini = null;
+  if(!is_null($relatorio->periodo_ini)){
+    $ini = substr($relatorio->periodo_ini, 0, 10);
+  } 
+  $fim = null;
+  if(!is_null($relatorio->periodo_fim)){
+    $fim = substr($relatorio->periodo_fim, 0, 10);
+  }
+  ?>
+    <div class="form-group">
+      <label>
+        <h5><?php echo ++$n; ?>. Período que se refere o Relatório</h5>
       </label>
       <div class="row">
         <div class="col-3">
           <div class="form-group">
-            <label>Início vigência</label>
-            <input type="date" name="vigen_ini" id="vigen_ini" class="form-control" value="<?php echo substr($obProjeto->vigen_ini, 0, 10); ?>" required>
+            <label>Início</label>
+            <input type="date" name="periodo_ini" id="periodo_ini" class="form-control" value="<?= $ini;?>" required <?=$editar;?> >
           </div>
         </div>
 
         <div class="col-3">
           <div class="form-group">
-            <label>Fim vigência</label>
-            <input type="date" name="vigen_fim" id="vigen_fim" class="form-control" value="<?php echo substr($obProjeto->vigen_fim, 0, 10); ?>" required>
+            <label>Fim</label>
+            <input type="date" name="periodo_fim" id="periodo_fim" class="form-control" value="<?= $fim; ?>" required <?=$editar?> >
           </div>
         </div>
 
@@ -90,47 +104,14 @@
 
       <hr>
 
-      <label>
-        <h5><?php echo ++$n; ?>. Equipe da prosposta</h5>
-      </label>
-      <?php
-      include './includes/equipeProposta.php';
-  ?>
-
-      <hr>
-
-      <div class="form-group">
-        <h5><label><?php echo ++$n; ?>. Resumo do Projeto e Palavras-chaves</label></h5>
-
-        <label for="resumo">Resumo do Projeto</label>
-        <div id="sumnot_resumo"><?php echo $obProjeto->resumo; ?></div>
-        <textarea id="resumo" name="resumo" rows="10" hidden></textarea>
-        <label for="palavras">Palavras-chave
-          <div class="row">
-            <div class="col-4">
-              <input type="text" class="form-control" name="palav1" id="palav1" value="<?php echo $palav1; ?>">
-            </div>
-            <div class="col-4">
-              <input type="text" class="form-control" name="palav2" id="palav2" value="<?php echo $palav2; ?>">
-            </div>
-            <div class="col-4">
-              <input type="text" class="form-control" name="palav3" id="palav3" value="<?php echo $palav3; ?>">
-            </div>
-          </div>
-        </label>
-
-      </div>
-
-      <hr>
-
       <div class="row">
         <div class="col">
           <div class="form-group">
-            <label for="justificativa">
-              <h5><?php echo ++$n; ?>. Problema e justificativa da proposta</h5>
+            <label for="atvd_per">
+              <h5><?php echo ++$n; ?>. Atividades realizadas no período</h5>
             </label>
-            <div id="sumnot_justificativa"><?php echo $obProjeto->justificativa; ?></div>
-            <textarea id="justificativa" name="justificativa" rows="10" hidden></textarea>
+            <div id="sumnot_atvd_per"  ><?php echo $relatorio->atvd_per; ?></div>
+            <textarea id="atvd_per" name="atvd_per" rows="10" hidden ></textarea>
           </div>
         </div>
       </div>
@@ -141,85 +122,48 @@
         <div class="col">
           <div class="form-group">
             <label>
-              <h5><?php echo ++$n; ?>. Objetivo Geral e Objetivos Específicos</h5>
+              <h5><?php echo ++$n; ?>. Alterações realizadas no período da pesquisa e justificativa</h5>
             </label>
-            <div id="sumnot_objetivos"><?php echo $obProjeto->objetivos; ?></div>
-            <textarea id="objetivos" name="objetivos" rows="10" hidden></textarea>
+            <div id="sumnot_alteracoes"><?php echo $relatorio->alteracoes; ?></div>
+            <textarea id="alteracoes" name="alteracoes" rows="10" hidden ></textarea>
           </div>
         </div>
       </div>
+      <hr>
 
       <div class="row">
         <div class="col">
           <div class="form-group">
-            <label for="metodologia">
-              <h5><?php echo ++$n; ?>. Metodologia para Execução da Proposta</h5>
+            <label for="atvd_prox_per">
+              <h5><?php echo ++$n; ?>. Atividades para o próximo período</h5>
             </label>
-            <div id="sumnot_metodologia"><?php echo $obProjeto->metodologia; ?></div>
-            <textarea id="metodologia" name="metodologia" rows="10" hidden></textarea>
+            <div id="sumnot_atvd_prox_per"><?php echo $relatorio->atvd_prox_per; ?></div>
+            <textarea id="atvd_prox_per" name="atvd_prox_per" rows="10" hidden></textarea>
           </div>
         </div>
       </div>
 
       <hr>
 
-      <div class="row">
-        <div class="col">
-          <div class="form-group">
-            <label for="contribuicao">
-              <h5><?php echo ++$n; ?>. Contribuição Científica, Tecnológica e de Inovação</h5>
-            </label>
-            <div id="sumnot_contribuicao"><?php echo $obProjeto->contribuicao; ?></div>
-            <textarea id="contribuicao" name="contribuicao" rows="10" hidden></textarea>
-          </div>
-        </div>
+      <?php 
+      if($relatorio->tramitar == 0) {
+      ?>
+      <div class="form-group">
+        <h5 id="">Pronto para tramitação</h5>
+        <label for="tramitar">Ao marcar esta <input type="checkbox" id="tramitar" name="tramitar" value="1"> opção, depois de salvo, este relatório ficará visível para aprovação e perderá o modo de edição.</label>
+           
       </div>
-
       <hr>
-
-      <div class="row">
-        <div class="col">
-          <div class="form-group">
-            <label for="cronograma">
-              <h5><?php echo ++$n; ?>. Cronograma da proposta</h5>
-            </label>
-            <div id="sumnot_cronograma"><?php echo $obProjeto->cronograma; ?></div>
-            <textarea id="cronograma" name="cronograma" rows="10" hidden></textarea>
-          </div>
-        </div>
+      <?php } else {
+        echo '<div class="form-group">
+        <h5 id="">Em processo de aceite da Divisão de Extensão e Cultura do Campus</h5>
+        <label for="avaliar"></label>
+           
       </div>
+      <hr>';
 
+      }?>
 
-      <hr>
-
-      <div class="row">
-        <div class="col">
-          <div class="form-group">
-            <label for="obs">
-              <h5><?php echo ++$n; ?>. Observação</h5>
-            </label>
-            <div id="sumnot_obs"><?php echo $obProjeto->obs; ?></div>
-            <textarea id="obs" name="obs" rows="10" hidden></textarea>
-          </div>
-        </div>
-      </div>
-
-
-      <hr>
-      <div class="row">
-        <div class="col">
-          <div class="form-group">
-            <label for="referencia">
-              <h5><?php echo ++$n; ?>. Referências</h5>
-            </label>
-            <div id="sumnot_referencia" style="text-align: justify"><?php echo $obProjeto->referencia; ?></div>
-            <textarea id="referencia" name="referencia" rows="10" hidden></textarea>
-          </div>
-        </div>
-      </div>
-
-
-      <hr>
       <div class="form-group">
         <h5 id="attc"><?php echo ++$n; ?>. Anexos</h5>
         <ul id="anexos"></ul>
@@ -227,21 +171,26 @@
         <?php echo $anex; ?>
       </div>
       <hr>
-      <div class="row" hidden>
+
+      <div class="row" >
 
         <div class="col-3">
           <div class="form-group">
             <label>Data</label>
-            <input type="date" name="data" class="form-control" id="dateAssing" value="<?php echo substr($obProjeto->data, 0, 10); ?>" requiredd>
+            <input type="date" name="data" class="form-control" id="dateAssing" value="<?php echo substr($relatorio->created_at, 0, 10); ?>" required <?=$editar?>>
           </div>
         </div>
       </div>
 
+      
 
       <div class="form-group">
-        <a href="javascript: submitSalvar()" class="btn btn-primary  btn-sm">✔️ Salvar, para submeter depois</a>
-        <a href="javascript: submitSumbeter()" class="btn btn-success btn-sm" hidden>↗️ Submeter agora</a>
-        <button type="button" class="btn btn-warning btn-sm" onclick="history.back()"> ↩️ Voltar</button>
+      <?php
+      if($editar == ''){
+      ?>
+          <a href="javascript: submitSumbeter()" class="btn btn-success btn-sm" >↗️ Salvar </a>
+      <?php } ?>
+         <a href="javascript: history.go(-1)" class="btn btn-warning btn-sm" >↗️ Voltar </a>
       </div>
 
       <div class="row">
@@ -251,44 +200,11 @@
           </div>
         </div>
       </div>
-
-      <input id="equipeJS" name="equipeJS" type="text" hidden>
+      <input type="hidden" name="tabela" value="relatorios">
       <input id="anexosJS" name="anexosJS" type="text" hidden>
 
 
   </form>
 
-  <?php
-include './includes/modalMembro.php';
-  ?>
-  <?php echo $scriptVars; ?>
-
-
-
-<!-- The Modal -->
-<div class="modal fade" id="modalSub">
-    <div class="modal-dialog modal-dialog-scrollable">
-      <div class="modal-content">
-        <!-- Modal Header -->
-        <div class="modal-header">
-          <h4 class="modal-title" id="modalTitle">Título</h4>
-          <button type="button" class="close" data-dismiss="modal">×</button>
-        </div>
-        <!-- Modal body -->
-        <div class="modal-body" id="modalBody">
-         </div>
-        <!-- Modal footer -->
-        <div class="modal-footer" id="modalFooter">
-        </div>
-      </div>
-    </div>
-  </div>
-  <!-- The Modal -->
-
- 
-
-
-
 </main>
-<script src="equipe.js"></script>
 <script src="forms.js"></script>

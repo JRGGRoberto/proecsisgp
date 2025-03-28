@@ -1,15 +1,15 @@
 <?php
 
-require '../vendor/autoload.php';
-use App\Session\Login;
-
-Login::requireLogin();
-
 /*
 ini_set('display_errors', 1);
 ini_set('display_startup_errors', 1);
 error_reporting(E_ALL);
 */
+
+require '../vendor/autoload.php';
+use App\Session\Login;
+
+Login::requireLogin();
 
 use App\Entity\Arquivo;
 use App\Entity\Diversos;
@@ -187,13 +187,6 @@ if (isset($_POST['titulo'])) {
     if (in_array($t, $anexoIII)) {
         $obProjeto->ch_total = $_POST['ch_total'];
     }
-
-    /* não aceito no anexo III
-
-    $obProjeto->descricao    =  $_POST['descricao'];
-    $obProjeto->prodserv_espe   =  $_POST['prodserv_espe'];
-    $obProjeto->n_cert_prev     =  $_POST['n_cert_prev'];
-    */
 
     if ($obProjeto->vinculo == 'S') {
         $obProjeto->tituloprogvinc = $_POST['tituloprogvinc'];

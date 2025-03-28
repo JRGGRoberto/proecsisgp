@@ -1,0 +1,70 @@
+<?php
+
+require '../vendor/autoload.php';
+
+use App\Session\Login;
+use App\Entity\Projeto;
+use App\Entity\Professor;
+use App\Entity\Arquivo;
+use App\Entity\RelParcial;
+use App\Entity\Campi;
+use App\Entity\Colegiado;
+
+// Obriga o usuário a estar logado
+Login::requireLogin();
+$user = Login::getUsuarioLogado();
+
+$t = $_GET['t'];
+$id = $_GET['i'];
+
+if ($t != 1) {
+  header('location: index.php?status=error');
+  exit;
+}
+
+
+$obProjeto = Projeto::getProjetoLast($id);
+$obProjeto = Projeto::getProjeto($id, $obProjeto->ver);
+$obProfessor = Professor::getProfessor($obProjeto->id_prof);
+
+$cursosetor = '' ;
+if($obProjeto->para_avaliar == -1){
+  $cursosetor = $user['ca_nome'];
+} else {
+  $cursosetor = $obProjeto->para_avaliar;
+}
+
+$relatorio = new RelParcial();
+$relatorio->tramitar = 0;
+// VALIDAÇÃO DO POST
+if (isset($_POST['atvd_per'])) {
+    $relatorio->idproj = $obProjeto->id;
+    $relatorio->periodo_ini = $_POST['periodo_ini'];
+    $relatorio->periodo_fim = $_POST['periodo_fim'];
+    $relatorio->atvd_per = $_POST['atvd_per'];
+    $relatorio->alteracoes = $_POST['alteracoes'];
+    $relatorio->atvd_prox_per = $_POST['atvd_prox_per'];
+    $relatorio->user = $user['id'];
+    $relatorio->tramitar = $_POST['tramitar'];
+    $relatorio->cadastrar();
+
+
+    $anexosJS = json_decode($_POST['anexosJS']);
+    foreach ($anexosJS as &$anx) {
+        $dados = Arquivo::getArquivo($anx);
+        $dados->tabela = $_POST['tabela'];
+        $dados->id_tab = $idprjP;
+        $dados->user = $obProjeto->user;
+        $dados->atualizar();
+    }
+    header('location: index.php?id='.$obProjeto->id);
+    exit;
+}
+$anex = '';
+$editar = '';
+
+include '../includes/header.php';
+
+include __DIR__.'/includes/formParcial.php';
+
+include '../includes/footer.php';

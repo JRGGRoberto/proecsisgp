@@ -48,12 +48,20 @@
 
     } else {
 
-///
+     ///
       is_null($proj->colegiado) ? $col = 'A definir' : $col = $proj->colegiado;
 
       $where = 'id_proj = "'. $proj->id. '"';
       $order = "ver desc, fase_seq desc";
       $ListaVerAnts = Avaliacoes::getRegistros($where, $order, null);
+
+      $ListaVerAnToShowbtnAva = Avaliacoes::getQntdRegistros($where . '  and  fase_seq = etapas and resultado = "a" ');
+      if($ListaVerAnToShowbtnAva == 1){
+        $showRelatorios = true;
+      } else {
+        $showRelatorios = false;
+      }
+
       $LastV = 
          '<table class="table table-bordered table-sm">
           <thead class="thead-dark">
@@ -69,38 +77,41 @@
        $etapas = 0;
        $btnStatus = [];
        foreach($ListaVerAnts as $la){
-         $a++;
-         $class = '';
-         $td = '';
-         switch ($la->resultado){
-           case 'a': 
-             $class = "table-success"; 
-             $td = '<td><a href="../forms/'. $la->form .'/vista.php?p='. $proj->id.  '&v='. $la->ver . '" target="_blank">📄 </a></td>';
-   
-             array_push($btnStatus, new Blocos($la->fase_seq,'success'));
-             break;
-           case 'r': 
-             $class = "table-danger"; 
-             $td = '<td><a href="../forms/'. $la->form .'/vista.php?p='. $proj->id.  '&v='. $la->ver . '" target="_blank">📄 </a></td>';
-   
-             array_push($btnStatus, new Blocos($la->fase_seq,'danger'));
-             break;
-           default: 
-             $class = "table-warning"; 
-             $td = '<td>➖</td>';
-   
-             array_push($btnStatus, new Blocos($la->fase_seq,'warning'));
-         }
-         $LastV .=
-         '<tr class="'.$class.'">
-           <td><a href="../projetos/visualizar.php?id='. $proj->id. '&v='. $la->ver . '&w=nw" target="_blank">📄 <span class="badge badge-info">'.($la->ver +1).'</span></a></td>'
+           $a++;
+           $class = '';
+           $td = '';
            
-           . $td .
-           
-           '<td>'.$la->fase_seq.'/'.$la->etapas.'</td>
-          </tr>';
-   
-          $etapas = $la->etapas;
+            switch ($la->resultado){
+             case 'a': 
+               $class = "table-success"; 
+               $td = '<td><a href="../forms/'. $la->form .'/vista.php?p='. $proj->id.  '&v='. $la->ver . '" target="_blank">📄 </a></td>';
+              
+               array_push($btnStatus, new Blocos($la->fase_seq,'success')); // 'primary')); //
+               break;
+             case 'r': 
+               $class = "table-danger"; 
+               $td = '<td><a href="../forms/'. $la->form .'/vista.php?p='. $proj->id.  '&v='. $la->ver . '" target="_blank">📄 </a></td>';
+                
+               array_push($btnStatus, new Blocos($la->fase_seq,'danger'));
+               break;
+             default: 
+               $class = "table-warning"; 
+               $td = '<td>➖</td>';
+                 
+               array_push($btnStatus, new Blocos($la->fase_seq,'warning'));
+            }
+            
+  
+            $LastV .=
+            '<tr class="'.$class.'">
+              <td><a href="../projetos/visualizar.php?id='. $proj->id. '&v='. $la->ver . '&w=nw" target="_blank">📄 <span class="badge badge-info">'.($la->ver +1).'</span></a></td>'
+              
+              . $td .
+              
+              '<td>'.$la->fase_seq.'/'.$la->etapas.'</td>
+             </tr>';
+      
+             $etapas = $la->etapas;
    
        }
        $LastV .=
@@ -142,37 +153,35 @@
    /********************/
     
     $resultados .=  '
-<div class="card mt-2">
-  <div class="card-header">
-    <div class="row">
-        <div class="col-sm-5">📃 <strong>Título: </strong><a class="collapsed card-link" data-toggle="collapse" href="#p'. $proj->id .'"><strong>'. $proj->titulo .'</strong></a></div>
-        <div class="col-sm-5"><strong>Tipo de Proposta:</strong> '. $proj->tipo_exten .'</div>
-        <div class="col-sm-2">'. $progresso .'</div>
-    </div>
-    <div class="row">
-        <div class="col-sm"><strong>Enviado para o colegiado de:</strong> '.$col.'</div> 
-    </div>
-  </div>
+      <div class="card mt-2">
+        <div class="card-header">
+          <div class="row">
+              <div class="col-sm-5">📃 <strong>Título: </strong><a class="collapsed card-link" data-toggle="collapse" href="#p'. $proj->id .'"><strong>'. $proj->titulo .'</strong></a></div>
+              <div class="col-sm-5"><strong>Tipo de Proposta:</strong> '. $proj->tipo_exten .'</div>
+              <div class="col-sm-2">'. $progresso .'</div>
+          </div>
+          <div class="row">
+              <div class="col-sm"><strong>Enviado para o colegiado de:</strong> '.$col.'</div> 
+          </div>
+        </div>
 
 
-  
-    <div id="p'. $proj->id  .'" class="collapse" data-parent="#accordion">
-      <div class="card-body">
-
-      <div class="row">
-      <div class="col-9">
-        <p><strong>Resumo:</strong> '. resumirTexto($proj->resumo)  .'</p>
-        <p><strong>Objetivos:</strong> '. resumirTexto($proj->objetivos)  .'</p>
+      <div id="p'. $proj->id  .'" class="collapse" data-parent="#accordion">
+        <div class="card-body">
+           <div class="row">
+        <div class="col-9">
+          <p><strong>Resumo:</strong> '. resumirTexto($proj->resumo)  .'</p>
+          <p><strong>Objetivos:</strong> '. resumirTexto($proj->objetivos)  .'</p>
+        </div>
+        <div class="col">
+        '. $LastV .'
+        </div>
       </div>
-      <div class="col">
-      '. $LastV .'
-      </div>
-    </div>
 
         ';
 
        $verAnt = $proj->ver - 1;
-//Btn Submeter ou 
+   //Btn Submeter ou 
       $btnSub;        
       if($proj->para_avaliar < 0){
         $btnSub = 
@@ -216,9 +225,9 @@
       }
 
      $resultados .=  '
+        </div>
       </div>
-    </div>
-  </div>';
+    </div>';
 
   }
   $resultados .= '</div>';

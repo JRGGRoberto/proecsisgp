@@ -8,8 +8,9 @@ $horas = date('H');
 $horas >= 12 ? (int)($horas -= 12) : (int)($horas -= 0);
 
 ?>
-
-<html lang="pt-BR"><head>
+<!DOCTYPE html>
+<html lang="pt-BR">
+  <head>
     <!-- Required meta tags -->
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">

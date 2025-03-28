@@ -21,22 +21,19 @@ class RelParcial {
   public $updated_at;
   public $user;
 
-//Dados referente a 
-  public $ava_comentario;
-  public $ava_publicar;
-  public $ava_id;
-  public $ava_dtsign;
+
 
 /**
    * Método responsável por cadastrar uma nova pessoa no banco
    * @return boolean
    */
   public function cadastrar(){
+
+    echo '<pre>';
+    echo '</pre>';
     //INSERIR A REGISTRO NO BANCO
     $newId = UuiuD::gera(); //exec('uuidgen -r');
     $obDatabase = new Database('rel_parcial');
-
-
     $obDatabase->insert([
                             'id'            => $newId,
                             'idproj'        => $this->idproj,
@@ -45,14 +42,13 @@ class RelParcial {
                             'atvd_per'      => $this->atvd_per,
                             'alteracoes'    => $this->alteracoes,
                             'atvd_prox_per' => $this->atvd_prox_per,
-                            'tramitar'      => $this->tramitar,
                             'created_at'    => date("Y-m-d H:i:s"),
                           //  'updated_at'  => $this->updated_at,
                             'user'          => $this->user
                        ]);
 
     //RETORNAR SUCESSO
-    return $newId;
+    return true;
   }
 
 
@@ -69,35 +65,13 @@ class RelParcial {
                                 'atvd_per'      => $this->atvd_per,
                                 'alteracoes'    => $this->alteracoes,
                                 'atvd_prox_per' => $this->atvd_prox_per,
-                                'tramitar'      => $this->tramitar,
                                 'updated_at' => date("Y-m-d H:i:s"),
                                 'user'       => $this->user
                               ]);
   }
 
-
-  public function publicar(){
-    return (new Database('rel_parcial'))->update('id = "'.$this->id.'" ',[
-                                'ava_comentario' => $this->ava_comentario,
-                                'ava_publicar'   => 1,
-                                'ava_id'         => $this->ava_id,
-                                'ava_dtsign'     => date("Y-m-d H:i:s")
-                              ]);
-  }
-
-
-  public function solicitarAlteracoes(){
-    return (new Database('rel_parcial'))->update('id = "'.$this->id.'" ',[
-                                'ava_comentario' => $this->ava_comentario,
-                                'ava_id'         => $this->ava_id,
-                                'tramitar'      => 0,
-                                'ava_dtsign'     => date("Y-m-d H:i:s")
-                              ]);
-  }
-
-
   /**
-   * Método responsável por excluir a relatório_parcial do banco
+   * Método responsável por excluir a professor do banco
    * @return boolean
    */
   public function excluir(){
@@ -105,7 +79,7 @@ class RelParcial {
   }
 
   /**
-   * Método responsável por obter as relatório_parcial do banco de dados
+   * Método responsável por obter as professores do banco de dados
    * @param  string $whereagente
    * @param  string $order
    * @param  string $limit
@@ -117,7 +91,7 @@ class RelParcial {
   }
 
   /**
-   * Método responsável por obter as relatório_parcial do banco de dados
+   * Método responsável por obter as professores do banco de dados
    * @param  string $where
    * @param  string $order
    * @param  string $limit

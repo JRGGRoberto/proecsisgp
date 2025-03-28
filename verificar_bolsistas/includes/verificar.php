@@ -107,7 +107,10 @@ $responsavelNome = $responsavelEnviar[0]->nome;
             });
 
             // Exibe os dados no <div id="resultado">
-            document.getElementById("resultado").innerHTML = `<pre>${JSON.stringify(result, null, 2)}</pre>`;
+            document.getElementById("resultado").value = `${JSON.stringify(result, null, 2)}`;
+
+            document.formInputDB.submit();
+
 
         };
 
@@ -218,11 +221,9 @@ $responsavelNome = $responsavelEnviar[0]->nome;
     </div>
 </div>
 
- <div id="resultado"></div>
-
-<?php  
-    $data = '<div id="resultado"></div>';
-?>
+<form name="formInputDB" id="formInputDB" method="POST"  action="tratarDados.php" enctype="multipart/form-data">
+  <input type=" hidden" name="resultado" id="resultado">
+</form>
 
 <?php
     // $data = '<div id="resultado"></div>';

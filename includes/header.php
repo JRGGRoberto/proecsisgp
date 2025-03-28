@@ -6,8 +6,10 @@ use App\Session\Login;
 
 $obUsuario = Login::getUsuarioLogado();
 
+use App\Entity\Outros;
 use App\Entity\CompararAlunos;
 $idPermitido = CompararAlunos::getIdPermitidos();
+
 
 $clock = [
     '🕛', '🕐', '🕑', '🕒', '🕓', '🕔', '🕕', '🕖', '🕗', '🕘', '🕙', '🕚',
@@ -207,8 +209,8 @@ img.remover {
         </div>
       </div>
 
+
       <div class="btn-group btn-group-sm">
-    <!--    <button type="button" class="btn btn-primary dropdown-toggle" data-toggle="dropdown">Manutenção temporária</button>-->
         <button type="button" class="btn btn-primary dropdown-toggle" data-toggle="dropdown">
         Avaliações
         </button>
@@ -216,8 +218,45 @@ img.remover {
           <a class="dropdown-item btn-sm" href="../avalareal">A realizar</a>
           <a class="dropdown-item btn-sm" href="../avalfeitas">Realizadas [Histórico]</a>
         </div>
-    
       </div>
+
+<?php
+
+$sql = "select
+  coalesce(ca.id, co.id) id_link, 
+  CASE 
+    WHEN ca.id IS NOT NULL THEN 'ca'
+    WHEN co.id IS NOT NULL THEN 'co'
+    ELSE null
+  END AS id_orig, 
+  CASE 
+    WHEN ca.id IS NOT NULL THEN ca.nome
+    WHEN co.id IS NOT NULL THEN co.nome
+    ELSE null
+  END AS n_orig
+FROM 
+  usuarios u 
+  left join colegiados co on co.coord_id  = u.id 
+  left join campi ca      on ca.chef_div_id  = u.id and co.id is null
+WHERE 
+  ( co.id IS NOT NULL OR ca.id IS NOT NULL ) and
+   u.id = '" . $obUsuario['id'] . "'";
+$obQAvalioRel = Outros::qry($sql);
+
+if (sizeof($obQAvalioRel) >= 1) {
+  ?>
+      <div class="btn-group btn-group-sm">
+    <!--    <button type="button" class="btn btn-primary dropdown-toggle" data-toggle="dropdown">Manutenção temporária</button>-->
+        <button type="button" class="btn btn-primary dropdown-toggle" data-toggle="dropdown">
+        Aprovar relatórios
+        </button>
+        <div class="dropdown-menu">
+          <a class="dropdown-item btn-sm" href="../relatorio_todo">A realizar</a>
+          <a class="dropdown-item btn-sm" href="../relatorio_done">Realizadas [Histórico]</a>
+        </div>
+      </div>
+
+<?php } ?>
 
       <?php echo $adminOpts; ?>
 <!--

@@ -95,5 +95,5 @@ foreach($proposta as $prop){
 */
 
 include '../includes/header.php';
-include __DIR__.'/includes/ .php';
+include __DIR__.'/includes/listagemAll.php';
 include '../includes/footer.php';

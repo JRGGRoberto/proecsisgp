@@ -4,7 +4,7 @@ require '../vendor/autoload.php';
 
 use \App\Session\Login;
 use \App\Entity\Projeto;
-use \App\entity\RelParcial;
+use \App\Entity\RelParcial;
 
 $user = Login::getUsuarioLogado();
 
@@ -42,8 +42,6 @@ function formatData($data): string
     return substr($data,8,2) .'/'. substr($data,5,2).'/'.  substr($data,0,4);
 }
 
-
-
 $obProjeto->tipo_exten;
 $tipo = '';
 switch ($obProjeto->tipo_exten) {
@@ -67,7 +65,6 @@ switch ($obProjeto->tipo_exten) {
       break;
       exit;
 }
-
 
 include '../includes/header.php';
 include __DIR__.'/includes/listagem.php';
