@@ -35,7 +35,6 @@ if($obProjeto->para_avaliar == -1){
 }
 
 $relatorio = new RelParcial();
-$relatorio->tramitar = 0;
 // VALIDAÇÃO DO POST
 if (isset($_POST['atvd_per'])) {
     $relatorio->idproj = $obProjeto->id;

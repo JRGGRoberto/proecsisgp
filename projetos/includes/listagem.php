@@ -15,11 +15,9 @@
     }
   }
   
-
   $qnt1 = 0;
   $col= '';
   $LastV = '';
-
 
   function resumirTexto(string $texto, int $limite = 256): string
   {
@@ -41,7 +39,7 @@
       ($proj->edt ==  0)
     ){
       
-      $showRelatorios = true;
+      $showRelatorios = false;
       $progresso = '<span class="badge badge-success ">Em execução/Excutado <a href="../projetos/visualizar.php?id='.$proj->id.'&amp;v='.$proj->ver.'&amp;w=nw" target="_blank">📄</a></span> ';
 
       
@@ -56,7 +54,8 @@
       $ListaVerAnts = Avaliacoes::getRegistros($where, $order, null);
 
       $ListaVerAnToShowbtnAva = Avaliacoes::getQntdRegistros($where . '  and  fase_seq = etapas and resultado = "a" ');
-      if($ListaVerAnToShowbtnAva == 1){
+      
+      if($ListaVerAnToShowbtnAva > 0){
         $showRelatorios = true;
       } else {
         $showRelatorios = false;

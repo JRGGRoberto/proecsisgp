@@ -5,6 +5,8 @@ require '../vendor/autoload.php';
 use \App\Session\Login;
 use \App\Entity\Projeto;
 use \App\Entity\RelParcial;
+use \App\Entity\RelFinal;
+
 
 $user = Login::getUsuarioLogado();
 
@@ -32,10 +34,54 @@ $id = $_GET['id'];
 $obProjeto = new Projeto();
 $obProjeto = Projeto::getProjetoLast($id);
 $obProjeto = Projeto::getProjeto($id, $obProjeto->ver);
+$novoBTNs = '';
 
-$relQnt = RelParcial::getQntd('idproj = "'.$id.'"' );
+$QntRelFinal = RelFinal::getQntd('id = "'.$id.'"' );
+$QntRelParcial = RelParcial::getQntd('idproj = "'.$id.'"' );
 
-$relatorios = RelParcial::gets('idproj = "'.$id.'"' );
+$relParcial = RelParcial::gets('idproj = "'.$id.'"' );
+$RelFinal = RelFinal::get($id);
+
+$showBTNS = false;
+if($QntRelParcial == 0 && $QntRelFinal == 0){  // Não tem nenhum relatórios
+    $showBTNS = true;
+} else {
+    if($QntRelFinal > 0){   // se tem relatório final Não mostar btns para criar
+        $showBTNS = false;
+    } elseif   ($QntRelParcial > 0){ // se tem algum parcial
+       foreach($relParcial as $rel){
+            if($rel->ava_publicar == 0){
+                $showBTNS = false;
+                break;
+            } else {
+                $showBTNS = true;
+            }
+        }
+    }
+}
+
+
+if($showBTNS){
+    $novoBTNs = '
+      <section>
+        <div class="row mt-2 align-bottom">
+          <div class="col" >
+
+            <div class="dropup">
+              <button type="button" class="btn btn-success dropdown-toggle btn-sm float-right" data-toggle="dropdown" >
+                Novo
+              </button>
+              <div class="dropdown-menu dropdown-menu-right">
+                  <a class="dropdown-item btn-sm" href="./cadastrar1.php?t=1&i='. $obProjeto->id. '">Relatório parcial</a>
+                  <a class="dropdown-item btn-sm" href="./cadastrar2.php?t=2&i='. $obProjeto->id. '">Relatório final</a>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+    ';
+}
+
 
 function formatData($data): string
 {

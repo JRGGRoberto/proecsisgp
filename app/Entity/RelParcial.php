@@ -78,7 +78,7 @@ class RelParcial {
 
   public function publicar(){
     return (new Database('rel_parcial'))->update('id = "'.$this->id.'" ',[
-                                'ava_comentario' => $this->ava_comentario,
+                                'ava_comentario' => null,
                                 'ava_publicar'   => 1,
                                 'ava_id'         => $this->ava_id,
                                 'ava_dtsign'     => date("Y-m-d H:i:s")
@@ -90,7 +90,8 @@ class RelParcial {
     return (new Database('rel_parcial'))->update('id = "'.$this->id.'" ',[
                                 'ava_comentario' => $this->ava_comentario,
                                 'ava_id'         => $this->ava_id,
-                                'tramitar'      => 0,
+                                'tramitar'       => 0,
+                                'ava_publicar'   => 0,
                                 'ava_dtsign'     => date("Y-m-d H:i:s")
                               ]);
   }

@@ -9,6 +9,29 @@
   <h4 style="text-align: center">ANEXO IV</h4>
   <h3 class="mt-3" style="text-align: center">RELATÓRIO PARCIAL</h3>
 
+  <?php
+    if(!(
+        ( ($relatorio->tramitar == 0)     or is_null($relatorio->tramitar)     or ($relatorio->tramitar == ''))      and
+        ( ($relatorio->ava_publicar == 0) or is_null($relatorio->ava_publicar) or ($relatorio->ava_publicar == ''))  and
+        (strlen($relatorio->ava_comentario) == 0)
+       )
+    ){
+      echo '
+      <div class="form-group">
+      <label>
+        <h5> Solicitação de ajustes do relatório parcial </h5>
+      </label>
+        <textarea rows="4" cols="50" readonly class="form-control">
+        c:' . $relatorio->ava_comentario . '|t:'. $relatorio->tramitar.'|p:'. $relatorio->ava_publicar.'|  
+        </textarea>
+      </div>
+      
+      ';
+    } 
+
+  ?>
+
+
   <form name="formAnexo" id="formAnexo" method="POST" enctype="multipart/form-data">
     <input type="hidden" name="id_prof" value="<?php echo $obProjeto->id_prof; ?>">
     <input type="hidden" name="tabela" value="projetos">
@@ -181,8 +204,6 @@
           </div>
         </div>
       </div>
-
-      
 
       <div class="form-group">
       <?php

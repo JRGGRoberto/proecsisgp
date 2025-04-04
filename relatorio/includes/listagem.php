@@ -3,20 +3,32 @@
   require('../includes/msgAlert.php');
 
   $resultados = '';
-  if ($relQnt == 0){
+  if ($QntRelParcial == 0){
     $resultados = 'Não há relatórios de execução realizados.';
   } else {
-    foreach($relatorios as $rel){
-      $excluir = '';
-      $editar = '<a href="editar1.php?id='.$rel->id.'" class="card-link">Editar</a>';
-      if($rel->tramitar == 0){
-        $excluir = '<a href="excluir1.php?id='.$rel->id.'" class="card-link">Excluir</a>';
+    foreach($relParcial as $rel){
+      $msg_orBTN = '';
+      $editar = '';
+
+      if($rel->ava_publicar == 1){
+        $msg_orBTN = ' <a href="editar1.php?id='.$rel->id.'" class="card-link">Visualizar</a> ';
       } else {
-        if(is_null($rel->ava_comentario)){
-          $excluir = ' Relatório espera de avaliação';
-          $editar = ' <a href="editar1.php?id='.$rel->id.'" class="card-link">Visualizar</a> ';
+        if($rel->tramitar == 0){
+          $msg_orBTN = '<a href="javascript:printDel()">Excluir</a> ';
+          $msg_orBTN .=' <a href="editar1.php?id='.$rel->id.'" class="card-link">Editar</a>';
+        } else {
+          if(strlen((string)$rel->ava_comentario) > 0){
+            $msg_orBTN .= ' Há uma solicitação de ajusto no relatório. ';
+          } else {
+            $msg_orBTN .= '<a href="editar1.php?id='.$rel->id.'" class="card-link">Visualizar</a> Relatório a espera do aceite da Divisão de Extensao e Cultura do Campus. ';
+          }
+
         }
+
       }
+    }
+      
+
       
       $resultados .= '<div class="card">';
       $resultados .= '<div class="card-body">';
@@ -28,11 +40,10 @@
       $resultados .= '<h6 class="card-subtitle mb-2 text-muted">Atividades para o próximo período</h6>';
       $resultados .= '<p class="card-text">'.$rel->atvd_prox_per.'</p>';
       $resultados .= '<p class="card-text"><small class="text-muted">Cadastrado em '.formatData($rel->created_at).'</small></p>';
-      $resultados .= $editar;
-      $resultados .= $excluir; 
+      $resultados .= $msg_orBTN; 
       $resultados .= '</div>';
       $resultados .= '</div>';
-    }
+    
 
   }
 
@@ -95,28 +106,55 @@
     
   </section>
 
-  <section>
-    <div class="row mt-2 align-bottom">
-      <div class="col" >
-        <!-- <a href="cadastrar.php"><button class="btn btn-success float-right btn-sm">Novo</button></a> -->
-        <div class="dropup">
-          <button type="button" class="btn btn-success dropdown-toggle btn-sm float-right" data-toggle="dropdown" >
-            Novo
-          </button>
-          <div class="dropdown-menu dropdown-menu-right">
-              <a class="dropdown-item btn-sm" href="./cadastrar1.php?t=1&i=<?=$obProjeto->id; ?>">Relatório parcial</a>
-              <a class="dropdown-item btn-sm" href="./cadastrar2.php?t=2&i=<?=$obProjeto->id; ?>">Relatório final</a>
+<?= $novoBTNs?>
+  <div class="form-group">
+    <a href="../projetos/" class="btn btn-success btn-sm mb-2">Voltar</a>
+  </div>
 
-          </div>
-        </div>
-
-      </div>
-    </div>
-  </section>
 </main>
 
+<!-- The Modal -->
+<div class="modal fade" id="modalSub">
+    <div class="modal-dialog modal-dialog-scrollable">
+      <div class="modal-content">
+      
+        <!-- Modal Header -->
+        <div class="modal-header">
+          <h4 class="modal-title" id="modalTitle">Título</h4>
+          <button type="button" class="close" data-dismiss="modal">×</button>
+        </div>
+        
+        <!-- Modal body -->
+        <div class="modal-body" id="modalBody">
+
+        </div>
+        
+        <!-- Modal footer -->
+        <div class="modal-footer" id="modalFooter">
+          
+        </div>
+        
+      </div>
+    </div>
+  </div>
+  <!-- The Modal -->
+
+  <script>
+
+''
+function printDel(){
+    modalTitle.innerText = 'Confirmação de exclusão';
+    modalBody.innerHTML =  `<h4>Tem certeza que deseja apagar o registro abaixo?</h4><p class="justify-content-center"> $ {data.titulo}</p><span class="badge badge-warning float-right" ><span class="badge badge-light">⚠️</span>Atenção! O processo não pode ser revertido</span>`;
+    modalFooter.innerHTML = `
+            <a href="excluir.php?id=$ {data.id}&v=$ {data.created_at}" 
+                                  class="btn btn-danger    btn-sm mb-2">🗑  Excluir</a>
+            <button type="button" class="btn btn-secondary btn-sm mb-2" data-dismiss="modal">Fechar</button>
+    `;
+    $('#modalSub').modal('show');
+  }
 
 
+</script>
 
 
 
