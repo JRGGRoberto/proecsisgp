@@ -3,6 +3,22 @@
   require('../includes/msgAlert.php');
 
   $resultados = '';
+
+  if($QntRelFinal > 0){
+      $resultados .= '<div class="card">';
+      $resultados .= '<div class="card-body">';
+      $resultados .= '<h5 class="card-title">Relatório Final referente '. formatData($RelFinal->periodo_ini).' à '. formatData($RelFinal->periodo_fim).'</h5>';
+      $resultados .= '<h6 class="card-subtitle mb-2 text-muted">Atividades realizadas</h6>';
+      $resultados .= '<p class="card-text">'.$RelFinal->atividades.'</p>';
+      $resultados .= '<h6 class="card-subtitle mb-2 text-muted">Alterações</h6>';
+      $resultados .= '<p class="card-text">'.$RelFinal->atvd_prox_per.'</p>';
+      $resultados .= '<h6 class="card-subtitle mb-2 text-muted">Atividades para o próximo período</h6>';
+      $resultados .= '<p class="card-text"><small class="text-muted">Cadastrado em '.formatData($RelFinal->created_at).'</small></p>';
+//      $resultados .= $msg_orBTN; 
+      $resultados .= ' <a href="editar2.php?id='.$RelFinal->id.'" class="card-link">Visualizar</a> ';
+      $resultados .= '</div>';
+      $resultados .= '</div>';
+  } 
   if ($QntRelParcial == 0){
     $resultados = 'Não há relatórios de execução realizados.';
   } else {
@@ -26,10 +42,6 @@
         }
 
       }
-    }
-      
-
-      
       $resultados .= '<div class="card">';
       $resultados .= '<div class="card-body">';
       $resultados .= '<h5 class="card-title">Relatório Parcial referente '. formatData($rel->periodo_ini).' à '. formatData($rel->periodo_fim).'</h5>';
@@ -43,8 +55,7 @@
       $resultados .= $msg_orBTN; 
       $resultados .= '</div>';
       $resultados .= '</div>';
-    
-
+    }
   }
 
 ?>

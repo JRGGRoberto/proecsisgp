@@ -154,6 +154,58 @@ $('#sumnot_obs').summernote({
 });
 
 
+$('#sumnot_atividades').summernote({
+  placeholder: 'Nas modalidades Programa ou Projeto',
+  tabsize: 2,
+  height: 250,
+  toolbar: [
+    ['style', ['bold', 'italic', 'underline', 'hr', 'clear']],
+    ['font', ['strikethrough', 'superscript', 'subscript']],
+    ['fontname', ['fontname']],
+    ['fontsize', ['fontsize']],
+    ['color', ['color']],
+    ['para', ['ul', 'ol', 'paragraph']],
+    ['height', ['height']],
+    ['table', ['table']],
+    ['insert', ['link', 'picture']]
+  ]
+});
+
+$('#sumnot_rel_tec_cien_executado').summernote({
+  placeholder: 'Elaborar um texto indicando, obrigatoriamente, os objetivos alcançados, metodologia utilizada, dificuldades, resultados e conclusões. Este texto poderá ser substituído por um artigo aprovado e/ou publicado em periódico ou em anais de evento de difusão acadêmica. Neste caso, apresentar cópia do artigo.',
+  tabsize: 2,
+  height: 250,
+  toolbar: [
+    ['style', ['bold', 'italic', 'underline', 'hr', 'clear']],
+    ['font', ['strikethrough', 'superscript', 'subscript']],
+    ['fontname', ['fontname']],
+    ['fontsize', ['fontsize']],
+    ['color', ['color']],
+    ['para', ['ul', 'ol', 'paragraph']],
+    ['height', ['height']],
+    ['table', ['table']],
+    ['insert', ['link', 'picture']]
+  ]
+});
+
+
+$('#sumnot_divulgacao').summernote({
+  placeholder: 'Conforme Regulamento de Extensão e Cultura  da UNESPAR, Art. 27 e parágrafos.',
+  tabsize: 2,
+  height: 250,
+  toolbar: [
+    ['style', ['bold', 'italic', 'underline', 'hr', 'clear']],
+    ['font', ['strikethrough', 'superscript', 'subscript']],
+    ['fontname', ['fontname']],
+    ['fontsize', ['fontsize']],
+    ['color', ['color']],
+    ['para', ['ul', 'ol', 'paragraph']],
+    ['height', ['height']],
+    ['table', ['table']],
+    ['insert', ['link', 'picture']]
+  ]
+});
+
 
 function submitJSON() {
   // Equipe
@@ -174,6 +226,11 @@ function submitJSON() {
 
 function submitSumbeter(){
 
+  var sumnot_atividades = document.getElementById("sumnot_atividades");
+  if(sumnot_atividades){
+    sumnot_atividades.value = $('#sumnot_atividades').summernote('code');
+  }
+
   var atvd_per = document.getElementById("atvd_per");
   if(atvd_per){
     atvd_per.value = $('#sumnot_atvd_per').summernote('code');
@@ -183,11 +240,23 @@ function submitSumbeter(){
   if(alteracoes){
     alteracoes.value = $('#sumnot_alteracoes').summernote('code');
   } 
-
+  
   var atvd_prox_per = document.getElementById("atvd_prox_per");
   if(atvd_prox_per){
     atvd_prox_per.value = $('#sumnot_atvd_prox_per').summernote('code');
   } 
+
+
+  var rel_tec_cien_executado = document.getElementById("rel_tec_cien_executado");
+  if(rel_tec_cien_executado){
+    rel_tec_cien_executado.value = $('#sumnot_rel_tec_cien_executado').summernote('code');
+  }
+
+  var divulgacao = document.getElementById("divulgacao");
+  if(divulgacao){
+    divulgacao.value = $('#sumnot_divulgacao').summernote('code');
+  }
+  
 
   document.formAnexo.submit();
 }

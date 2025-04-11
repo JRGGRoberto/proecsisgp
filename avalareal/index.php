@@ -45,7 +45,7 @@ $qntAvaliacoes = Avaliacoes::getQntdRegistros($where);
 //paginação
 $obPagination = new Pagination($qntAvaliacoes, $_GET['pagina']?? 1, 5);
 
-$avaliacoes = Avaliacoes::getRegistros($where, null, $obPagination->getLimite());
+$avaliacoes = Avaliacoes::getRegistros($where, 'created_at', $obPagination->getLimite());
 
 include '../includes/header.php';
 include __DIR__.'/includes/listagem.php';

@@ -37,25 +37,30 @@ if($obProjeto->para_avaliar == -1){
 $relatorio = new RelFinal();
 
 // VALIDAÇÃO DO POST
-if (isset($_POST['atvd_per'])) {
+if (isset($_POST['periodo_ini'])) {
+
+  foreach ($_POST as $key => $value) {
+        echo ''.$key.' = '.$value.'<br>';
+    }
+    exit;
+
     $relatorio->id = $obProjeto->id;
-    $relatorio->periodo_ini = $_POST['tabela'];
-    $relatorio->periodo_fim = $_POST['tabela'];
-    $relatorio->periodo_renov_ini = $_POST['tabela'];
-    $relatorio->periodo_renov_fim = $_POST['tabela'];
-    $relatorio->periodo_prorroga_ini = $_POST['tabela'];
-    $relatorio->periodo_prorroga_fim = $_POST['tabela'];
-    $relatorio->ch_semanal = $_POST['tabela'];
-    $relatorio->dim_mem_com_ex = $_POST['tabela'];
-    $relatorio->dim_disc = $_POST['tabela'];
-    $relatorio->dim_doce = $_POST['tabela'];
-    $relatorio->dim_agent_estag = $_POST['tabela'];
-    $relatorio->atividades = $_POST['tabela'];
-    $relatorio->atvd_prox_per = $_POST['tabela'];
-    $relatorio->rel_tec_cien_executado = $_POST['tabela'];
-    $relatorio->divulgacao = $_POST['tabela'];
-    $relatorio->rel_finac = $_POST['tabela'];
-    $relatorio->tramitar = $_POST['tabela'];
+    $relatorio->periodo_ini = $_POST['periodo_ini'];
+    $relatorio->periodo_fim = $_POST['periodo_fim'];
+    $relatorio->periodo_renov_ini = $_POST['periodo_renov_ini'];
+    $relatorio->periodo_renov_fim = $_POST['periodo_renov_fim'];
+    $relatorio->periodo_prorroga_ini = $_POST['periodo_prorroga_ini'];
+    $relatorio->periodo_prorroga_fim = $_POST['periodo_prorroga_fim'];
+    $relatorio->ch_semanal = $_POST['ch_semanal'];
+    $relatorio->dim_mem_com_ex = $_POST['dim_mem_com_ex'];
+    $relatorio->dim_disc = $_POST['dim_disc'];
+    $relatorio->dim_doce = $_POST['dim_doce'];
+    $relatorio->dim_agent_estag = $_POST['dim_agent_estag'];
+    $relatorio->atividades = $_POST['atividades'];
+    $relatorio->atvd_prox_per = $_POST['atvd_prox_per'];
+    $relatorio->rel_tec_cien_executado = $_POST['rel_tec_cien_executado'];
+    $relatorio->divulgacao = $_POST['divulgacao'];
+    $relatorio->tramitar = $_POST['tramitar'];
     $relatorio->cadastrar();
 
 

@@ -31,7 +31,7 @@ $cursosetor = '' ;
 if($obProjeto->para_avaliar == -1){
   $cursosetor = $user['ca_nome'];
 } else {
-  $cursosetor = $obProjeto->para_avaliar;
+  $cursosetor = Colegiado::getRegistro($obProjeto->para_avaliar)->nome;
 }
 
 $relatorio = new RelParcial();

@@ -15,7 +15,7 @@
         ( ($relatorio->ava_publicar == 0) or is_null($relatorio->ava_publicar) or ($relatorio->ava_publicar == ''))  and
         (strlen($relatorio->ava_comentario) == 0)
        )
-    ){ */
+    ){ 
       echo '
       <div class="form-group">
       <label>
@@ -28,7 +28,7 @@
       
       ';
     //} 
-
+*/
   ?>
 
 
@@ -94,35 +94,150 @@
     <hr>
 
   <?php 
-  $ini = null;
+  $periodo_ini1 = null;
   if(!is_null($relatorio->periodo_ini)){
-    $ini = substr($relatorio->periodo_ini, 0, 10);
+    $periodo_ini1 = substr($relatorio->periodo_ini, 0, 10);
   } 
-  $fim = null;
+  $periodo_fim1 = null;
   if(!is_null($relatorio->periodo_fim)){
-    $fim = substr($relatorio->periodo_fim, 0, 10);
+    $periodo_fim1 = substr($relatorio->periodo_fim, 0, 10);
   }
+
+  $periodo_ini2 = null;
+  if(!is_null($relatorio->periodo_renov_ini)){
+    $periodo_ini2 = substr($relatorio->periodo_renov_ini, 0, 10);
+  } 
+  $periodo_fim2 = null;
+  if(!is_null($relatorio->periodo_renov_fim)){
+    $periodo_fim2 = substr($relatorio->periodo_renov_fim, 0, 10);
+  }
+
+  $periodo_ini3 = null;
+  if(!is_null($relatorio->periodo_prorroga_ini)){
+    $periodo_ini3 = substr($relatorio->periodo_prorroga_ini, 0, 10);
+  } 
+  $periodo_fim3 = null;
+  if(!is_null($relatorio->periodo_prorroga_fim)){
+    $periodo_fim3 = substr($relatorio->periodo_prorroga_fim, 0, 10);
+  }
+
   ?>
     <div class="form-group">
       <label>
         <h5><?php echo ++$n; ?>. Período que se refere o Relatório</h5>
       </label>
+      <br>
+      <strong>Inicial</strong>
       <div class="row">
         <div class="col-3">
           <div class="form-group">
             <label>Início</label>
-            <input type="date" name="periodo_ini" id="periodo_ini" class="form-control" value="<?= $ini;?>" required <?=$editar;?> >
+            <input type="date" name="periodo_ini" id="periodo_ini" class="form-control" value="<?= $periodo_ini1; ?>" required <?=$editar;?> >
           </div>
         </div>
 
         <div class="col-3">
           <div class="form-group">
             <label>Fim</label>
-            <input type="date" name="periodo_fim" id="periodo_fim" class="form-control" value="<?= $fim; ?>" required <?=$editar?> >
+            <input type="date" name="periodo_fim" id="periodo_fim" class="form-control" value="<?= $periodo_fim1; ?>" required <?=$editar?> >
+          </div>
+        </div>
+      </div>
+      <br>
+      <strong>Renovação</strong>
+      <div class="row">
+        <div class="col-3">
+          <div class="form-group">
+            <label>Início</label>
+            <input type="date" name="periodo_renov_ini" id="periodo_renov_ini" class="form-control" value="<?= $ini;?>" required <?=$editar;?> >
           </div>
         </div>
 
-        
+        <div class="col-3">
+          <div class="form-group">
+            <label>Fim</label>
+            <input type="date" name="periodo_renov_fim" id="periodo_renov_fim" class="form-control" value="<?= $fim; ?>" required <?=$editar?> >
+          </div>
+        </div>
+      </div>
+
+      <br>
+      <strong>Prorrogação</strong>
+      <div class="row">
+        <div class="col-3">
+          <div class="form-group">
+            <label>Início</label>
+            <input type="date" name="periodo_prorroga_ini" id="periodo_prorroga_ini" class="form-control" value="<?= $ini;?>" required <?=$editar;?> >
+          </div>
+        </div>
+
+        <div class="col-3">
+          <div class="form-group">
+            <label>Fim</label>
+            <input type="date" name="periodo_prorroga_fim" id="periodo_prorroga_fim" class="form-control" value="<?= $fim; ?>" required <?=$editar?> >
+          </div>
+        </div>
+      </div>
+
+      
+      <hr>
+      <div class="form-group">
+        <label>
+          <h5><?php echo ++$n; ?>. Carga semanal*:</h5>
+        </label>
+        <input type="number" min=0 max=44 class="form-control col-2" name="ch_semanal" value="<?php echo $relatorio->ch_semanal; ?>">
+      </div>
+
+      <hr>
+      <div class="form-group">
+        <label>
+          <h5><?php echo ++$n; ?>. Dimensão do Projeto Executado</h5>
+        </label>
+        <table>
+          <tr>
+            <th>Público</th>
+            <th>Quantidade</th>
+          </tr>
+          <tr>
+            <th>Membros da comunidade externa</th>
+            <td><input type="number" min=0 max=44 class="form-control" name="dim_mem_com_ex" value="<?= $relatorio->dim_mem_com_ex; ?>"></td>
+          </tr>
+          <tr>
+            <th>Discentes</th>
+            <td><input type="number" min=0 max=44 class="form-control" name="dim_disc" value="<?= $relatorio->dim_disc; ?>"></td>
+          </tr>
+          <tr>
+            <th>Docentes</th>
+            <td><input type="number" min=0 max=44 class="form-control" name="dim_doce" value="<?= $relatorio->dim_doce; ?>"></td>
+          </tr>
+          <tr>
+            <th>Agentes universitários e Estagiários</th>
+            <td><input type="number" min=0 max=44 class="form-control" name="dim_agent_estag" value="<?= $relatorio->dim_agent_estag; ?>"></td>
+          </tr>
+        </table>
+      </div>
+
+      <hr>
+      
+
+      <div class="row">
+        <div class="col">
+          <div class="form-group">
+            <label>
+              <h5><?php echo ++$n; ?>. Certificação</h5>
+            </label>
+            <div>Se deseja solicitar certificados, anexe uma planilha com os seguintes dados:
+              <ul>
+                <li>Nome do participante</li>
+                <li>CPF</li>
+                <li>Tipo de participação</li>
+                <li>Carga horária total</li>
+                <li>Frequência</li>
+                <li>Aproveitamento</li>
+              </ul>
+            </div>
+          </div>
+        </div>
       </div>
 
       <hr>
@@ -130,11 +245,11 @@
       <div class="row">
         <div class="col">
           <div class="form-group">
-            <label for="atvd_per">
-              <h5><?php echo ++$n; ?>. Atividades realizadas no período</h5>
+            <label for="atividades">
+              <h5><?= ++$n; ?>. Atividades executadas</h5>
             </label>
-            <div id="sumnot_atvd_per"  ><?php echo $relatorio->atvd_per; ?></div>
-            <textarea id="atvd_per" name="atvd_per" rows="10" hidden ></textarea>
+            <div id="sumnot_atividades"><?php echo $relatorio->atividades; ?></div>
+            <textarea id="atividades" name="atividades" rows="10" hidden ></textarea>
           </div>
         </div>
       </div>
@@ -145,10 +260,10 @@
         <div class="col">
           <div class="form-group">
             <label>
-              <h5><?php echo ++$n; ?>. Alterações realizadas no período da pesquisa e justificativa</h5>
+              <h5><?php echo ++$n; ?>. Atividades a serem desenvolvidas no próximo período – quando da solicitação de prorrogação do prazo</h5>
             </label>
-            <div id="sumnot_alteracoes"><?php echo $relatorio->alteracoes; ?></div>
-            <textarea id="alteracoes" name="alteracoes" rows="10" hidden ></textarea>
+            <div id="sumnot_atvd_prox_per"><?php echo $relatorio->atvd_prox_per; ?></div>
+            <textarea id="atvd_prox_per" name="atvd_prox_per" rows="10" hidden ></textarea>
           </div>
         </div>
       </div>
@@ -157,17 +272,50 @@
       <div class="row">
         <div class="col">
           <div class="form-group">
-            <label for="atvd_prox_per">
-              <h5><?php echo ++$n; ?>. Atividades para o próximo período</h5>
+            <label>
+              <h5><?php echo ++$n; ?>. Relatório técnico-científico do Projeto Executado. </h5>
             </label>
-            <div id="sumnot_atvd_prox_per"><?php echo $relatorio->atvd_prox_per; ?></div>
-            <textarea id="atvd_prox_per" name="atvd_prox_per" rows="10" hidden></textarea>
+            <div id="sumnot_rel_tec_cien_executado"><?php echo $relatorio->rel_tec_cien_executado; ?></div>
+            <textarea id="rel_tec_cien_executado" name="rel_tec_cien_executado" rows="10" hidden ></textarea>
+          </div>
+        </div>
+      </div>
+      <hr>
+
+      <div class="row">
+        <div class="col">
+          <div class="form-group">
+            <label>
+              <h5><?php echo ++$n; ?>. Divulgação científico-acadêmica e técnico-extensionistas </h5>
+            </label>
+            <div id="sumnot_divulgacao"><?php echo $relatorio->divulgacao; ?></div>
+            <textarea id="divulgacao" name="divulgacao" rows="10" hidden ></textarea>
+          </div>
+        </div>
+      </div>
+      <hr>
+
+      <div class="row">
+        <div class="col">
+          <div class="form-group">
+            <label>
+              <h5><?php echo ++$n; ?>. Relatório Financeiro</h5>
+            </label>
+            <div>Caso haja recursos envolvidos na ação, elaborar o Relatório Financeiro, utilize um modelo fornecido pela Pró-Reitoria de Administração e Finanças
+            </div>
+            <a href="https://praf.unespar.edu.br/downloads" target="_blank">Modelos PRAF</a>. Depois de preenchido, anexe o arquivo no seção Anexos.
           </div>
         </div>
       </div>
 
+      
+      <div class="form-group">
+        <h5 id="attc"><?php echo ++$n; ?>. Anexos</h5>
+        <ul id="anexos"></ul>
+        <iframe src="../upload/upload.php" frameborder="0" scrolling="no"></iframe>
+        <?php echo $anex; ?>
+      </div>
       <hr>
-
       <?php 
       if($relatorio->tramitar == 0) {
       ?>
@@ -185,15 +333,8 @@
       </div>
       <hr>';
 
-      }?>
-
-      <div class="form-group">
-        <h5 id="attc"><?php echo ++$n; ?>. Anexos</h5>
-        <ul id="anexos"></ul>
-        <iframe src="../upload/upload.php" frameborder="0" scrolling="no"></iframe>
-        <?php echo $anex; ?>
-      </div>
-      <hr>
+      }
+      ?>
 
       <div class="row" >
 
