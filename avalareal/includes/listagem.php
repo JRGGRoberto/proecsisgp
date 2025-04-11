@@ -7,6 +7,10 @@
   use \App\Entity\Avaliacoes;
   $user = Login::getUsuarioLogado();
 
+  function dt($dt){
+    return substr($dt,8,2).'/'.substr($dt,5,2).'/'. substr($dt, 0,4) .'<br>'.substr($dt,-9);
+  }
+
   require('../includes/msgAlert.php');
 
   $qnt1 = 0;
@@ -79,11 +83,13 @@
      <div class="row">
         <div class="col-sm-5"><a class="collapsed card-link" data-toggle="collapse" href="#p'. $ava->id_ava .'">📃 '. $ava->titulo .'</a></div>
         <div class="col-sm-5">Submetido para o colegidado de <span class="badge badge-success">'.$ava->colegiado.'</span></div>
-        <div class="col-sm-2">
+        <div class="col-sm-1">
            '. 
            $progresso
            .'
         </div>
+        <div class="col-sm-1"><span class="badge">'.dt($ava->created_at).'</span></div>
+
      </div>
   </div>
     <div id="p'. $ava->id_ava .'" class="collapse" data-parent="#accordion">

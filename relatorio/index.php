@@ -1,6 +1,9 @@
 <?php
 
 require '../vendor/autoload.php';
+ini_set('display_errors', 1);
+ini_set('display_startup_errors', 1);
+error_reporting(E_ALL);
 
 use \App\Session\Login;
 use \App\Entity\Projeto;
@@ -36,32 +39,50 @@ $obProjeto = Projeto::getProjetoLast($id);
 $obProjeto = Projeto::getProjeto($id, $obProjeto->ver);
 $novoBTNs = '';
 
-$QntRelFinal = RelFinal::getQntd('id = "'.$id.'"' );
-$QntRelParcial = RelParcial::getQntd('idproj = "'.$id.'"' );
+
+$QntRelParcial =  RelParcial::getQntd('idproj = "'.$id.'"' );
+$QntRelFinalFinal = RelFinal::getQntd('id = "'.$id.'" ', 'tipo = "f" '); 
+$QntRelFinalProrr = RelFinal::getQntd('id = "'.$id.'" ', 'tipo = "p" ');
+$QntRelFinalRenov = RelFinal::getQntd('id = "'.$id.'" ', 'tipo = "r" ');
+
+echo '<pre>';
+
+echo 'QntRelParcial: '.$QntRelParcial;
+echo '<br>';
+echo 'QntRelFinalFinal: '.$QntRelFinalFinal;
+echo '<br>';
+echo 'QntRelFinalProrr: '.$QntRelFinalProrr;
+echo '<br>';
+echo 'QntRelFinalRenov: '.$QntRelFinalRenov;
+
+echo '</pre>';
+
+
+
 
 $relParcial = RelParcial::gets('idproj = "'.$id.'"' );
 $RelFinal = RelFinal::get($id);
 
-$showBTNS = false;
-if($QntRelParcial == 0 && $QntRelFinal == 0){  // Não tem nenhum relatórios
-    $showBTNS = true;
+$showBTNS_parcial_final = false;
+if($QntRelParcial == 0 and $QntRelFinalFinal == 0){  // Não tem nenhum relatórios
+    $showBTNS_parcial_final = true;
 } else {
-    if($QntRelFinal > 0){   // se tem relatório final Não mostar btns para criar
-        $showBTNS = false;
+    if($QntRelFinalFinal > 0){   // se tem relatório final Não mostar btns para criar
+        $showBTNS_parcial_final = false;
     } elseif   ($QntRelParcial > 0){ // se tem algum parcial
        foreach($relParcial as $rel){
             if($rel->ava_publicar == 0){
-                $showBTNS = false;
+                $showBTNS_parcial_final = false;
                 break;
             } else {
-                $showBTNS = true;
+                $showBTNS_parcial_final = true;
             }
         }
     }
 }
 
 
-if($showBTNS){
+if($showBTNS_parcial_final){
     $novoBTNs = '
       <section>
         <div class="row mt-2 align-bottom">

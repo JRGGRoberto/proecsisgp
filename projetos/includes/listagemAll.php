@@ -21,6 +21,10 @@ $qnt1 = 0;
 $col = '';
 $LastV = '';
 
+function dt($dt){
+  return substr($dt,8,2).'/'.substr($dt,5,2).'/'. substr($dt, 0,4);
+}
+
 function resumirTexto(string $texto, int $limite = 256): string
 {
     $textoLimpo = trim(strip_tags($texto));
@@ -92,7 +96,7 @@ foreach ($projetos as $proj) {
                     break;
                 default:
                     $class = 'table-warning';
-                    $td = '<td><span class="badge badge-light">Espera de parecer... ['.$la->tp_instancia.']</span></td>';
+                    $td = '<td><span class="badge badge-light">Espera de parecer... ['.$la->tp_instancia.'] '. dt($la->created_at) .'</span></td>';
 
                     array_push($btnStatus, new Blocos($la->fase_seq, 'warning'));
             }

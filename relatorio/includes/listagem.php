@@ -4,7 +4,7 @@
 
   $resultados = '';
 
-  if($QntRelFinal > 0){
+  if($QntRelFinalFinal > 0){
       $resultados .= '<div class="card">';
       $resultados .= '<div class="card-body">';
       $resultados .= '<h5 class="card-title">Relatório Final referente '. formatData($RelFinal->periodo_ini).' à '. formatData($RelFinal->periodo_fim).'</h5>';

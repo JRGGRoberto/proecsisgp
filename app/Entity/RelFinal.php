@@ -4,13 +4,13 @@ namespace App\Entity;
 
 use \App\Db\Database;
 use \PDO;
+use \App\Entity\UuiuD;
 
 class RelFinal{
 
   public $id;
-  public $periodo_ini;
-  public $periodo_fim;
-  public $periodo_renov_ini;
+  public $idproj;
+  public $tipo;
   public $periodo_renov_fim;
   public $periodo_prorroga_ini;
   public $periodo_prorroga_fim;
@@ -40,13 +40,14 @@ class RelFinal{
    */
   public function cadastrar(){
 
+
+    $newId = UuiuD::gera(); //exec('uuidgen -r');
     //INSERIR A REGISTRO NO BANCO
     $obDatabase = new Database('rel_final');
     $obDatabase->insert([
-                            'id'                     => $this->id,
-                            'periodo_ini'            => $this->periodo_ini,
-                            'periodo_fim'            => $this->periodo_fim,
-                            'periodo_renov_ini'      => $this->periodo_renov_ini,
+                            'id'                     => $newId,
+                            'idproj'                 => $this->idproj,
+                            'tipo'                   => $this->tipo,
                             'periodo_renov_fim'      => $this->periodo_renov_fim,
                             'periodo_prorroga_ini'   => $this->periodo_prorroga_ini,
                             'periodo_prorroga_fim'   => $this->periodo_prorroga_fim,
@@ -81,9 +82,8 @@ class RelFinal{
    */
   public function atualizar(){ 
     return (new Database('rel_final'))->update('id = "'.$this->id.'" ',[
-                                'periodo_ini'            => $this->periodo_ini,
-                                'periodo_fim'            => $this->periodo_fim,
-                                'periodo_renov_ini'      => $this->periodo_renov_ini,
+                               'idproj'                 => $this->idproj,
+                               'tipo'                   => $this->tipo,
                                 'periodo_renov_fim'      => $this->periodo_renov_fim,
                                 'periodo_prorroga_ini'   => $this->periodo_prorroga_ini,
                                 'periodo_prorroga_fim'   => $this->periodo_prorroga_fim,

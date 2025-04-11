@@ -119,5 +119,5 @@ if (isset($_POST['atvd_per'])) {
 
 include '../includes/header.php'; 
 include __DIR__.'/includes/formParcial.php';
-echo $scriptDisble;echo 
+echo $scriptDisble; 
 include '../includes/footer.php'; 

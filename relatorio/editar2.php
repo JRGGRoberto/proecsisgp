@@ -95,10 +95,10 @@ if (isset($_POST['periodo_ini'])) {
     $relatorio->id = $obProjeto->id;
     $relatorio->periodo_ini = $_POST['periodo_ini'];
     $relatorio->periodo_fim = $_POST['periodo_fim'];
-    $relatorio->periodo_renov_ini = $_POST['periodo_renov_ini'];
-    $relatorio->periodo_renov_fim = $_POST['periodo_renov_fim'];
-    $relatorio->periodo_prorroga_ini = $_POST['periodo_prorroga_ini'];
-    $relatorio->periodo_prorroga_fim = $_POST['periodo_prorroga_fim'];
+    $relatorio->periodo_renov_ini =     $_POST['periodo_renov_ini'];
+    $relatorio->periodo_renov_fim =     $_POST['periodo_renov_fim'];
+    $relatorio->periodo_prorroga_ini =  $_POST['periodo_prorroga_ini'];
+    $relatorio->periodo_prorroga_fim =  $_POST['periodo_prorroga_fim'];
     $relatorio->ch_semanal = $_POST['ch_semanal'];
     $relatorio->dim_mem_com_ex = $_POST['dim_mem_com_ex'];
     $relatorio->dim_disc = $_POST['dim_disc'];
