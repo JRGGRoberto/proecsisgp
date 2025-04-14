@@ -16,6 +16,8 @@ $user = Login::getUsuarioLogado();
 
 $t = $_GET['t'];
 $id = $_GET['i'];
+$tf = $_GET['f'];
+
 
 if ($t != 2) {
   header('location: index.php?status=error');
@@ -24,6 +26,8 @@ if ($t != 2) {
 
 
 $obProjeto = Projeto::getProjetoLast($id);
+
+
 $obProjeto = Projeto::getProjeto($id, $obProjeto->ver);
 $obProfessor = Professor::getProfessor($obProjeto->id_prof);
 
@@ -39,7 +43,7 @@ $relatorio = new RelFinal();
 // VALIDAÇÃO DO POST
 if (isset($_POST['periodo_ini'])) {
 
-
+/*
     echo '<pre>';
     print_r($_POST);
     echo '</pre>';
@@ -50,15 +54,19 @@ if (isset($_POST['periodo_ini'])) {
       echo 'não exite '. $k;
     }
     exit;
+*/
+    $relatorio->idproj = $obProjeto->id;
 
-    $relatorio->id = $obProjeto->id;
+    if($tf == 'r'){
+        $relatorio->periodo_renov_fim = $_POST['periodo_renov_fim'];
+    }
     
-      $relatorio->periodo_renov_ini = $_POST['periodo_renov_ini'];
-      $relatorio->periodo_renov_fim = $_POST['periodo_renov_fim'];
-      
+    if($tf == 'p'){
       $relatorio->periodo_prorroga_ini = $_POST['periodo_prorroga_ini'];
       $relatorio->periodo_prorroga_fim = $_POST['periodo_prorroga_fim'];
       $relatorio->atvd_prox_per = $_POST['atvd_prox_per'];
+    }
+      
     
     $relatorio->ch_semanal = $_POST['ch_semanal'];
     $relatorio->dim_mem_com_ex = $_POST['dim_mem_com_ex'];

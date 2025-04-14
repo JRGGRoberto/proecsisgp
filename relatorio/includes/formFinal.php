@@ -10,6 +10,7 @@
   <h3 class="mt-3" style="text-align: center">RELATÓRIO FINAL DE AÇÃO DE EXTENSÃO E CULTURA e/ou<BR>PRORROGAÇÃO DE PRAZO</h3>
 
   <?php
+   echo "TIPO".$tf. '<br>';
     /* if(!(
         ( ($relatorio->tramitar == 0)     or is_null($relatorio->tramitar)     or ($relatorio->tramitar == ''))      and
         ( ($relatorio->ava_publicar == 0) or is_null($relatorio->ava_publicar) or ($relatorio->ava_publicar == ''))  and
@@ -94,6 +95,7 @@
     <hr>
 
   <?php 
+/*
   $periodo_ini1 = null;
   if(!is_null($relatorio->periodo_ini)){
     $periodo_ini1 = substr($relatorio->periodo_ini, 0, 10);
@@ -102,23 +104,23 @@
   if(!is_null($relatorio->periodo_fim)){
     $periodo_fim1 = substr($relatorio->periodo_fim, 0, 10);
   }
-
-  $periodo_ini2 = null;
-  if(!is_null($relatorio->periodo_renov_ini)){
-    $periodo_ini2 = substr($relatorio->periodo_renov_ini, 0, 10);
-  } 
-  $periodo_fim2 = null;
-  if(!is_null($relatorio->periodo_renov_fim)){
-    $periodo_fim2 = substr($relatorio->periodo_renov_fim, 0, 10);
+*/
+  if($tf == 'r'){
+    $periodo_ini2 = null;
+    if(!is_null($relatorio->periodo_renov_ini)){
+      $periodo_ini2 = substr($relatorio->periodo_renov_ini, 0, 10);
+    } 
+    $periodo_fim2 = null;
+    if(!is_null($relatorio->periodo_renov_fim)){
+      $periodo_fim2 = substr($relatorio->periodo_renov_fim, 0, 10);
+    }
   }
 
-  $periodo_ini3 = null;
-  if(!is_null($relatorio->periodo_prorroga_ini)){
-    $periodo_ini3 = substr($relatorio->periodo_prorroga_ini, 0, 10);
-  } 
-  $periodo_fim3 = null;
-  if(!is_null($relatorio->periodo_prorroga_fim)){
-    $periodo_fim3 = substr($relatorio->periodo_prorroga_fim, 0, 10);
+  if($tf == 'p'){
+    $periodo_fim3 = null;
+    if(!is_null($relatorio->periodo_prorroga_fim)){
+      $periodo_fim3 = substr($relatorio->periodo_prorroga_fim, 0, 10);
+    }
   }
 
   ?>
@@ -127,6 +129,7 @@
         <h5><?php echo ++$n; ?>. Período que se refere o Relatório</h5>
       </label>
       <br>
+      <!--
       <strong>Inicial</strong>
       <div class="row">
         <div class="col-3">
@@ -144,42 +147,50 @@
         </div>
       </div>
       <br>
-      <strong>Renovação</strong>
-      <div class="row">
-        <div class="col-3">
-          <div class="form-group">
-            <label>Início</label>
-            <input type="date" name="periodo_renov_ini" id="periodo_renov_ini" class="form-control" value="<?= $ini;?>" required <?=$editar;?> >
-          </div>
-        </div>
-
-        <div class="col-3">
-          <div class="form-group">
-            <label>Fim</label>
-            <input type="date" name="periodo_renov_fim" id="periodo_renov_fim" class="form-control" value="<?= $fim; ?>" required <?=$editar?> >
-          </div>
-        </div>
-      </div>
-
+-->
+      <?php 
+      if($tf == 'r'){ ?>
+         <strong>Renovação</strong>
+         <div class="row">
+           <div class="col-3">
+             <div class="form-group">
+               <label>Início r</label>
+               <input type="date" name="periodo_renov_ini" id="periodo_renov_ini" class="form-control" value="<?= $ini;?>" required <?=$editar;?> >
+             </div>
+           </div>
+   
+           <div class="col-3">
+             <div class="form-group">
+               <label>Fim r</label>
+               <input type="date" name="periodo_renov_fim" id="periodo_renov_fim" class="form-control" value="<?= $fim; ?>" required <?=$editar?> >
+             </div>
+           </div>
+         </div>
       <br>
+<?php } 
+
+if($tf == 'p'){
+?>
       <strong>Prorrogação</strong>
       <div class="row">
         <div class="col-3">
           <div class="form-group">
-            <label>Início</label>
+            <label>Início p</label>
             <input type="date" name="periodo_prorroga_ini" id="periodo_prorroga_ini" class="form-control" value="<?= $ini;?>" required <?=$editar;?> >
           </div>
         </div>
 
         <div class="col-3">
           <div class="form-group">
-            <label>Fim</label>
+            <label>Fim p</label>
             <input type="date" name="periodo_prorroga_fim" id="periodo_prorroga_fim" class="form-control" value="<?= $fim; ?>" required <?=$editar?> >
           </div>
         </div>
       </div>
 
-      
+      <?php } 
+
+?>      
       <hr>
       <div class="form-group">
         <label>

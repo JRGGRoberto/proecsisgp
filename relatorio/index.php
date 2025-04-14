@@ -64,10 +64,10 @@ $relParcial = RelParcial::gets('idproj = "'.$id.'"' );
 $RelFinal = RelFinal::get($id);
 
 $showBTNS_parcial_final = false;
-if($QntRelParcial == 0 and $QntRelFinalFinal == 0){  // Não tem nenhum relatórios
+if($QntRelParcial == 0 and $QntRelFinalFinal == 0 and $QntRelFinalRenov == 0){  // Não tem nenhum relatórios
     $showBTNS_parcial_final = true;
 } else {
-    if($QntRelFinalFinal > 0){   // se tem relatório final Não mostar btns para criar
+    if(($QntRelFinalFinal > 0) or ($QntRelFinalRenov > 0)){   // se tem relatório final Não mostar btns para criar
         $showBTNS_parcial_final = false;
     } elseif   ($QntRelParcial > 0){ // se tem algum parcial
        foreach($relParcial as $rel){
@@ -81,6 +81,14 @@ if($QntRelParcial == 0 and $QntRelFinalFinal == 0){  // Não tem nenhum relatór
     }
 }
 
+$btnFinalProrrogado = '<a class="dropdown-item btn-sm" href="./cadastrar2.php?t=2&i='. $obProjeto->id. '&f=p">Relatório final com pedido de Prorrogação</a>';
+$btnFinalRenova =     '<a class="dropdown-item btn-sm" href="./cadastrar2.php?t=2&i='. $obProjeto->id. '&f=r">Relatório final com pedido de Renovação</a>';
+
+if(($QntRelFinalFinal > 0) or ($QntRelFinalRenov > 0)){
+    $btnFinalProrrogado = '';
+}
+
+
 
 if($showBTNS_parcial_final){
     $novoBTNs = '
@@ -93,8 +101,9 @@ if($showBTNS_parcial_final){
                 Novo
               </button>
               <div class="dropdown-menu dropdown-menu-right">
-                  <a class="dropdown-item btn-sm" href="./cadastrar1.php?t=1&i='. $obProjeto->id. '">Relatório parcial</a>
-                  <a class="dropdown-item btn-sm" href="./cadastrar2.php?t=2&i='. $obProjeto->id. '">Relatório final</a>
+                  <a class="dropdown-item btn-sm" href="./cadastrar1.php?t=1&i='. $obProjeto->id. '">Relatório parcial</a>'.
+                  $btnFinalProrrogado  . $btnFinalRenova 
+                  .'<a class="dropdown-item btn-sm" href="./cadastrar2.php?t=2&i='. $obProjeto->id. '&f=f">Relatório final</a>
               </div>
             </div>
           </div>
