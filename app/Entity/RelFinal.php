@@ -11,8 +11,8 @@ class RelFinal{
   public $id;
   public $idproj;
   public $tipo;
+  public $periodo_renov_ini;
   public $periodo_renov_fim;
-  public $periodo_prorroga_ini;
   public $periodo_prorroga_fim;
   public $ch_semanal;
   public $dim_mem_com_ex;
@@ -48,8 +48,8 @@ class RelFinal{
                             'id'                     => $newId,
                             'idproj'                 => $this->idproj,
                             'tipo'                   => $this->tipo,
+                            'periodo_renov_ini'      => $this->periodo_renov_ini,
                             'periodo_renov_fim'      => $this->periodo_renov_fim,
-                            'periodo_prorroga_ini'   => $this->periodo_prorroga_ini,
                             'periodo_prorroga_fim'   => $this->periodo_prorroga_fim,
                             'ch_semanal'             => $this->ch_semanal,
                             'dim_mem_com_ex'         => $this->dim_mem_com_ex,
@@ -84,8 +84,8 @@ class RelFinal{
     return (new Database('rel_final'))->update('id = "'.$this->id.'" ',[
                                'idproj'                 => $this->idproj,
                                'tipo'                   => $this->tipo,
+                               'periodo_renov_ini'      => $this->periodo_renov_ini,
                                 'periodo_renov_fim'      => $this->periodo_renov_fim,
-                                'periodo_prorroga_ini'   => $this->periodo_prorroga_ini,
                                 'periodo_prorroga_fim'   => $this->periodo_prorroga_fim,
                                 'ch_semanal'             => $this->ch_semanal,
                                 'dim_mem_com_ex'         => $this->dim_mem_com_ex,

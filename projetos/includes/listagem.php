@@ -19,6 +19,10 @@
   $col= '';
   $LastV = '';
 
+  function dt($dt){
+    return substr($dt,8,2).'/'.substr($dt,5,2).'/'. substr($dt, 0,4);
+  }
+
   function resumirTexto(string $texto, int $limite = 256): string
   {
       $textoLimpo = trim(strip_tags($texto));
@@ -40,9 +44,9 @@
     ){
       
       $showRelatorios = false;
-      $progresso = '<span class="badge badge-success ">Em execução/Excutado <a href="../projetos/visualizar.php?id='.$proj->id.'&amp;v='.$proj->ver.'&amp;w=nw" target="_blank">📄</a></span> ';
-
-      
+      $progresso = '<span class="badge badge-success ">Em execução/Excutado <a href="../projetos/visualizar.php?id='.$proj->id.'&amp;v='.$proj->ver.'&amp;w=nw" target="_blank">📄</a></span>'
+      // .' <br>e341e624-0715-11ef-b2c8-0266ad9885af <br>'. '287c102f-e5fa-11ee-b2c8-0266ad9885af <br>' . $proj->regras
+      ;
 
     } else {
 
@@ -83,19 +87,19 @@
             switch ($la->resultado){
              case 'a': 
                $class = "table-success"; 
-               $td = '<td><a href="../forms/'. $la->form .'/vista.php?p='. $proj->id.  '&v='. $la->ver . '" target="_blank">📄 </a></td>';
+               $td = '<td><a href="../forms/'. $la->form .'/vista.php?p='. $proj->id.  '&v='. $la->ver . '" target="_blank">📄</a> '.$la->tp_instancia.'</td>';
               
                array_push($btnStatus, new Blocos($la->fase_seq,'success')); // 'primary')); //
                break;
              case 'r': 
                $class = "table-danger"; 
-               $td = '<td><a href="../forms/'. $la->form .'/vista.php?p='. $proj->id.  '&v='. $la->ver . '" target="_blank">📄 </a></td>';
+               $td = '<td><a href="../forms/'. $la->form .'/vista.php?p='. $proj->id.  '&v='. $la->ver . '" target="_blank">📄</a> '.$la->tp_instancia.'</td>';
                 
                array_push($btnStatus, new Blocos($la->fase_seq,'danger'));
                break;
              default: 
                $class = "table-warning"; 
-               $td = '<td>➖</td>';
+               $td = '<td><span class="badge badge-light">Espera de parecer... ['.$la->tp_instancia.'] '. dt($la->created_at) .'</span></td>';
                  
                array_push($btnStatus, new Blocos($la->fase_seq,'warning'));
             }
@@ -168,11 +172,11 @@
       <div id="p'. $proj->id  .'" class="collapse" data-parent="#accordion">
         <div class="card-body">
            <div class="row">
-        <div class="col-9">
+        <div class="col-8">
           <p><strong>Resumo:</strong> '. resumirTexto($proj->resumo)  .'</p>
           <p><strong>Objetivos:</strong> '. resumirTexto($proj->objetivos)  .'</p>
         </div>
-        <div class="col">
+        <div class="col-4">
         '. $LastV .'
         </div>
       </div>

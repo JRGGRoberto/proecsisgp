@@ -14,8 +14,6 @@ use App\Entity\RelFinal;
 use App\Entity\Campi;
 use App\Entity\Colegiado;
 
-
-
 // Obriga o usuário a estar logado
 Login::requireLogin();
 $user = Login::getUsuarioLogado();
@@ -25,7 +23,7 @@ $user = Login::getUsuarioLogado();
 
 $id = $_GET['id'];
 $relatorio = (object) RelFinal::get($id);
-
+$tf = $relatorio->tipo;
 
 
 $editar = '';
@@ -41,7 +39,7 @@ if($relatorio->tramitar == 1){
                     </script>";
 } 
 
-$obProjeto = Projeto::getProjetoLast($relatorio->id);
+$obProjeto = Projeto::getProjetoLast($relatorio->idproj);
 $obProjeto = Projeto::getProjeto($obProjeto->id, $obProjeto->ver);
 $obProfessor = Professor::getProfessor($obProjeto->id_prof);
 
@@ -87,7 +85,6 @@ if (isset($_POST['acao']) == 'removeAnexo') {
     }
     // Finaliza a requisição 
     exit;
-
 }
 
 // VALIDAÇÃO DO POST
@@ -123,6 +120,22 @@ if (isset($_POST['periodo_ini'])) {
 
     header('location: index.php?id='.$obProjeto->id);
     exit;
+}
+
+$tituloHeader = '';
+switch($tf) {
+    case 'f':
+        $tituloHeader = 'RELATÓRIO FINAL DE AÇÃO DE EXTENSÃO E CULTURA';
+        break;
+    case 'p':
+        $tituloHeader = 'RELATÓRIO FINAL DE AÇÃO DE EXTENSÃO E CULTURA<BR>E solicitação de PRORROGAÇÃO DE PRAZO';
+        break;
+    case 'r':
+        $tituloHeader = 'RELATÓRIO FINAL DE AÇÃO DE EXTENSÃO E CULTURA<BR>E solicitação de RENOVAÇÃO';
+        break;
+    default:
+        $tituloHeader = 'não definido';
+        break;
 }
 
 

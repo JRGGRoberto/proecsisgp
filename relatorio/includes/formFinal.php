@@ -7,10 +7,10 @@
   </section>
   <hr>
   <h4 style="text-align: center">ANEXO V</h4>
-  <h3 class="mt-3" style="text-align: center">RELATÓRIO FINAL DE AÇÃO DE EXTENSÃO E CULTURA e/ou<BR>PRORROGAÇÃO DE PRAZO</h3>
+  <h3 class="mt-3" style="text-align: center"><?=$tituloHeader?></h3>
 
   <?php
-   echo "TIPO".$tf. '<br>';
+   
     /* if(!(
         ( ($relatorio->tramitar == 0)     or is_null($relatorio->tramitar)     or ($relatorio->tramitar == ''))      and
         ( ($relatorio->ava_publicar == 0) or is_null($relatorio->ava_publicar) or ($relatorio->ava_publicar == ''))  and
@@ -36,6 +36,7 @@
   <form name="formAnexo" id="formAnexo" method="POST" enctype="multipart/form-data">
     <input type="hidden" name="id_prof" value="<?php echo $obProjeto->id_prof; ?>">
     <input type="hidden" name="tabela" value="projetos">
+    <input type="hidden" name="valida" value="ok">
     <hr>
     <div class="form-group">
       <label>
@@ -95,16 +96,13 @@
     <hr>
 
   <?php 
-/*
-  $periodo_ini1 = null;
-  if(!is_null($relatorio->periodo_ini)){
-    $periodo_ini1 = substr($relatorio->periodo_ini, 0, 10);
-  } 
-  $periodo_fim1 = null;
-  if(!is_null($relatorio->periodo_fim)){
-    $periodo_fim1 = substr($relatorio->periodo_fim, 0, 10);
-  }
-*/
+
+  
+  $periodo_ini1 = substr($obProjeto->vigen_ini, 0, 10);
+
+  $periodo_fim1 = substr($obProjeto->vigen_fim, 0, 10);
+
+
   if($tf == 'r'){
     $periodo_ini2 = null;
     if(!is_null($relatorio->periodo_renov_ini)){
@@ -129,39 +127,39 @@
         <h5><?php echo ++$n; ?>. Período que se refere o Relatório</h5>
       </label>
       <br>
-      <!--
-      <strong>Inicial</strong>
+
+      <strong>Inicial - Original</strong>
       <div class="row">
         <div class="col-3">
           <div class="form-group">
             <label>Início</label>
-            <input type="date" name="periodo_ini" id="periodo_ini" class="form-control" value="<?= $periodo_ini1; ?>" required <?=$editar;?> >
+            <input type="date" class="form-control" value="<?= $periodo_ini1; ?>"  >
           </div>
         </div>
 
         <div class="col-3">
           <div class="form-group">
             <label>Fim</label>
-            <input type="date" name="periodo_fim" id="periodo_fim" class="form-control" value="<?= $periodo_fim1; ?>" required <?=$editar?> >
+            <input type="date" class="form-control" value="<?= $periodo_fim1; ?>"  >
           </div>
         </div>
       </div>
       <br>
--->
+
       <?php 
       if($tf == 'r'){ ?>
          <strong>Renovação</strong>
          <div class="row">
            <div class="col-3">
              <div class="form-group">
-               <label>Início r</label>
+               <label>Início para renovação</label>
                <input type="date" name="periodo_renov_ini" id="periodo_renov_ini" class="form-control" value="<?= $ini;?>" required <?=$editar;?> >
              </div>
            </div>
    
            <div class="col-3">
              <div class="form-group">
-               <label>Fim r</label>
+               <label>Fim, para renovação</label>
                <input type="date" name="periodo_renov_fim" id="periodo_renov_fim" class="form-control" value="<?= $fim; ?>" required <?=$editar?> >
              </div>
            </div>
@@ -172,20 +170,14 @@
 if($tf == 'p'){
 ?>
       <strong>Prorrogação</strong>
-      <div class="row">
+      
         <div class="col-3">
           <div class="form-group">
-            <label>Início p</label>
-            <input type="date" name="periodo_prorroga_ini" id="periodo_prorroga_ini" class="form-control" value="<?= $ini;?>" required <?=$editar;?> >
-          </div>
-        </div>
-
-        <div class="col-3">
-          <div class="form-group">
-            <label>Fim p</label>
+            <label>Até</label>
             <input type="date" name="periodo_prorroga_fim" id="periodo_prorroga_fim" class="form-control" value="<?= $fim; ?>" required <?=$editar?> >
           </div>
         </div>
+        A prorrogação deve ter tempo máximo de 25% do período inicial e final informado no projeto.
       </div>
 
       <?php } 
@@ -266,6 +258,7 @@ if($tf == 'p'){
       </div>
 
       <hr>
+<?php if($tf == 'p'){ ?>
 
       <div class="row">
         <div class="col">
@@ -279,6 +272,8 @@ if($tf == 'p'){
         </div>
       </div>
       <hr>
+
+<?php } ?>
 
       <div class="row">
         <div class="col">
@@ -319,7 +314,21 @@ if($tf == 'p'){
         </div>
       </div>
 
-      
+<?php if($tf == 'r'){ ?>
+  <div class="row">
+        <div class="col">
+          <div class="form-group">
+            <label>
+              <h5><?php echo ++$n; ?>. Relatório Financeiro</h5>
+            </label>
+            <div>Caso haja recursos envolvidos na ação, elaborar o Relatório Financeiro, utilize um modelo fornecido pela Pró-Reitoria de Administração e Finanças
+            </div>
+            <a href="https://praf.unespar.edu.br/downloads" target="_blank">Modelos PRAF</a>. Depois de preenchido, anexe o arquivo no seção Anexos.
+          </div>
+        </div>
+      </div>
+
+<?php } ?>
       <div class="form-group">
         <h5 id="attc"><?php echo ++$n; ?>. Anexos</h5>
         <ul id="anexos"></ul>

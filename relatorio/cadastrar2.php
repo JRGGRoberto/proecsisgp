@@ -41,8 +41,8 @@ if($obProjeto->para_avaliar == -1){
 $relatorio = new RelFinal();
 
 // VALIDAÇÃO DO POST
-if (isset($_POST['periodo_ini'])) {
-
+if (isset($_POST['valida'])) {
+   
 /*
     echo '<pre>';
     print_r($_POST);
@@ -62,12 +62,11 @@ if (isset($_POST['periodo_ini'])) {
     }
     
     if($tf == 'p'){
-      $relatorio->periodo_prorroga_ini = $_POST['periodo_prorroga_ini'];
       $relatorio->periodo_prorroga_fim = $_POST['periodo_prorroga_fim'];
       $relatorio->atvd_prox_per = $_POST['atvd_prox_per'];
     }
       
-    
+    $relatorio->tipo = $tf;
     $relatorio->ch_semanal = $_POST['ch_semanal'];
     $relatorio->dim_mem_com_ex = $_POST['dim_mem_com_ex'];
     $relatorio->dim_disc = $_POST['dim_disc'];

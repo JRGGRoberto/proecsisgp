@@ -4,10 +4,40 @@
 
   $resultados = '';
 
-  if($QntRelFinalFinal > 0){
+  foreach($RelFinal as $relf){
+    $titulo ='';
+    switch(($relf->tipo))
+    {
+      case 'f':
+        $titulo =  'Final - Período: ' . formatData($obProjeto->vigen_ini).' à '. formatData($obProjeto->vigen_fim) ;
+        break; 
+      case 'p': 
+        $titulo =  'Final com pedido de prorrogação - Período: ' . formatData($obProjeto->vigen_ini).' à '. formatData($obProjeto->vigen_fim) .' - Prorrogado até: '. formatData($relf->periodo_prorroga_fim);
+        break; 
+      case 'r': 
+        $titulo =  'Final com pedido de renovação';
+        break; 
+      default: 
+        $titulo =  'não definido';
+        break;
+    }
+
+    $resultados .= '<div class="card">';
+    $resultados .= '<div class="card-body">';
+    $resultados .= '<h5 class="card-title">Relatório '. $titulo .'</h5>';
+    $resultados .= '<h6 class="card-subtitle mb-2 text-muted">Atividades realizadas</h6>';
+    $resultados .= '<p class="card-text">'.$relf->atividades.'</p>';
+    $resultados .= '<a href="editar2.php?id='.$relf->id.'" class="card-link">Visualizar</a> ';
+    $resultados .= '</div>';
+    $resultados .= '</div>';
+    
+  }
+
+  /*
+  if(($QntRelFinalFinal > 0) or ($QntRelFinalRenov > 0)){
       $resultados .= '<div class="card">';
       $resultados .= '<div class="card-body">';
-      $resultados .= '<h5 class="card-title">Relatório Final referente '. formatData($RelFinal->periodo_ini).' à '. formatData($RelFinal->periodo_fim).'</h5>';
+      $resultados .= '<h5 class="card-title">Relatório Final referente '. formatData($obProjeto->vigen_ini).' à '. formatData($obProjeto->vigen_fim).'</h5>';
       $resultados .= '<h6 class="card-subtitle mb-2 text-muted">Atividades realizadas</h6>';
       $resultados .= '<p class="card-text">'.$RelFinal->atividades.'</p>';
       $resultados .= '<h6 class="card-subtitle mb-2 text-muted">Alterações</h6>';
@@ -19,6 +49,9 @@
       $resultados .= '</div>';
       $resultados .= '</div>';
   } 
+*/
+
+
   if ($QntRelParcial == 0){
     $resultados = 'Não há relatórios de execução realizados.';
   } else {
