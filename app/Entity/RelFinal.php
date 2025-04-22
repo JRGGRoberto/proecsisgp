@@ -81,10 +81,10 @@ class RelFinal{
    * @return boolean
    */
   public function atualizar(){ 
-    return (new Database('rel_final'))->update('id = "'.$this->id.'" ',[
-                               'idproj'                 => $this->idproj,
-                               'tipo'                   => $this->tipo,
-                               'periodo_renov_ini'      => $this->periodo_renov_ini,
+      return (new Database('rel_final'))->update(' id = "'.$this->id.'" ',[
+                               'idproj'                  => $this->idproj,
+                               'tipo'                    => $this->tipo,
+                               'periodo_renov_ini'       => $this->periodo_renov_ini,
                                 'periodo_renov_fim'      => $this->periodo_renov_fim,
                                 'periodo_prorroga_fim'   => $this->periodo_prorroga_fim,
                                 'ch_semanal'             => $this->ch_semanal,
@@ -106,7 +106,9 @@ class RelFinal{
                                 'updated_at'             => date("Y-m-d H:i:s"),
                                 'user'                   => $this->user
                                   ]);
-      }
+    
+  }
+    
 
   /**
    * Método responsável por excluir a professor do banco

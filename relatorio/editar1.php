@@ -38,6 +38,7 @@ if($relatorio->tramitar == 1){
                         $('#sumnot_alteracoes').summernote('disable');
                         $('#sumnot_atvd_prox_per').summernote('disable');
                         $('#sumnot_atvd_prox_per').summernote('disable');
+                        document.getElementById('arquivo').style.visibility = 'hidden';
                     </script>";
 } 
 

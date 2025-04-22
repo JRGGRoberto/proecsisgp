@@ -52,7 +52,7 @@
 */
 
 
-  if ($QntRelParcial == 0){
+  if ($QntREL == 0) {
     $resultados = 'Não há relatórios de execução realizados.';
   } else {
     foreach($relParcial as $rel){

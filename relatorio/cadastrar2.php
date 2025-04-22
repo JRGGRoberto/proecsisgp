@@ -40,9 +40,6 @@ if($obProjeto->para_avaliar == -1){
 
 $relatorio = new RelFinal();
 
-// VALIDAÇÃO DO POST
-if (isset($_POST['valida'])) {
-   
 /*
     echo '<pre>';
     print_r($_POST);
@@ -55,6 +52,9 @@ if (isset($_POST['valida'])) {
     }
     exit;
 */
+// VALIDAÇÃO DO POST
+if (isset($_POST['valida'])) {
+
     $relatorio->idproj = $obProjeto->id;
 
     if($tf == 'r'){

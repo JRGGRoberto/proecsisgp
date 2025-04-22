@@ -1,3 +1,21 @@
+<?php
+$tituloHeader = '';
+switch($tf) {
+    case 'f':
+        $tituloHeader = 'RELATÓRIO FINAL DE AÇÃO DE EXTENSÃO E CULTURA';
+        break;
+    case 'p':
+        $tituloHeader = 'RELATÓRIO FINAL DE AÇÃO DE EXTENSÃO E CULTURA<BR>E solicitação de PRORROGAÇÃO DE PRAZO';
+        break;
+    case 'r':
+        $tituloHeader = 'RELATÓRIO FINAL DE AÇÃO DE EXTENSÃO E CULTURA<BR>E solicitação de RENOVAÇÃO';
+        break;
+    default:
+        $tituloHeader = 'não definido';
+        break;
+}
+
+?>
 <main>
   
   <section>
@@ -133,14 +151,14 @@
         <div class="col-3">
           <div class="form-group">
             <label>Início</label>
-            <input type="date" class="form-control" value="<?= $periodo_ini1; ?>"  >
+            <input type="date" class="form-control" value="<?= $periodo_ini1; ?>" readonly>
           </div>
         </div>
 
         <div class="col-3">
           <div class="form-group">
             <label>Fim</label>
-            <input type="date" class="form-control" value="<?= $periodo_fim1; ?>"  >
+            <input type="date" class="form-control" value="<?= $periodo_fim1; ?>" readonly>
           </div>
         </div>
       </div>
@@ -174,7 +192,7 @@ if($tf == 'p'){
         <div class="col-3">
           <div class="form-group">
             <label>Até</label>
-            <input type="date" name="periodo_prorroga_fim" id="periodo_prorroga_fim" class="form-control" value="<?= $fim; ?>" required <?=$editar?> >
+            <input type="date" name="periodo_prorroga_fim" id="periodo_prorroga_fim" class="form-control" value="<?= $fim; ?>" required <?=$editar?>  <?=$editar?> >
           </div>
         </div>
         A prorrogação deve ter tempo máximo de 25% do período inicial e final informado no projeto.
@@ -188,7 +206,7 @@ if($tf == 'p'){
         <label>
           <h5><?php echo ++$n; ?>. Carga semanal*:</h5>
         </label>
-        <input type="number" min=0 max=44 class="form-control col-2" name="ch_semanal" value="<?php echo $relatorio->ch_semanal; ?>">
+        <input type="number" min=0 max=44 class="form-control col-2" name="ch_semanal" value="<?php echo $relatorio->ch_semanal; ?>" <?=$editar?>>
       </div>
 
       <hr>
@@ -203,19 +221,19 @@ if($tf == 'p'){
           </tr>
           <tr>
             <th>Membros da comunidade externa</th>
-            <td><input type="number" min=0 max=44 class="form-control" name="dim_mem_com_ex" value="<?= $relatorio->dim_mem_com_ex; ?>"></td>
+            <td><input type="number" min=0 max=44 class="form-control" name="dim_mem_com_ex" value="<?= $relatorio->dim_mem_com_ex; ?>" <?=$editar?> ></td>
           </tr>
           <tr>
             <th>Discentes</th>
-            <td><input type="number" min=0 max=44 class="form-control" name="dim_disc" value="<?= $relatorio->dim_disc; ?>"></td>
+            <td><input type="number" min=0 max=44 class="form-control" name="dim_disc" value="<?= $relatorio->dim_disc; ?>" <?=$editar?> ></td>
           </tr>
           <tr>
             <th>Docentes</th>
-            <td><input type="number" min=0 max=44 class="form-control" name="dim_doce" value="<?= $relatorio->dim_doce; ?>"></td>
+            <td><input type="number" min=0 max=44 class="form-control" name="dim_doce" value="<?= $relatorio->dim_doce; ?>"  <?=$editar?> ></td>
           </tr>
           <tr>
             <th>Agentes universitários e Estagiários</th>
-            <td><input type="number" min=0 max=44 class="form-control" name="dim_agent_estag" value="<?= $relatorio->dim_agent_estag; ?>"></td>
+            <td><input type="number" min=0 max=44 class="form-control" name="dim_agent_estag" value="<?= $relatorio->dim_agent_estag; ?>"  <?=$editar?> ></td>
           </tr>
         </table>
       </div>

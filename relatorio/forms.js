@@ -225,10 +225,11 @@ function submitJSON() {
 
 
 function submitSumbeter(){
+  
 
-  var sumnot_atividades = document.getElementById("sumnot_atividades");
-  if(sumnot_atividades){
-    sumnot_atividades.value = $('#sumnot_atividades').summernote('code');
+  var atividades = document.getElementById("atividades");
+  if(atividades){
+    atividades.value = $('#sumnot_atividades').summernote('code');
   }
 
   var atvd_per = document.getElementById("atvd_per");
@@ -257,6 +258,28 @@ function submitSumbeter(){
     divulgacao.value = $('#sumnot_divulgacao').summernote('code');
   }
   
+  var periodo_renov_ini = document.getElementById("periodo_renov_ini");
+  if(periodo_renov_ini){
+    periodo_renov_ini.value = $('#periodo_renov_ini').val();
+  }
+
+  var periodo_renov_fim = document.getElementById("periodo_renov_fim");
+  if(periodo_renov_fim){
+    periodo_renov_fim.value = $('#periodo_renov_fim').val();
+  }
+
+  var periodo_prorroga_fim = document.getElementById("periodo_prorroga_fim");
+  if(periodo_prorroga_fim){
+    periodo_prorroga_fim.value = $('#periodo_prorroga_fim').val();
+  }
+
+  var ch_semanal = document.getElementById("ch_semanal");
+  if(ch_semanal){
+    ch_semanal.value = $('#ch_semanal').val();
+  } 
+
+  
+
 
   document.formAnexo.submit();
 }

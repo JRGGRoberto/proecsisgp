@@ -41,13 +41,14 @@ $novoBTNs = '';
 
 
 $QntRelParcial =  RelParcial::getQntd('idproj = "'.$id.'"' );
+
 $QntRelFinalFinal = RelFinal::getQntd('idproj = "'.$id.'"  and tipo = "f" '); 
 $QntRelFinalProrr = RelFinal::getQntd('idproj = "'.$id.'"  and tipo = "p" ');
 $QntRelFinalRenov = RelFinal::getQntd('idproj = "'.$id.'"  and tipo = "r" ');
+$QntREL =  $QntRelParcial + $QntRelFinalFinal + $QntRelFinalProrr + $QntRelFinalRenov;
 
-
+/*
 echo '<pre>';
-
 echo 'QntRelParcial: '.$QntRelParcial;
 echo '<br>';
 echo 'QntRelFinalFinal: '.$QntRelFinalFinal;
@@ -56,16 +57,16 @@ echo 'QntRelFinalProrr: '.$QntRelFinalProrr;
 echo '<br>';
 echo 'QntRelFinalRenov: '.$QntRelFinalRenov;
 echo '</pre>';
+*/
 
-
+;
 
 $relParcial = RelParcial::gets('idproj = "'.$id.'"' );
 $RelFinal = RelFinal::gets('idproj = "'.$id.'"' );
 
 
-
 $showBTNS_parcial_final = false;
-if($QntRelParcial == 0 and $QntRelFinalFinal == 0 and $QntRelFinalRenov == 0){  // Não tem nenhum relatórios
+if($QntREL == 0){  // Não tem nenhum relatórios
     $showBTNS_parcial_final = true;
 } else {
     if(($QntRelFinalFinal > 0) or ($QntRelFinalRenov > 0)){   // se tem relatório final Não mostar btns para criar
