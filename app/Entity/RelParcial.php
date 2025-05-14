@@ -17,6 +17,7 @@ class RelParcial {
   public $alteracoes;
   public $atvd_prox_per;
   public $tramitar;
+  public $last_result;
   public $created_at;
   public $updated_at;
   public $user;
@@ -46,6 +47,7 @@ class RelParcial {
                             'alteracoes'    => $this->alteracoes,
                             'atvd_prox_per' => $this->atvd_prox_per,
                             'tramitar'      => $this->tramitar,
+                            'last_result'   => 'n',
                             'created_at'    => date("Y-m-d H:i:s"),
                           //  'updated_at'  => $this->updated_at,
                             'user'          => $this->user
@@ -62,6 +64,11 @@ class RelParcial {
    * @return boolean
    */
   public function atualizar(){ 
+    $lastRult = $this->last_result;
+    if ($this->tramitar == 1){
+      $lastRult = 'n';
+    } 
+
     return (new Database('rel_parcial'))->update('id = "'.$this->id.'" ',[
                                 'idproj'        => $this->idproj,
                                 'periodo_ini'   => $this->periodo_ini,
@@ -70,6 +77,7 @@ class RelParcial {
                                 'alteracoes'    => $this->alteracoes,
                                 'atvd_prox_per' => $this->atvd_prox_per,
                                 'tramitar'      => $this->tramitar,
+                                'last_result'   => $lastRult,
                                 'updated_at' => date("Y-m-d H:i:s"),
                                 'user'       => $this->user
                               ]);
@@ -80,6 +88,7 @@ class RelParcial {
     return (new Database('rel_parcial'))->update('id = "'.$this->id.'" ',[
                                 'ava_comentario' => null,
                                 'ava_publicar'   => 1,
+                                'last_result'   => 'a',
                                 'ava_id'         => $this->ava_id,
                                 'ava_dtsign'     => date("Y-m-d H:i:s")
                               ]);
@@ -92,6 +101,7 @@ class RelParcial {
                                 'ava_id'         => $this->ava_id,
                                 'tramitar'       => 0,
                                 'ava_publicar'   => 0,
+                                'last_result'   => 'r',
                                 'ava_dtsign'     => date("Y-m-d H:i:s")
                               ]);
   }
@@ -102,7 +112,7 @@ class RelParcial {
    * @return boolean
    */
   public function excluir(){
-    return (new Database('rel_parcial'))->delete('id = '.$this->id);
+    return (new Database('rel_parcial'))->delete('id = "'.$this->id.'"');
   }
 
   /**

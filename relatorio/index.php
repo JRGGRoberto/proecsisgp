@@ -40,14 +40,14 @@ $obProjeto = Projeto::getProjeto($id, $obProjeto->ver);
 $novoBTNs = '';
 
 
-$QntRelParcial =  RelParcial::getQntd('idproj = "'.$id.'"' );
+$QntRelParcial =  RelParcial::getQntd('idproj = "'.$id.'" and last_result  <> "a" ' );
 
 $QntRelFinalFinal = RelFinal::getQntd('idproj = "'.$id.'"  and tipo = "f" '); 
 $QntRelFinalProrr = RelFinal::getQntd('idproj = "'.$id.'"  and tipo = "p" ');
 $QntRelFinalRenov = RelFinal::getQntd('idproj = "'.$id.'"  and tipo = "r" ');
 $QntREL =  $QntRelParcial + $QntRelFinalFinal + $QntRelFinalProrr + $QntRelFinalRenov;
 
-/*
+
 echo '<pre>';
 echo 'QntRelParcial: '.$QntRelParcial;
 echo '<br>';
@@ -57,15 +57,15 @@ echo 'QntRelFinalProrr: '.$QntRelFinalProrr;
 echo '<br>';
 echo 'QntRelFinalRenov: '.$QntRelFinalRenov;
 echo '</pre>';
-*/
 
-;
+
 
 $relParcial = RelParcial::gets('idproj = "'.$id.'"' );
 $RelFinal = RelFinal::gets('idproj = "'.$id.'"' );
 
 
 $showBTNS_parcial_final = false;
+
 if($QntREL == 0){  // Não tem nenhum relatórios
     $showBTNS_parcial_final = true;
 } else {

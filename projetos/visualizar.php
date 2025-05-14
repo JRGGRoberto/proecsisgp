@@ -40,7 +40,7 @@ $jan = $_GET['w'];
 //CONSULTA AO PROJETO
 $obProjeto = new Projeto();
 $obProjeto = Projeto::getProjeto($id, $ver); // getProjetoView($id, $ver);
-$obProfessor = Professor::getProfessor($obProjeto->id_prof);
+$obProfessor = (Object) Professor::getProfessor($obProjeto->id_prof);
 
 
 //VALIDAÇÃO DA TIPO
@@ -307,7 +307,7 @@ c {
     $telefone = $obProfessor->telefone;
     $email =    $obProfessor->email;
   } elseif ($obProjeto->regras == "a45daba2-12ec-11ef-b2c8-0266ad9885af"){
-    $dadosAgentes = Agente::get($obProjeto->id_prof);
+    $dadosAgentes = (Object)Agente::get($obProjeto->id_prof);
     $telefone = $dadosAgentes->telefone;
     $email =    $dadosAgentes->email;
   }
@@ -409,6 +409,23 @@ entre os tr de baixo
     $cnpq_sarea = $cnpq_sarea1->nome;
   }
 
+  $cnpq_garea =  Area_Cnpq::getRegistro($obProjeto->cnpq_garea);
+  if($cnpq_garea instanceof Area_Cnpq){
+    $cnpq_garea = $cnpq_garea->nome;
+  } else {
+    $cnpq_garea = '';
+  }
+
+
+  $cnpq_gare =  CnpqArea::getRegistro($obProjeto->cnpq_area);
+  if($cnpq_gare instanceof CnpqArea){
+    $cnpq_gare = $cnpq_gare->nome;
+  } else {
+    $cnpq_gare = '';
+  }
+
+
+  
   use \App\Entity\Area_temat;
 
   if (in_array($t, $anexoII)) { 
@@ -424,9 +441,9 @@ entre os tr de baixo
       </thead>
       <tbody> 
         <tr>  
-           <td><strong>a) Grande Área</strong></td>    <td>'. Area_Cnpq::getRegistro($obProjeto->cnpq_garea)->nome .'</td>
+           <td><strong>a) Grande Área</strong></td>    <td>'. $cnpq_garea  .'</td>
         </tr><tr>
-           <td><strong>b) Área</strong></td>           <td>'. CnpqArea::getRegistro($obProjeto->cnpq_area)->nome .'</td>
+           <td><strong>b) Área</strong></td>           <td>'. $cnpq_gare .'</td>
 
         </tr><tr>
            <td><strong>c) Subárea</strong></td>        <td>'. $cnpq_sarea .'</td>
@@ -703,6 +720,14 @@ entre os tr de baixo
   <tbody><tr><td>'. $obProjeto->cronograma .'</td></tr></tbody>
   </table>'
   ;
+
+  $html .= 
+  '<table class="time">
+   <thead><tr><th class="th_cinza"><strong>'. ++$count .'. Observações</strong></th></tr></thead>
+  <tbody><tr><td>'. $obProjeto->obs .'</td></tr></tbody>
+  </table>'
+  ;
+
 
   $html .= 
   '<table class="time">

@@ -3,25 +3,15 @@
 require '../vendor/autoload.php';
 
 use \App\Session\Login;
+use \App\Entity\Outros;
 
 Login::requireLogin();
 $user = Login::getUsuarioLogado();
 
-use \App\Db\Pagination;
-use \App\Entity\Avaliacoes;
-
-
 //Busca
 $busca = filter_input(INPUT_GET, 'busca', FILTER_SANITIZE_STRING);
-/*
-$campus = filter_input(INPUT_GET, 'campus', FILTER_SANITIZE_STRING);
-$colegiado = filter_input(INPUT_GET, 'colegiado', FILTER_SANITIZE_STRING);
-$centro = filter_input(INPUT_GET, 'centro', FILTER_SANITIZE_STRING);
-*/
-
 
 //Filtro de status
-$filtroStatus = filter_input(INPUT_GET, 'filtroStatus', FILTER_SANITIZE_STRING);
 
 //Condições SQL
 $condicoes = [
@@ -39,32 +29,35 @@ $condicoes = array_filter($condicoes);
 // Cláusula WHERE
 $where = implode(' AND ', $condicoes);
 
-/*
-
-
-select 
-  rp.id, rp.idproj , pl.titulo, pl.id_prof, p.nome, rp.periodo_ini, rp.periodo_fim, rp.tramitar, rp.ava_publicar
-from 
-  rel_parcial rp 
-  inner join proj_last pl on rp.idproj = pl.id
-  inner join professores p on pl.id_prof = p.id
-where 
-   rp.tramitar  =  1 and 
-   rp.ava_publicar = 0
-
-*/
 
 //Qntd total de registros
-$qntAvaliacoes = Avaliacoes::getQntdRegistros($where);
+// $qntAvaliacoes = Avaliacoes::getQntdRegistros($where);
 
+
+$qryRelatRel = 
+"select 
+    rp.id,
+    lv.protocolo, lv.titulo, lv.tipo_exten, lv.nome_prof, lv.para_avaliar, 
+    DATE_FORMAT(lv.created_at, '%d/%m/%Y') created_at, 
+    'parcial' as 'tp',
+    lv.id idproj, lv.ver
+from 
+    rel_parcial rp
+    inner join proj_inf_lv lv on 
+          lv.id = rp.idproj  
+          and  ( ( fase_seq = etapas) or (etapas = 0 and fase_seq is null) )
+          and rp.last_result = 'n'
+          and campus = '". $user['ca_nome'].
+           "' ";
+
+$dadosToAvaliar = Outros::qry($qryRelatRel);
 //paginação
-$obPagination = new Pagination($qntAvaliacoes, $_GET['pagina']?? 1, 5);
+// $obPagination = new Pagination($qntAvaliacoes, $_GET['pagina']?? 1, 5);
 
-$avaliacoes = Avaliacoes::getRegistros($where, null, $obPagination->getLimite());
+// $avaliacoes = Avaliacoes::getRegistros($where, null, $obPagination->getLimite());
+
+
 
 include '../includes/header.php';
-echo '<pre>';
-print_r($obQAvalioRel);
-echo '</pre>';
 include __DIR__.'/includes/listagem.php';
 include '../includes/footer.php'; 

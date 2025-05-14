@@ -14,19 +14,12 @@ use App\Entity\RelParcial;
 use App\Entity\Campi;
 use App\Entity\Colegiado;
 
-
-
 // Obriga o usuário a estar logado
 Login::requireLogin();
 $user = Login::getUsuarioLogado();
 
-
-
-
 $id = $_GET['id'];
 $relatorio = (object) RelParcial::get($id);
-
-
 
 $editar = '';
 $scriptDisble = '';
@@ -47,11 +40,7 @@ $obProjeto = Projeto::getProjetoLast($relatorio->idproj);
 $obProjeto = Projeto::getProjeto($obProjeto->id, $obProjeto->ver);
 $obProfessor = Professor::getProfessor($obProjeto->id_prof);
 
-
 $anexados = Arquivo::getAnexados('relatorios', $relatorio->id);
-
-
-
 
 $anex = '<ul id="anexos_edt">';
 foreach ($anexados as $att) {
@@ -104,16 +93,6 @@ if (isset($_POST['atvd_per'])) {
     $relatorio->tramitar = $_POST['tramitar'];
     $relatorio->last_result = 'n';
     $relatorio->atualizar();
-
-
-    $anexosJS = json_decode($_POST['anexosJS']);
-    foreach ($anexosJS as &$anx) {
-        $dados = Arquivo::getArquivo($anx);
-        $dados->tabela = $_POST['tabela'];
-        $dados->id_tab = $idprjP;
-        $dados->user = $obProjeto->user;
-        $dados->atualizar();
-    }
 
     header('location: index.php?id='.$obProjeto->id);
     exit;

@@ -10,22 +10,18 @@ use App\Session\Login;
 use App\Entity\Projeto;
 use App\Entity\Professor;
 use App\Entity\Arquivo;
-use App\Entity\RelParcial;
+use App\Entity\RelFinal;
 use App\Entity\Campi;
 use App\Entity\Colegiado;
-
-
 
 // Obriga o usuário a estar logado
 Login::requireLogin();
 $user = Login::getUsuarioLogado();
 
 
-
-
 $id = $_GET['id'];
-$relatorio = (object) RelParcial::get($id);
-
+$relatorio = (object) RelFinal::get($id);
+$tf = $relatorio->tipo;
 
 
 $editar = '';
@@ -34,12 +30,13 @@ if($relatorio->tramitar == 1){
     $editar = 'readonly';
 
     $scriptDisble = "<script>
-                        $('#sumnot_atvd_per').summernote('disable');
-                        $('#sumnot_alteracoes').summernote('disable');
+                        $('#sumnot_atividades').summernote('disable');
                         $('#sumnot_atvd_prox_per').summernote('disable');
-                        $('#sumnot_atvd_prox_per').summernote('disable');
+                        $('#sumnot_rel_tec_cien_executado').summernote('disable');
+                        $('#sumnot_divulgacao').summernote('disable');
                         btnArquivo =  document.getElementById('arquivo');
                         btnArquivo.hidden = true;
+                        
                     </script>";
 } 
 
@@ -89,23 +86,36 @@ if (isset($_POST['acao']) == 'removeAnexo') {
     }
     // Finaliza a requisição 
     exit;
-
 }
 
 // VALIDAÇÃO DO POST
-if (isset($_POST['atvd_per'])) {
+if (isset($_POST['valida'])) {
+
     $relatorio->idproj = $obProjeto->id;
-    $relatorio->periodo_ini = $_POST['periodo_ini'];
-    $relatorio->periodo_fim = $_POST['periodo_fim'];
-    $relatorio->atvd_per = $_POST['atvd_per'];
-    $relatorio->alteracoes = $_POST['alteracoes'];
-    $relatorio->atvd_prox_per = $_POST['atvd_prox_per'];
-    $relatorio->user = $user['id'];
+
+    if($tf == 'r'){
+        $relatorio->periodo_renov_fim = $_POST['periodo_renov_fim'];
+    }
+    
+    if($tf == 'p'){
+      $relatorio->periodo_prorroga_fim = $_POST['periodo_prorroga_fim'];
+      $relatorio->atvd_prox_per = $_POST['atvd_prox_per'];
+    }
+      
+    $relatorio->tipo = $tf;
+    $relatorio->ch_semanal = $_POST['ch_semanal'];
+    $relatorio->dim_mem_com_ex = $_POST['dim_mem_com_ex'];
+    $relatorio->dim_disc = $_POST['dim_disc'];
+    $relatorio->dim_doce = $_POST['dim_doce'];
+    $relatorio->dim_agent_estag = $_POST['dim_agent_estag'];
+    $relatorio->atividades = $_POST['atividades'];
+    
+    $relatorio->rel_tec_cien_executado = $_POST['rel_tec_cien_executado'];
+    $relatorio->divulgacao = $_POST['divulgacao'];
     $relatorio->tramitar = $_POST['tramitar'];
-    $relatorio->last_result = 'n';
+
     $relatorio->atualizar();
-
-
+    
     $anexosJS = json_decode($_POST['anexosJS']);
     foreach ($anexosJS as &$anx) {
         $dados = Arquivo::getArquivo($anx);
@@ -119,8 +129,7 @@ if (isset($_POST['atvd_per'])) {
     exit;
 }
 
-
 include '../includes/header.php'; 
-include __DIR__.'/includes/formParcial.php';
+include __DIR__.'/includes/formFinal.php';
 echo $scriptDisble; 
 include '../includes/footer.php'; 

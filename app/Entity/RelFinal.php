@@ -115,7 +115,7 @@ class RelFinal{
    * @return boolean
    */
   public function excluir(){
-    return (new Database('rel_final'))->delete('id = '.$this->id);
+    return (new Database('rel_final'))->delete('id = "'.$this->id .'"');
   }
 
   /**

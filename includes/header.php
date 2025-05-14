@@ -248,11 +248,11 @@ if (sizeof($obQAvalioRel) >= 1) {
       <div class="btn-group btn-group-sm">
     <!--    <button type="button" class="btn btn-primary dropdown-toggle" data-toggle="dropdown">Manutenção temporária</button>-->
         <button type="button" class="btn btn-primary dropdown-toggle" data-toggle="dropdown">
-        Aprovar relatórios
+        Relatórios
         </button>
         <div class="dropdown-menu">
           <a class="dropdown-item btn-sm" href="../relatorio_todo">A realizar</a>
-          <a class="dropdown-item btn-sm" href="../relatorio_done">Realizadas [Histórico]</a>
+       <!--   <a class="dropdown-item btn-sm" href="../relatorio_done">Realizadas [Histórico]</a> -->
         </div>
       </div>
 
