@@ -82,19 +82,21 @@ if (isset($_POST['acao']) == 'removeAnexo') {
 }
 
 // VALIDAÇÃO DO POST
-if (isset($_POST['atvd_per'])) {
-    $relatorio->idproj = $obProjeto->id;
-    $relatorio->periodo_ini = $_POST['periodo_ini'];
-    $relatorio->periodo_fim = $_POST['periodo_fim'];
-    $relatorio->atvd_per = $_POST['atvd_per'];
-    $relatorio->alteracoes = $_POST['alteracoes'];
-    $relatorio->atvd_prox_per = $_POST['atvd_prox_per'];
-    $relatorio->user = $user['id'];
-    $relatorio->tramitar = $_POST['tramitar'];
-    $relatorio->last_result = 'n';
-    $relatorio->atualizar();
+if (isset($_POST['to_do'])) {
+    
+    $relatorio->ava_comentario = $_POST['ava_comentario'];
+    $relatorio->ava_id = $user['id'];
 
-    header('location: index.php?id='.$obProjeto->id);
+    if($_POST['to_do'] == 1){
+        echo 'publicado';
+        $relatorio->publicar();
+    } elseif ($_POST['to_do'] == -1){
+        echo 'revisão';
+        $relatorio->solicitarAlteracoes();
+    } 
+
+
+    header('location: index.php');
     exit;
 }
 
@@ -103,3 +105,5 @@ include '../includes/header.php';
 include __DIR__.'/includes/formParcial.php';
 echo $scriptDisble; 
 include '../includes/footer.php'; 
+
+

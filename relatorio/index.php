@@ -47,7 +47,7 @@ $QntRelFinalProrr = RelFinal::getQntd('idproj = "'.$id.'"  and tipo = "p" ');
 $QntRelFinalRenov = RelFinal::getQntd('idproj = "'.$id.'"  and tipo = "r" ');
 $QntREL =  $QntRelParcial + $QntRelFinalFinal + $QntRelFinalProrr + $QntRelFinalRenov;
 
-
+/*
 echo '<pre>';
 echo 'QntRelParcial: '.$QntRelParcial;
 echo '<br>';
@@ -57,7 +57,7 @@ echo 'QntRelFinalProrr: '.$QntRelFinalProrr;
 echo '<br>';
 echo 'QntRelFinalRenov: '.$QntRelFinalRenov;
 echo '</pre>';
-
+*/
 
 
 $relParcial = RelParcial::gets('idproj = "'.$id.'"' );

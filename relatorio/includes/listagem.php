@@ -52,35 +52,40 @@
     $editar = '';
     $msgPublicadoParcial = ' <span class="badge badge-warning">Não posto em analise (tramitar)</span>';
       
-    
-    if($rel->tramitar == 1){
-      $msg_orBTN = ' <a id=  href="editar1.php?id='.$rel->id.'" class="card-link">Visualizar</a> ';
-      switch($rel->last_result)
-      {
-        case 'a':
-          $msgPublicadoParcial = ' <span class="badge badge-success">Publicado</span>';
-          break; 
-        case 'r': 
-          $msgPublicadoParcial = ' <span class="badge badge-danger">Solicitações de alterações</span>';
-          break; 
-        default: 
-          $msgPublicadoParcial = ' <span class="badge badge-warning">Em análise</span>';
-          break;
-      }
+    switch($rel->last_result)
+    {
+      case 'a':
+        $msgPublicadoParcial = ' <span class="badge badge-success">Publicado</span>';
+        break; 
+      case 'r': 
+        $msgPublicadoParcial = ' <span class="badge badge-danger">Solicitações de alterações</span>';
+        break; 
+      default: 
+        if($rel->tramitar == 1  ){
+            $msg_orBTN = ' <a   href="editar1.php?id='.$rel->id.'" class="card-link">Visualizar</a> ';      
+            $msgPublicadoParcial = ' <span class="badge badge-warning">Em análise</span>';
+        } else {
+            $msg_orBTN = ' <a   href="editar1.php?id='.$rel->id.'" class="card-link">Visualizar</a> ';      
+            $msgPublicadoParcial = ' <span class="badge badge-warning">Não posto em analise (tramitar)</span>';
+        }
+        break;
+    }
 
-    } else {
-      if($rel->tramitar == 0){
+     
+    if($rel->tramitar == 0){
         
         $msg_orBTN = '<a id="p'.$rel->id.'" href="#" onclick="printDel(event)">Excluir</a> ';
         $msg_orBTN .=' <a href="editar1.php?id='.$rel->id.'" class="card-link">Editar</a>';
     } else {
       if(strlen((string)$rel->ava_comentario) > 0){
-          $msg_orBTN .= ' Há uma solicitação de ajusto no relatório. ';
+          $msg_orBTN .= 'Há uma solicitação de ajusto no relatório. ' . $msgPublicadoParcial;
         } else {
-          $msg_orBTN .= '<a href="editar1.php?id='.$rel->id.'" class="card-link">Visualizar</a> Relatório a espera do aceite da Divisão de Extensao e Cultura do Campus. ';
+          $msg_orBTN .= '<a href="editar1.php?id='.$rel->id.'" class="card-link">Visualizar</a>' . $msgPublicadoParcial ; // Relatório a espera do aceite da Divisão de Extensao e Cultura do Campus. ';
+          
         }
-      }
     }
+    
+
     $resultados .= '<div class="card">';
     $resultados .= '<div class="card-body">';
     $resultados .= $msgPublicadoParcial;
@@ -96,6 +101,7 @@
     $resultados .= '</div>';
     $resultados .= '</div>';
   }
+  $resultados .= '<hr>';
  
 ?>
 

@@ -17,9 +17,7 @@
       <label>
         <h5> Solicitação de ajustes do relatório parcial </h5>
       </label>
-        <textarea rows="4" cols="50" readonly class="form-control">
-        c:' . $relatorio->ava_comentario . '|t:'. $relatorio->tramitar.'|p:'. $relatorio->ava_publicar.'|  
-        </textarea>
+        <textarea rows="4" cols="50" readonly class="form-control">' . $relatorio->ava_comentario . '</textarea>
       </div>
       
       ';

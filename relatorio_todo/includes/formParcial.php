@@ -9,16 +9,16 @@
   <h4 style="text-align: center">ANEXO IV</h4>
   <h3 class="mt-3" style="text-align: center">RELATÓRIO PARCIAL</h3>
 
-      <div class="form-group">
-      <label>
-        <h5> Solicitação de ajustes do relatório parcial </h5>
-      </label>
-        <textarea rows="4" cols="50" class="form-control">
-        c:' . $relatorio->ava_comentario . '|t:'. $relatorio->tramitar.'|p:'. $relatorio->ava_publicar.'|  
-        </textarea>
-      </div>
+   
 
   <form name="formAnexo" id="formAnexo" method="POST" enctype="multipart/form-data">
+      <div class="form-group">
+      <label>
+        <h5> Solicitação de ajustes do relatório parcial</h5>
+        <sub style="line-height: 12px;">Preencher apenas se necessário ajustes no relatório</sub>
+      </label>
+        <textarea rows="4" cols="50" class="form-control" name="ava_comentario" id="ava_comentario" ><?php echo $relatorio->ava_comentario; ?></textarea>
+      </div>
     <input type="hidden" name="id_prof" value="<?php echo $obProjeto->id_prof; ?>">
     <input type="hidden" name="tabela" value="projetos">
     <hr>
@@ -154,7 +154,7 @@
 
       <hr>
 
-      
+   <!--   
       <div class="form-group">
         <h5 id="attc"><?php echo ++$n; ?>. Anexos</h5>
         <ul id="anexos"></ul>
@@ -162,7 +162,7 @@
         <?php echo $anex; ?>
       </div>
       <hr>
-
+-->
       <div class="row" >
 
         <div class="col-3">
@@ -172,11 +172,12 @@
           </div>
         </div>
       </div>
+       <input type="hidden" id="to_do" name="to_do" value="">
 
       <div class="form-group">
       
-          <a href="#" onclick="submitSumbeter()" class="btn btn-success btn-sm" >↗️ Aceitar </a>
-          <a href="#" onclick="submitSumbeter()" class="btn btn-danger btn-sm" >↗️ Solicitar alterações </a>
+          <a href="#" onclick="submitSumbeter(1)" class="btn btn-success btn-sm" >↗️ Aceitar </a>
+          <a href="#" onclick="submitSumbeter(-1)" class="btn btn-danger btn-sm" >↗️ Solicitar alterações </a>
       
          <a href="javascript: history.go(-1)" class="btn btn-warning btn-sm" >↗️ Voltar </a>
       </div>
