@@ -69,17 +69,17 @@ $nome = $nome[0]; // will print Test
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <meta name="robots" content="noindex">
-  <link rel="stylesheet" href="../includes/bootstrap-4.6.2-dist/css/bootstrap.min.css">
+  <!-- <link rel="stylesheet" href="../includes/bootstrap-4.6.2-dist/css/bootstrap.min.css">
   <script src="../includes/jquery.min.js"></script>
   <script src="../includes/popper.min.js"></script>
   <script src="../includes/bootstrap-4.6.2-dist/js/bootstrap.bundle.min.js"></script>
-
+-->
 
   <link href="../includes/summernote-bs4.min.css" rel="stylesheet">
   <script src="../includes/summernote-bs4.min.js"></script>
   <!-- para a inserção de leitor de xlsx -->
   <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
-  <!--
+  
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.1/dist/css/bootstrap.min.css">
   <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.1/dist/umd/popper.min.js"></script>
@@ -87,7 +87,7 @@ $nome = $nome[0]; // will print Test
 
   <link href="https://sistemaproec.unespar.edu.br/sistema/includes/summernote-bs4.min.css" rel="stylesheet">
   <script src="https://sistemaproec.unespar.edu.br/sistema/includes/summernote-bs4.min.js"></script>
--->
+
   
     <!--multiselect CSS-->
     <link rel="stylesheet" type="text/css" href="../includes/select2.min.css" />
@@ -252,7 +252,7 @@ if (sizeof($obQAvalioRel) >= 1) {
         </button>
         <div class="dropdown-menu">
           <a class="dropdown-item btn-sm" href="../relatorio_todo">A realizar</a>
-       <!--   <a class="dropdown-item btn-sm" href="../relatorio_done">Realizadas [Histórico]</a> -->
+          <a class="dropdown-item btn-sm" href="../relatorio_done">Realizadas [Histórico]</a> 
         </div>
       </div>
 
@@ -316,7 +316,7 @@ if (sizeof($obQAvalioRel) >= 1) {
       echo "<a href='../", $tipoUser,'/editar.php?id=', $obUsuario['id'],"' data-toggle='tooltip' title='Perfil do usuário' style='text-decoration:none;'><span class='badge badge-info'>",      $obUsuario['nome'],'</span></a>';
 
       $a = $obUsuario['config'];
-      $cargo = ['Prof/AG', 'Coordenador',  'Centro de Área', 'Chefe de Divisão'];
+      $cargo = ['Prof/AG', 'Coordenador',  'Centro de Área', 'Chefe de Divisão', 'Diretor de Campus'];
 
       if ($obUsuario['config'] > 0) {
           echo "<span class='badge badge-warning float-right'>", $cargo[$a],'</span>';
@@ -327,4 +327,3 @@ if (sizeof($obQAvalioRel) >= 1) {
   }
 
 ?>
-

@@ -4,6 +4,7 @@ namespace App\Entity;
 
 use \App\Db\Database;
 use \PDO;
+use \App\Entity\UuiuD;
 
 class HistRelatorios{
 
@@ -17,32 +18,26 @@ class HistRelatorios{
   public $created_at;
   public $updated_at;
   public $user;
-
   
   /**
    * Método responsável por cadastrar um novo Registro no banco
    * @return boolean
    */
   public function cadastrar(){
-    //DEFINIR A DATA
-   // $this->data = date('Y-m-d H:i:s');
-
+    $newId = UuiuD::gera();
     //INSERIR A VAGA NO BANCO
     $obDatabase = new Database('hist_relatorios');
-    $this->id = $obDatabase->insert([
-                                      id
-          'id_relatorio'   =>    $this->id_relatorio;
-          'tp_avaliador'   =>    $this->tp_avaliador;
-          'id_instancia'   =>    $this->id_instancia;
-          'resultado'      =>    $this->resultado;
-          'ava_comentario' =>    $this->ava_comentario;
-          'tp_relatorio'   =>    $this->tp_relatorio;
-          'created_at'     =>    $this->created_at;
-          'updated_at'     =>    $this->updated_at;
-          'user'           =>    $this->user   ;
-                                      'nome' => $this->nome,
-                                      'user' => $this->user
-                                    ]);
+    $obDatabase->insert([ 
+                            'id'             =>    $newId,
+                            'id_relatorio'   =>    $this->id_relatorio,
+                            'tp_avaliador'   =>    $this->tp_avaliador,
+                            'id_instancia'   =>    $this->id_instancia,
+                            'resultado'      =>    $this->resultado,
+                            'ava_comentario' =>    $this->ava_comentario,
+                            'tp_relatorio'   =>    $this->tp_relatorio,
+                            'created_at'     =>    date("Y-m-d H:i:s"),
+                            'user'           =>    $this->user       
+                        ]);
 
     //RETORNAR SUCESSO
     return true;
@@ -55,16 +50,20 @@ class HistRelatorios{
   public function atualizar(){
     return (new Database('hist_relatorios'))->update(
                                            'id = "'.$this->id.'" ',[
-                                                                'nome'          => $this->nome,
-                                                                'dir_campus_id' => $this->dir_campus_id,
-                                                                'chef_div_id'   => $this->chef_div_id,
-                                                                'updated_at'    => date("Y-m-d H:i:s"),
-                                                                'user' => $this->user
-                                                              ]);
+                                      'id_relatorio'   => $this->id_relatorio,
+                                      'tp_avaliador'   => $this->tp_avaliador,
+                                      'id_instancia'   => $this->id_instancia,
+                                      'resultado'      => $this->resultado,
+                                      'ava_comentario' => $this->ava_comentario,
+                                      'tp_relatorio'   => $this->tp_relatorio,
+                                      'updated_at'     => date("Y-m-d H:i:s"),
+                                      'user'           => $this->user       
+                                  ]);
+
   }
 
   /**
-   * Método responsável por obter as registros do banco de dados
+   * Método responsável por obter os registros do banco de dados
    * @param  string $where
    * @param  string $order
    * @param  string $limit

@@ -13,13 +13,33 @@ use App\Entity\Arquivo;
 use App\Entity\RelParcial;
 use App\Entity\Campi;
 use App\Entity\Colegiado;
+use App\Entity\Outros;
 
 // Obriga o usuário a estar logado
 Login::requireLogin();
 $user = Login::getUsuarioLogado();
 
+
+
 $id = $_GET['id'];
 $relatorio = (object) RelParcial::get($id);
+
+
+$qryInstancia = 
+"select
+      CASE u.config
+        WHEN 0 THEN u.id
+        WHEN 1 THEN u.co_id
+        WHEN 2 THEN u.ce_id
+        WHEN 3 THEN u.lota_id
+        WHEN 4 THEN u.lota_id
+        ELSE 'u.config'
+       END AS instancia
+     from usuarios u where u.id = '". $user['id']."'
+ ";
+
+$intancia = Outros::q($qryInstancia)->instancia;
+
 
 $editar = '';
 $scriptDisble = '';
@@ -85,8 +105,8 @@ if (isset($_POST['acao']) == 'removeAnexo') {
 if (isset($_POST['to_do'])) {
     
     $relatorio->ava_comentario = $_POST['ava_comentario'];
-    $relatorio->ava_id = $user['id'];
-
+    $relatorio->ava_id = $intancia;
+    
     if($_POST['to_do'] == 1){
         echo 'publicado';
         $relatorio->publicar();

@@ -284,4 +284,21 @@ function submitSalvar(){
   submitJSON();
 
   document.formAnexo.submit();
+
 }
+
+async function keepConnection(){
+  let campusUNESPAR = []
+  let localHeader = document.getElementsByTagName('h4')[0];
+  campusUNESPAR =  data = await fetch(`../api/ca.php`)
+    .then(resp => resp.json()).catch(error => false);
+    campusUNESPAR.forEach((campo) => {
+      if (campo.nome == '<?php echo $user['ca_nome']; ?>') {
+        console.log(campo.nome + ' - ' + localHeader.innerText );
+    }
+  });
+}
+
+const myInterval = window.setInterval(function() {
+    keepConnection()
+}, 120000);

@@ -47,8 +47,8 @@ from
           lv.id = rp.idproj  
           and  ( ( fase_seq = etapas) or (etapas = 0 and fase_seq is null) )
           and rp.last_result = 'n'
-          and campus = '". $user['ca_nome'].
-           "' ";
+          and campus = '". $user['ca_nome']."' 
+ ";
 
 $dadosToAvaliar = Outros::qry($qryRelatRel);
 //paginação

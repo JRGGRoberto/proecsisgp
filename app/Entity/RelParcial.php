@@ -5,6 +5,9 @@ namespace App\Entity;
 use \App\Db\Database;
 use \PDO;
 use \App\Entity\UuiuD;
+use \App\Entity\HistRelatorios;
+use \App\Session\Login;
+Login::requireLogin();
 
 
 class RelParcial {
@@ -26,7 +29,10 @@ class RelParcial {
   public $ava_comentario;
   public $ava_publicar;
   public $ava_id;
+  public $tp_avaliador; // ('ca','ce','co','pf','dc')
   public $ava_dtsign;
+
+  
 
 /**
    * Método responsável por cadastrar uma nova pessoa no banco
@@ -36,8 +42,6 @@ class RelParcial {
     //INSERIR A REGISTRO NO BANCO
     $newId = UuiuD::gera(); //exec('uuidgen -r');
     $obDatabase = new Database('rel_parcial');
-
-
     $obDatabase->insert([
                             'id'            => $newId,
                             'idproj'        => $this->idproj,
@@ -85,25 +89,56 @@ class RelParcial {
 
 
   public function publicar(){
-    return (new Database('rel_parcial'))->update('id = "'.$this->id.'" ',[
-                                'ava_comentario' => null,
-                                'ava_publicar'   => 1,
-                                'last_result'   => 'a',
-                                'ava_id'         => $this->ava_id,
-                                'ava_dtsign'     => date("Y-m-d H:i:s")
-                              ]);
+    $user = Login::getUsuarioLogado();
+    $tpAvaliadorArray = ['pf', 'co',  'ce', 'ca', 'dc'];
+    $histRelatorio = new HistRelatorios();
+    $result = 'a';
+
+    $histRelatorio->id_relatorio = $this->id;
+    $histRelatorio->tp_avaliador = $tpAvaliadorArray[$user['config']];
+    $histRelatorio->id_instancia = $this->ava_id;
+    $histRelatorio->resultado = $result;
+    $histRelatorio->ava_comentario = $this->ava_comentario;
+    $histRelatorio->tp_relatorio = 'pa';
+    $histRelatorio->user =  $this->ava_id;
+
+    return    (new Database('rel_parcial'))->update('id = "'.$this->id.'" ',[
+                        'ava_comentario' => null,
+                        'ava_publicar'   => 1,
+                        'last_result'    => $result,
+                        'ava_id'         => $this->ava_id,
+                        'ava_dtsign'     => date("Y-m-d H:i:s")
+               ], 
+               $histRelatorio->cadastrar()
+                      
+    );
   }
 
 
   public function solicitarAlteracoes(){
+    $user = Login::getUsuarioLogado();
+    $tpAvaliadorArray = ['pf', 'co',  'ce', 'ca', 'dc'];
+    $histRelatorio = new HistRelatorios();
+    $result = 'r';
+
+    $histRelatorio->id_relatorio = $this->id;
+    $histRelatorio->tp_avaliador = $tpAvaliadorArray[$user['config']];
+    $histRelatorio->id_instancia = $this->ava_id;
+    $histRelatorio->resultado = $result;
+    $histRelatorio->ava_comentario = $this->ava_comentario;
+    $histRelatorio->tp_relatorio = 'pa';
+    $histRelatorio->user =  $this->ava_id;
+
     return (new Database('rel_parcial'))->update('id = "'.$this->id.'" ',[
                                 'ava_comentario' => $this->ava_comentario,
                                 'ava_id'         => $this->ava_id,
                                 'tramitar'       => 0,
                                 'ava_publicar'   => 0,
-                                'last_result'   => 'r',
+                                'last_result'    => $result,
                                 'ava_dtsign'     => date("Y-m-d H:i:s")
-                              ]);
+                              ],
+                            $histRelatorio->cadastrar()
+    );
   }
 
 
