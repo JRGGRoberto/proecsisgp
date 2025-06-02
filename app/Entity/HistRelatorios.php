@@ -70,7 +70,7 @@ class HistRelatorios{
    * @return array
    */
   public static function getRegistros($where = null, $order = null, $limit = null){
-    return (new Database('hist_relatorios'))->select($where,$order,$limit)
+    return (new Database('hit_rels'))->select($where,$order,$limit)
                                   ->fetchAll(PDO::FETCH_CLASS,self::class);
   }
 

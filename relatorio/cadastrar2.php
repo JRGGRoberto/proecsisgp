@@ -40,33 +40,22 @@ if($obProjeto->para_avaliar == -1){
 
 $relatorio = new RelFinal();
 
-/*
-    echo '<pre>';
-    print_r($_POST);
-    echo '</pre>';
-    $k = 'periodo_renov_fim';
-    if(key_exists($k,$_POST)){
-      echo 'Exite '. $k;
-    } else {
-      echo 'não exite '. $k;
-    }
-    exit;
-*/
 // VALIDAÇÃO DO POST
 if (isset($_POST['valida'])) {
 
     $relatorio->idproj = $obProjeto->id;
+    $relatorio->tipo = $tf;
 
-    if($tf == 'r'){
+    if($tf == 're'){
+        $relatorio->periodo_renov_ini = $_POST['periodo_renov_ini'];
         $relatorio->periodo_renov_fim = $_POST['periodo_renov_fim'];
     }
     
-    if($tf == 'p'){
+    if($tf == 'pr'){
       $relatorio->periodo_prorroga_fim = $_POST['periodo_prorroga_fim'];
       $relatorio->atvd_prox_per = $_POST['atvd_prox_per'];
     }
-      
-    $relatorio->tipo = $tf;
+   
     $relatorio->ch_semanal = $_POST['ch_semanal'];
     $relatorio->dim_mem_com_ex = $_POST['dim_mem_com_ex'];
     $relatorio->dim_disc = $_POST['dim_disc'];

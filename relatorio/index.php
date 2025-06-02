@@ -42,9 +42,9 @@ $novoBTNs = '';
 
 $QntRelParcial =  RelParcial::getQntd('idproj = "'.$id.'" and last_result  <> "a" ' );
 
-$QntRelFinalFinal = RelFinal::getQntd('idproj = "'.$id.'"  and tipo = "f" '); 
-$QntRelFinalProrr = RelFinal::getQntd('idproj = "'.$id.'"  and tipo = "p" ');
-$QntRelFinalRenov = RelFinal::getQntd('idproj = "'.$id.'"  and tipo = "r" ');
+$QntRelFinalFinal = RelFinal::getQntd('idproj = "'.$id.'"  and tipo = "fi" '); 
+$QntRelFinalProrr = RelFinal::getQntd('idproj = "'.$id.'"  and tipo = "pr" ');
+$QntRelFinalRenov = RelFinal::getQntd('idproj = "'.$id.'"  and tipo = "re" ');
 $QntREL =  $QntRelParcial + $QntRelFinalFinal + $QntRelFinalProrr + $QntRelFinalRenov;
 
 /*
@@ -83,8 +83,8 @@ if($QntREL == 0){  // Não tem nenhum relatórios
     }
 }
 
-$btnFinalProrrogado = '<a class="dropdown-item btn-sm" href="./cadastrar2.php?t=2&i='. $obProjeto->id. '&f=p">Relatório final com pedido de Prorrogação</a>';
-$btnFinalRenova =     '<a class="dropdown-item btn-sm" href="./cadastrar2.php?t=2&i='. $obProjeto->id. '&f=r">Relatório final com pedido de Renovação</a>';
+$btnFinalProrrogado = '<a class="dropdown-item btn-sm" href="./cadastrar2.php?t=2&i='. $obProjeto->id. '&f=pr">Relatório final com pedido de Prorrogação</a>';
+$btnFinalRenova =     '<a class="dropdown-item btn-sm" href="./cadastrar2.php?t=2&i='. $obProjeto->id. '&f=re">Relatório final com pedido de Renovação</a>';
 
 if(($QntRelFinalFinal > 0) or ($QntRelFinalRenov > 0)){
     $btnFinalProrrogado = '';
@@ -105,7 +105,7 @@ if($showBTNS_parcial_final){
               <div class="dropdown-menu dropdown-menu-right">
                   <a class="dropdown-item btn-sm" href="./cadastrar1.php?t=1&i='. $obProjeto->id. '">Relatório parcial</a>'.
                   $btnFinalProrrogado  . $btnFinalRenova 
-                  .'<a class="dropdown-item btn-sm" href="./cadastrar2.php?t=2&i='. $obProjeto->id. '&f=f">Relatório final</a>
+                  .'<a class="dropdown-item btn-sm" href="./cadastrar2.php?t=2&i='. $obProjeto->id. '&f=fi">Relatório final</a>
               </div>
             </div>
           </div>

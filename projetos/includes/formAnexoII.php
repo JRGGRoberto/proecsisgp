@@ -32,7 +32,7 @@
       <label>
         <h5><?php echo ++$n; ?>. Protocolo da proposta</h5>
       </label>
-      <input type="text" class="form-control" name="protocolo" readonly value="<?php echo $obProjeto->protocolo; ?>">
+      <input type="text" class="form-control" name="protocolo" readonly value="<?php echo ($obProjeto->protocolo !== null) ? $obProjeto->protocolo : 'Depois que submetido, receberá um código de protocolo'; ?>">
     </div>
 
     <hr>
@@ -141,7 +141,7 @@
           <div class="form-group">
             <!--         -->
             <label for="cnpq_area">Área</label>
-            <select name="cnpq_area" id="cnpq_area" class="form-control" >
+            <select name="cnpq_area" id="cnpq_area" class="form-control" required>
               <option value="0">N/A</option>
             </select>
             <!--         -->
@@ -154,7 +154,7 @@
 
             <!--         -->
             <label for="cnpq_sarea">Subárea</label>
-            <select name="cnpq_sarea" id="cnpq_sarea" class="form-control">
+            <select name="cnpq_sarea" id="cnpq_sarea" class="form-control" required>
               <option value="0">N/A</option>
             </select>
             <!--         -->

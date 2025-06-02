@@ -1,13 +1,13 @@
 <?php
 $tituloHeader = '';
 switch($tf) {
-    case 'f':
+    case 'fi':
         $tituloHeader = 'RELATÓRIO FINAL DE AÇÃO DE EXTENSÃO E CULTURA';
         break;
-    case 'p':
+    case 'pr':
         $tituloHeader = 'RELATÓRIO FINAL DE AÇÃO DE EXTENSÃO E CULTURA<BR>E solicitação de PRORROGAÇÃO DE PRAZO';
         break;
-    case 'r':
+    case 're':
         $tituloHeader = 'RELATÓRIO FINAL DE AÇÃO DE EXTENSÃO E CULTURA<BR>E solicitação de RENOVAÇÃO';
         break;
     default:
@@ -121,7 +121,7 @@ switch($tf) {
   $periodo_fim1 = substr($obProjeto->vigen_fim, 0, 10);
 
 
-  if($tf == 'r'){
+  if($tf == 're'){
     $periodo_ini2 = null;
     if(!is_null($relatorio->periodo_renov_ini)){
       $periodo_ini2 = substr($relatorio->periodo_renov_ini, 0, 10);
@@ -132,7 +132,7 @@ switch($tf) {
     }
   }
 
-  if($tf == 'p'){
+  if($tf == 'pr'){
     $periodo_fim3 = null;
     if(!is_null($relatorio->periodo_prorroga_fim)){
       $periodo_fim3 = substr($relatorio->periodo_prorroga_fim, 0, 10);
@@ -165,27 +165,27 @@ switch($tf) {
       <br>
 
       <?php 
-      if($tf == 'r'){ ?>
+      if($tf == 're'){ ?>
          <strong>Renovação</strong>
          <div class="row">
            <div class="col-3">
              <div class="form-group">
                <label>Início para renovação</label>
-               <input type="date" name="periodo_renov_ini" id="periodo_renov_ini" class="form-control" value="<?= $ini;?>" required <?=$editar;?> >
+               <input type="date" name="periodo_renov_ini" id="periodo_renov_ini" class="form-control" value="<?= $periodo_ini2;?>" required <?=$editar;?> >
              </div>
            </div>
    
            <div class="col-3">
              <div class="form-group">
                <label>Fim, para renovação</label>
-               <input type="date" name="periodo_renov_fim" id="periodo_renov_fim" class="form-control" value="<?= $fim; ?>" required <?=$editar?> >
+               <input type="date" name="periodo_renov_fim" id="periodo_renov_fim" class="form-control" value="<?= $periodo_fim2; ?>" required <?=$editar?> >
              </div>
            </div>
          </div>
       <br>
 <?php } 
 
-if($tf == 'p'){
+if($tf == 'pr'){
 ?>
       <strong>Prorrogação</strong>
       
@@ -276,7 +276,7 @@ if($tf == 'p'){
       </div>
 
       <hr>
-<?php if($tf == 'p'){ ?>
+<?php if($tf == 'pr'){ ?>
 
       <div class="row">
         <div class="col">
@@ -297,7 +297,7 @@ if($tf == 'p'){
         <div class="col">
           <div class="form-group">
             <label>
-              <h5><?php echo ++$n; ?>. Relatório técnico-científico do Projeto Executado. </h5>
+              <h5><?php echo ++$n; ?>. Relatório técnico-científico do Projeto Executado</h5>
             </label>
             <div id="sumnot_rel_tec_cien_executado"><?php echo $relatorio->rel_tec_cien_executado; ?></div>
             <textarea id="rel_tec_cien_executado" name="rel_tec_cien_executado" rows="10" hidden ></textarea>
@@ -310,7 +310,7 @@ if($tf == 'p'){
         <div class="col">
           <div class="form-group">
             <label>
-              <h5><?php echo ++$n; ?>. Divulgação científico-acadêmica e técnico-extensionistas </h5>
+              <h5><?php echo ++$n; ?>. Divulgação científico-acadêmica e técnico-extensionistas</h5>
             </label>
             <div id="sumnot_divulgacao"><?php echo $relatorio->divulgacao; ?></div>
             <textarea id="divulgacao" name="divulgacao" rows="10" hidden ></textarea>
@@ -332,7 +332,7 @@ if($tf == 'p'){
         </div>
       </div>
 
-<?php if($tf == 'r'){ ?>
+<?php if($tf == 're'){ ?>
   <div class="row">
         <div class="col">
           <div class="form-group">

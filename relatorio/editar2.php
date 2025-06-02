@@ -92,17 +92,18 @@ if (isset($_POST['acao']) == 'removeAnexo') {
 if (isset($_POST['valida'])) {
 
     $relatorio->idproj = $obProjeto->id;
+    $relatorio->tipo = $tf;
 
-    if($tf == 'r'){
+    if($tf == 're'){
         $relatorio->periodo_renov_fim = $_POST['periodo_renov_fim'];
+        $relatorio->periodo_renov_ini = $_POST['periodo_renov_ini'];
     }
     
-    if($tf == 'p'){
+    if($tf == 'pr'){
       $relatorio->periodo_prorroga_fim = $_POST['periodo_prorroga_fim'];
       $relatorio->atvd_prox_per = $_POST['atvd_prox_per'];
     }
-      
-    $relatorio->tipo = $tf;
+    
     $relatorio->ch_semanal = $_POST['ch_semanal'];
     $relatorio->dim_mem_com_ex = $_POST['dim_mem_com_ex'];
     $relatorio->dim_disc = $_POST['dim_disc'];

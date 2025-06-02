@@ -34,7 +34,7 @@
       <label>
         <h5><?= ++$n ?>. Protocolo da proposta</h5>
       </label>
-      <input type="text" class="form-control" name="protocolo" readonly value="<?= $obProjeto->protocolo ?>">
+      <input type="text" class="form-control" name="protocolo" readonly value="<?php echo ($obProjeto->protocolo !== null) ? $obProjeto->protocolo : 'Depois que submetido, receberá um código de protocolo'; ?>">
     </div>
 
     <hr>

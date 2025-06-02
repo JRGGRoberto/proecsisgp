@@ -20,21 +20,17 @@ class RelFinal{
   public $dim_doce;
   public $dim_agent_estag;
   public $atividades;
-  public $atvd_prox_per;
+  public $atvd_prox_per ;
   public $rel_tec_cien_executado;
   public $divulgacao;
   public $rel_finac;
   public $tramitar;
-  public $atvd_prox_msg1;
-  public $atvd_prox_per1;
-  public $atvd_prox_msg2;
-  public $atvd_prox_per2;
+  public $last_result;
   public $created_at;
   public $updated_at;
   public $user;
 
-
-/**
+  /**
    * Método responsável por cadastrar uma nova pessoa no banco
    * @return boolean
    */
@@ -56,18 +52,14 @@ class RelFinal{
                             'dim_disc'               => $this->dim_disc,
                             'dim_doce'               => $this->dim_doce,
                             'dim_agent_estag'        => $this->dim_agent_estag,
-                            'atividades'             => $this->atividades,
                             'atvd_prox_per'          => $this->atvd_prox_per,
+                            'atividades'             => $this->atividades,
                             'rel_tec_cien_executado' => $this->rel_tec_cien_executado,
                             'divulgacao'             => $this->divulgacao,
                             'rel_finac'              => $this->rel_finac,
                             'tramitar'               => $this->tramitar,
-                          //  'atvd_prox_msg1'         => $this->atvd_prox_msg1,
-                          //  'atvd_prox_per1'         => $this->atvd_prox_per1,
-                          //  'atvd_prox_msg2'         => $this->atvd_prox_msg2,
-                          //  'atvd_prox_per2'         => $this->atvd_prox_per2,
+                            'last_result'            => 'n',
                             'created_at'             => date("Y-m-d H:i:s"),
-                      //    'updated_at'             => $this->updated_at,
                             'user'                   => $this->user
                        ]);
     //RETORNAR SUCESSO
@@ -82,9 +74,9 @@ class RelFinal{
    */
   public function atualizar(){ 
       return (new Database('rel_final'))->update(' id = "'.$this->id.'" ',[
-                               'idproj'                  => $this->idproj,
-                               'tipo'                    => $this->tipo,
-                               'periodo_renov_ini'       => $this->periodo_renov_ini,
+                                'idproj'                 => $this->idproj,
+                                'tipo'                   => $this->tipo,
+                                'periodo_renov_ini'      => $this->periodo_renov_ini,
                                 'periodo_renov_fim'      => $this->periodo_renov_fim,
                                 'periodo_prorroga_fim'   => $this->periodo_prorroga_fim,
                                 'ch_semanal'             => $this->ch_semanal,
@@ -98,14 +90,10 @@ class RelFinal{
                                 'divulgacao'             => $this->divulgacao,
                                 'rel_finac'              => $this->rel_finac,
                                 'tramitar'               => $this->tramitar,
-                           //   'atvd_prox_msg1'         => $this->atvd_prox_msg1,
-                           //   'atvd_prox_per1'         => $this->atvd_prox_per1,
-                           //   'atvd_prox_msg2'         => $this->atvd_prox_msg2,
-                           //   'atvd_prox_per2'         => $this->atvd_prox_per2,
-                           //   'created_at'             => date("Y-m-d H:i:s"),
+                                'last_result'            => $this->last_result,
                                 'updated_at'             => date("Y-m-d H:i:s"),
                                 'user'                   => $this->user
-                                  ]);
+                            ]);
     
   }
     

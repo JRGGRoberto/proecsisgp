@@ -4,12 +4,13 @@
   $user = Login::getUsuarioLogado();
 
   require('../includes/msgAlert.php');
+  use \App\Entity\Projeto;
 
   function msgAprovReprov($nota) {
      $titulo = '';
     switch($nota){
       case 'a':
-        $titulo = '<span class="badge badge-sicess">Publicado</span>';
+        $titulo = '<span class="badge badge-success">Publicado</span>';
         break;
       case 'r':
         $titulo = '<span class="badge badge-danger">Solicitação de alteração</span>';
@@ -25,6 +26,7 @@
   $qnt1 = 0;
   $resultados = '<div id="accordion">';
   foreach($relatorios as $rel){
+    $projeto = Projeto::getProjetoLast($rel->idproj);
     $qnt1++;
 
 
@@ -32,7 +34,7 @@
 <div class="card mt-2">
   <div class="card-header" >
      <div class="row">
-        <div class="col-sm-6"><a class="collapsed card-link" data-toggle="collapse" href="#p'. $rel->id .'">📄 Relatório parcial '. msgAprovReprov($rel->resultado) .'</a></div>';
+        <div class="col-sm-6"><a class="collapsed card-link" data-toggle="collapse" href="#p'. $rel->id .'">📄 Relatório parcial '. msgAprovReprov($rel->resultado) .'</a> '.$projeto->titulo.'</div>';
 
    $resultados .= '        
      </div>

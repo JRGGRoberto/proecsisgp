@@ -236,6 +236,7 @@
 
 
 <div class="form-group">
+      <? $cargo = ['Prof/AG','Coordenador',  'Centro de Área', 'Chefe de Divisão', 'Diretor de campus']; ?>
       <? $cargo = ['Prof/AG','Coordenador',  'Centro de Área', 'Chefe de Divisão']; ?>
       <input type="text" class="form-control" name="whosigns"  value="<?=$user['nome']?> - <?= $cargo[ $user['config'] ]?>" readonly>
     </div>

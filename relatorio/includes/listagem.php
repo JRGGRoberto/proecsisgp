@@ -9,9 +9,9 @@
     $msgPublicadoFinal = '';
 
     if($relf->tramitar == 1){
-      if($relf->atvd_prox_per1 == 'r' or  $relf->atvd_prox_per2 == 'r') {
+      if($relf->avalia_1 == 'r' or  $relf->avalia_2 == 'r' or  $relf->avalia_3 == 'r') {
         $msgPublicadoFinal = ' <span class="badge badge-danger">Solicitações de alterações</span>';
-      } elseif ($relf->atvd_prox_per1 == 'a' and  $relf->atvd_prox_per2 == 'a'){
+      } elseif ($relf->avalia_1 == 'a' and  $relf->avalia_2 == 'a' and  $relf->avalia_3 == 'a'){
         $msgPublicadoFinal = ' <span class="badge badge-success">Publicado</span>';
       } else {
         $msgPublicadoFinal = ' <span class="badge badge-warning">Em análise</span>';
@@ -22,13 +22,13 @@
     
     switch(($relf->tipo))
     {
-      case 'f':
+      case 'fi':
         $titulo =  'Final - Período: ' . formatData($obProjeto->vigen_ini).' à '. formatData($obProjeto->vigen_fim) ;
         break; 
-      case 'p': 
+      case 'pr': 
         $titulo =  'Final com pedido de prorrogação - Período: ' . formatData($obProjeto->vigen_ini).' à '. formatData($obProjeto->vigen_fim) .' - Prorrogado até: '. formatData($relf->periodo_prorroga_fim);
         break; 
-      case 'r': 
+      case 're': 
         $titulo =  'Final com pedido de renovação';
         break; 
       default: 

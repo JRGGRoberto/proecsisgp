@@ -46,10 +46,21 @@ $condicoes = [
 $condicoes = array_filter($condicoes);
 */
 // Cláusula WHERE
-$where = implode(' AND ', $condicoes);
+// $where = implode(' AND ', $condicoes);
+
+switch($user['config']) {
+    case 1: // Coordenador colegiado
+        $where = "tp_avaliador = 'co' and id_instancia '". $user['ca_id'] ."';";
+        break;
+    case 3: // Chefe de Divisão
+        $where = "tp_avaliador = 'ca' and id_instancia = '". $user['co_id'] ."';";
+        break;
+    default:
+        $where = ' 1 = 5 and ';
+}
 
 //Qntd total de registros
-$qntRelatorios = HistRelatorios::getQntdRegistros(); // ($where);
+$qntRelatorios = HistRelatorios::getQntdRegistros($where); // ($where);
 
 //paginação
 $obPagination = new Pagination($qntRelatorios, $_GET['pagina']?? 1, 10);
@@ -58,11 +69,5 @@ $obPagination = new Pagination($qntRelatorios, $_GET['pagina']?? 1, 10);
 $relatorios = HistRelatorios::getRegistros();
 
 include '../includes/header.php';
-/*
-echo '<pre>';
-// print_r($user);
-print_r($relatorios);
-echo '</pre>';
-*/
 include __DIR__.'/includes/listagem.php';
 include '../includes/footer.php'; 
