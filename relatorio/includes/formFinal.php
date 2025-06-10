@@ -350,12 +350,17 @@ if($tf == 'pr'){
       <div class="form-group">
         <h5 id="attc"><?php echo ++$n; ?>. Anexos</h5>
         <ul id="anexos"></ul>
-        <iframe src="../upload/upload.php" frameborder="0" scrolling="no"></iframe>
+        <?php if($editar <> 'readonly') { ?>
+            <iframe src="../upload/upload.php" frameborder="0" scrolling="no"></iframe>
+        <?php } ?>
         <?php echo $anex; ?>
       </div>
       <hr>
       <?php 
-      if($relatorio->tramitar == 0) {
+          if($relatorio->tramitar == 0) {
+            if($obProjeto->id_prof != $user['id']) {
+              echo '';
+            } else {
       ?>
       <div class="form-group">
         <h5 id="">Pronto para tramitação</h5>
@@ -363,16 +368,8 @@ if($tf == 'pr'){
            
       </div>
       <hr>
-      <?php } else {
-        echo '<div class="form-group">
-        <h5 id="">Em processo de aceite da Divisão de Extensão e Cultura do Campus</h5>
-        <label for="avaliar"></label>
-           
-      </div>
-      <hr>';
-
-      }
-      ?>
+      <?php }
+      }  ?>
 
       <div class="row" >
 

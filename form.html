@@ -50,7 +50,7 @@
               <label for="nome">Nome</label>                  <input type="text" class="form-control" id="nome">
               <label for="instituicao">Instituição</label>    <input type="text" class="form-control" id="instituicao">
               <label for="formacao">Formação</label>          <input type="text" class="form-control" id="formacao">
-              <label for="funcao">Função na equipe</label>    <input type="text" class="form-control" id="funcao">
+              <label for="funcao">Função na equipe</label>    <input type="text" class="form-control" id="funcao" value="Membro da equipe executora" readonly>
               <label for="telefone">Telefone</label>          <input type="text" class="form-control" id="telefone">
               <BR><center>
               <button type="button" class="btn btn-secondary btn-sm" onclick="fecharModalEquipe()">Fechar</button>
@@ -135,7 +135,7 @@
     document.getElementById("nome").value = "";
     document.getElementById("instituicao").value = "";
     document.getElementById("formacao").value = "";
-    document.getElementById("funcao").value = "";
+    document.getElementById("funcao").value = "Membro da equipe executora";
     document.getElementById("telefone").value = "";
   }
   

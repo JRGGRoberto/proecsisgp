@@ -26,6 +26,8 @@ class RelFinal{
   public $rel_finac;
   public $tramitar;
   public $last_result;
+  public $etapa;
+  public $etapas;
   public $created_at;
   public $updated_at;
   public $user;

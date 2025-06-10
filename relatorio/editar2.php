@@ -24,9 +24,13 @@ $relatorio = (object) RelFinal::get($id);
 $tf = $relatorio->tipo;
 
 
+$obProjeto = Projeto::getProjetoLast($relatorio->idproj);
+$obProjeto = Projeto::getProjeto($obProjeto->id, $obProjeto->ver);
+$obProfessor = Professor::getProfessor($obProjeto->id_prof);
+
 $editar = '';
 $scriptDisble = '';
-if($relatorio->tramitar == 1){
+if(($relatorio->tramitar == 1) or ($obProjeto->id_prof != $user['id'])){
     $editar = 'readonly';
 
     $scriptDisble = "<script>
@@ -39,10 +43,6 @@ if($relatorio->tramitar == 1){
                         
                     </script>";
 } 
-
-$obProjeto = Projeto::getProjetoLast($relatorio->idproj);
-$obProjeto = Projeto::getProjeto($obProjeto->id, $obProjeto->ver);
-$obProfessor = Professor::getProfessor($obProjeto->id_prof);
 
 
 $anexados = Arquivo::getAnexados('relatorios', $relatorio->id);

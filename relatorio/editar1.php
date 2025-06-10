@@ -20,9 +20,6 @@ use App\Entity\Colegiado;
 Login::requireLogin();
 $user = Login::getUsuarioLogado();
 
-
-
-
 $id = $_GET['id'];
 $relatorio = (object) RelParcial::get($id);
 
@@ -30,8 +27,14 @@ $relatorio = (object) RelParcial::get($id);
 
 $editar = '';
 $scriptDisble = '';
-if($relatorio->tramitar == 1){
+
+$obProjeto = Projeto::getProjetoLast($relatorio->idproj);
+$obProjeto = Projeto::getProjeto($obProjeto->id, $obProjeto->ver);
+$obProfessor = Professor::getProfessor($obProjeto->id_prof);
+
+if(($relatorio->tramitar == 1) or ($obProjeto->id_prof != $user['id'])){
     $editar = 'readonly';
+    
 
     $scriptDisble = "<script>
                         $('#sumnot_atvd_per').summernote('disable');
@@ -43,9 +46,7 @@ if($relatorio->tramitar == 1){
                     </script>";
 } 
 
-$obProjeto = Projeto::getProjetoLast($relatorio->idproj);
-$obProjeto = Projeto::getProjeto($obProjeto->id, $obProjeto->ver);
-$obProfessor = Professor::getProfessor($obProjeto->id_prof);
+
 
 
 $anexados = Arquivo::getAnexados('relatorios', $relatorio->id);
@@ -120,7 +121,7 @@ if (isset($_POST['atvd_per'])) {
 }
 
 
-include '../includes/header.php'; 
+include '../includes/header.php';
 include __DIR__.'/includes/formParcial.php';
 echo $scriptDisble; 
 include '../includes/footer.php'; 

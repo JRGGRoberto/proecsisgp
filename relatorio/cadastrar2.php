@@ -27,15 +27,20 @@ if ($t != 2) {
 
 $obProjeto = Projeto::getProjetoLast($id);
 
-
 $obProjeto = Projeto::getProjeto($id, $obProjeto->ver);
 $obProfessor = Professor::getProfessor($obProjeto->id_prof);
 
+
+if ($obProjeto->id_prof != $user['id']) {
+  header('location: ../index.php?status=errorOwner');
+  exit;
+}
+
 $cursosetor = '' ;
 if($obProjeto->para_avaliar == -1){
-  $cursosetor = $user['ca_nome'];
+  $cursosetor = ''.$user['ca_nome'];
 } else {
-  $cursosetor = $obProjeto->para_avaliar;
+  $cursosetor = ''.Colegiado::getRegistro($obProjeto->para_avaliar)->nome;
 }
 
 $relatorio = new RelFinal();

@@ -7,9 +7,7 @@ error_reporting(E_ALL);
 
 use \App\Session\Login;
 use \App\Entity\Projeto;
-use \App\Entity\RelParcial;
-use \App\Entity\RelFinal;
-
+use \App\Entity\Outros;
 
 $user = Login::getUsuarioLogado();
 
@@ -37,82 +35,56 @@ $id = $_GET['id'];
 $obProjeto = new Projeto();
 $obProjeto = Projeto::getProjetoLast($id);
 $obProjeto = Projeto::getProjeto($id, $obProjeto->ver);
-$novoBTNs = '';
-
-
-$QntRelParcial =  RelParcial::getQntd('idproj = "'.$id.'" and last_result  <> "a" ' );
-
-$QntRelFinalFinal = RelFinal::getQntd('idproj = "'.$id.'"  and tipo = "fi" '); 
-$QntRelFinalProrr = RelFinal::getQntd('idproj = "'.$id.'"  and tipo = "pr" ');
-$QntRelFinalRenov = RelFinal::getQntd('idproj = "'.$id.'"  and tipo = "re" ');
-$QntREL =  $QntRelParcial + $QntRelFinalFinal + $QntRelFinalProrr + $QntRelFinalRenov;
-
 /*
 echo '<pre>';
-echo 'QntRelParcial: '.$QntRelParcial;
-echo '<br>';
-echo 'QntRelFinalFinal: '.$QntRelFinalFinal;
-echo '<br>';
-echo 'QntRelFinalProrr: '.$QntRelFinalProrr;
-echo '<br>';
-echo 'QntRelFinalRenov: '.$QntRelFinalRenov;
+print_r($obProjeto);
 echo '</pre>';
+exit;
 */
+$novoBTNs = '';
+$opcoes = [
+    "pa" => '<a class="dropdown-item btn-sm" href="./cadastrar1.php?t=1&i='. $obProjeto->id. '">Relatório parcial</a>',
+    "re" => '<a class="dropdown-item btn-sm" href="./cadastrar2.php?t=2&i='. $obProjeto->id. '&f=re">Relatório final com pedido de Renovação</a>', 
+    "pr" => '<a class="dropdown-item btn-sm" href="./cadastrar2.php?t=2&i='. $obProjeto->id. '&f=pr">Relatório final com pedido de Prorrogação</a>', 
+    "fi" => '<a class="dropdown-item btn-sm" href="./cadastrar2.php?t=2&i='. $obProjeto->id. '&f=fi">Relatório final</a>'
+];
 
-
-$relParcial = RelParcial::gets('idproj = "'.$id.'"' );
-$RelFinal = RelFinal::gets('idproj = "'.$id.'"' );
-
-
-$showBTNS_parcial_final = false;
-
-if($QntREL == 0){  // Não tem nenhum relatórios
-    $showBTNS_parcial_final = true;
-} else {
-    if(($QntRelFinalFinal > 0) or ($QntRelFinalRenov > 0)){   // se tem relatório final Não mostar btns para criar
-        $showBTNS_parcial_final = false;
-    } elseif   ($QntRelParcial > 0){ // se tem algum parcial
-       foreach($relParcial as $rel){
-            if($rel->ava_publicar == 0){
-                $showBTNS_parcial_final = false;
-                break;
-            } else {
-                $showBTNS_parcial_final = true;
-            }
-        }
-    }
+function chEstado($op, &$opcoes) {
+  switch($op) {
+    case 're':
+        unset($opcoes["pa"]);
+        unset($opcoes["re"]);
+        unset($opcoes["pr"]);
+        unset($opcoes["fi"]);
+        break;
+    case 'pr':
+        unset($opcoes["re"]);
+        unset($opcoes["pr"]);
+        break;
+    case 'fi':
+        unset($opcoes["pa"]);
+        unset($opcoes["re"]);
+        unset($opcoes["pr"]);
+        unset($opcoes["fi"]);
+        break;
+    default:
+        return '';
+  }
+  return null;
 }
 
-$btnFinalProrrogado = '<a class="dropdown-item btn-sm" href="./cadastrar2.php?t=2&i='. $obProjeto->id. '&f=pr">Relatório final com pedido de Prorrogação</a>';
-$btnFinalRenova =     '<a class="dropdown-item btn-sm" href="./cadastrar2.php?t=2&i='. $obProjeto->id. '&f=re">Relatório final com pedido de Renovação</a>';
+$relatorios = Outros::qry('SELECT * FROM relatorios WHERE idproj = "'.$id.'"');
 
-if(($QntRelFinalFinal > 0) or ($QntRelFinalRenov > 0)){
-    $btnFinalProrrogado = '';
+//remoção das oções de criar relatórios
+foreach ($relatorios as $rel) {
+   chEstado($rel->tipo, $opcoes);
+   if(in_array($rel->tipo, ['pr', 'fi'])) { // como estes removem todos os outros, não precisa mais verificar
+       break;
+   }
 }
 
 
 
-if($showBTNS_parcial_final){
-    $novoBTNs = '
-      <section>
-        <div class="row mt-2 align-bottom">
-          <div class="col" >
-
-            <div class="dropup">
-              <button type="button" class="btn btn-success dropdown-toggle btn-sm float-right" data-toggle="dropdown" >
-                Novo
-              </button>
-              <div class="dropdown-menu dropdown-menu-right">
-                  <a class="dropdown-item btn-sm" href="./cadastrar1.php?t=1&i='. $obProjeto->id. '">Relatório parcial</a>'.
-                  $btnFinalProrrogado  . $btnFinalRenova 
-                  .'<a class="dropdown-item btn-sm" href="./cadastrar2.php?t=2&i='. $obProjeto->id. '&f=fi">Relatório final</a>
-              </div>
-            </div>
-          </div>
-        </div>
-      </section>
-    ';
-}
 
 
 function formatData($data): string
@@ -121,25 +93,25 @@ function formatData($data): string
 }
 
 $obProjeto->tipo_exten;
-$tipo = '';
+$tipoE = '';
 switch ($obProjeto->tipo_exten) {
   case 1:
-      $tipo = 'Curso';
+      $tipoE = 'Curso';
       break;
   case 2:
-      $tipo = 'Evento';
+      $tipoE = 'Evento';
       break;
   case 3:
-      $tipo = 'Prestação de serviço';
+      $tipoE = 'Prestação de serviço';
       break;
   case 4:
-      $tipo = 'Programa';
+      $tipoE = 'Programa';
       break;
   case 5:
-      $tipo = 'Projeto';
+      $tipoE = 'Projeto';
       break;
   default:
-      $tipo = '';
+      $tipoE = '';
       break;
       exit;
 }

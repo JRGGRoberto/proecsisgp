@@ -101,12 +101,12 @@ use App\Entity\Professor;
 
 $regra = '';
 if ($user['tipo'] == 'professor') {
-    $dadosProf = Professor::getDadosProf($obProjeto->id_prof);
+    $dadosProf = (object)Professor::getDadosProf($obProjeto->id_prof);
     $telefone = $dadosProf->telefone;
     $email = $dadosProf->email;
     $regra = '6204ba97-7f1a-499e-a17d-118d305bf7e4';
 } elseif ($user['tipo'] == 'agente') {
-    $dadosAgentes = Agente::get($obProjeto->id_prof);
+    $dadosAgentes = (object)Agente::get($obProjeto->id_prof);
     $telefone = $dadosAgentes->telefone;
     $email = $dadosAgentes->email;
     $regra = 'a45daba2-12ec-11ef-b2c8-0266ad9885af';
@@ -282,6 +282,12 @@ $scriptVars =
 </script>";
 
 include '../includes/header.php';
+
+echo "
+<script>
+campusNome = ".$user['ca_nome']." 
+</script>";
+
 
 if (in_array($t, $anexoII)) {
     include __DIR__.'/includes/formAnexoII.php';

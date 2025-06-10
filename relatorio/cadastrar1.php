@@ -7,7 +7,6 @@ use App\Entity\Projeto;
 use App\Entity\Professor;
 use App\Entity\Arquivo;
 use App\Entity\RelParcial;
-use App\Entity\Campi;
 use App\Entity\Colegiado;
 
 // Obriga o usuário a estar logado
@@ -25,7 +24,15 @@ if ($t != 1) {
 
 $obProjeto = Projeto::getProjetoLast($id);
 $obProjeto = Projeto::getProjeto($id, $obProjeto->ver);
-$obProfessor = Professor::getProfessor($obProjeto->id_prof);
+$obProfessor = (object)Professor::getProfessor($obProjeto->id_prof);
+
+if ($obProjeto->id_prof != $user['id']) {
+  header('location: ../index.php?status=errorOwner');
+  exit;
+}
+
+
+
 
 $cursosetor = '' ;
 if($obProjeto->para_avaliar == -1){

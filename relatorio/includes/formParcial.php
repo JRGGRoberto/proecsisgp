@@ -9,24 +9,7 @@
   <h4 style="text-align: center">ANEXO IV</h4>
   <h3 class="mt-3" style="text-align: center">RELATÓRIO PARCIAL</h3>
 
-  <?php
-    if($relatorio->last_result == 'r')
-    {
-      echo '
-      <div class="form-group">
-      <label>
-        <h5> Solicitação de ajustes do relatório parcial </h5>
-      </label>
-        <textarea rows="4" cols="50" readonly class="form-control">' . $relatorio->ava_comentario . '</textarea>
-      </div>
-      
-      ';
-    } 
-
-  ?>
-
-
-  <form name="formAnexo" id="formAnexo" method="POST" enctype="multipart/form-data">
+   <form name="formAnexo" id="formAnexo" method="POST" enctype="multipart/form-data">
     <input type="hidden" name="id_prof" value="<?php echo $obProjeto->id_prof; ?>">
     <input type="hidden" name="tabela" value="projetos">
     <hr>
@@ -163,28 +146,27 @@
       <hr>
 
       <?php 
-      if($relatorio->tramitar == 0) {
+          if($relatorio->tramitar == 0) {
+            if($obProjeto->id_prof != $user['id']) {
+              echo '';
+            } else {
       ?>
       <div class="form-group">
-        <h5 id="">Pronto para tramitação</h5>
-        <label for="tramitar">Ao marcar esta <input type="checkbox" id="tramitar" name="tramitar" value="1"> opção, depois de salvo, este relatório ficará visível para aprovação e perderá o modo de edição.</label>
+                 
+        <h5 id="">Pronto ser enviado</h5>
+        <label for="tramitar">Ao marcar esta <input type="checkbox" id="tramitar" name="tramitar" value="1" > opção, depois de salvo, este relatório ficará visível para aprovação e perderá o modo de edição.</label>
            
       </div>
       <hr>
-      <?php } else {
-        echo '<div class="form-group">
-        <h5 id="">Em processo de aceite da Divisão de Extensão e Cultura do Campus</h5>
-        <label for="avaliar"></label>
-           
-      </div>
-      <hr>';
-
-      }?>
+      <?php }
+      }  ?>
 
       <div class="form-group">
         <h5 id="attc"><?php echo ++$n; ?>. Anexos</h5>
         <ul id="anexos"></ul>
-        <iframe src="../upload/upload.php" frameborder="0" scrolling="no"></iframe>
+        <?php if($editar <> 'readonly') { ?>
+            <iframe src="../upload/upload.php" frameborder="0" scrolling="no"></iframe>
+        <?php } ?>
         <?php echo $anex; ?>
       </div>
       <hr>

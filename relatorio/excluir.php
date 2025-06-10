@@ -2,49 +2,57 @@
 
 require '../vendor/autoload.php';
 
-
-use \App\Session\Login;
-use \App\Entity\Projeto;
-
-//Obriga o usuário a estar logado
+use App\Session\Login;
+use App\Entity\Projeto;
+use App\Entity\RelParcial;
+use App\Entity\RelFinal;
+// Obriga o usuário a estar logado
 Login::requireLogin();
-
 $user = Login::getUsuarioLogado();
 
-//VALIDAÇÃO DO ID
-if(!isset($_GET['id'], $_GET['v'])){
-   echo "get id get v";
-  header('location: index.php?status=error');
-  exit;
+$voltarUrl = $_SERVER['HTTP_REFERER'];
+echo $voltarUrl;
+ 
+$id = $_GET['id'];
+
+$tipo = substr($id,-1);
+$id =  substr($id, 0, 36);
+
+switch ($tipo){
+    case '1':
+        if ( ($relatorio = RelParcial::get($id)) instanceof RelParcial) {
+            echo 'Relatório PARCIAL encontrado: <br>';
+            $obProjeto = (object) Projeto::getProjetoLast($relatorio->idproj);
+            if($obProjeto->id_prof == $user['id']){
+                $relatorio->excluir();
+                header('location: index.php?id='.$obProjeto->id);
+            } else {
+                header('location: index.php?id='.$obProjeto->id.'&msg=ERRORowner');
+                
+            }
+        } else {
+            header('location: index.php?id='.$obProjeto->id.'&msg=RelIsnotInstance');
+        }
+        exit;
+        break;
+    case '2':
+         if ( ($relatorio = RelFinal::get($id)) instanceof RelFinal ) {
+            $relatorio = (object)$relatorio;
+            echo 'Relatório FINAL encontrado: <br>';
+            $obProjeto = (object) Projeto::getProjetoLast($relatorio->idproj);
+            if($obProjeto->id_prof == $user['id']){
+                $relatorio->excluir();
+                header('location: index.php?id='.$obProjeto->id);
+            } else {
+                header('location: index.php?id='.$obProjeto->id.'&msg=ERRORowner');
+            }
+        break;  
+        } else {
+            header('location: index.php?id='.$obProjeto->id.'&msg=RelIsnotInstance');
+            exit;
+        }
+    default:
+        header('location: index.php?id='.$obProjeto->id.'&msg=ERRORundefined');
+        exit;
 }
 
-//CONSULTA REGISTRO
-$obProjeto = Projeto::getProjeto($_GET['id'], 0);
-
-
-//VALIDAÇÃO DA Campus
-if(!$obProjeto instanceof Projeto){
-  echo 'Não é uma instancia do projeto';
-  header('location: index.php?status=error');
-  exit;
-}
-
-//VALIDANDO SE OS DADOS VIERAM REALMENTE PELO LINK
-if($obProjeto->created_at != $_GET['v']){
-  echo 'tentando trapassear....';
-  header('location: index.php?status=error');
-  exit;
-}
-
-
-//VALIDANDO SE O DONO DO PROJETO É  USUÁRIO
-if($obProjeto->id_prof != $user['id']){
-  echo 'tentando trapassear.... NÃO ÉS O DONO DO PROJETO!!!';
- // header('location: index.php?status=error');
-  exit;
-}
-
-
-$obProjeto->excluir();
-header('location: index.php?status=success');
-exit;

@@ -15,7 +15,7 @@ function deleteAllRows(){
     document.getElementById("nome").value = "";
     document.getElementById("instituicao").value = "";
     document.getElementById("formacao").value = "";
-    document.getElementById("funcao").value = "";
+    document.getElementById("funcao").value = "Membro da equipe executora";
     document.getElementById("tel").value = "";
 
   //  document.getElementById("dtinicio").value = "";

@@ -25,6 +25,9 @@ class Professor {
 //  public $colegiado;
   public $user;
 
+  public function getNome() {
+    return ucfirst(strtolower($this->nome)); 
+  }
 /**
    * Método responsável por cadastrar uma nova pessoa no banco
    * @return boolean

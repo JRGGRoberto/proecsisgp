@@ -79,11 +79,11 @@ use App\Entity\Agente;
 use App\Entity\Professor;
 
 if (($user['tipo'] == 'professor') || $user['tipo'] == 'prof') {
-    $dadosProf = Professor::getDadosProf($obProjeto->id_prof);
-    $telefone = $dadosProf->telefone;
+    $dadosProf = (object)Professor::getDadosProf($obProjeto->id_prof);
+    $telefone =  $dadosProf->telefone;
     $email = $dadosProf->email;
 } elseif ($user['tipo'] == 'agente') {
-    $dadosAgentes = Agente::get($obProjeto->id_prof);
+    $dadosAgentes = (object)Agente::get($obProjeto->id_prof);
     $telefone = $dadosAgentes->telefone;
     $email = $dadosAgentes->email;
 }
@@ -277,6 +277,11 @@ if (isset($_POST['titulo'])) {
 
 include '../includes/header.php';
 
+echo "
+<script>
+campusNome = ".$user['ca_nome']." 
+</script>";
+
 // verifica se o usuário é dono do projeto
 if ($user['id'] == $obProjeto->id_prof) {
     if ($obProjeto->edt == 0) {
@@ -371,7 +376,6 @@ if ($user['id'] == $obProjeto->id_prof) {
 }
 
 echo "
-<script>
 
 let area_extensao   = document.getElementById('area_extensao');
 let linh_ext   = document.getElementById('linh_ext');
