@@ -1,13 +1,13 @@
 <?php
 $tituloHeader = '';
-switch($tf) {
-    case 'f':
+switch($relatorio->tipo) {
+    case 'fi':
         $tituloHeader = 'RELATÓRIO FINAL DE AÇÃO DE EXTENSÃO E CULTURA';
         break;
-    case 'p':
+    case 'pr':
         $tituloHeader = 'RELATÓRIO FINAL DE AÇÃO DE EXTENSÃO E CULTURA<BR>E solicitação de PRORROGAÇÃO DE PRAZO';
         break;
-    case 'r':
+    case 're':
         $tituloHeader = 'RELATÓRIO FINAL DE AÇÃO DE EXTENSÃO E CULTURA<BR>E solicitação de RENOVAÇÃO';
         break;
     default:
@@ -19,7 +19,7 @@ switch($tf) {
 <main>
   
   <section>
-    <a href="./index.php?id=<?php echo $obProjeto->id; ?>">
+    <a href="./index.php?">
       <button class="btn btn-success btn-sm float-right">Voltar</button>
     </a>
   </section>
@@ -27,31 +27,7 @@ switch($tf) {
   <h4 style="text-align: center">ANEXO V</h4>
   <h3 class="mt-3" style="text-align: center"><?=$tituloHeader?></h3>
 
-  <?php
-   
-    /* if(!(
-        ( ($relatorio->tramitar == 0)     or is_null($relatorio->tramitar)     or ($relatorio->tramitar == ''))      and
-        ( ($relatorio->ava_publicar == 0) or is_null($relatorio->ava_publicar) or ($relatorio->ava_publicar == ''))  and
-        (strlen($relatorio->ava_comentario) == 0)
-       )
-    ){ 
-      echo '
-      <div class="form-group">
-      <label>
-        <h5> Solicitação de ajustes do relatório parcial </h5>
-      </label>
-        <textarea rows="4" cols="50" readonly class="form-control">
-        c:' . $relatorio->ava_comentario . '|t:'. $relatorio->tramitar.'|p:'. $relatorio->ava_publicar.'|  
-        </textarea>
-      </div>
-      
-      ';
-    //} 
-*/
-  ?>
-
-
-  <form name="formAnexo" id="formAnexo" method="POST" enctype="multipart/form-data">
+  
     <input type="hidden" name="id_prof" value="<?php echo $obProjeto->id_prof; ?>">
     <input type="hidden" name="tabela" value="projetos">
     <input type="hidden" name="valida" value="ok">
@@ -121,7 +97,7 @@ switch($tf) {
   $periodo_fim1 = substr($obProjeto->vigen_fim, 0, 10);
 
 
-  if($tf == 'r'){
+  if($relatorio->tipo == 're'){
     $periodo_ini2 = null;
     if(!is_null($relatorio->periodo_renov_ini)){
       $periodo_ini2 = substr($relatorio->periodo_renov_ini, 0, 10);
@@ -132,7 +108,7 @@ switch($tf) {
     }
   }
 
-  if($tf == 'p'){
+  if($relatorio->tipo == 'pr'){
     $periodo_fim3 = null;
     if(!is_null($relatorio->periodo_prorroga_fim)){
       $periodo_fim3 = substr($relatorio->periodo_prorroga_fim, 0, 10);
@@ -165,34 +141,34 @@ switch($tf) {
       <br>
 
       <?php 
-      if($tf == 'r'){ ?>
+      if($relatorio->tipo == 're'){ ?>
          <strong>Renovação</strong>
          <div class="row">
            <div class="col-3">
              <div class="form-group">
                <label>Início para renovação</label>
-               <input type="date" name="periodo_renov_ini" id="periodo_renov_ini" class="form-control" value="<?= $ini;?>" required <?=$editar;?> >
+               <input type="date" name="periodo_renov_ini" id="periodo_renov_ini" class="form-control" value="<?= $periodo_ini2;?>" required <?=$editar;?> >
              </div>
            </div>
    
            <div class="col-3">
              <div class="form-group">
                <label>Fim, para renovação</label>
-               <input type="date" name="periodo_renov_fim" id="periodo_renov_fim" class="form-control" value="<?= $fim; ?>" required <?=$editar?> >
+               <input type="date" name="periodo_renov_fim" id="periodo_renov_fim" class="form-control" value="<?= $periodo_fim2; ?>" required readonly >
              </div>
            </div>
          </div>
       <br>
 <?php } 
 
-if($tf == 'p'){
+if($relatorio->tipo == 'pr'){
 ?>
       <strong>Prorrogação</strong>
       
         <div class="col-3">
           <div class="form-group">
             <label>Até</label>
-            <input type="date" name="periodo_prorroga_fim" id="periodo_prorroga_fim" class="form-control" value="<?= $periodo_fim3; ?>" required <?=$editar?>  <?=$editar?> >
+            <input type="date" name="periodo_prorroga_fim" id="periodo_prorroga_fim" class="form-control" value="<?= $periodo_fim3; ?>" required readonly  readonly >
           </div>
         </div>
         A prorrogação deve ter tempo máximo de 25% do período inicial e final informado no projeto.
@@ -206,7 +182,7 @@ if($tf == 'p'){
         <label>
           <h5><?php echo ++$n; ?>. Carga semanal*:</h5>
         </label>
-        <input type="number" min=0 max=44 class="form-control col-2" name="ch_semanal" value="<?php echo $relatorio->ch_semanal; ?>" <?=$editar?>>
+        <input type="number" min=0 max=44 class="form-control col-2" name="ch_semanal" value="<?php echo $relatorio->ch_semanal; ?>" readonly>
       </div>
 
       <hr>
@@ -221,19 +197,19 @@ if($tf == 'p'){
           </tr>
           <tr>
             <th>Membros da comunidade externa</th>
-            <td><input type="number" min=0 max=44 class="form-control" name="dim_mem_com_ex" value="<?= $relatorio->dim_mem_com_ex; ?>" <?=$editar?> ></td>
+            <td><input type="number" min=0 max=44 class="form-control" name="dim_mem_com_ex" value="<?= $relatorio->dim_mem_com_ex; ?>" readonly ></td>
           </tr>
           <tr>
             <th>Discentes</th>
-            <td><input type="number" min=0 max=44 class="form-control" name="dim_disc" value="<?= $relatorio->dim_disc; ?>" <?=$editar?> ></td>
+            <td><input type="number" min=0 max=44 class="form-control" name="dim_disc" value="<?= $relatorio->dim_disc; ?>" readonly ></td>
           </tr>
           <tr>
             <th>Docentes</th>
-            <td><input type="number" min=0 max=44 class="form-control" name="dim_doce" value="<?= $relatorio->dim_doce; ?>"  <?=$editar?> ></td>
+            <td><input type="number" min=0 max=44 class="form-control" name="dim_doce" value="<?= $relatorio->dim_doce; ?>"  readonly ></td>
           </tr>
           <tr>
             <th>Agentes universitários e Estagiários</th>
-            <td><input type="number" min=0 max=44 class="form-control" name="dim_agent_estag" value="<?= $relatorio->dim_agent_estag; ?>"  <?=$editar?> ></td>
+            <td><input type="number" min=0 max=44 class="form-control" name="dim_agent_estag" value="<?= $relatorio->dim_agent_estag; ?>"  readonly ></td>
           </tr>
         </table>
       </div>
@@ -276,7 +252,7 @@ if($tf == 'p'){
       </div>
 
       <hr>
-<?php if($tf == 'p'){ ?>
+<?php if($relatorio->tipo == 'pr'){ ?>
 
       <div class="row">
         <div class="col">
@@ -297,7 +273,7 @@ if($tf == 'p'){
         <div class="col">
           <div class="form-group">
             <label>
-              <h5><?php echo ++$n; ?>. Relatório técnico-científico do Projeto Executado. </h5>
+              <h5><?php echo ++$n; ?>. Relatório técnico-científico do Projeto Executado</h5>
             </label>
             <div id="sumnot_rel_tec_cien_executado"><?php echo $relatorio->rel_tec_cien_executado; ?></div>
             <textarea id="rel_tec_cien_executado" name="rel_tec_cien_executado" rows="10" hidden ></textarea>
@@ -310,7 +286,7 @@ if($tf == 'p'){
         <div class="col">
           <div class="form-group">
             <label>
-              <h5><?php echo ++$n; ?>. Divulgação científico-acadêmica e técnico-extensionistas </h5>
+              <h5><?php echo ++$n; ?>. Divulgação científico-acadêmica e técnico-extensionistas</h5>
             </label>
             <div id="sumnot_divulgacao"><?php echo $relatorio->divulgacao; ?></div>
             <textarea id="divulgacao" name="divulgacao" rows="10" hidden ></textarea>
@@ -332,7 +308,7 @@ if($tf == 'p'){
         </div>
       </div>
 
-<?php if($tf == 'r'){ ?>
+<?php if($relatorio->tipo == 're'){ ?>
   <div class="row">
         <div class="col">
           <div class="form-group">
@@ -350,61 +326,23 @@ if($tf == 'p'){
       <div class="form-group">
         <h5 id="attc"><?php echo ++$n; ?>. Anexos</h5>
         <ul id="anexos"></ul>
-        <iframe src="../upload/upload.php" frameborder="0" scrolling="no"></iframe>
         <?php echo $anex; ?>
       </div>
       <hr>
-      <?php 
-      if($relatorio->tramitar == 0) {
-      ?>
-      <div class="form-group">
-        <h5 id="">Pronto para tramitação</h5>
-        <label for="tramitar">Ao marcar esta <input type="checkbox" id="tramitar" name="tramitar" value="1"> opção, depois de salvo, este relatório ficará visível para aprovação e perderá o modo de edição.</label>
-           
-      </div>
-      <hr>
-      <?php } else {
-        echo '<div class="form-group">
-        <h5 id="">Em processo de aceite da Divisão de Extensão e Cultura do Campus</h5>
-        <label for="avaliar"></label>
-           
-      </div>
-      <hr>';
-
-      }
-      ?>
+     
 
       <div class="row" >
 
         <div class="col-3">
           <div class="form-group">
             <label>Data</label>
-            <input type="date" name="data" class="form-control" id="dateAssing" value="<?php echo substr($relatorio->created_at, 0, 10); ?>" required <?=$editar?>>
+            <input type="date" name="data" class="form-control" id="dateAssing" value="<?php echo substr($relatorio->created_at, 0, 10); ?>" required readonly>
           </div>
         </div>
       </div>
 
-      <div class="form-group">
-      <?php
-      if($editar == ''){
-      ?>
-          <a href="javascript: submitSumbeter()" class="btn btn-success btn-sm" >↗️ Salvar </a>
-      <?php } ?>
-         <a href="javascript: history.go(-1)" class="btn btn-warning btn-sm" >↗️ Voltar </a>
-      </div>
-
-      <div class="row">
-        <div class="col">
-          <div class="form-group">
-            <p><br><br></p>
-          </div>
-        </div>
-      </div>
-      <input type="hidden" name="tabela" value="relatorios">
-      <input id="anexosJS" name="anexosJS" type="text" hidden>
-
-
-  </form>
+    
+  
 
 </main>
 <script src="forms.js"></script>

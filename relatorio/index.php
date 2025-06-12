@@ -43,10 +43,10 @@ exit;
 */
 $novoBTNs = '';
 $opcoes = [
-    "pa" => '<a class="dropdown-item btn-sm" href="./cadastrar1.php?t=1&i='. $obProjeto->id. '">Relatório parcial</a>',
-    "re" => '<a class="dropdown-item btn-sm" href="./cadastrar2.php?t=2&i='. $obProjeto->id. '&f=re">Relatório final com pedido de Renovação</a>', 
-    "pr" => '<a class="dropdown-item btn-sm" href="./cadastrar2.php?t=2&i='. $obProjeto->id. '&f=pr">Relatório final com pedido de Prorrogação</a>', 
-    "fi" => '<a class="dropdown-item btn-sm" href="./cadastrar2.php?t=2&i='. $obProjeto->id. '&f=fi">Relatório final</a>'
+    "pa" => '<a class="dropdown-item btn-sm" href="./cadastrarp.php?t=1&i='. $obProjeto->id. '">Relatório parcial</a>',
+    "re" => '<a class="dropdown-item btn-sm" href="./cadastrarf.php?t=2&i='. $obProjeto->id. '&f=re">Relatório final com pedido de Renovação</a>', 
+    "pr" => '<a class="dropdown-item btn-sm" href="./cadastrarf.php?t=2&i='. $obProjeto->id. '&f=pr">Relatório final com pedido de Prorrogação</a>', 
+    "fi" => '<a class="dropdown-item btn-sm" href="./cadastrarf.php?t=2&i='. $obProjeto->id. '&f=fi">Relatório final</a>'
 ];
 
 function chEstado($op, &$opcoes) {
@@ -78,8 +78,12 @@ $relatorios = Outros::qry('SELECT * FROM relatorios WHERE idproj = "'.$id.'"');
 //remoção das oções de criar relatórios
 foreach ($relatorios as $rel) {
    chEstado($rel->tipo, $opcoes);
-   if(in_array($rel->tipo, ['pr', 'fi'])) { // como estes removem todos os outros, não precisa mais verificar
+   if(in_array($rel->tipo, ['re', 'fi'])) { // como estes removem todos os outros, não precisa mais verificar
        break;
+   }
+   if($rel->publicado == 0){
+      chEstado('fi', $opcoes);
+      break;
    }
 }
 

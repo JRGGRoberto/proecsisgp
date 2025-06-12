@@ -63,10 +63,6 @@ class RelParcial {
    * @return boolean
    */
   public function atualizar(){ 
-    $lastRult = $this->last_result;
-    if ($this->tramitar == 1){
-      $lastRult = 'n';
-    } 
     return (new Database('rel_parcial'))->update('id = "'.$this->id.'" ',[
                                 'idproj'        => $this->idproj,
                                 'periodo_ini'   => $this->periodo_ini,
@@ -75,7 +71,7 @@ class RelParcial {
                                 'alteracoes'    => $this->alteracoes,
                                 'atvd_prox_per' => $this->atvd_prox_per,
                                 'tramitar'      => $this->tramitar,
-                                'last_result'   => $lastRult,
+                                'last_result'   => $this->last_result,
                                 'updated_at' => date("Y-m-d H:i:s"),
                                 'user'       => $this->user
                               ]);

@@ -24,9 +24,13 @@ $relatorio = (object) RelFinal::get($id);
 $tf = $relatorio->tipo;
 
 
+$obProjeto = Projeto::getProjetoLast($relatorio->idproj);
+$obProjeto = Projeto::getProjeto($obProjeto->id, $obProjeto->ver);
+$obProfessor = Professor::getProfessor($obProjeto->id_prof);
+
 $editar = '';
 $scriptDisble = '';
-if($relatorio->tramitar == 1){
+if(($relatorio->tramitar == 1) or ($obProjeto->id_prof != $user['id'])){
     $editar = 'readonly';
 
     $scriptDisble = "<script>
@@ -40,10 +44,11 @@ if($relatorio->tramitar == 1){
                     </script>";
 } 
 
-$obProjeto = Projeto::getProjetoLast($relatorio->idproj);
-$obProjeto = Projeto::getProjeto($obProjeto->id, $obProjeto->ver);
-$obProfessor = Professor::getProfessor($obProjeto->id_prof);
-
+$msgSolicitacoAlteracao = '';
+if($relatorio->last_result == 'r'){
+   
+   include __DIR__.'/includes/msgAlteração.php';
+}
 
 $anexados = Arquivo::getAnexados('relatorios', $relatorio->id);
 
@@ -92,17 +97,18 @@ if (isset($_POST['acao']) == 'removeAnexo') {
 if (isset($_POST['valida'])) {
 
     $relatorio->idproj = $obProjeto->id;
+    $relatorio->tipo = $tf;
 
-    if($tf == 'r'){
+    if($tf == 're'){
         $relatorio->periodo_renov_fim = $_POST['periodo_renov_fim'];
+        $relatorio->periodo_renov_ini = $_POST['periodo_renov_ini'];
     }
     
-    if($tf == 'p'){
+    if($tf == 'pr'){
       $relatorio->periodo_prorroga_fim = $_POST['periodo_prorroga_fim'];
       $relatorio->atvd_prox_per = $_POST['atvd_prox_per'];
     }
-      
-    $relatorio->tipo = $tf;
+    
     $relatorio->ch_semanal = $_POST['ch_semanal'];
     $relatorio->dim_mem_com_ex = $_POST['dim_mem_com_ex'];
     $relatorio->dim_disc = $_POST['dim_disc'];
@@ -113,7 +119,9 @@ if (isset($_POST['valida'])) {
     $relatorio->rel_tec_cien_executado = $_POST['rel_tec_cien_executado'];
     $relatorio->divulgacao = $_POST['divulgacao'];
     $relatorio->tramitar = $_POST['tramitar'];
-
+    if ($_POST['tramitar']== 1) {
+        $relatorio->last_result = 'n';
+    }
     $relatorio->atualizar();
     
     $anexosJS = json_decode($_POST['anexosJS']);

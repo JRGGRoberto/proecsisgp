@@ -63,7 +63,9 @@ switch($tf) {
       <input type="text" class="form-control"  value="<?php echo $obProjeto->titulo; ?>" readonly>
     </div>
     
+    
     <hr>
+    <?=$msgSolicitacoAlteracao ?>
 
     <div class="form-group">
       <label>

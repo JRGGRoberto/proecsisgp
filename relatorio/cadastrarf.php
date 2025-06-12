@@ -6,7 +6,8 @@ use App\Session\Login;
 use App\Entity\Projeto;
 use App\Entity\Professor;
 use App\Entity\Arquivo;
-use App\Entity\RelParcial;
+use App\Entity\RelFinal;
+use App\Entity\Campi;
 use App\Entity\Colegiado;
 
 // Obriga o usuário a estar logado
@@ -15,42 +16,60 @@ $user = Login::getUsuarioLogado();
 
 $t = $_GET['t'];
 $id = $_GET['i'];
+$tf = $_GET['f'];
 
-if ($t != 1) {
+
+if ($t != 2) {
   header('location: index.php?status=error');
   exit;
 }
 
 
 $obProjeto = Projeto::getProjetoLast($id);
+
 $obProjeto = Projeto::getProjeto($id, $obProjeto->ver);
-$obProfessor = (object)Professor::getProfessor($obProjeto->id_prof);
+$obProfessor = Professor::getProfessor($obProjeto->id_prof);
+
 
 if ($obProjeto->id_prof != $user['id']) {
   header('location: ../index.php?status=errorOwner');
   exit;
 }
 
-
-
-
 $cursosetor = '' ;
 if($obProjeto->para_avaliar == -1){
-  $cursosetor = $user['ca_nome'];
+  $cursosetor = ''.$user['ca_nome'];
 } else {
-  $cursosetor = Colegiado::getRegistro($obProjeto->para_avaliar)->nome;
+  $cursosetor = ''.Colegiado::getRegistro($obProjeto->para_avaliar)->nome;
 }
 
-$relatorio = new RelParcial();
+$relatorio = new RelFinal();
+
 // VALIDAÇÃO DO POST
-if (isset($_POST['atvd_per'])) {
+if (isset($_POST['valida'])) {
+
     $relatorio->idproj = $obProjeto->id;
-    $relatorio->periodo_ini = $_POST['periodo_ini'];
-    $relatorio->periodo_fim = $_POST['periodo_fim'];
-    $relatorio->atvd_per = $_POST['atvd_per'];
-    $relatorio->alteracoes = $_POST['alteracoes'];
-    $relatorio->atvd_prox_per = $_POST['atvd_prox_per'];
-    $relatorio->user = $user['id'];
+    $relatorio->tipo = $tf;
+
+    if($tf == 're'){
+        $relatorio->periodo_renov_ini = $_POST['periodo_renov_ini'];
+        $relatorio->periodo_renov_fim = $_POST['periodo_renov_fim'];
+    }
+    
+    if($tf == 'pr'){
+      $relatorio->periodo_prorroga_fim = $_POST['periodo_prorroga_fim'];
+      $relatorio->atvd_prox_per = $_POST['atvd_prox_per'];
+    }
+   
+    $relatorio->ch_semanal = $_POST['ch_semanal'];
+    $relatorio->dim_mem_com_ex = $_POST['dim_mem_com_ex'];
+    $relatorio->dim_disc = $_POST['dim_disc'];
+    $relatorio->dim_doce = $_POST['dim_doce'];
+    $relatorio->dim_agent_estag = $_POST['dim_agent_estag'];
+    $relatorio->atividades = $_POST['atividades'];
+    
+    $relatorio->rel_tec_cien_executado = $_POST['rel_tec_cien_executado'];
+    $relatorio->divulgacao = $_POST['divulgacao'];
     $relatorio->tramitar = $_POST['tramitar'];
     $relatorio->cadastrar();
 
@@ -68,9 +87,10 @@ if (isset($_POST['atvd_per'])) {
 }
 $anex = '';
 $editar = '';
+$msgSolicitacoAlteracao = '';
 
 include '../includes/header.php';
 
-include __DIR__.'/includes/formParcial.php';
+include __DIR__.'/includes/formFinal.php';
 
 include '../includes/footer.php';

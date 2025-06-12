@@ -12,6 +12,7 @@ class HistRelatorios{
   public $id_relatorio;
   public $tp_avaliador;
   public $id_instancia;
+  public $etapa;
   public $resultado;
   public $ava_comentario;
   public $tp_relatorio;
@@ -32,6 +33,7 @@ class HistRelatorios{
                             'id_relatorio'   =>    $this->id_relatorio,
                             'tp_avaliador'   =>    $this->tp_avaliador,
                             'id_instancia'   =>    $this->id_instancia,
+                            'etapa'          =>    $this->etapa,
                             'resultado'      =>    $this->resultado,
                             'ava_comentario' =>    $this->ava_comentario,
                             'tp_relatorio'   =>    $this->tp_relatorio,
@@ -104,6 +106,5 @@ class HistRelatorios{
   }
 
 
-  ////////////////////////////
 
 }

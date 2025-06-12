@@ -13,6 +13,8 @@
     <input type="hidden" name="id_prof" value="<?php echo $obProjeto->id_prof; ?>">
     <input type="hidden" name="tabela" value="projetos">
     <hr>
+    <?=$msgSolicitacoAlteracao ?>
+
     <div class="form-group">
       <label>
         <h5><?php echo $n = 1; ?>. Título da proposta</h5>

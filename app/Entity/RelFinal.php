@@ -60,6 +60,8 @@ class RelFinal{
                             'divulgacao'             => $this->divulgacao,
                             'rel_finac'              => $this->rel_finac,
                             'tramitar'               => $this->tramitar,
+                            'etapa'                  => 1,
+                            'etapas'                 => 4,
                             'last_result'            => 'n',
                             'created_at'             => date("Y-m-d H:i:s"),
                             'user'                   => $this->user
@@ -92,6 +94,8 @@ class RelFinal{
                                 'divulgacao'             => $this->divulgacao,
                                 'rel_finac'              => $this->rel_finac,
                                 'tramitar'               => $this->tramitar,
+                                'etapa'                  => $this->etapa,
+                                'etapas'                 => $this->etapas,
                                 'last_result'            => $this->last_result,
                                 'updated_at'             => date("Y-m-d H:i:s"),
                                 'user'                   => $this->user

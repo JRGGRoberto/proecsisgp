@@ -19,7 +19,7 @@ $tipo = substr($id,-1);
 $id =  substr($id, 0, 36);
 
 switch ($tipo){
-    case '1':
+    case 'p':
         if ( ($relatorio = RelParcial::get($id)) instanceof RelParcial) {
             echo 'Relatório PARCIAL encontrado: <br>';
             $obProjeto = (object) Projeto::getProjetoLast($relatorio->idproj);
@@ -35,7 +35,7 @@ switch ($tipo){
         }
         exit;
         break;
-    case '2':
+    case 'f':
          if ( ($relatorio = RelFinal::get($id)) instanceof RelFinal ) {
             $relatorio = (object)$relatorio;
             echo 'Relatório FINAL encontrado: <br>';

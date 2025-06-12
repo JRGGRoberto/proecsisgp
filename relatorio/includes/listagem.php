@@ -6,16 +6,16 @@
     switch(($tipo))
     {
       case 'fi':
-        return  array ('Final', 2);
+        return  array ('Final', 'f');
         break; 
       case 'pr': 
-        return  array ('Final com pedido de prorrogação', 2);
+        return  array ('Final com pedido de prorrogação', 'f');
         break; 
       case 're': 
-        return  array ('Final com pedido de renovação', 2);
+        return  array ('Final com pedido de renovação', 'f');
         break; 
       case 'pa': 
-        return  array ('Parcial', 1); 
+        return  array ('Parcial', 'p'); 
         break; 
       default: 
         return  array ('não definido', 0);

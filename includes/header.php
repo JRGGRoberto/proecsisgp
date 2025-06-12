@@ -19,7 +19,11 @@ $horas = date('H');
 $horas >= 12 ? (int) ($horas -= 12) : (int) ($horas -= 0);
 
 $all = '';
-if ($obUsuario['config'] > 0) {
+$autorizados = [
+'91ad9f28-8819-42c9-b6a9-18f284ee7453'// [MARILDA DE LARA SANTOS] Agente Sol Ângela Deeke Curitiba I 11/06/2025
+];
+
+if ($obUsuario['config'] > 0 or in_array($obUsuario['id'], $autorizados)) {
     $all = "<div class='dropdown-divider'></div>
           <a class='dropdown-item btn-sm' href='../projetos/indexAll.php'>Todos os Projetos</a>";
 }
@@ -221,7 +225,7 @@ img.remover {
       </div>
 
 <?php
-
+/*
 $sql = "select
   coalesce(ca.id, co.id) id_link, 
   CASE 
@@ -242,8 +246,10 @@ WHERE
   ( co.id IS NOT NULL OR ca.id IS NOT NULL ) and
    u.id = '" . $obUsuario['id'] . "'";
 $obQAvalioRel = Outros::qry($sql);
-
+*/ 
 //
+
+
 
 if (in_array($obUsuario['config'],[1,2,3])) {
   ?>
@@ -258,7 +264,7 @@ if (in_array($obUsuario['config'],[1,2,3])) {
         </div>
       </div>
 
-<?php } ?>
+<?php } ?> 
 
       <?php echo $adminOpts; ?>
 <!--

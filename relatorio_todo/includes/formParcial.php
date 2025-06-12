@@ -1,7 +1,8 @@
+<?php $tituloHeader = 'RELATÓRIO PARCIAL'; ?>
 <main>
   
   <section>
-    <a href="./index.php?id=<?php echo $obProjeto->id; ?>">
+    <a href="./index.php">
       <button class="btn btn-success btn-sm float-right">Voltar</button>
     </a>
   </section>
@@ -9,17 +10,7 @@
   <h4 style="text-align: center">ANEXO IV</h4>
   <h3 class="mt-3" style="text-align: center">RELATÓRIO PARCIAL</h3>
 
-   
-
-  <form name="formAnexo" id="formAnexo" method="POST" enctype="multipart/form-data">
-      <div class="form-group">
-      <label>
-        <h5> Solicitação de ajustes do relatório parcial</h5>
-        <sub style="line-height: 12px;">Preencher apenas se necessário ajustes no relatório</sub>
-      </label>
-        <textarea rows="4" cols="50" class="form-control" name="ava_comentario" id="ava_comentario" ><?php echo $relatorio->ava_comentario; ?></textarea>
-      </div>
-    <input type="hidden" name="id_prof" value="<?php echo $obProjeto->id_prof; ?>">
+   <input type="hidden" name="id_prof" value="<?php echo $obProjeto->id_prof; ?>">
     <input type="hidden" name="tabela" value="projetos">
     <hr>
     <div class="form-group">
@@ -97,14 +88,14 @@
         <div class="col-3">
           <div class="form-group">
             <label>Início</label>
-            <input type="date" name="periodo_ini" id="periodo_ini" class="form-control" value="<?= $ini;?>" required <?=$editar;?> >
+            <input type="date" name="periodo_ini" id="periodo_ini" class="form-control" value="<?= $ini;?>" required readonly >
           </div>
         </div>
 
         <div class="col-3">
           <div class="form-group">
             <label>Fim</label>
-            <input type="date" name="periodo_fim" id="periodo_fim" class="form-control" value="<?= $fim; ?>" required <?=$editar?> >
+            <input type="date" name="periodo_fim" id="periodo_fim" class="form-control" value="<?= $fim; ?>" required readonly >
           </div>
         </div>
 
@@ -154,46 +145,40 @@
 
       <hr>
 
-   <!--   
+      <?php 
+          if($relatorio->tramitar == 0) {
+            if($obProjeto->id_prof != $user['id']) {
+              echo '';
+            } else {
+      ?>
+      <div class="form-group">
+                 
+        <h5 id="">Pronto ser enviado</h5>
+        <label for="tramitar">Ao marcar esta <input type="checkbox" id="tramitar" name="tramitar" value="1" > opção, depois de salvo, este relatório ficará visível para aprovação e perderá o modo de edição.</label>
+           
+      </div>
+      <hr>
+      <?php }
+      }  ?>
+
       <div class="form-group">
         <h5 id="attc"><?php echo ++$n; ?>. Anexos</h5>
         <ul id="anexos"></ul>
-        <iframe src="../upload/upload.php" frameborder="0" scrolling="no"></iframe>
+  
         <?php echo $anex; ?>
       </div>
       <hr>
--->
+
       <div class="row" >
 
         <div class="col-3">
           <div class="form-group">
             <label>Data</label>
-            <input type="date" name="data" class="form-control" id="dateAssing" value="<?php echo substr($relatorio->created_at, 0, 10); ?>" required <?=$editar?>>
+            <input type="date" name="data" class="form-control" id="dateAssing" value="<?php echo substr($relatorio->created_at, 0, 10); ?>" required readonly>
           </div>
         </div>
       </div>
-       <input type="hidden" id="to_do" name="to_do" value="">
 
       <div class="form-group">
-      
-          <a href="#" onclick="submitSumbeter(1)" class="btn btn-success btn-sm" >↗️ Aceitar </a>
-          <a href="#" onclick="submitSumbeter(-1)" class="btn btn-danger btn-sm" >↗️ Solicitar alterações </a>
-      
-         <a href="javascript: history.go(-1)" class="btn btn-warning btn-sm" >↗️ Voltar </a>
-      </div>
-
-      <div class="row">
-        <div class="col">
-          <div class="form-group">
-            <p><br><br></p>
-          </div>
-        </div>
-      </div>
-      <input type="hidden" name="tabela" value="relatorios">
-      <input id="anexosJS" name="anexosJS" type="text" hidden>
-
-
-  </form>
-
 </main>
 <script src="forms.js"></script>

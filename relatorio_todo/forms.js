@@ -224,13 +224,65 @@ function submitJSON() {
 }  
 
 
-function submitSumbeter(a){
+function submitSumbeter(){
   
 
-  var aFazer = document.getElementById("to_do");
-  aFazer.value = a;
- 
+  var atividades = document.getElementById("atividades");
+  if(atividades){
+    atividades.value = $('#sumnot_atividades').summernote('code');
+  }
+
+  var atvd_per = document.getElementById("atvd_per");
+  if(atvd_per){
+    atvd_per.value = $('#sumnot_atvd_per').summernote('code');
+  }
+
+  var alteracoes = document.getElementById("alteracoes");
+  if(alteracoes){
+    alteracoes.value = $('#sumnot_alteracoes').summernote('code');
+  } 
+  
+  var atvd_prox_per = document.getElementById("atvd_prox_per");
+  if(atvd_prox_per){
+    atvd_prox_per.value = $('#sumnot_atvd_prox_per').summernote('code');
+  } 
+
+
+  var rel_tec_cien_executado = document.getElementById("rel_tec_cien_executado");
+  if(rel_tec_cien_executado){
+    rel_tec_cien_executado.value = $('#sumnot_rel_tec_cien_executado').summernote('code');
+  }
+
+  var divulgacao = document.getElementById("divulgacao");
+  if(divulgacao){
+    divulgacao.value = $('#sumnot_divulgacao').summernote('code');
+  }
+  
+  var periodo_renov_ini = document.getElementById("periodo_renov_ini");
+  if(periodo_renov_ini){
+    periodo_renov_ini.value = $('#periodo_renov_ini').val();
+  }
+
+  var periodo_renov_fim = document.getElementById("periodo_renov_fim");
+  if(periodo_renov_fim){
+    periodo_renov_fim.value = $('#periodo_renov_fim').val();
+  }
+
+  var periodo_prorroga_fim = document.getElementById("periodo_prorroga_fim");
+  if(periodo_prorroga_fim){
+    periodo_prorroga_fim.value = $('#periodo_prorroga_fim').val();
+  }
+
+  var ch_semanal = document.getElementById("ch_semanal");
+  if(ch_semanal){
+    ch_semanal.value = $('#ch_semanal').val();
+  } 
+
+  
 
 
   document.formAnexo.submit();
+
+
+
 }

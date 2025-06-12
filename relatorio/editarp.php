@@ -15,20 +15,22 @@ use App\Entity\Campi;
 use App\Entity\Colegiado;
 
 
-
 // Obriga o usuário a estar logado
 Login::requireLogin();
 $user = Login::getUsuarioLogado();
 
 $id = $_GET['id'];
-$relatorio = (object) RelParcial::get($id);
 
+
+$relatorio = new RelParcial(); 
+$relatorio = (object)RelParcial::get($id);
 
 
 $editar = '';
 $scriptDisble = '';
 
-$obProjeto = Projeto::getProjetoLast($relatorio->idproj);
+$obProjeto = (object)Projeto::getProjetoLast($relatorio->idproj);
+
 $obProjeto = Projeto::getProjeto($obProjeto->id, $obProjeto->ver);
 $obProfessor = Professor::getProfessor($obProjeto->id_prof);
 
@@ -46,7 +48,11 @@ if(($relatorio->tramitar == 1) or ($obProjeto->id_prof != $user['id'])){
                     </script>";
 } 
 
-
+$msgSolicitacoAlteracao = '';
+if($relatorio->last_result == 'r'){
+   
+   include __DIR__.'/includes/msgAlteração.php';
+}
 
 
 $anexados = Arquivo::getAnexados('relatorios', $relatorio->id);
@@ -77,6 +83,8 @@ if (Colegiado::getRegistro($obProjeto->para_avaliar) instanceof Colegiado) {
 }
 
 
+
+
 // Quando a ação for para remover anexo
 if (isset($_POST['acao']) == 'removeAnexo') {
     // Recuperando nome do arquivo
@@ -95,6 +103,7 @@ if (isset($_POST['acao']) == 'removeAnexo') {
 
 // VALIDAÇÃO DO POST
 if (isset($_POST['atvd_per'])) {
+    $resultado ='';
     $relatorio->idproj = $obProjeto->id;
     $relatorio->periodo_ini = $_POST['periodo_ini'];
     $relatorio->periodo_fim = $_POST['periodo_fim'];
@@ -103,7 +112,9 @@ if (isset($_POST['atvd_per'])) {
     $relatorio->atvd_prox_per = $_POST['atvd_prox_per'];
     $relatorio->user = $user['id'];
     $relatorio->tramitar = $_POST['tramitar'];
-    $relatorio->last_result = 'n';
+    if ($_POST['tramitar']== 1) {
+        $relatorio->last_result = 'n';
+    } 
     $relatorio->atualizar();
 
 
