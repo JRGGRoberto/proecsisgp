@@ -8,10 +8,15 @@
 
   $qnt1 = 0;
   $resultados = '';
+  // echo "<pre>";
+  // print_r($avaliacoes);
+  // echo "</pre>";
+
+
   foreach($avaliacoes as $ava){
     $qnt1++;
     $estiloD = '';
-    $cor = '';
+    $cor = $ava->resultado == 'r' ? 'danger' : 'success';
 
     if($ava->resultado == 'r'){
       $cor = 'warning';
@@ -30,32 +35,46 @@
       $titulo .= ' [Versão: '.($ava->ver + 1).']';
     }
 
+    
     $resultados .=  '
-<div class="card mt-2">
-  <div class="card-header">
-     <div class="row">
-        <div class="col-sm-5"><a class="collapsed card-link" data-toggle="collapse" href="#p'. $ava->id .'">📃 '. $ava->ava_comentario .'</a></div>
-        <div class="col-sm-7">
-        
-
-            <div class="d-flex flex-row-reverse ">
-              <div class="p-1"></div>
-             <!-- <a href="../forms/'.  $titulo .'/vista.php?p=&v='. $ava->ver . '" target="_blank"><button class="btn btn-primary btn-sm mb-2"> ⚖️ Ver avaliação</button></a>
-              <div class="p-1"></div>
-              <a href="../projetos/visualizar.php?id='. $ava->id_proj . '&v='. $ava->ver . '&w=nw" target="_blank"><button class="btn btn-success btn-sm mb-2"> Visualizar projeto</button></a>
-              -->
-              <div class="p-1"></div>
+      <div class="card mt-2">
+        <div class="card-header">
+          <div class="row">
+            <div class="col-sm-4">
+              <a class="collapsed card-link" data-toggle="collapse" href="#p'. $ava->id .'">📃 '. $ava->titulo .'</a>
             </div>
-           
+            <div class="col-sm-2">
+              '. $ava->titulo .' 
+            </div>
+            <div class="col-sm-2">
+              '. $ava->nome_prof .' 
+            </div>
+            <div class="col-sm-2">
+              '. $ava->tipo .' 
+            </div>
+            <div class="col-sm-2">
+              <span class="badge badge-'.$cor.' ">'. $ava->etapa .'/'. $ava->etapas .'</span> 
+            </div>
+            <div class="col-sm-2">
+              '. $ava->created_at .' 
+            </div>
 
+            <div class="col-sm-7">
+              <div class="d-flex flex-row-reverse ">
+                <div class="p-1"></div>
+              </div>
+            </div>
+          </div>
         </div>
-     </div>
-  </div>
-</div>    
 
-          
-';
 
+        <div id="p'. $ava->id .'" class="collapse">
+          <div class="card-body">
+            <p>dsfdsdf</p>
+          </div>
+        </div>
+      </div>
+    '; 
   }
 
   
@@ -120,59 +139,6 @@
 </main>
 
 
-  <!-- The Modal -->
-  <div class="modal" id="myModal">
-    <div class="modal-dialog">
-      <div class="modal-content">
-      
-        <!-- Modal Header -->
-        <div class="modal-header">
-          <h4 class="modal-title">Confirmação de exclusão</h4>
-          <button type="button" class="close" data-dismiss="modal">&times;</button>
-        </div>
-        
-        <!-- Modal body -->
-        <div class="modal-body">
-          Não é possível excluir este registro.
-        </div>
-        
-        <!-- Modal footer -->
-        <div class="modal-footer">
-          <button type="button" class="btn btn-danger" data-dismiss="modal">Fechar</button>
-        </div>
-        
-      </div>
-    </div>
-  </div>
-<!-- The Modal -->
 
-
-
-<script>
-  const btnOpen = document.getElementById("excluir1");
-  const modal = document.querySelector("dialog");
-  const btnX = document.getElementById("limpar");
-
-  btnOpen.onclick = function(){
-    modal.showModa();
-  }
-
-
-  
-
-  btnX.hidden = true;
-  
-  function showLimpar(){
-    var titulo      = document.getElementById('titulo').value;
-
-
-    if(titulo.length > 0 ) {
-      btnX.hidden = true;
-    }
-  }
-
-  showLimpar();
-  
-</script>
 
 
