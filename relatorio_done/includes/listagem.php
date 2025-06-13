@@ -1,95 +1,121 @@
 <?php
   
+  use \App\Entity\Colegiado;
   use \App\Session\Login;
   $user = Login::getUsuarioLogado();
 
   require('../includes/msgAlert.php');
-  use \App\Entity\Projeto;
-
-  function msgAprovReprov($nota) {
-     $titulo = '';
-    switch($nota){
-      case 'a':
-        $titulo = '<span class="badge badge-success">Publicado</span>';
-        break;
-      case 'r':
-        $titulo = '<span class="badge badge-danger">Solicitação de alteração</span>';
-        break;
-      default:
-        $titulo = '<span class="badge badge-warning">Não definido</span>';
-    }
-    return $titulo;
-  }
-  
-
 
   $qnt1 = 0;
-  $resultados = '<div id="accordion">';
-  foreach($relatorios as $rel){
-    $projeto = Projeto::getProjetoLast($rel->idproj);
+  $resultados = '';
+  // echo "<pre>";
+  // print_r($avaliacoes);
+  // echo "</pre>";
+
+
+  foreach($avaliacoes as $ava){
     $qnt1++;
+    $estiloD = '';
+    $cor = $ava->resultado == 'r' ? 'danger' : 'success';
 
+    if($ava->resultado == 'r'){
+      $cor = 'warning';
+      $progresso =  '<span class="badge badge-warning"> ↩️ Solicitação de revisão</span>';
+    } elseif ($ava->resultado == 'a'){
+      $progresso =  '<span class="badge badge-success"> 🆗 Favorável</span>';
+      $cor = 'success';
+    } else {
+      $progresso =  '<span class="badge badge-danger">Error</span>';
+      $cor = 'danger';
+    }
+      
+    /*------------------*/
+    $titulo = $ava->titulo;
+    if($ava->ver >0 ){
+      $titulo .= ' [Versão: '.($ava->ver + 1).']';
+    }
 
+    
     $resultados .=  '
-<div class="card mt-2">
-  <div class="card-header" >
-     <div class="row">
-        <div class="col-sm-6"><a class="collapsed card-link" data-toggle="collapse" href="#p'. $rel->id .'">📄 Relatório parcial '. msgAprovReprov($rel->resultado) .'</a> '.$projeto->titulo.'</div>';
+      <div class="card mt-2">
+        <div class="card-header">
+          <div class="row">
+            <div class="col-sm-4">
+              <a class="collapsed card-link" data-toggle="collapse" href="#p'. $ava->id .'">📃 '. $ava->titulo .'</a>
+            </div>
+            <div class="col-sm-2">
+              '. $ava->titulo .' 
+            </div>
+            <div class="col-sm-2">
+              '. $ava->nome_prof .' 
+            </div>
+            <div class="col-sm-2">
+              '. $ava->tipo .' 
+            </div>
+            <div class="col-sm-2">
+              <span class="badge badge-'.$cor.' ">'. $ava->etapa .'/'. $ava->etapas .'</span> 
+            </div>
+            <div class="col-sm-2">
+              '. $ava->created_at .' 
+            </div>
 
-   $resultados .= '        
-     </div>
-  </div>
-    <div id="p'. $rel->id .'" class="collapse" data-parent="#accordion">
-      <div class="card-body">
-        <p>'. $rel->ava_comentario .'</p>
+            <div class="col-sm-7">
+              <div class="d-flex flex-row-reverse ">
+                <div class="p-1"></div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+
+        <div id="p'. $ava->id .'" class="collapse">
+          <div class="card-body">
+            <p>dsfdsdf</p>
+          </div>
+        </div>
       </div>
-    </div>
-  </div>';
-
+    '; 
   }
-  $resultados .= '</div>';
+
   
   $qnt1 > 0 ? $resultados : $resultados = 'Nenhum registro encontrado.';
 
+
   include '../includes/paginacao.php';
-  /*
-echo '<pre>';
-print_r($relatorios);
-echo '</pre>';
-/*/
+
 ?>
 <main>
-  <h2 class="mt-0">Relatórios realizados</h2>
+  <h2 class="mt-0">Avaliações de relatórios realizados</h2>
   
-  <?=$msgAlert?> 
+  <?=$msgAlert?>
 
   <section>
 
     <form method="get">
 
       <div class="row my-2">
-<!--
-        <div class="col">
-          <label>Buscar por Nome</label> 
-          <input type="text" name="busca" class="form-control form-control-sm" value="<?=$busca?>"  id="resultado]"  onchange="showLimpar();">
-        </div>
 
         <div class="col">
+          <label>Buscar por titulo</label> 
+          <input type="text" name="busca" class="form-control form-control-sm" value="<?=$busca?>"  id="titulo"  onchange="showLimpar();">
+        </div>
+<!--
+        <div class="col">
           <label>Buscar Colegiado</label>
-          <input type="text" name="colegiado" class="form-control form-control-sm" value="<?=$colegiado?>" id="colegiado" onchange="showLimpar();">
+          <input type="text" name="colegiado" class="form-control form-control-sm" value="< ?=$colegiado?>" id="colegiado" onChange="showLimpar();">
         </div>
 
         <div class="col">
           <label>Buscar por Centro</label>
-          <input type="text" name="centro" class="form-control form-control-sm" value="<?=$centro?>" id="centro" onchange="showLimpar();">
+          <input type="text" name="centro" class="form-control form-control-sm" value="< ?=$centro?>" id="centro" onChange="showLimpar();">
         </div>
 
-        
+-->
         <div class="col-1 d-flex align-items-end">
           <button type="submit" class="btn btn-primary btn-sm mr-2">Filtrar</button>
           <a href="./" id="limpar"><span class="badge badge-primary">x</span></a>
         </div>
--->
+
       </div>
 
     </form>
@@ -108,68 +134,11 @@ echo '</pre>';
       <div class="col">
          <?=$paginacao?>
       </div>
-      <div class="col" >
-      <a href="cadastrar.php"><button class="btn btn-success float-right btn-sm">Novo</button></a>
-      </div>
     </div>
   </section>
 </main>
 
 
-  <!-- The Modal -->
-  <div class="modal" id="myModal">
-    <div class="modal-dialog">
-      <div class="modal-content">
-      
-        <!-- Modal Header -->
-        <div class="modal-header">
-          <h4 class="modal-title">Confirmação de exclusão</h4>
-          <button type="button" class="close" data-dismiss="modal">&times;</button>
-        </div>
-        
-        <!-- Modal body -->
-        <div class="modal-body">
-          Não é possível excluir este registro.
-        </div>
-        
-        <!-- Modal footer -->
-        <div class="modal-footer">
-          <button type="button" class="btn btn-danger" data-dismiss="modal">Fechar</button>
-        </div>
-        
-      </div>
-    </div>
-  </div>
-<!-- The Modal -->
 
-
-
-<script>
-  const btnOpen = document.getElementById("excluir1");
-  const modal = document.querySelector("dialog");
-  const btnLimpar = document.getElementById('limpar');
-
-  btnOpen.onclick = function(){
-    modal.showModal();
-  }
-
-
-  btnLimpar.hidden = true;
-
-  
-  function showLimpar(){
-    var resultado]      = document.getElementById('resultado]').value;
-    var campus    = document.getElementById('campus').value;
-    var centro    = document.getElementById('centro').value;
-    var colegiado = document.getElementById('colegiado').value;
-
-    if((resultado].length > 0 ) | (campus.length > 0)| (centro.length > 0)| (colegiado.length > 0) ) {
-      btnLimpar.hidden = false;
-    }
-  }
-
-  showLimpar();
-  
-</script>
 
 
