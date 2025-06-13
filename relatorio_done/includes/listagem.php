@@ -28,13 +28,21 @@ function tipoRelatori($tp){
 
 
   $qnt1 = 0;
+<<<<<<< HEAD
   $resultados = '  
   <div class="panel-group" id="accordion">';
+=======
+  $resultados = '';
+  // echo "<pre>";
+  // print_r($avaliacoes);
+  // echo "</pre>";
+
+>>>>>>> 6b5c17aaf30b3c68fad20c8bea75879ea3e27d9a
 
   foreach($avaliacoes as $ava){
     $qnt1++;
     $estiloD = '';
-    $cor = '';
+    $cor = $ava->resultado == 'r' ? 'danger' : 'success';
 
     if($ava->resultado == 'r'){
       $cor = 'warning';
@@ -53,6 +61,7 @@ function tipoRelatori($tp){
       $titulo .= ' [Versão: '.($ava->ver + 1).']';
     }
 
+<<<<<<< HEAD
 $resultados .=  '
 <div class="card mt-2">
   <div class="card-header">
@@ -68,7 +77,48 @@ $resultados .=  '
       
     
 ';
+=======
+    
+    $resultados .=  '
+      <div class="card mt-2">
+        <div class="card-header">
+          <div class="row">
+            <div class="col-sm-4">
+              <a class="collapsed card-link" data-toggle="collapse" href="#p'. $ava->id .'">📃 '. $ava->titulo .'</a>
+            </div>
+            <div class="col-sm-2">
+              '. $ava->titulo .' 
+            </div>
+            <div class="col-sm-2">
+              '. $ava->nome_prof .' 
+            </div>
+            <div class="col-sm-2">
+              '. $ava->tipo .' 
+            </div>
+            <div class="col-sm-2">
+              <span class="badge badge-'.$cor.' ">'. $ava->etapa .'/'. $ava->etapas .'</span> 
+            </div>
+            <div class="col-sm-2">
+              '. $ava->created_at .' 
+            </div>
 
+            <div class="col-sm-7">
+              <div class="d-flex flex-row-reverse ">
+                <div class="p-1"></div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+>>>>>>> 6b5c17aaf30b3c68fad20c8bea75879ea3e27d9a
+
+        <div id="p'. $ava->id .'" class="collapse">
+          <div class="card-body">
+            <p>dsfdsdf</p>
+          </div>
+        </div>
+      </div>
+    '; 
   }
 
 $resultados .= '
@@ -134,3 +184,10 @@ $resultados .= '
   </section>
 </main>
 
+<<<<<<< HEAD
+=======
+
+
+
+
+>>>>>>> 6b5c17aaf30b3c68fad20c8bea75879ea3e27d9a

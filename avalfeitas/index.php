@@ -8,6 +8,8 @@ use \App\Session\Login;
 Login::requireLogin();
 $user = Login::getUsuarioLogado();
 
+
+
 use \App\Entity\Avaliacoes;
 use \App\Db\Pagination;
 
