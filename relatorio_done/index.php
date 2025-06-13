@@ -10,24 +10,35 @@ $user = Login::getUsuarioLogado();
 
 use \App\Entity\HistRelatorios;
 use \App\Db\Pagination;
-/*
-0 - Professor
-1 - Coordenador colegiado
-2 - Diretor de Cenro de Área
-3 - Chefe de Divisão
-4 - Diretor de Campus
-*/
-if(!in_array($user['config'],[1,3]) ){
-  header('location: ../');
-  exit;
+
+
+$inst_id = '';
+$inst_tp = '';
+
+switch ($user['config']) {
+  case '1':
+    $inst_tp = 'co';
+    $inst_id = $user['co_id'];
+    break;
+  case '2':
+    $inst_tp = 'ce';
+    $inst_id = $user['ce_id'];
+    break;
+  case '3':
+    $inst_tp = 'ca';
+    $inst_id = $user['ca_id'];
+    break;
+  default:
+    $inst_tp = '0';
 }
 
-/*
 //Busca
 $busca = filter_input(INPUT_GET, 'busca', FILTER_SANITIZE_STRING);
+/*
 $campus = filter_input(INPUT_GET, 'campus', FILTER_SANITIZE_STRING);
 $colegiado = filter_input(INPUT_GET, 'colegiado', FILTER_SANITIZE_STRING);
 $centro = filter_input(INPUT_GET, 'centro', FILTER_SANITIZE_STRING);
+*/
 
 
 //Filtro de status
@@ -35,38 +46,31 @@ $filtroStatus = filter_input(INPUT_GET, 'filtroStatus', FILTER_SANITIZE_STRING);
 
 //Condições SQL
 $condicoes = [
-  strlen($busca) ? 'nome LIKE "%'.str_replace(' ','%',$busca).'%"': null,
+  strlen($busca) ? 'titulo LIKE "%'.str_replace(' ','%',$busca).'%"': null /*,
   strlen($campus) ? "campus = '$campus'": null,
   strlen($colegiado) ? 'colegiado LIKE "%'.str_replace(' ','%',$colegiado).'%"': null,
   strlen($centro) ? 'centros LIKE "%'.str_replace(' ','%',$centro).'%"': null
+  */
 ];
 
 
+array_push($condicoes, 'id_instancia = "'.$inst_id.'"');
+array_push($condicoes, 'tp_avaliador = "'.$inst_tp.'"');
+
 //Remove posições vazias
 $condicoes = array_filter($condicoes);
-*/
-// Cláusula WHERE
-// $where = implode(' AND ', $condicoes);
 
-switch($user['config']) {
-    case 1: // Coordenador colegiado
-        $where = "tp_avaliador = 'co' and id_instancia '". $user['ca_id'] ."';";
-        break;
-    case 3: // Chefe de Divisão
-        $where = "tp_avaliador = 'ca' and id_instancia = '". $user['co_id'] ."';";
-        break;
-    default:
-        $where = ' 1 = 5 and ';
-}
+// Cláusula WHERE
+$where = implode(' AND ', $condicoes);
 
 //Qntd total de registros
-$qntRelatorios = HistRelatorios::getQntdRegistros($where); // ($where);
+$qntAvaliacoes = HistRelatorios::getQntdRegistros($where);
 
 //paginação
-$obPagination = new Pagination($qntRelatorios, $_GET['pagina']?? 1, 10);
+$obPagination = new Pagination($qntAvaliacoes, $_GET['pagina']?? 1, 10);
 
-//$relatorios = HistRelatorios::getRegistros(null,  $obPagination->getLimite());
-$relatorios = HistRelatorios::getRegistros();
+$avaliacoes = HistRelatorios::getRegistros($where, 'created_at desc', $obPagination->getLimite());
+
 
 include '../includes/header.php';
 include __DIR__.'/includes/listagem.php';
