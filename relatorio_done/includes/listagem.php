@@ -6,8 +6,31 @@
 
   require('../includes/msgAlert.php');
 
+function tipoRelatori($tp){
+  switch ($tp){
+    case 'fi':
+      return "Final";
+      break;
+    case 're':
+      return "Final com renovação";
+      break;
+    case 'pr':
+      return "Final com prorrogação";
+      break;
+    case 'pa':
+      return "Parcial";
+      break;
+    default:
+      return "??";
+      break;
+  }
+}
+
+
   $qnt1 = 0;
-  $resultados = '';
+  $resultados = '  
+  <div class="panel-group" id="accordion">';
+
   foreach($avaliacoes as $ava){
     $qnt1++;
     $estiloD = '';
@@ -15,9 +38,9 @@
 
     if($ava->resultado == 'r'){
       $cor = 'warning';
-      $progresso =  '<span class="badge badge-warning"> ↩️ Solicitação de revisão</span>';
+      $progresso =  '<span class="badge badge-warning"> ↩️ Adequação</span>';
     } elseif ($ava->resultado == 'a'){
-      $progresso =  '<span class="badge badge-success"> 🆗 Favorável</span>';
+      $progresso =  '<span class="badge badge-success"> 🆗 Aceite</span>';
       $cor = 'success';
     } else {
       $progresso =  '<span class="badge badge-danger">Error</span>';
@@ -30,34 +53,26 @@
       $titulo .= ' [Versão: '.($ava->ver + 1).']';
     }
 
-    $resultados .=  '
+$resultados .=  '
 <div class="card mt-2">
   <div class="card-header">
-     <div class="row">
-        <div class="col-sm-5"><a class="collapsed card-link" data-toggle="collapse" href="#p'. $ava->id .'">📃 '. $ava->ava_comentario .'</a></div>
-        <div class="col-sm-7">
-        
-
-            <div class="d-flex flex-row-reverse ">
-              <div class="p-1"></div>
-             <!-- <a href="../forms/'.  $titulo .'/vista.php?p=&v='. $ava->ver . '" target="_blank"><button class="btn btn-primary btn-sm mb-2"> ⚖️ Ver avaliação</button></a>
-              <div class="p-1"></div>
-              <a href="../projetos/visualizar.php?id='. $ava->id_proj . '&v='. $ava->ver . '&w=nw" target="_blank"><button class="btn btn-success btn-sm mb-2"> Visualizar projeto</button></a>
-              -->
-              <div class="p-1"></div>
-            </div>
-           
-
-        </div>
-     </div>
+     <div class="col-sm-6"><a class="collapsed card-link" data-toggle="collapse" href="#'. $ava->id .'">👤'.$titulo.'</a></div>
   </div>
-</div>    
+  <div id="'. $ava->id .'" class="collapse" data-parent="#accordion">
+      <div class="card-body">
+         AAAAAAAAAAAAAAAAAA
+      </div>
+  </div>
+</div>
 
-          
+      
+    
 ';
 
   }
 
+$resultados .= '
+</div>';
   
   $qnt1 > 0 ? $resultados : $resultados = 'Nenhum registro encontrado.';
 
@@ -118,61 +133,4 @@
     </div>
   </section>
 </main>
-
-
-  <!-- The Modal -->
-  <div class="modal" id="myModal">
-    <div class="modal-dialog">
-      <div class="modal-content">
-      
-        <!-- Modal Header -->
-        <div class="modal-header">
-          <h4 class="modal-title">Confirmação de exclusão</h4>
-          <button type="button" class="close" data-dismiss="modal">&times;</button>
-        </div>
-        
-        <!-- Modal body -->
-        <div class="modal-body">
-          Não é possível excluir este registro.
-        </div>
-        
-        <!-- Modal footer -->
-        <div class="modal-footer">
-          <button type="button" class="btn btn-danger" data-dismiss="modal">Fechar</button>
-        </div>
-        
-      </div>
-    </div>
-  </div>
-<!-- The Modal -->
-
-
-
-<script>
-  const btnOpen = document.getElementById("excluir1");
-  const modal = document.querySelector("dialog");
-  const btnX = document.getElementById("limpar");
-
-  btnOpen.onclick = function(){
-    modal.showModa();
-  }
-
-
-  
-
-  btnX.hidden = true;
-  
-  function showLimpar(){
-    var titulo      = document.getElementById('titulo').value;
-
-
-    if(titulo.length > 0 ) {
-      btnX.hidden = true;
-    }
-  }
-
-  showLimpar();
-  
-</script>
-
 

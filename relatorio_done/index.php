@@ -67,10 +67,9 @@ $where = implode(' AND ', $condicoes);
 $qntAvaliacoes = HistRelatorios::getQntdRegistros($where);
 
 //paginação
-$obPagination = new Pagination($qntAvaliacoes, $_GET['pagina']?? 1, 10);
+$obPagination = new Pagination($qntAvaliacoes, $_GET['pagina']?? 1, 5);
 
 $avaliacoes = HistRelatorios::getRegistros($where, 'created_at desc', $obPagination->getLimite());
-
 
 include '../includes/header.php';
 include __DIR__.'/includes/listagem.php';
