@@ -260,7 +260,7 @@ if (in_array($obUsuario['config'],[1,2,3])) {
         </button>
         <div class="dropdown-menu">
           <a class="dropdown-item btn-sm" href="../relatorio_todo">A realizar</a>
-       <!--   <a class="dropdown-item btn-sm" href="../relatorio_done">Realizadas [Histórico]</a> -->
+          <a class="dropdown-item btn-sm" href="../relatorio_done">Realizadas [Histórico]</a>
         </div>
       </div>
 

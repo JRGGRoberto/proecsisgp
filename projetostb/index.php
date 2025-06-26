@@ -11,6 +11,8 @@ use \App\Entity\Palavras;
 Login::requireLogin();
 $user = Login::getUsuarioLogado();
 
+
+
 //Busca
 $nome_prof = filter_input(INPUT_GET, 'nome_prof', FILTER_SANITIZE_STRING);
 $titulo = filter_input(INPUT_GET, 'titulo', FILTER_SANITIZE_STRING);
@@ -82,7 +84,6 @@ $qntdProjetos = Projeto::getQntdRegistros($where1);
 $obPagination = new Pagination($qntdProjetos, $_GET['pagina']?? 1, 5);
 
 $projetos = Projeto::getRegistros($where1, null, $obPagination->getLimite());
-
 
 
 /*

@@ -67,7 +67,7 @@ $where = implode(' AND ', $condicoes);
 $qntAvaliacoes = HistRelatorios::getQntdRegistros($where);
 
 //paginação
-$obPagination = new Pagination($qntAvaliacoes, $_GET['pagina']?? 1, 5);
+$obPagination = new Pagination($qntAvaliacoes, $_GET['pagina']?? 1, 10);
 
 $avaliacoes = HistRelatorios::getRegistros($where, 'created_at desc', $obPagination->getLimite());
 

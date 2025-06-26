@@ -13,6 +13,10 @@ $alertaLogin = '';
 $alertaCadastro = '';
 
 
+
+      
+ 
+
 //Validação do post
 if(isset($_POST['acao'])){
     
@@ -21,10 +25,10 @@ if(isset($_POST['acao'])){
 
       //Busca usuário por e-mail
       $obUsuario = Usuario::getUsuarioPorEmail($_POST['email']);
-   //   $obUsuario->senha = password_hash($_POST['senha'], PASSWORD_DEFAULT);
-   //   $obUsuario->updateSenha();
+      //$obUsuario->senha = password_hash($_POST['senha'], PASSWORD_DEFAULT);
+      //$obUsuario->updateSenha();
 
-     //valida a instancia e a senha
+      //valida a instancia e a senha
       if(!$obUsuario instanceof Usuario || !password_verify($_POST['senha'],$obUsuario->senha)){
         $alertaLogin = "E-mail ou senha inválidos";
         break;
@@ -36,17 +40,14 @@ if(isset($_POST['acao'])){
       }
 
       
-
-
-      /*
-      echo "<pre>";
-      print_r($obUsuario);
-      echo "</pre>"; exit;
-      */
+      // echo "<pre>";
+      // print_r($obUsuario);
+      // echo "</pre>"; exit;
+      
       
       //Loga usuário
       Login::login($obUsuario);
-
+    
 
       break;
     
@@ -61,13 +62,15 @@ if(isset($_POST['acao'])){
           $alertaCadastro = 'O e-mail digitado já está em uso';
           break;
         }
+        
+        
 
         //Novo usuário
         $obUsuario = new Usuario;
         $obUsuario->nome  = $_POST['nome'];
         $obUsuario->email = $_POST['email'];
         $obUsuario->senha = password_hash($_POST['senha'], PASSWORD_DEFAULT);
-     //   $obUsuario->cadastrar();
+        //$obUsuario->cadastrar();
         $obUsuario->updateSenha();
      
 
@@ -75,14 +78,15 @@ if(isset($_POST['acao'])){
         Login::login($obUsuario);
 
 
-/*    
-        echo "<pre>";
-        print_r($obUsuario);
-        echo "</pre>"; exit;
-  */  
+      /*    
+          echo "<pre>";
+          print_r($obUsuario);
+          echo "</pre>"; exit;
+      */  
       }
       break;
   }
+  
 }
 
 include '../includes/headerlogin.php';

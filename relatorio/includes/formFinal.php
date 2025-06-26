@@ -1,6 +1,6 @@
 <?php
 $tituloHeader = '';
-switch($tf) {
+switch ($tf) {
     case 'fi':
         $tituloHeader = 'RELATÓRIO FINAL DE AÇÃO DE EXTENSÃO E CULTURA';
         break;
@@ -25,30 +25,30 @@ switch($tf) {
   </section>
   <hr>
   <h4 style="text-align: center">ANEXO V</h4>
-  <h3 class="mt-3" style="text-align: center"><?=$tituloHeader?></h3>
+  <h3 class="mt-3" style="text-align: center"><?php echo $tituloHeader; ?></h3>
 
   <?php
-   
+
     /* if(!(
         ( ($relatorio->tramitar == 0)     or is_null($relatorio->tramitar)     or ($relatorio->tramitar == ''))      and
         ( ($relatorio->ava_publicar == 0) or is_null($relatorio->ava_publicar) or ($relatorio->ava_publicar == ''))  and
         (strlen($relatorio->ava_comentario) == 0)
        )
-    ){ 
+    ){
       echo '
       <div class="form-group">
       <label>
         <h5> Solicitação de ajustes do relatório parcial </h5>
       </label>
         <textarea rows="4" cols="50" readonly class="form-control">
-        c:' . $relatorio->ava_comentario . '|t:'. $relatorio->tramitar.'|p:'. $relatorio->ava_publicar.'|  
+        c:' . $relatorio->ava_comentario . '|t:'. $relatorio->tramitar.'|p:'. $relatorio->ava_publicar.'|
         </textarea>
       </div>
-      
+
       ';
-    //} 
+    //}
 */
-  ?>
+?>
 
 
   <form name="formAnexo" id="formAnexo" method="POST" enctype="multipart/form-data">
@@ -65,7 +65,7 @@ switch($tf) {
     
     
     <hr>
-    <?=$msgSolicitacoAlteracao ?>
+    <?php echo $msgSolicitacoAlteracao; ?>
 
     <div class="form-group">
       <label>
@@ -93,14 +93,14 @@ switch($tf) {
         <label>
           <h6><?php echo $n; ?>.1. Telefone</h6>
         </label>
-        <input type="text" class="form-control" name="tel" readonly value="<?= $obProfessor->telefone; ?>">
+        <input type="text" class="form-control" name="tel" readonly value="<?php echo $obProfessor->telefone; ?>">
       </div>
 
       <div class="form-group col">
         <label>
           <h6><?php echo $n; ?>.2. Email</h6>
         </label>
-        <input type="text" class="form-control" name="email" readonly value="<?= $obProfessor->email; ?>">
+        <input type="text" class="form-control" name="email" readonly value="<?php echo $obProfessor->email; ?>">
       </div>
     </div>
 
@@ -115,33 +115,31 @@ switch($tf) {
 
     <hr>
 
-  <?php 
+  <?php
 
-  
   $periodo_ini1 = substr($obProjeto->vigen_ini, 0, 10);
 
-  $periodo_fim1 = substr($obProjeto->vigen_fim, 0, 10);
+$periodo_fim1 = substr($obProjeto->vigen_fim, 0, 10);
 
-
-  if($tf == 're'){
+if ($tf == 're') {
     $periodo_ini2 = null;
-    if(!is_null($relatorio->periodo_renov_ini)){
-      $periodo_ini2 = substr($relatorio->periodo_renov_ini, 0, 10);
-    } 
+    if (!is_null($relatorio->periodo_renov_ini)) {
+        $periodo_ini2 = substr($relatorio->periodo_renov_ini, 0, 10);
+    }
     $periodo_fim2 = null;
-    if(!is_null($relatorio->periodo_renov_fim)){
-      $periodo_fim2 = substr($relatorio->periodo_renov_fim, 0, 10);
+    if (!is_null($relatorio->periodo_renov_fim)) {
+        $periodo_fim2 = substr($relatorio->periodo_renov_fim, 0, 10);
     }
-  }
+}
 
-  if($tf == 'pr'){
+if ($tf == 'pr') {
     $periodo_fim3 = null;
-    if(!is_null($relatorio->periodo_prorroga_fim)){
-      $periodo_fim3 = substr($relatorio->periodo_prorroga_fim, 0, 10);
+    if (!is_null($relatorio->periodo_prorroga_fim)) {
+        $periodo_fim3 = substr($relatorio->periodo_prorroga_fim, 0, 10);
     }
-  }
+}
 
-  ?>
+?>
     <div class="form-group">
       <label>
         <h5><?php echo ++$n; ?>. Período que se refere o Relatório</h5>
@@ -153,62 +151,62 @@ switch($tf) {
         <div class="col-3">
           <div class="form-group">
             <label>Início</label>
-            <input type="date" class="form-control" value="<?= $periodo_ini1; ?>" readonly>
+            <input type="date" class="form-control" value="<?php echo $periodo_ini1; ?>" readonly>
           </div>
         </div>
 
         <div class="col-3">
           <div class="form-group">
             <label>Fim</label>
-            <input type="date" class="form-control" value="<?= $periodo_fim1; ?>" readonly>
+            <input type="date" class="form-control" value="<?php echo $periodo_fim1; ?>" readonly>
           </div>
         </div>
       </div>
       <br>
 
-      <?php 
-      if($tf == 're'){ ?>
+      <?php
+    if ($tf == 're') { ?>
          <strong>Renovação</strong>
          <div class="row">
            <div class="col-3">
              <div class="form-group">
                <label>Início para renovação</label>
-               <input type="date" name="periodo_renov_ini" id="periodo_renov_ini" class="form-control" value="<?= $periodo_ini2;?>" required <?=$editar;?> >
+               <input type="date" name="periodo_renov_ini" id="periodo_renov_ini" class="form-control" value="<?php echo $periodo_ini2; ?>" required <?php echo $editar; ?> >
              </div>
            </div>
    
            <div class="col-3">
              <div class="form-group">
                <label>Fim, para renovação</label>
-               <input type="date" name="periodo_renov_fim" id="periodo_renov_fim" class="form-control" value="<?= $periodo_fim2; ?>" required <?=$editar?> >
+               <input type="date" name="periodo_renov_fim" id="periodo_renov_fim" class="form-control" value="<?php echo $periodo_fim2; ?>" required <?php echo $editar; ?> >
              </div>
            </div>
          </div>
       <br>
-<?php } 
+<?php }
 
-if($tf == 'pr'){
-?>
+    if ($tf == 'pr') {
+        ?>
       <strong>Prorrogação</strong>
       
         <div class="col-3">
           <div class="form-group">
             <label>Até</label>
-            <input type="date" name="periodo_prorroga_fim" id="periodo_prorroga_fim" class="form-control" value="<?= $periodo_fim3; ?>" required <?=$editar?>  <?=$editar?> >
+            <input type="date" name="periodo_prorroga_fim" id="periodo_prorroga_fim" class="form-control" value="<?php echo $periodo_fim3; ?>" required <?php echo $editar; ?>  <?php echo $editar; ?> >
           </div>
         </div>
         A prorrogação deve ter tempo máximo de 25% do período inicial e final informado no projeto.
       </div>
 
-      <?php } 
+      <?php }
 
-?>      
+    ?>      
       <hr>
       <div class="form-group">
         <label>
           <h5><?php echo ++$n; ?>. Carga semanal*:</h5>
         </label>
-        <input type="number" min=0 max=44 class="form-control col-2" name="ch_semanal" value="<?php echo $relatorio->ch_semanal; ?>" <?=$editar?>>
+        <input type="number" min=0 max=44 class="form-control col-2" name="ch_semanal" value="<?php echo $relatorio->ch_semanal; ?>" <?php echo $editar; ?>>
       </div>
 
       <hr>
@@ -223,19 +221,19 @@ if($tf == 'pr'){
           </tr>
           <tr>
             <th>Membros da comunidade externa</th>
-            <td><input type="number" min=0 max=44 class="form-control" name="dim_mem_com_ex" value="<?= $relatorio->dim_mem_com_ex; ?>" <?=$editar?> ></td>
+            <td><input type="number" min=0 max=44 class="form-control" name="dim_mem_com_ex" value="<?php echo $relatorio->dim_mem_com_ex; ?>" <?php echo $editar; ?> ></td>
           </tr>
           <tr>
             <th>Discentes</th>
-            <td><input type="number" min=0 max=44 class="form-control" name="dim_disc" value="<?= $relatorio->dim_disc; ?>" <?=$editar?> ></td>
+            <td><input type="number" min=0 max=44 class="form-control" name="dim_disc" value="<?php echo $relatorio->dim_disc; ?>" <?php echo $editar; ?> ></td>
           </tr>
           <tr>
             <th>Docentes</th>
-            <td><input type="number" min=0 max=44 class="form-control" name="dim_doce" value="<?= $relatorio->dim_doce; ?>"  <?=$editar?> ></td>
+            <td><input type="number" min=0 max=44 class="form-control" name="dim_doce" value="<?php echo $relatorio->dim_doce; ?>"  <?php echo $editar; ?> ></td>
           </tr>
           <tr>
             <th>Agentes universitários e Estagiários</th>
-            <td><input type="number" min=0 max=44 class="form-control" name="dim_agent_estag" value="<?= $relatorio->dim_agent_estag; ?>"  <?=$editar?> ></td>
+            <td><input type="number" min=0 max=44 class="form-control" name="dim_agent_estag" value="<?php echo $relatorio->dim_agent_estag; ?>"  <?php echo $editar; ?> ></td>
           </tr>
         </table>
       </div>
@@ -269,7 +267,7 @@ if($tf == 'pr'){
         <div class="col">
           <div class="form-group">
             <label for="atividades">
-              <h5><?= ++$n; ?>. Atividades executadas</h5>
+              <h5><?php echo ++$n; ?>. Atividades executadas</h5>
             </label>
             <div id="sumnot_atividades"><?php echo $relatorio->atividades; ?></div>
             <textarea id="atividades" name="atividades" rows="10" hidden ></textarea>
@@ -278,7 +276,7 @@ if($tf == 'pr'){
       </div>
 
       <hr>
-<?php if($tf == 'pr'){ ?>
+<?php if ($tf == 'pr') { ?>
 
       <div class="row">
         <div class="col">
@@ -333,8 +331,8 @@ if($tf == 'pr'){
           </div>
         </div>
       </div>
-
-<?php if($tf == 're'){ ?>
+<!--
+<?php if ($tf == 're') { ?>
   <div class="row">
         <div class="col">
           <div class="form-group">
@@ -348,22 +346,22 @@ if($tf == 'pr'){
         </div>
       </div>
 
-<?php } ?>
+<?php } ?> -->
       <div class="form-group">
         <h5 id="attc"><?php echo ++$n; ?>. Anexos</h5>
         <ul id="anexos"></ul>
-        <?php if($editar <> 'readonly') { ?>
+        <?php if ($editar != 'readonly') { ?>
             <iframe src="../upload/upload.php" frameborder="0" scrolling="no"></iframe>
         <?php } ?>
         <?php echo $anex; ?>
       </div>
       <hr>
-      <?php 
-          if($relatorio->tramitar == 0) {
-            if($obProjeto->id_prof != $user['id']) {
-              echo '';
-            } else {
-      ?>
+      <?php
+              if ($relatorio->tramitar == 0) {
+                  if ($obProjeto->id_prof != $user['id']) {
+                      echo '';
+                  } else {
+                      ?>
       <div class="form-group">
         <h5 id="">Pronto para tramitação</h5>
         <label for="tramitar">Ao marcar esta <input type="checkbox" id="tramitar" name="tramitar" value="1"> opção, depois de salvo, este relatório ficará visível para aprovação e perderá o modo de edição.</label>
@@ -371,22 +369,22 @@ if($tf == 'pr'){
       </div>
       <hr>
       <?php }
-      }  ?>
+                  }  ?>
 
       <div class="row" >
 
         <div class="col-3">
           <div class="form-group">
             <label>Data</label>
-            <input type="date" name="data" class="form-control" id="dateAssing" value="<?php echo substr($relatorio->created_at, 0, 10); ?>" required <?=$editar?>>
+            <input type="date" name="data" class="form-control" id="dateAssing" value="<?php echo substr($relatorio->created_at, 0, 10); ?>" required <?php echo $editar; ?>>
           </div>
         </div>
       </div>
 
       <div class="form-group">
       <?php
-      if($editar == ''){
-      ?>
+                  if ($editar == '') {
+                      ?>
           <a href="javascript: submitSumbeter()" class="btn btn-success btn-sm" >↗️ Salvar </a>
       <?php } ?>
          <a href="javascript: history.go(-1)" class="btn btn-warning btn-sm" >↗️ Voltar </a>

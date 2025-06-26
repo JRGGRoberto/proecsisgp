@@ -264,7 +264,7 @@ c {
 
   $count = 0; 
   $html .= '<span id="print" onclick="printIT();" style="text-decoration:underline;cursor:pointer;">🖨️</span>';
-  $html .= '<img src="https://sistemaproec.unespar.edu.br/sis/imgs/logo_unespar.png" width="120px" style="display: block;  margin-left: auto;  margin-right: auto;">';
+  $html .= '<img src="../imgs/logo_unespar.png" width="120px" style="display: block;  margin-left: auto;  margin-right: auto;">';
   $html .= '<h4 class="centralizado">'. $title .'</h4>';
   $html .= '<h5 class="centralizado">'. $title2 .'</h5>';
   $html .= '<p class="c p centralizado"><font size="1">*O responsável pelo preenchimento e encaminhamento é o coordenador da Proposta de Extensão Tramitação: Coordenador -> Divisão de Extensão e Cultura -> Colegiado de Curso -> Conselho de Centro de Área -> Divisão de Extensão e Cultura.</font></p>';
