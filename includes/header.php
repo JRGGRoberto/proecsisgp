@@ -6,10 +6,11 @@ use App\Session\Login;
 
 $obUsuario = Login::getUsuarioLogado();
 
-use App\Entity\Outros;
 use App\Entity\CompararAlunos;
-$idPermitido = CompararAlunos::getIdPermitidos();
+use App\Entity\Outros;
+use App\Entity\Pibis_pibex_avaliadores;
 
+$idPermitido = CompararAlunos::getIdPermitidos();
 
 $clock = [
     '🕛', '🕐', '🕑', '🕒', '🕓', '🕔', '🕕', '🕖', '🕗', '🕘', '🕙', '🕚',
@@ -20,8 +21,32 @@ $horas >= 12 ? (int) ($horas -= 12) : (int) ($horas -= 0);
 
 $all = '';
 $autorizados = [
-'91ad9f28-8819-42c9-b6a9-18f284ee7453'// [MARILDA DE LARA SANTOS] Agente Sol Ângela Deeke Curitiba I 11/06/2025
+    '91ad9f28-8819-42c9-b6a9-18f284ee7453', // [MARILDA DE LARA SANTOS] Agente Sol Ângela Deeke Curitiba I 11/06/2025
 ];
+
+$menuPibis = '';
+$idUser = $obUsuario['id'];
+// Verifica se o usuário é um avaliador do PIBIS
+$obAvaliador = Pibis_pibex_avaliadores::getQntd('id = "'.$idUser.'" and ativo = 1');
+if ($obAvaliador > 0) {
+    $menuPibis = '
+    <div class="btn-group btn-group-sm">
+       <button type="button" class="btn btn-primary dropdown-toggle" data-toggle="dropdown">PIBIS/BIBEX</button>
+        <div class="dropdown-menu">
+          <a class="dropdown-item btn-sm" href="../pibisbex">Avaliar</a>';
+    $obAvaliador = Pibis_pibex_avaliadores::get($idUser, 'adm = 1');
+    if ($obAvaliador instanceof Pibis_pibex_avaliadores) {
+        $menuPibis .= "<a class='dropdown-item btn-sm' href='../pibisbexConf'>Configurações</a>";
+    }
+
+    $menuPibis .= '</div>
+      </div>
+    </div>
+
+    ';
+} else {
+    $menuPibis = '';
+}
 
 if ($obUsuario['config'] > 0 or in_array($obUsuario['id'], $autorizados)) {
     $all = "<div class='dropdown-divider'></div>
@@ -227,32 +252,29 @@ img.remover {
 <?php
 /*
 $sql = "select
-  coalesce(ca.id, co.id) id_link, 
-  CASE 
+  coalesce(ca.id, co.id) id_link,
+  CASE
     WHEN ca.id IS NOT NULL THEN 'ca'
     WHEN co.id IS NOT NULL THEN 'co'
     ELSE null
-  END AS id_orig, 
-  CASE 
+  END AS id_orig,
+  CASE
     WHEN ca.id IS NOT NULL THEN ca.nome
     WHEN co.id IS NOT NULL THEN co.nome
     ELSE null
   END AS n_orig
-FROM 
-  usuarios u 
-  left join colegiados co on co.coord_id  = u.id 
+FROM
+  usuarios u
+  left join colegiados co on co.coord_id  = u.id
   left join campi ca      on ca.chef_div_id  = u.id and co.id is null
-WHERE 
+WHERE
   ( co.id IS NOT NULL OR ca.id IS NOT NULL ) and
    u.id = '" . $obUsuario['id'] . "'";
 $obQAvalioRel = Outros::qry($sql);
-*/ 
-//
+*/
 
-
-
-if (in_array($obUsuario['config'],[1,2,3])) {
-  ?>
+if (in_array($obUsuario['config'], [1, 2, 3])) {
+    ?>
       <div class="btn-group btn-group-sm">
     <!--    <button type="button" class="btn btn-primary dropdown-toggle" data-toggle="dropdown">Manutenção temporária</button>-->
         <button type="button" class="btn btn-primary dropdown-toggle" data-toggle="dropdown">
@@ -269,7 +291,7 @@ if (in_array($obUsuario['config'],[1,2,3])) {
       <?php echo $adminOpts; ?>
 <!--
       <button type="button" class="btn btn-primary">Projetos</button>
-    -->  
+    -->  <?php echo $menuPibis; ?>
 
       <div clastoasts="btn-group btn-group-sm">
         <button type="button" class="btn btn-primary dropdown-toggle" data-toggle="dropdown">
@@ -277,7 +299,7 @@ if (in_array($obUsuario['config'],[1,2,3])) {
         </button>
         <div class="dropdown-menu dropdown-menu-right">
           <?php
-              $tipoUser = $obUsuario['tipo'] == 'agente' ? 'agente' : 'professor';
+                $tipoUser = $obUsuario['tipo'] == 'agente' ? 'agente' : 'professor';
         ?>
           
         
@@ -286,10 +308,10 @@ if (in_array($obUsuario['config'],[1,2,3])) {
           <div class="dropdown-divider"></div>
 <!-- se a pessoa for permitida, ela entrará aqui para colocar as tabelas e ver se há alunos repetidos em bolsas -->
           <!-- As pessoas permitidas estão em CompararAlunos.php -->
-          <?php if (isset($obUsuario['id']) && in_array($obUsuario['id'], $idPermitido, true)): ?>
+          <?php if (isset($obUsuario['id']) && in_array($obUsuario['id'], $idPermitido, true)) { ?>
             <a class="dropdown-item btn-sm" href="../verificar_bolsistas/index.php">Verificar alunos bolsistas</a>
             <div class="dropdown-divider"></div>
-          <?php endif; ?>
+          <?php } ?>
 
           <a class="dropdown-item btn-sm" href="../login/logout.php">Sair</a>
         </div>

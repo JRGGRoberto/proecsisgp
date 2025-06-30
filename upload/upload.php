@@ -1,41 +1,40 @@
 <?php
 
 require '../vendor/autoload.php';
-use \App\Entity\Arquivo;
-
+use App\Entity\Arquivo;
 
 ini_set('display_errors', 1);
 ini_set('display_startup_errors', 1);
 error_reporting(E_ALL);
 
-ini_set("upload_tmp_dir", "/home/sistemaproec/www/teste/tmp");
+ini_set('upload_tmp_dir', '/home/sistemaproec/www/teste/tmp');
 $tmp_dir = ini_get('upload_tmp_dir') ? ini_get('upload_tmp_dir') : sys_get_temp_dir();
 
 // Flag que indica se há erro ou não
 $erro = null;
 // Quando enviado o formulário
-if (isset($_FILES['arquivo']))
-{
+if (isset($_FILES['arquivo'])) {
     // Configurações
-    $extensoes = array(".doc", ".txt", ".pdf", ".docx", ".jpg", ".png");
+    $extensoes = ['.doc', '.txt', '.pdf', '.docx', '.jpg', '.png'];
     // $caminho = "uploads/";
-    //$caminho = "/home/sistemaproec/www/sist/upload/uploads/";
-    $caminho = "/home/sistemaproec/www/sistema/upload/uploads/";
+    // $caminho = "/home/sistemaproec/www/sist/upload/uploads/";
+    $caminho = '/home/sistemaproec/www/sistema/upload/uploads/';
+
     // Recuperando informações do arquivo
-    $nome = $_FILES['arquivo']['name']; 
+    $nome = $_FILES['arquivo']['name'];
     $temp = $_FILES['arquivo']['tmp_name'];
     // Verifica se a extensão é permitida
-    if (!in_array(strtolower(strrchr($nome, ".")), $extensoes)) {
-		$erro = 'Extensão inválida';
-	}
+    if (!in_array(strtolower(strrchr($nome, '.')), $extensoes)) {
+        $erro = 'Extensão inválida';
+    }
     // Se não houver erro
     if (!$erro) {
         // Gerando um nome aleatório para a imagem
-        $nomeAleatorio = md5(uniqid(time())) . strrchr($nome, ".");
+        $nomeAleatorio = md5(uniqid(time())).strrchr($nome, '.');
         // Movendo arquivo para servidor
-        if (!move_uploaded_file($temp, $caminho . $nomeAleatorio))
-            $erro = 'Não foi possível anexar o arquivo';
-        else {
+        if (!move_uploaded_file($temp, $caminho.$nomeAleatorio)) {
+            $erro = 'Não foi possível anexar o arquivo. '.$_FILES['arquivo']['error'];
+        } else {
             $arq = new Arquivo();
             $arq->nome_orig = $nome;
             $arq->nome_rand = $nomeAleatorio;
@@ -43,7 +42,7 @@ if (isset($_FILES['arquivo']))
             $arq->size = $_FILES['arquivo']['size'];
             $arq->error = $_FILES['arquivo']['error'];
             $arq->cadastrar();
-        }  
+        }
     }
 }
 
@@ -65,17 +64,17 @@ if (isset($_FILES['arquivo']))
         // Definindo página pai
         var pai = window.parent.document;
         
-        <?php if (isset($erro)): // Se houver algum erro ?>
+        <?php if (isset($erro)) { // Se houver algum erro?>
         
             // Exibimos o erro
-            alert('<?php echo $erro ?>');
+            alert('<?php echo $erro; ?>');
             
-        <?php elseif (isset($nome)): // Se não houver erro e o arquivo foi enviado ?>
+        <?php } elseif (isset($nome)) { // Se não houver erro e o arquivo foi enviado?>
         
             // Adicionamos um item na lista (ul) que tem ID igual a "anexos"
-            $('#anexos', pai).append('<li lang="<?php echo $nomeAleatorio ?>"><?php echo $nome ?><img src="../imgs/remove.png" alt="Remover" class="remover" onclick="removeAnexo(this)" \/> </li>');
+            $('#anexos', pai).append('<li lang="<?php echo $nomeAleatorio; ?>"><?php echo $nome; ?><img src="../imgs/remove.png" alt="Remover" class="remover" onclick="removeAnexo(this)" \/> </li>');
             
-        <?php endif ?>
+        <?php } ?>
         
         // Quando enviado o arquivo
     	$("#arquivo").change(function() {	    
