@@ -84,6 +84,8 @@ img.remover {
 }
 </style>
 
+
+
 <title>SisGP PROEC</title>
   </head>
   <body class="bg-light text-dark">
@@ -95,7 +97,7 @@ img.remover {
          <div class="container text-center p-3">
             <div class="row">
               <div>
-                <img src="../../imgs/logo_unespar.png" class="d-inline-block align-top" alt="" loading="lazy" width="64" height="68">
+                <img src="https://sistemaproec.unespar.edu.br/sistema/imgs/logo_unespar.png" class="d-inline-block align-top" alt="" loading="lazy" width="64" height="68">
               </div>
               <div class="col">
                   <div class="text-left">

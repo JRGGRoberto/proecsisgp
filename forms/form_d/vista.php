@@ -1,12 +1,16 @@
 <?php
-require '../../vendor/autoload.php';
+
+require __DIR__.'/../../vendor/autoload.php';
 
 use App\Entity\Arquivo;
 use App\Entity\Form_d;
 use App\Entity\Projeto;
 
-$prj = Projeto::getProjetoView($_GET['p'], $_GET['v']);
-$form = Form_d::getRegistro($_GET['p'], $_GET['v']);
+$pGET = $pGET ?? $p ?? ($_GET['p'] ?? '');
+$vGET = $vGET ?? $v ?? ($_GET['v'] ?? '');
+
+$prj = Projeto::getProjetoView($pGET, $vGET);
+$form = Form_d::getRegistro($pGET, $vGET);
 
 $anexados = Arquivo::getAnexados('forms', $form->id_avaliacao);
 $x = 0;
@@ -23,7 +27,7 @@ if ($x == 0) {
     $anex = 'Sem arquivos';
 }
 
-include '../../includes/headers.php';
+include __DIR__.'/../../includes/headers.php';
 
 ?>
 
@@ -121,4 +125,4 @@ include '../../includes/headers.php';
 
 <?php
 
-include '../../includes/footer.php';
+include __DIR__.'/../../includes/footer.php';

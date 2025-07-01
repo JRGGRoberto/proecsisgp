@@ -1,31 +1,36 @@
 <?php
-require '../../vendor/autoload.php';
 
-use \App\Entity\Projeto;
-use \App\Entity\Form_a;
-use \App\Entity\Arquivo;
+require __DIR__.'/../../vendor/autoload.php';
 
-$prj = Projeto::getProjetoView($_GET['p'], $_GET['v']);
-$form = Form_a::getRegistro($_GET['p'], $_GET['v']);
+use App\Entity\Arquivo;
+use App\Entity\Form_a;
+use App\Entity\Projeto;
+
+$pGET = $pGET ?? $p ?? ($_GET['p'] ?? '');
+$vGET = $vGET ?? $v ?? ($_GET['v'] ?? '');
+
+$prj = Projeto::getProjetoView($pGET, $vGET);
+$form = Form_a::getRegistro($pGET, $vGET);
 
 $anexados = Arquivo::getAnexados('forms', $form->id_avaliacao);
 $x = 0;
 $anex = '<ul id="anexos_edt" >';
-foreach($anexados as $att){
-  $x++;
-  $anex .= 
-  ' <li>
+foreach ($anexados as $att) {
+    ++$x;
+    $anex .=
+    ' <li>
       <a href="/sistema/upload/uploads/'.$att->nome_rand.'" target="_blank">'.$att->nome_orig.'</a> 
     </li> ';
 }
 $anex .= '</ul>';
-if($x == 0) {
-  $anex = 'Sem arquivos';
+if ($x == 0) {
+    $anex = 'Sem arquivos';
 }
 
-include '../../includes/headers.php';
+include __DIR__.'/../../includes/headers.php';
 
 ?>
+
 
 <div class="container mt-4">
    <h3>ANEXO A - FORMULÁRIO PARA AVALIAÇÃO DE AÇÃO EXTENSIONISTA</h3>
@@ -37,7 +42,7 @@ include '../../includes/headers.php';
           <h5>Tipo de Proposta</h5>
 
             <div class="form-group">
-                <input type="text" class="form-control" name="tp_proposta"  value="<?=$prj->tipo_exten?>" readonly>
+                <input type="text" class="form-control" name="tp_proposta"  value="<?php echo $prj->tipo_exten; ?>" readonly>
             </div>
             
         </li>
@@ -47,17 +52,17 @@ include '../../includes/headers.php';
             
             <div class="form-group">
               <label>Título</label>
-              <input type="text" class="form-control" name="titulo" value="<?=$prj->titulo?>" readonly>
+              <input type="text" class="form-control" name="titulo" value="<?php echo $prj->titulo; ?>" readonly>
             </div>
             
             <div class="form-group">
               <label>Proponente</label>
-              <input type="text" class="form-control" name="coordNome" value="<?=$prj->nome_prof?>" readonly>
+              <input type="text" class="form-control" name="coordNome" value="<?php echo $prj->nome_prof; ?>" readonly>
             </div>
             
             <div class="form-group">
               <label>Colegiado de Curso</label>
-              <input type="text" class="form-control" name="colegiado" value="<?=$prj->colegiado?>" readonly>
+              <input type="text" class="form-control" name="colegiado" value="<?php echo $prj->colegiado; ?>" readonly>
             </div>
             
             <div class="row">
@@ -65,14 +70,14 @@ include '../../includes/headers.php';
               <div class="col">
                 <div class="form-group">
                   <label for="area_extensao">Área de extensão</label>
-                  <input type="text" class="form-control"  name="area_exten" value="<?=$prj->area_extensao?>" readonly>
+                  <input type="text" class="form-control"  name="area_exten" value="<?php echo $prj->area_extensao; ?>" readonly>
                 </div>
               </div>
             
               <div class="col">
                 <div class="form-group">
                   <label for="linh_ext">Linha de  extensão</label>
-                  <input type="text" class="form-control"  value="<?=$prj->linh_ext?>" readonly>
+                  <input type="text" class="form-control"  value="<?php echo $prj->linh_ext; ?>" readonly>
                 </div>
               </div>
 
@@ -86,49 +91,49 @@ include '../../includes/headers.php';
                 <div class="row mb-3">
                     <div class="col-6">Contém toda a documentação necessária?</div>
                     <div class="col">
-                        <?=$form->r3_1 == '1'? "🆗" : "❌" ?>
+                        <?php echo $form->r3_1 == '1' ? '🆗' : '❌'; ?>
                     </div>
                 </div>
 
                 <div class="row mb-3">
                     <div class="col-6">Prevê a participação de estudantes como equipe executora da ação de extensão?</div>
                     <div class="col">
-                        <?=$form->r3_2 == '1'? "🆗" : "❌" ?>
+                        <?php echo $form->r3_2 == '1' ? '🆗' : '❌'; ?>
                     </div>
                 </div>
 
                 <div class="row mb-3">
                     <div class="col-6">Prevê a participação da Comunidade externa?</div>
                     <div class="col">
-                       <?=$form->r3_3 == '1'? "🆗" : "❌" ?>
+                       <?php echo $form->r3_3 == '1' ? '🆗' : '❌'; ?>
                     </div>
                 </div>
 
                 <div class="row mb-3">
                     <div class="col-6">Está de acordo com os princípios da extensão na UNESPAR?</div>
                     <div class="col">
-                       <?=$form->r3_4 == '1'? "🆗" : "❌" ?>
+                       <?php echo $form->r3_4 == '1' ? '🆗' : '❌'; ?>
                     </div>
                 </div>
 
                 <div class="row mb-3">
                     <div class="col-6">Está de acordo com os objetivos da extensão na UNESPAR?</div>
                     <div class="col">
-                        <?=$form->r3_5 == '1'? "🆗" : "❌" ?>
+                        <?php echo $form->r3_5 == '1' ? '🆗' : '❌'; ?>
                     </div>
                 </div>
 
                 <div class="row mb-3">
                     <div class="col-6">Prevê parcerias com outras instituições (públicas ou privadas)?</div>
                     <div class="col">
-                       <?=$form->r3_6 == '1'? "🆗" : "❌" ?>
+                       <?php echo $form->r3_6 == '1' ? '🆗' : '❌'; ?>
                     </div>
                 </div>
 
                 <div class="row mb-3">
                     <div class="col-6">Prevê a difusão dos resultados alcançados?</div>
                     <div class="col">
-                        <?=$form->r3_7 == '1'? "🆗" : "❌" ?>
+                        <?php echo $form->r3_7 == '1' ? '🆗' : '❌'; ?>
                     </div>
                 </div>
 
@@ -152,7 +157,7 @@ include '../../includes/headers.php';
             <div class="col"><i>Para observar se a proposta submetida atende a essa diretriz, faça perguntas como: 
               Como surgiu este projeto? Por qual demanda? De que forma a execução deste projeto promove transformação entre a universidade e a sociedade?</i></div>
             <div class="col-2">
-              <?=$form->r4_1 == '1'? "🆗" : "❌" ?>
+              <?php echo $form->r4_1 == '1' ? '🆗' : '❌'; ?>
             </div>
           </div>
           <hr>
@@ -165,7 +170,7 @@ include '../../includes/headers.php';
               É possível integrar modelos, conceitos e metodologias de diversas áreas do conhecimento? Este projeto pode favorecer a construção de alianças interorganizacionais e interprofissionais? Este projeto pode envolver estudantes e servidores de diversas áreas da nossa instituição?</i></div>
             
               <div class="col-2">
-                <?=$form->r4_2 == '1'? "🆗" : "❌" ?>
+                <?php echo $form->r4_2 == '1' ? '🆗' : '❌'; ?>
             </div>
           </div>
           <hr>
@@ -177,7 +182,7 @@ include '../../includes/headers.php';
             <div class="col"><i>Para observar se a proposta submetida atende a essa diretriz, faça perguntas como: 
               O projeto prevê o envolvimento de alunos de vários períodos do mesmo curso ou de outros cursos? Envolve aluno da residência ou pós-graduação? Com objetivo de fortalecer a produção acadêmica, relaciona prática com teoria? Do projeto de extensão é possível gerar trabalho de conclusão de curso ou associação com a iniciação científica?</i></div>
               <div class="col-2">
-                <?=$form->r4_3 == '1'? "🆗" : "❌" ?>
+                <?php echo $form->r4_3 == '1' ? '🆗' : '❌'; ?>
             </div>
           </div>
 
@@ -188,7 +193,7 @@ include '../../includes/headers.php';
             <div class="col"><i>Para observar se a proposta submetida atende a essa diretriz, faça perguntas como: 
               As atividades previstas possibilitam reforçar o papel das/dos estudantes na comunidade promovendo sua formação como profissional e como cidadã/cidadão? As/Os estudantes conseguirão desempenhar bem seu papel como agentes de transformação da sociedade, aplicando os conhecimentos adquiridos?</i></div>
               <div class="col-2">
-                <?=$form->r4_4 == '1'? "🆗" : "❌" ?>
+                <?php echo $form->r4_4 == '1' ? '🆗' : '❌'; ?>
             </div>
           </div>
           <hr>
@@ -198,7 +203,7 @@ include '../../includes/headers.php';
             <div class="col"><i>Para observar se a proposta submetida atende a essa diretriz, faça perguntas como: 
               O projeto consegue apresentar contribuições significativas de mudanças na comunidade local, produzindo soluções efetivas na resolução de problemas? A proposta do projeto visa promover também mudanças na Universidade, na medida em que ela se envolve com a comunidade local?</i></div>
               <div class="col-2">
-                <?=$form->r4_2 == '1'? "🆗" : "❌" ?>
+                <?php echo $form->r4_2 == '1' ? '🆗' : '❌'; ?>
               </div>
             </div>
 
@@ -210,7 +215,7 @@ include '../../includes/headers.php';
             <div class="col">
               <div class="form-group">
                 <textarea class="form-control" name="solicitacoes" id="solicitacoes" rows="10" readonly
-                placeholder="(Descrever quais adequações devem ser realizadas para que o projeto ultrapasse esta etapa) 10 linhas máximo"><?=$form->solicitacoes?></textarea>
+                placeholder="(Descrever quais adequações devem ser realizadas para que o projeto ultrapasse esta etapa) 10 linhas máximo"><?php echo $form->solicitacoes; ?></textarea>
                 (O prazo para devolução da proposta com adequações segue o previsto no Regulamento de Extensão – Resolução 042/2022 – CEPE/UNESPAR)
               </div>
             </div>
@@ -223,7 +228,7 @@ include '../../includes/headers.php';
             <div class="col">
               <div class="form-group">
                 <textarea class="form-control" name="parecer" id="parecer" rows="10" readonly
-                placeholder="(Informar o parecer do projeto) 10 linhas máximo"><?=$form->parecer?></textarea>
+                placeholder="(Informar o parecer do projeto) 10 linhas máximo"><?php echo $form->parecer; ?></textarea>
                 (O prazo para devolução da proposta com adequações segue o previsto no Regulamento de Extensão – Resolução 042/2022 – CEPE/UNESPAR)
               </div>
             </div>
@@ -236,7 +241,7 @@ include '../../includes/headers.php';
             <div class="col">
               <div class="form-group">
                 <ul id="anexos"></ul>
-                <?=$anex?>
+                <?php echo $anex; ?>
               </div>
             </div>
           </div>
@@ -246,12 +251,12 @@ include '../../includes/headers.php';
 
     <div class="form-group">
       <div class="row">
-        <div class="col-3"><input type="text" class="form-control" name="cidade"  value="<?=$form->cidade?>" readonly></div>
-        <div class="col-2"> <input type="date" class="form-control" name="dateAssing" id="dateAssing" readonly value="<?=substr($form->dateAssing,0,10)?>"> </div>
+        <div class="col-3"><input type="text" class="form-control" name="cidade"  value="<?php echo $form->cidade; ?>" readonly></div>
+        <div class="col-2"> <input type="date" class="form-control" name="dateAssing" id="dateAssing" readonly value="<?php echo substr($form->dateAssing, 0, 10); ?>"> </div>
       </div>
     </div>
     <div class="form-group">
-      <input type="text" class="form-control" name="whosigns"  value="<?=$form->whosigns?>" readonly>
+      <input type="text" class="form-control" name="whosigns"  value="<?php echo $form->whosigns; ?>" readonly>
     </div>
 
 </div>
@@ -268,6 +273,4 @@ include '../../includes/headers.php';
 </script>
 <?php
 
-
-
-include '../../includes/footer.php';
+include __DIR__.'/../../includes/footer.php';
