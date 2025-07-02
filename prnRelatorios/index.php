@@ -13,7 +13,9 @@ if ($id_proj == 'Ninguém') {
 
 $query = '
   SELECT 
-     ver, form
+     ver, form, concat(fase_seq, "/",  etapas) etapa, tp_instancia, 
+      if(resultado = "a", "aceita", "sol. adequações") resultado,  resultado res,
+      DATE_FORMAT(greatest(created_at, updated_at ), "%d/%m/%Y") as realizado
   FROM proj_avaliar p
   WHERE 
     id_proj = "'.$id_proj.'" 
@@ -54,11 +56,22 @@ function montaUrl($form)
 
 $resultado = '';
 $textApagar = '<a href="../../projetos" class="btn btn-primary btn-sm mr-2">Voltar</a>';
+$textApagar2 = '&ensp;&ensp;<span id="xpto141617">&ensp;</span>&ensp;';
 foreach ($forms as $frm) {
-    $resultado .= str_replace(
-        $textApagar, '',
-        capturar_saida(montaUrl($frm->form), ['p' => $id_proj, 'v' => $frm->ver])
-    );
+    $cor = $frm->res == 'a' ? 'success' : 'danger';
+    $txtAlterado = '
+   <span class="badge badge-primary">'.$frm->form.'</span>
+   <span class="badge badge-'.$cor.'"> Etapa ['.$frm->etapa.'] '.$frm->resultado.'</span>
+   <span class="badge badge-info">'.$frm->realizado.'</span>
+    ';
+    $resultado .=
+        str_replace(
+            $textApagar2, $txtAlterado,
+            str_replace(
+                $textApagar, '',
+                capturar_saida(montaUrl($frm->form), ['p' => $id_proj, 'v' => $frm->ver])
+            )
+        );
 }
 
 echo $resultado;

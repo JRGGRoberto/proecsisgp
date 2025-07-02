@@ -116,7 +116,7 @@ img.remover {
             <div class="col">
                   
                   <div>
-                     <span class="badge badge-success">SisGP <?php echo $clock[$horas]; ?></span>
+                     <span class="badge badge-success">SisGP <?php echo $clock[$horas]; ?></span> &ensp;&ensp;<span id="xpto141617">&ensp;</span>&ensp;
                   </div>
                   <div>
                     Sistema para Gerir Projetos

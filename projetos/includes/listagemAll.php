@@ -21,8 +21,9 @@ $qnt1 = 0;
 $col = '';
 $LastV = '';
 
-function dt($dt){
-  return substr($dt,8,2).'/'.substr($dt,5,2).'/'. substr($dt, 0,4);
+function dt($dt)
+{
+    return substr($dt, 8, 2).'/'.substr($dt, 5, 2).'/'.substr($dt, 0, 4);
 }
 
 function resumirTexto(string $texto, int $limite = 256): string
@@ -53,8 +54,6 @@ foreach ($projetos as $proj) {
             $progresso = '<span class="badge badge-success ">Excutado</span>';
         }
         $progresso .= '<a href="../projetos/visualizar.php?id='.$proj->id.'&v='.$proj->ver.'&w=nw" target="_blank">📄</a>';
-     
-        
     } else {
         is_null($proj->colegiado) ? $col = 'A definir' : $col = $proj->colegiado;
 
@@ -66,7 +65,7 @@ foreach ($projetos as $proj) {
           <thead class="thead-dark">
             <tr>
               <th>Projeto</th>
-              <th>Parecere(s)</th>
+              <th>Parecere(s) <a href="../prnRelatorios/index.php?id='.$proj->id.'" target="_blank"><span class="badge badge-secondary">Prn All🖨️</span></th>
               <th>Parte</th>
             </tr>
           </thead>
@@ -96,7 +95,7 @@ foreach ($projetos as $proj) {
                     break;
                 default:
                     $class = 'table-warning';
-                    $td = '<td><span class="badge badge-light">Espera de parecer... ['.$la->tp_instancia.'] '. dt($la->created_at) .'</span></td>';
+                    $td = '<td><span class="badge badge-light">Espera de parecer... ['.$la->tp_instancia.'] '.dt($la->created_at).'</span></td>';
 
                     array_push($btnStatus, new Blocos($la->fase_seq, 'warning'));
             }
@@ -208,26 +207,26 @@ foreach ($projetos as $proj) {
         }
     }
 
-/*    if ($proj->edt == 1) {
-        $resultados .=
-      '<hr>
-         <div class="d-flex flex-row-reverse ">'
-         .$btnSub.
-        '
-          <div class="p-1"></div>
-          <a href="editar.php?id='.$proj->id.'&v='.$proj->ver.'"><button class="btn btn-success btn-sm mb-2">📄 Editar</button></a>
-        </div>';
-    } else {
-        $nomecol = Colegiado::getRegistro($proj->para_avaliar);
+    /*    if ($proj->edt == 1) {
+            $resultados .=
+          '<hr>
+             <div class="d-flex flex-row-reverse ">'
+             .$btnSub.
+            '
+              <div class="p-1"></div>
+              <a href="editar.php?id='.$proj->id.'&v='.$proj->ver.'"><button class="btn btn-success btn-sm mb-2">📄 Editar</button></a>
+            </div>';
+        } else {
+            $nomecol = Colegiado::getRegistro($proj->para_avaliar);
 
-        $resultados .=
-      '<hr>
-        
-        <div class="d-flex flex-row-reverse ">
-          <a href="visualizar.php?id='.$proj->id.'&v='.$proj->ver.'&w=1" target="_blank"><button class="btn btn-success btn-sm mb-2">Visualizar</button></a>
-        </div>';
-    }
-*/
+            $resultados .=
+          '<hr>
+
+            <div class="d-flex flex-row-reverse ">
+              <a href="visualizar.php?id='.$proj->id.'&v='.$proj->ver.'&w=1" target="_blank"><button class="btn btn-success btn-sm mb-2">Visualizar</button></a>
+            </div>';
+        }
+    */
     $resultados .= '
       </div>
     </div>
@@ -263,7 +262,7 @@ include '../includes/paginacao.php';
 
         <div class="col-3">
           <label>Campus</label> 
-          <input type="text" name="campus" class="form-control form-control-sm" value="<?=$campus?>"  id="campus"   onchange="showLimpar();">
+          <input type="text" name="campus" class="form-control form-control-sm" value="<?php echo $campus; ?>"  id="campus"   onchange="showLimpar();">
         </div>
 
         <div class="col-3">
