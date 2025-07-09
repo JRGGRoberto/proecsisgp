@@ -6,17 +6,15 @@ ini_set('display_errors', 1);
 ini_set('display_startup_errors', 1);
 error_reporting(E_ALL);
 
-use App\Session\Login;
-use App\Entity\Projeto;
-use App\Entity\Professor;
 use App\Entity\Arquivo;
-use App\Entity\RelParcial;
-use App\Entity\RelFinal;
 use App\Entity\Campi;
 use App\Entity\Colegiado;
 use App\Entity\HistRelatorios;
-
-
+use App\Entity\Professor;
+use App\Entity\Projeto;
+use App\Entity\RelFinal;
+use App\Entity\RelParcial;
+use App\Session\Login;
 
 // Obriga o usuário a estar logado
 Login::requireLogin();
@@ -24,6 +22,7 @@ $user = Login::getUsuarioLogado();
 
 $id = $_GET['id'];
 $tp = $_GET['t'];
+// $editar = 'readonly';
 
 // VALIDAÇÃO DO POST
 if (isset($_POST['etapa'])) {
@@ -38,31 +37,37 @@ if (isset($_POST['etapa'])) {
     $HistRelatorios->user = $user['id'];
     $HistRelatorios->cadastrar();
 
-
-
-
-    if( in_array($_POST['tp_relatorio'], ['fi', 're', 'pr'])){
-        $relFIM =  (object)RelFinal::get($_POST['id_relatorio']);
-        if($_POST['resultado'] == 'a'){
-            if($relFIM->etapa < $relFIM->etapas){
-                $relFIM->etapa++;
-            } else{
+    if (in_array($_POST['tp_relatorio'], ['fi', 're', 'pr'])) {
+        $relFIM = (object) RelFinal::get($_POST['id_relatorio']);
+        if ($_POST['resultado'] == 'a') {
+            if ($relFIM->etapa < $relFIM->etapas) {
+                ++$relFIM->etapa;
+            } else {
                 $relFIM->last_result = 'a';
+                if ($_POST['tp_relatorio'] == 'pr') {  // / se ultima etapa e Prorrogação
+                    $relatorio = new RelFinal();
+                    $relatorio = (object) RelFinal::get($id);
+                    $obProjeto = (object) Projeto::getProjetoLast($relatorio->idproj);
+                    $obProjeto = Projeto::getProjeto($obProjeto->id, $obProjeto->ver);
+                    $obProjeto->vigen_fim_orig = $obProjeto->vigen_fim;
+                    $obProjeto->vigen_fim = $_POST['periodo_prorroga_fim1'];
+                    $obProjeto->atualizar();
+                }
             }
-        } elseif($_POST['resultado'] == 'r'){
+        } elseif ($_POST['resultado'] == 'r') {
             $relFIM->tramitar = 0;
             $relFIM->last_result = 'r';
         }
         $relFIM->atualizar();
     } else { // pa
-        $relPARCIAL =  (object)RelParcial::get($_POST['id_relatorio']);
-        if($_POST['resultado'] == 'a'){
-            if($_POST['etapa'] < $_POST['etapas']){
-                $relPARCIAL->etapa++;
-            } else{
-                $relPARCIAL->last_result ='a';
+        $relPARCIAL = (object) RelParcial::get($_POST['id_relatorio']);
+        if ($_POST['resultado'] == 'a') {
+            if ($_POST['etapa'] < $_POST['etapas']) {
+                ++$relPARCIAL->etapa;
+            } else {
+                $relPARCIAL->last_result = 'a';
             }
-        } elseif($_POST['resultado'] == 'r'){
+        } elseif ($_POST['resultado'] == 'r') {
             $relPARCIAL->tramitar = 0;
             $relPARCIAL->last_result = 'r';
         }
@@ -73,10 +78,11 @@ if (isset($_POST['etapa'])) {
     exit;
 }
 
-$cursosetor ='';
+$cursosetor = '';
 $obProfessor = null;
-function getLocal($idProjeto, $nomeC){
-    $obProjeto = (object)Projeto::getProjetoLast($idProjeto);
+function getLocal($idProjeto, $nomeC)
+{
+    $obProjeto = (object) Projeto::getProjetoLast($idProjeto);
     $obProjeto = Projeto::getProjeto($obProjeto->id, $obProjeto->ver);
     $obProfessor = Professor::getProfessor($obProjeto->id_prof);
     if (Colegiado::getRegistro($obProjeto->para_avaliar) instanceof Colegiado) {
@@ -84,17 +90,19 @@ function getLocal($idProjeto, $nomeC){
     } elseif (Campi::getRegistro($obProjeto->para_avaliar) instanceof Campi) {
         $cursosetor = Campi::getRegistro($obProjeto->para_avaliar)->nome;
     } else {
-        $cursosetor =  $nomeC;
+        $cursosetor = $nomeC;
     }
-    return (object)[
+
+    return (object) [
         'obProjeto' => $obProjeto,
         'obProfessor' => $obProfessor,
-        'cursosetor' => $cursosetor
+        'cursosetor' => $cursosetor,
     ];
 }
 
 $anex = '';
-function listarAnexos($id){
+function listarAnexos($id)
+{
     $anexados = Arquivo::getAnexados('relatorios', $id);
     $anex = '<ul id="anexos_edt">';
     foreach ($anexados as $att) {
@@ -116,20 +124,18 @@ $scriptDisbleFinal = "<script>
                         $('#sumnot_divulgacao').summernote('disable');
                        </script>";
 
-
 $scriptDisbleParcial = "<script>
                     $('#sumnot_atvd_per').summernote('disable');
                     $('#sumnot_alteracoes').summernote('disable');
                     $('#sumnot_atvd_prox_per').summernote('disable');
                     $('#sumnot_atvd_prox_per').summernote('disable');
                 </script>";
-      
 
 include '../includes/header.php';
 $obj = null;
-if($tp == 'p'){
-    $relatorio = new RelParcial(); 
-    $relatorio = (object)RelParcial::get($id);
+if ($tp == 'p') {
+    $relatorio = new RelParcial();
+    $relatorio = (object) RelParcial::get($id);
     $obj = getLocal($relatorio->idproj, $user['ca_nome']);
     $obProjeto = $obj->obProjeto;
     $obProfessor = $obj->obProfessor;
@@ -139,8 +145,8 @@ if($tp == 'p'){
     $tipo_rela = 'pa';
     echo $scriptDisbleParcial;
 } else {
-    $relatorio = new RelFinal(); 
-    $relatorio = (object)RelFinal::get($id);
+    $relatorio = new RelFinal();
+    $relatorio = (object) RelFinal::get($id);
     $obj = getLocal($relatorio->idproj, $user['ca_nome']);
     $obProjeto = $obj->obProjeto;
     $obProfessor = $obj->obProfessor;
@@ -149,9 +155,9 @@ if($tp == 'p'){
     include __DIR__.'/includes/formFinal.php';
     $tipo_rela = $relatorio->tipo;
     echo $scriptDisbleFinal;
-};
+}
 
-switch ($user['config'] ) {
+switch ($user['config']) {
     case '0':
         $tp_avaliador = 'pr';
         $id_instancia = $user['id'];
@@ -174,7 +180,6 @@ switch ($user['config'] ) {
         break;
 }
 
+include './includes/formAvaliar.php';
 
-include './includes/formAvaliar.php'; 
-
-include '../includes/footer.php'; 
+include '../includes/footer.php';

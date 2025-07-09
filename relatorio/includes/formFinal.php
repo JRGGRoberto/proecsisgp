@@ -376,10 +376,12 @@ if ($tf == 'pr') {
         <div class="col-3">
           <div class="form-group">
             <label>Data</label>
-            <input type="date" name="data" class="form-control" id="dateAssing" value="<?php echo substr($relatorio->created_at, 0, 10); ?>" required <?php echo $editar; ?>>
+            <input type="date" name="data" class="form-control" id="dateAssing" value="<?php echo (substr($relatorio->created_at, 0, 10)) ?: date('Y-m-d'); ?>" required <?php echo $editar; ?>>
           </div>
         </div>
       </div>
+
+      
 
       <div class="form-group">
       <?php
@@ -399,14 +401,14 @@ if ($tf == 'pr') {
       </div>
 
       <?php
-
+/*
 echo date("l \\t\h\e jS");
 echo '<br>';
 echo $obProjeto->vigen_ini;
 echo '<br>';
 echo $obProjeto->vigen_fim;
 echo '<br>';
-/*
+
 $periodo_fim1 = substr($obProjeto->vigen_ini, 0, 10);
 $periodo_fim1 = substr($obProjeto->vigen_fim, 0, 10); */
 

@@ -13,7 +13,7 @@
     <input type="hidden" name="id_prof" value="<?php echo $obProjeto->id_prof; ?>">
     <input type="hidden" name="tabela" value="projetos">
     <hr>
-    <?=$msgSolicitacoAlteracao ?>
+    <?php echo $msgSolicitacoAlteracao; ?>
 
     <div class="form-group">
       <label>
@@ -50,14 +50,14 @@
         <label>
           <h6><?php echo $n; ?>.1. Telefone</h6>
         </label>
-        <input type="text" class="form-control" name="tel" readonly value="<?= $obProfessor->telefone; ?>">
+        <input type="text" class="form-control" name="tel" readonly value="<?php echo $obProfessor->telefone; ?>">
       </div>
 
       <div class="form-group col">
         <label>
           <h6><?php echo $n; ?>.2. Email</h6>
         </label>
-        <input type="text" class="form-control" name="email" readonly value="<?= $obProfessor->email; ?>">
+        <input type="text" class="form-control" name="email" readonly value="<?php echo $obProfessor->email; ?>">
       </div>
     </div>
 
@@ -72,16 +72,16 @@
 
     <hr>
 
-  <?php 
+  <?php
   $ini = null;
-  if(!is_null($relatorio->periodo_ini)){
-    $ini = substr($relatorio->periodo_ini, 0, 10);
-  } 
-  $fim = null;
-  if(!is_null($relatorio->periodo_fim)){
-    $fim = substr($relatorio->periodo_fim, 0, 10);
-  }
-  ?>
+    if (!is_null($relatorio->periodo_ini)) {
+        $ini = substr($relatorio->periodo_ini, 0, 10);
+    }
+    $fim = null;
+    if (!is_null($relatorio->periodo_fim)) {
+        $fim = substr($relatorio->periodo_fim, 0, 10);
+    }
+    ?>
     <div class="form-group">
       <label>
         <h5><?php echo ++$n; ?>. Período que se refere o Relatório</h5>
@@ -90,14 +90,14 @@
         <div class="col-3">
           <div class="form-group">
             <label>Início</label>
-            <input type="date" name="periodo_ini" id="periodo_ini" class="form-control" value="<?= $ini;?>" required <?=$editar;?> >
+            <input type="date" name="periodo_ini" id="periodo_ini" class="form-control" value="<?php echo $ini; ?>" required <?php echo $editar; ?> >
           </div>
         </div>
 
         <div class="col-3">
           <div class="form-group">
             <label>Fim</label>
-            <input type="date" name="periodo_fim" id="periodo_fim" class="form-control" value="<?= $fim; ?>" required <?=$editar?> >
+            <input type="date" name="periodo_fim" id="periodo_fim" class="form-control" value="<?php echo $fim; ?>" required <?php echo $editar; ?> >
           </div>
         </div>
 
@@ -147,12 +147,12 @@
 
       <hr>
 
-      <?php 
-          if($relatorio->tramitar == 0) {
-            if($obProjeto->id_prof != $user['id']) {
-              echo '';
-            } else {
-      ?>
+      <?php
+            if ($relatorio->tramitar == 0) {
+                if ($obProjeto->id_prof != $user['id']) {
+                    echo '';
+                } else {
+                    ?>
       <div class="form-group">
                  
         <h5 id="">Pronto ser enviado</h5>
@@ -161,12 +161,12 @@
       </div>
       <hr>
       <?php }
-      }  ?>
+                }  ?>
 
       <div class="form-group">
         <h5 id="attc"><?php echo ++$n; ?>. Anexos</h5>
         <ul id="anexos"></ul>
-        <?php if($editar <> 'readonly') { ?>
+        <?php if ($editar != 'readonly') { ?>
             <iframe src="../upload/upload.php" frameborder="0" scrolling="no"></iframe>
         <?php } ?>
         <?php echo $anex; ?>
@@ -178,15 +178,16 @@
         <div class="col-3">
           <div class="form-group">
             <label>Data</label>
-            <input type="date" name="data" class="form-control" id="dateAssing" value="<?php echo substr($relatorio->created_at, 0, 10); ?>" required <?=$editar?>>
+            <input type="date" name="data" class="form-control" id="dateAssing" value="<?php echo (substr($relatorio->created_at, 0, 10)) ?: date('Y-m-d'); ?>" required <?php echo $editar; ?>>
+            
           </div>
         </div>
       </div>
 
       <div class="form-group">
       <?php
-      if($editar == ''){
-      ?>
+                if ($editar == '') {
+                    ?>
           <a href="javascript: submitSumbeter()" class="btn btn-success btn-sm" >↗️ Salvar </a>
       <?php } ?>
          <a href="javascript: history.go(-1)" class="btn btn-warning btn-sm" >↗️ Voltar </a>

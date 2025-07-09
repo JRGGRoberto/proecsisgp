@@ -1,6 +1,6 @@
 <?php
 $tituloHeader = '';
-switch($relatorio->tipo) {
+switch ($relatorio->tipo) {
     case 'fi':
         $tituloHeader = 'RELATÓRIO FINAL DE AÇÃO DE EXTENSÃO E CULTURA';
         break;
@@ -25,7 +25,7 @@ switch($relatorio->tipo) {
   </section>
   <hr>
   <h4 style="text-align: center">ANEXO V</h4>
-  <h3 class="mt-3" style="text-align: center"><?=$tituloHeader?></h3>
+  <h3 class="mt-3" style="text-align: center"><?php echo $tituloHeader; ?></h3>
 
   
     <input type="hidden" name="id_prof" value="<?php echo $obProjeto->id_prof; ?>">
@@ -67,14 +67,14 @@ switch($relatorio->tipo) {
         <label>
           <h6><?php echo $n; ?>.1. Telefone</h6>
         </label>
-        <input type="text" class="form-control" name="tel" readonly value="<?= $obProfessor->telefone; ?>">
+        <input type="text" class="form-control" name="tel" readonly value="<?php echo $obProfessor->telefone; ?>">
       </div>
 
       <div class="form-group col">
         <label>
           <h6><?php echo $n; ?>.2. Email</h6>
         </label>
-        <input type="text" class="form-control" name="email" readonly value="<?= $obProfessor->email; ?>">
+        <input type="text" class="form-control" name="email" readonly value="<?php echo $obProfessor->email; ?>">
       </div>
     </div>
 
@@ -89,33 +89,31 @@ switch($relatorio->tipo) {
 
     <hr>
 
-  <?php 
+  <?php
 
-  
   $periodo_ini1 = substr($obProjeto->vigen_ini, 0, 10);
 
-  $periodo_fim1 = substr($obProjeto->vigen_fim, 0, 10);
+$periodo_fim1 = substr($obProjeto->vigen_fim, 0, 10);
 
-
-  if($relatorio->tipo == 're'){
+if ($relatorio->tipo == 're') {
     $periodo_ini2 = null;
-    if(!is_null($relatorio->periodo_renov_ini)){
-      $periodo_ini2 = substr($relatorio->periodo_renov_ini, 0, 10);
-    } 
+    if (!is_null($relatorio->periodo_renov_ini)) {
+        $periodo_ini2 = substr($relatorio->periodo_renov_ini, 0, 10);
+    }
     $periodo_fim2 = null;
-    if(!is_null($relatorio->periodo_renov_fim)){
-      $periodo_fim2 = substr($relatorio->periodo_renov_fim, 0, 10);
+    if (!is_null($relatorio->periodo_renov_fim)) {
+        $periodo_fim2 = substr($relatorio->periodo_renov_fim, 0, 10);
     }
-  }
+}
 
-  if($relatorio->tipo == 'pr'){
+if ($relatorio->tipo == 'pr') {
     $periodo_fim3 = null;
-    if(!is_null($relatorio->periodo_prorroga_fim)){
-      $periodo_fim3 = substr($relatorio->periodo_prorroga_fim, 0, 10);
+    if (!is_null($relatorio->periodo_prorroga_fim)) {
+        $periodo_fim3 = substr($relatorio->periodo_prorroga_fim, 0, 10);
     }
-  }
+}
 
-  ?>
+?>
     <div class="form-group">
       <label>
         <h5><?php echo ++$n; ?>. Período que se refere o Relatório</h5>
@@ -127,56 +125,56 @@ switch($relatorio->tipo) {
         <div class="col-3">
           <div class="form-group">
             <label>Início</label>
-            <input type="date" class="form-control" value="<?= $periodo_ini1; ?>" readonly>
+            <input type="date" class="form-control" value="<?php echo $periodo_ini1; ?>" readonly>
           </div>
         </div>
 
         <div class="col-3">
           <div class="form-group">
             <label>Fim</label>
-            <input type="date" class="form-control" value="<?= $periodo_fim1; ?>" readonly>
+            <input type="date" class="form-control" value="<?php echo $periodo_fim1; ?>" readonly>
           </div>
         </div>
       </div>
       <br>
 
-      <?php 
-      if($relatorio->tipo == 're'){ ?>
+      <?php
+    if ($relatorio->tipo == 're') { ?>
          <strong>Renovação</strong>
          <div class="row">
            <div class="col-3">
              <div class="form-group">
                <label>Início para renovação</label>
-               <input type="date" name="periodo_renov_ini" id="periodo_renov_ini" class="form-control" value="<?= $periodo_ini2;?>" required <?=$editar;?> >
+               <input type="date" name="periodo_renov_ini" id="periodo_renov_ini" class="form-control" value="<?php echo $periodo_ini2; ?>" required readonly >
              </div>
            </div>
    
            <div class="col-3">
              <div class="form-group">
                <label>Fim, para renovação</label>
-               <input type="date" name="periodo_renov_fim" id="periodo_renov_fim" class="form-control" value="<?= $periodo_fim2; ?>" required readonly >
+               <input type="date" name="periodo_renov_fim" id="periodo_renov_fim" class="form-control" value="<?php echo $periodo_fim2; ?>" required readonly >
              </div>
            </div>
          </div>
       <br>
-<?php } 
+<?php }
 
-if($relatorio->tipo == 'pr'){
-?>
+    if ($relatorio->tipo == 'pr') {
+        ?>
       <strong>Prorrogação</strong>
       
         <div class="col-3">
           <div class="form-group">
             <label>Até</label>
-            <input type="date" name="periodo_prorroga_fim" id="periodo_prorroga_fim" class="form-control" value="<?= $periodo_fim3; ?>" required readonly  readonly >
+            <input type="date" name="periodo_prorroga_fim" id="periodo_prorroga_fim" class="form-control" value="<?php echo $periodo_fim3; ?>" required  readonly >
           </div>
         </div>
         A prorrogação deve ter tempo máximo de 25% do período inicial e final informado no projeto.
       </div>
 
-      <?php } 
+      <?php }
 
-?>      
+    ?>      
       <hr>
       <div class="form-group">
         <label>
@@ -197,19 +195,19 @@ if($relatorio->tipo == 'pr'){
           </tr>
           <tr>
             <th>Membros da comunidade externa</th>
-            <td><input type="number" min=0 max=44 class="form-control" name="dim_mem_com_ex" value="<?= $relatorio->dim_mem_com_ex; ?>" readonly ></td>
+            <td><input type="number" min=0 max=44 class="form-control" name="dim_mem_com_ex" value="<?php echo $relatorio->dim_mem_com_ex; ?>" readonly ></td>
           </tr>
           <tr>
             <th>Discentes</th>
-            <td><input type="number" min=0 max=44 class="form-control" name="dim_disc" value="<?= $relatorio->dim_disc; ?>" readonly ></td>
+            <td><input type="number" min=0 max=44 class="form-control" name="dim_disc" value="<?php echo $relatorio->dim_disc; ?>" readonly ></td>
           </tr>
           <tr>
             <th>Docentes</th>
-            <td><input type="number" min=0 max=44 class="form-control" name="dim_doce" value="<?= $relatorio->dim_doce; ?>"  readonly ></td>
+            <td><input type="number" min=0 max=44 class="form-control" name="dim_doce" value="<?php echo $relatorio->dim_doce; ?>"  readonly ></td>
           </tr>
           <tr>
             <th>Agentes universitários e Estagiários</th>
-            <td><input type="number" min=0 max=44 class="form-control" name="dim_agent_estag" value="<?= $relatorio->dim_agent_estag; ?>"  readonly ></td>
+            <td><input type="number" min=0 max=44 class="form-control" name="dim_agent_estag" value="<?php echo $relatorio->dim_agent_estag; ?>"  readonly ></td>
           </tr>
         </table>
       </div>
@@ -243,7 +241,7 @@ if($relatorio->tipo == 'pr'){
         <div class="col">
           <div class="form-group">
             <label for="atividades">
-              <h5><?= ++$n; ?>. Atividades executadas</h5>
+              <h5><?php echo ++$n; ?>. Atividades executadas</h5>
             </label>
             <div id="sumnot_atividades"><?php echo $relatorio->atividades; ?></div>
             <textarea id="atividades" name="atividades" rows="10" hidden ></textarea>
@@ -252,7 +250,7 @@ if($relatorio->tipo == 'pr'){
       </div>
 
       <hr>
-<?php if($relatorio->tipo == 'pr'){ ?>
+<?php if ($relatorio->tipo == 'pr') { ?>
 
       <div class="row">
         <div class="col">
@@ -308,7 +306,7 @@ if($relatorio->tipo == 'pr'){
         </div>
       </div>
 
-<?php if($relatorio->tipo == 're'){ ?>
+<?php if ($relatorio->tipo == 're') { ?>
   <div class="row">
         <div class="col">
           <div class="form-group">

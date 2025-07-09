@@ -22,6 +22,7 @@ $horas >= 12 ? (int) ($horas -= 12) : (int) ($horas -= 0);
 $all = '';
 $autorizados = [
     '91ad9f28-8819-42c9-b6a9-18f284ee7453', // [MARILDA DE LARA SANTOS] Agente Sol Ângela Deeke Curitiba I 11/06/2025
+    '3d1be647-d7e3-4d00-a642-75ea14059b5b', // [IRENE OLIVEIRA        ] Agente Sol Ângela Deeke Curitiba I 11/07/2025
 ];
 
 $menuPibis = '';

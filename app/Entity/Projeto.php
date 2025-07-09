@@ -27,6 +27,9 @@ class Projeto
     public $tide;
     public $vigen_ini;
     public $vigen_fim;
+
+    public $vigen_fim_orig;
+
     public $ch_semanal;
     public $ch_total;
     public $situacao;
@@ -104,67 +107,68 @@ class Projeto
 
         // $this->id =
         $obDatabase->insert([
-                               'id' => $ida,
-                               'ver' => $v,
-                               'protocolo' => $this->protocolo,
-                               'regras' => $this->regras,
-                               'id_prof' => $this->id_prof,
-                               'nome_prof' => $this->nome_prof,
-                               'id_colegiado' => $this->id_colegiado,
-                               'tipo_exten' => $this->tipo_exten,
-                               'titulo' => $this->titulo,
-                               'tide' => $this->tide,
-                               'vigen_ini' => $this->vigen_ini,
-                               'vigen_fim' => $this->vigen_fim,
-                               'ch_semanal' => $this->ch_semanal,
-                               'ch_total' => $this->ch_total,
-                               'situacao' => $this->situacao,
+            'id' => $ida,
+            'ver' => $v,
+            'protocolo' => $this->protocolo,
+            'regras' => $this->regras,
+            'id_prof' => $this->id_prof,
+            'nome_prof' => $this->nome_prof,
+            'id_colegiado' => $this->id_colegiado,
+            'tipo_exten' => $this->tipo_exten,
+            'titulo' => $this->titulo,
+            'tide' => $this->tide,
+            'vigen_ini' => $this->vigen_ini,
+            'vigen_fim' => $this->vigen_fim,
 
-                               'cnpq_garea' => $cnpq_garea,
-                               'cnpq_area' => $cnpq_area,
-                               'cnpq_sarea' => $cnpq_sarea,
+            'ch_semanal' => $this->ch_semanal,
+            'ch_total' => $this->ch_total,
+            'situacao' => $this->situacao,
 
-                               'area_extensao' => $this->area_extensao,
-                               'linh_ext' => $this->linh_ext,
-                               'resumo' => $this->resumo,
-                               'descricao' => $this->descricao,
-                               'objetivos' => $this->objetivos,
-                               'public_alvo' => $this->public_alvo,
-                               'metodologia' => $this->metodologia,
-                               'prodserv_espe' => $this->prodserv_espe,
-                               'contribuicao' => $this->contribuicao,
-                               'contrap_nofinac' => $this->contrap_nofinac,
-                               'municipios_abr' => $this->municipios_abr,
-                               'n_cert_prev' => $this->n_cert_prev,
-                               'data' => $this->data,
-                               'edt' => $edt,
+            'cnpq_garea' => $cnpq_garea,
+            'cnpq_area' => $cnpq_area,
+            'cnpq_sarea' => $cnpq_sarea,
 
-                               'acec' => $this->acec,
-                               'vinculo' => $this->vinculo,
-                               'tituloprogvinc' => $this->tituloprogvinc,
+            'area_extensao' => $this->area_extensao,
+            'linh_ext' => $this->linh_ext,
+            'resumo' => $this->resumo,
+            'descricao' => $this->descricao,
+            'objetivos' => $this->objetivos,
+            'public_alvo' => $this->public_alvo,
+            'metodologia' => $this->metodologia,
+            'prodserv_espe' => $this->prodserv_espe,
+            'contribuicao' => $this->contribuicao,
+            'contrap_nofinac' => $this->contrap_nofinac,
+            'municipios_abr' => $this->municipios_abr,
+            'n_cert_prev' => $this->n_cert_prev,
+            'data' => $this->data,
+            'edt' => $edt,
 
-                               'finac' => $this->finac,
-                               'finacorgao' => $this->finacorgao,
-                               'finacval' => $this->finacval,
+            'acec' => $this->acec,
+            'vinculo' => $this->vinculo,
+            'tituloprogvinc' => $this->tituloprogvinc,
 
-                               'justificativa' => $this->justificativa,
+            'finac' => $this->finac,
+            'finacorgao' => $this->finacorgao,
+            'finacval' => $this->finacval,
 
-                               'cronograma' => $this->cronograma,
-                               'referencia' => $this->referencia,
+            'justificativa' => $this->justificativa,
 
-                               'parceria' => $this->parceria,
-                               'parcaatribuic' => $this->parcaatribuic,
-                               'parcanomes ' => $this->parcanomes,
+            'cronograma' => $this->cronograma,
+            'referencia' => $this->referencia,
 
-                               'obs' => $this->obs,
+            'parceria' => $this->parceria,
+            'parcaatribuic' => $this->parcaatribuic,
+            'parcanomes ' => $this->parcanomes,
 
-                               'outs_info' => $this->outs_info,
-                               'para_avaliar' => $aval,
-                               'last_result' => $lr,
-                               'created_at' => date('Y-m-d H:i:s'),
-                              // 'updated_at' => date("Y-m-d H:i:s"),
-                               'user' => $this->user,
-                            ]);
+            'obs' => $this->obs,
+
+            'outs_info' => $this->outs_info,
+            'para_avaliar' => $aval,
+            'last_result' => $lr,
+            'created_at' => date('Y-m-d H:i:s'),
+            // 'updated_at' => date("Y-m-d H:i:s"),
+            'user' => $this->user,
+        ]);
 
         // RETORNAR SUCESSO
         return $ida;
@@ -181,65 +185,68 @@ class Projeto
     {
         return (new Database('projetos'))->update('(id, ver) = ( "'.$this->id.'", '.$this->ver.' )',
             [
-             'protocolo' => $this->protocolo,
-              'regras' => $this->regras,
-              'id_prof' => $this->id_prof,
-              'nome_prof' => $this->nome_prof,
-              'id_colegiado' => $this->id_colegiado,
-              'tipo_exten' => $this->tipo_exten,
-              'titulo' => $this->titulo,
-              'tide' => $this->tide,
-              'vigen_ini' => $this->vigen_ini,
-              'vigen_fim' => $this->vigen_fim,
-              'ch_semanal' => $this->ch_semanal,
-              'ch_total' => $this->ch_total,
-              'situacao' => $this->situacao,
-              'cnpq_garea' => $this->cnpq_garea,
-              'cnpq_area' => $this->cnpq_area,
-              'cnpq_sarea' => $this->cnpq_sarea,
+                'protocolo' => $this->protocolo,
+                'regras' => $this->regras,
+                'id_prof' => $this->id_prof,
+                'nome_prof' => $this->nome_prof,
+                'id_colegiado' => $this->id_colegiado,
+                'tipo_exten' => $this->tipo_exten,
+                'titulo' => $this->titulo,
+                'tide' => $this->tide,
+                'vigen_ini' => $this->vigen_ini,
+                'vigen_fim' => $this->vigen_fim,
 
-              'area_extensao' => $this->area_extensao,
-              'linh_ext' => $this->linh_ext,
+                'vigen_fim_orig' => $this->vigen_fim_orig,
 
-              'resumo' => $this->resumo,
-              'descricao' => $this->descricao,
-              'objetivos' => $this->objetivos,
-              'public_alvo' => $this->public_alvo,
-              'metodologia' => $this->metodologia,
-              'prodserv_espe' => $this->prodserv_espe,
-              'contribuicao' => $this->contribuicao,
-              'contrap_nofinac' => $this->contrap_nofinac,
-              'n_cert_prev' => $this->n_cert_prev,
-              'data' => $this->data,
-              'edt' => $this->edt,
+                'ch_semanal' => $this->ch_semanal,
+                'ch_total' => $this->ch_total,
+                'situacao' => $this->situacao,
+                'cnpq_garea' => $this->cnpq_garea,
+                'cnpq_area' => $this->cnpq_area,
+                'cnpq_sarea' => $this->cnpq_sarea,
 
-              'acec' => $this->acec,
-              'vinculo' => $this->vinculo,
-              'tituloprogvinc' => $this->tituloprogvinc,
+                'area_extensao' => $this->area_extensao,
+                'linh_ext' => $this->linh_ext,
 
-              'finac' => $this->finac,
-              'finacorgao' => $this->finacorgao,
-              'finacval' => $this->finacval,
+                'resumo' => $this->resumo,
+                'descricao' => $this->descricao,
+                'objetivos' => $this->objetivos,
+                'public_alvo' => $this->public_alvo,
+                'metodologia' => $this->metodologia,
+                'prodserv_espe' => $this->prodserv_espe,
+                'contribuicao' => $this->contribuicao,
+                'contrap_nofinac' => $this->contrap_nofinac,
+                'n_cert_prev' => $this->n_cert_prev,
+                'data' => $this->data,
+                'edt' => $this->edt,
 
-              'municipios_abr' => $this->municipios_abr,
+                'acec' => $this->acec,
+                'vinculo' => $this->vinculo,
+                'tituloprogvinc' => $this->tituloprogvinc,
 
-              'justificativa' => $this->justificativa,
-              'cronograma' => $this->cronograma,
-              'referencia' => $this->referencia,
+                'finac' => $this->finac,
+                'finacorgao' => $this->finacorgao,
+                'finacval' => $this->finacval,
 
-              'parceria' => $this->parceria,
-              'parcaatribuic' => $this->parcaatribuic,
-              'parcanomes ' => $this->parcanomes,
+                'municipios_abr' => $this->municipios_abr,
 
-              'obs' => $this->obs,
+                'justificativa' => $this->justificativa,
+                'cronograma' => $this->cronograma,
+                'referencia' => $this->referencia,
 
-              'outs_info' => $this->outs_info,
-              'para_avaliar' => $this->para_avaliar,
-              'last_result' => $this->last_result,
-             // 'created_at' => $this->created_at,
-              'updated_at' => date('Y-m-d H:i:s'),
-              'user' => $this->user,
-             ]);
+                'parceria' => $this->parceria,
+                'parcaatribuic' => $this->parcaatribuic,
+                'parcanomes ' => $this->parcanomes,
+
+                'obs' => $this->obs,
+
+                'outs_info' => $this->outs_info,
+                'para_avaliar' => $this->para_avaliar,
+                'last_result' => $this->last_result,
+                // 'created_at' => $this->created_at,
+                'updated_at' => date('Y-m-d H:i:s'),
+                'user' => $this->user,
+            ]);
     }
 
     /**
@@ -340,8 +347,6 @@ class Projeto
      *
      * @return bool
      */
-
-     
     public function Submeter($para)
     {
         $this->para_avaliar = $para;
@@ -379,7 +384,7 @@ class Projeto
 
         // $sql ="select COUNT(protocolo) from projetos p where id = '".$this->id."'";
 
-        if(!isset($this->protocolo)){
+        if (!isset($this->protocolo)) {
             $sql = "insert into numprotocolo (idproj)   values ('".$this->id."')";
             $b = new Database();
             $b->execute($sql);
