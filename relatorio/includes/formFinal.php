@@ -397,6 +397,21 @@ if ($tf == 'pr') {
           </div>
         </div>
       </div>
+
+      <?php
+
+echo date("l \\t\h\e jS");
+echo '<br>';
+echo $obProjeto->vigen_ini;
+echo '<br>';
+echo $obProjeto->vigen_fim;
+echo '<br>';
+/*
+$periodo_fim1 = substr($obProjeto->vigen_ini, 0, 10);
+$periodo_fim1 = substr($obProjeto->vigen_fim, 0, 10); */
+
+?>
+       
       <input type="hidden" name="tabela" value="relatorios">
       <input id="anexosJS" name="anexosJS" type="text" hidden>
 

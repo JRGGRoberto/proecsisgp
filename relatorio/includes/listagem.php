@@ -1,75 +1,69 @@
 <?php
 
-  require('../includes/msgAlert.php');
+require '../includes/msgAlert.php';
 
-  function tipo($tipo){
-    switch(($tipo))
-    {
-      case 'fi':
-        return  array ('Final', 'f');
-        break; 
-      case 'pr': 
-        return  array ('Final com pedido de prorrogação', 'f');
-        break; 
-      case 're': 
-        return  array ('Final com pedido de renovação', 'f');
-        break; 
-      case 'pa': 
-        return  array ('Parcial', 'p'); 
-        break; 
-      default: 
-        return  array ('não definido', 0);
-        break;
+function tipo($tipo)
+{
+    switch ($tipo) {
+        case 'fi':
+            return ['Final', 'f'];
+            break;
+        case 'pr':
+            return ['Final com pedido de prorrogação', 'f'];
+            break;
+        case 're':
+            return ['Final com pedido de renovação', 'f'];
+            break;
+        case 'pa':
+            return ['Parcial', 'p'];
+            break;
+        default:
+            return ['não definido', 0];
+            break;
     }
-  }
+}
 
+$resultados = '';
 
-  $resultados = '';
-
-  foreach($relatorios as $relf){
+foreach ($relatorios as $relf) {
     $tipo = tipo($relf->tipo);
     $msgPublicadoFinal = '';
     $btns = '';
 
+    if ($relf->tramitar == 1) {
+        $btns = '<a href="editar'.$tipo[1].'.php?id='.$relf->id.'" class="card-link">Visualizar</a> ';
 
-    
-    if($relf->tramitar == 1){
-      $btns = '<a href="editar'.$tipo[1].'.php?id='.$relf->id.'" class="card-link">Visualizar</a> ';
+        if ($relf->publicado == 1) {
+            $msgPublicadoFinal = ' <span class="badge badge-success">Publicado</span>';
+        } else {
+            $msgPublicadoFinal = '<span class="badge badge-warning">Aguardando análise(s) - ('.$relf->etapa.'/'.$relf->etapas.')</span>';
+            // if($relf->last_result = 'n'){}
+        }
+    } else {
+        $btns = '<a href="editar'.$tipo[1].'.php?id='.$relf->id.'" class="card-link">Editar</a> ';
+        $btns .= '<a href="#" onclick="printDel(\''.$relf->id.$tipo[1].'\')" class="card-link">Excluir</a> ';
+        chEstado('fi', $opcoes);
 
-      if($relf->publicado == 1){
-        $msgPublicadoFinal = ' <span class="badge badge-success">Publicado</span>';
-      } else {
-        $msgPublicadoFinal = '<span class="badge badge-warning">Aguardando análise(s) - ('.$relf->etapa.'/'.$relf->etapas.')</span>';
-        // if($relf->last_result = 'n'){}
-      }
-    }  else  {
-      $btns = '<a href="editar'.$tipo[1].'.php?id='.$relf->id.'" class="card-link">Editar</a> ';
-      $btns .= '<a href="#" onclick="printDel(\''.$relf->id .$tipo[1] .'\')" class="card-link">Excluir</a> ';
-      chEstado('fi', $opcoes);
-      
-      if($relf->last_result == 'n'){
-        $msgPublicadoFinal = '<span class="badge badge-secondary">Não submetido - ('.$relf->etapa.'/'.$relf->etapas.')</span>';
-      } elseif($relf->last_result == 'r'){
-        $msgPublicadoFinal = '<span class="badge badge-danger">Adequações solicitadas - ('.$relf->etapa.'/'.$relf->etapas.')</span>';
-      } else {
-        $msgPublicadoFinal = '<span class="badge badge-info">?? etapas('.$relf->etapa.'/'.$relf->etapas.') tramitar('.$relf->tramitar.') result('.$relf->last_result.')</span>';
-      }
-
+        if ($relf->last_result == 'n') {
+            $msgPublicadoFinal = '<span class="badge badge-secondary">Não submetido - ('.$relf->etapa.'/'.$relf->etapas.')</span>';
+        } elseif ($relf->last_result == 'r') {
+            $msgPublicadoFinal = '<span class="badge badge-danger">Adequações solicitadas - ('.$relf->etapa.'/'.$relf->etapas.')</span>';
+        } else {
+            $msgPublicadoFinal = '<span class="badge badge-info">?? etapas('.$relf->etapa.'/'.$relf->etapas.') tramitar('.$relf->tramitar.') result('.$relf->last_result.')</span>';
+        }
     }
-
 
     $resultados .= '<div class="card">';
     $resultados .= '<div class="card-body">';
     $resultados .= $msgPublicadoFinal;
-    $resultados .= '<h5 class="card-title">Relatório '. $tipo[0] .'</h5>';
+    $resultados .= '<h5 class="card-title">Relatório '.$tipo[0].'</h5>';
     $resultados .= '<h6 class="card-subtitle mb-2 text-muted">Atividades realizadas</h6>';
-   //  $resultados .= '<p class="card-text">'.$relf->atividades.'</p>';
+    //  $resultados .= '<p class="card-text">'.$relf->atividades.'</p>';
     $resultados .= $btns;
     $resultados .= '</div>';
-    $resultados .= '</div>'; 
-  }
+    $resultados .= '</div>';
+}
 
- 
 ?>
 
 
@@ -80,14 +74,14 @@
   <div class="form-group">
     <div>
       <h5>Título da proposta</h5>
-      <input type="text" class="form-control" value="<?=$obProjeto->titulo; ?>" readonly><br>
+      <input type="text" class="form-control" value="<?php echo $obProjeto->titulo; ?>" readonly><br>
     </div>
     <div class="row">
 
           <div class="col-3">
             <div class="form-group">
               <label>Modalidade</label>
-              <input type="text" class="form-control" value="<?= $tipoE; ?>" readonly>
+              <input type="text" class="form-control" value="<?php echo $tipoE; ?>" readonly>
               
             </div>
           </div>
@@ -95,21 +89,21 @@
           <div class="col-2">
             <div class="form-group">
               <label>Início vigência</label>
-              <input type="date" class="form-control" value="<?=substr($obProjeto->vigen_ini, 0, 10); ?>" readonly>
+              <input type="date" class="form-control" value="<?php echo substr($obProjeto->vigen_ini, 0, 10); ?>" readonly>
             </div>
           </div>
           
           <div class="col-2">
             <div class="form-group">
               <label>Fim vigência</label>
-              <input type="date" class="form-control" value="<?=substr($obProjeto->vigen_fim, 0, 10); ?>" readonly>
+              <input type="date" class="form-control" value="<?php echo substr($obProjeto->vigen_fim, 0, 10); ?>" readonly>
             </div>
           </div>
 
           <div class="col-2">
             <div class="form-group">
                <label>Projeto</label><br>
-                <a href="../projetos/visualizar.php?id=<?=$obProjeto->id; ?>&amp;v=<?=$obProjeto->ver; ?>&amp;w=1" target="_blank">
+                <a href="../projetos/visualizar.php?id=<?php echo $obProjeto->id; ?>&amp;v=<?php echo $obProjeto->ver; ?>&amp;w=1" target="_blank">
                   <button class="btn btn-success btn-sm mb-2">Visualizar</button>
                 </a>
             </div>
@@ -120,18 +114,18 @@
          
   </div>
   
-  <?=$msgAlert?> 
+  <?php echo $msgAlert; ?> 
 
   <section>
     
-    <?=$resultados?>
+    <?php echo $resultados; ?>
     
   </section>
 
-<?php 
+<?php
 
-//se não houver opções de relatórios, não exibe o botão
-if(sizeof($opcoes) > 0) {
+// se não houver opções de relatórios, não exibe o botão
+if (sizeof($opcoes) > 0) {
     $novoBTNs = '<section>
             <div class="row mt-2 align-bottom">
               <div class="col" >
@@ -141,11 +135,11 @@ if(sizeof($opcoes) > 0) {
                     Novo
                   </button>
                   <div class="dropdown-menu dropdown-menu-right">';
-    
+
     foreach ($opcoes as $key => $value) {
-       $novoBTNs .= $value;
+        $novoBTNs .= $value;
     }
-    
+
     $novoBTNs .= '</div>
                 </div>
               </div>
@@ -158,7 +152,7 @@ echo $novoBTNs;
 
 ?>
   <div class="form-group">
-    <a href="../projetos/" class="btn btn-success btn-sm mb-2">Voltar</a>
+    <a href="../projetos/" class="btn btn-success btn-sm mb-2">Voltar</a>&nbsp; &nbsp;  <?php echo $msgInfoEstado; ?>
   </div>
 
 </main>

@@ -19,8 +19,8 @@ foreach ($avaliacoes as $ava) {
         <div class="card-header">
           <div class="row">
            <!-- <div class="col-sm-4"><a class="collapsed card-link" data-toggle="collapse" href="#p'.$ava->proj_id.'">📃 '.$ava->nomeproj.'</a></div> -->
-            <div class="col-sm-7"><a href="./docs/'.$ava->link.'" target="_blank">📃 '.$ava->nomeproj.'</a></div>
-            <div class="col-sm-2"><span class="badge badge-info">Nota: '.$cor[2].'</span></div>
+            <div class="col-sm-9"><a href="./docs/'.$ava->link.'" target="_blank">📃 '.$ava->nomeproj.'</a></div>
+<!--            <div class="col-sm-2"><span class="badge badge-info">Nota: '.$cor[2].'</span></div> -->
             <div class="col-sm-2"><span class="badge badge-'.$cor[0].'">'.$cor[1].'</span></div>
             <div class="col-sm-1"><a href="./pontuar.php?p='.$ava->proj_id.'&a='.$ava->aval_id.'"><span class="badge badge-success">Avaliar</span></a></div>
           </div>

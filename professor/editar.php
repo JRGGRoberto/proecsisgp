@@ -12,7 +12,6 @@ use App\Session\Login;
 Login::requireLogin();
 $user = Login::getUsuarioLogado();
 use App\Entity\Diversos;
-
 use App\Entity\Outros;
 
 define('TITLE', 'Editar dados do Professor');
@@ -33,22 +32,23 @@ if (!$obProfessor instanceof Professor) {
     exit;
 }
 
-
 $whereVinc =
 'select 
    v.id, a.ano as ano, a.edt edt, v.id_prof, v.rt, v.aprov_co_id
 from 
   anos a 
-  left join vinculo v on a.ano = v.ano and id_prof = "'.$obProfessor->id.'"';
+  left join vinculo v on a.ano = v.ano and id_prof = "'.$obProfessor->id.'"
+where 
+  a.ano >=  YEAR(CURDATE());';
 
 $padsv = '';
 $vinculos = Outros::qry($whereVinc);
 
 foreach ($vinculos as $vinc) {
     $padsv .= $vinc->ano;
-    if(is_null($vinc->id)){
-        if (($user['adm'] == 1) ) {
-            $padsv .= '<a href="../vinc/add.php?id='.$vinc->ano . $obProfessor->id.'">➕</a> vinculo PAD ';
+    if (is_null($vinc->id)) {
+        if ($user['adm'] == 1) {
+            $padsv .= '<a href="../vinc/add.php?id='.$vinc->ano.$obProfessor->id.'">➕</a> vinculo PAD ';
         } else {
             $padsv .= 'Sem vinculo';
         }
@@ -209,6 +209,13 @@ if (isset($_POST['nome'])) {
     header('location: index.php?status=success');
     exit;
 }
+function validaMail1($email)
+{
+    $conta = explode('@', $email);
+
+    return $conta[1] == 'unespar.edu.br' ? ['✅', 'readonly'] : ['<span class="badge badge-danger">Deve ser uma conta <strong>@unespar.edu.br</strong></span>', ''];
+}
+$infoMail = validaMail1($obProfessor->email);
 
 include '../includes/header.php';
 include __DIR__.'/includes/formulario.php';

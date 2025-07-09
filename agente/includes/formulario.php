@@ -1,5 +1,6 @@
 <?php
-use \App\Session\Login;
+use App\Session\Login;
+
 Login::requireLogin();
 $user = Login::getUsuarioLogado();
 
@@ -14,18 +15,18 @@ $user = Login::getUsuarioLogado();
     </a>
   </section>
 
-  <h2 class="mt-3"><?=TITLE?></h2>
+  <h2 class="mt-3"><?php echo TITLE; ?></h2>
 
   <form method="post" id="formprof">
     
     <div class="row">
                           
-     <input id="idprf" name="idprf" type="text" hidden value="<?= $obAgente->id ?>">
+     <input id="idprf" name="idprf" type="text" hidden value="<?php echo $obAgente->id; ?>">
 
       <div class="col-8">
         <div class="form-group">
           <label>Nome</label>
-          <input type="text" class="form-control" name="nome" maxlength="60"  value="<?=$obAgente->nome?>" required>
+          <input type="text" class="form-control" name="nome" maxlength="60"  value="<?php echo $obAgente->nome; ?>" required>
         </div>
       </div>
 
@@ -33,7 +34,7 @@ $user = Login::getUsuarioLogado();
         <div class="form-group">
           <label>CPF</label>
           <a href="#" data-toggle="tooltip" title="Informe apenas os números" 
-          style="text-decoration:none;"><input type="text" class="form-control" name="cpf" id="cpf" maxlength="11" value="<?=$obAgente->cpf?>" onfocusout="valCPF()" ></a>
+          style="text-decoration:none;"><input type="text" class="form-control" name="cpf" id="cpf" maxlength="11" value="<?php echo $obAgente->cpf; ?>" onfocusout="valCPF()" ></a>
 
         </div>
       </div>
@@ -41,8 +42,8 @@ $user = Login::getUsuarioLogado();
     <div class="row">
       <div class="col">
         <div class="form-group">
-          <label>E-mail</label>
-          <input type="email" class="form-control" name="email" id="email" maxlength="40" value="<?=$obAgente->email?>" onfocusout="valEmail()" required>
+          <label>E-mail <?php echo $infoMail[0]; ?></label>
+          <input type="email" class="form-control" name="email" id="email" maxlength="40" value="<?php echo $obAgente->email; ?>" onfocusout="valEmail()" required <?php echo $infoMail[1]; ?>>
         </div>
       </div>
 
@@ -51,19 +52,18 @@ $user = Login::getUsuarioLogado();
           <label for="ca">Campus</label>
           <select name="lotacao" id="ca" class="form-control" required>
              <option value="">Selecione</option>
-             <?= $opts ?>
+             <?php echo $opts; ?>
           </select>
         </div> 
       </div>
 
 
       <?php
-echo 
-"<script>
+echo "<script>
   let campusId = document.getElementById('ca'); 
-  campusId.value = '".  $obAgente->lotacao ."';
+  campusId.value = '".$obAgente->lotacao."';
 </script>";
-      ?>
+?>
 
     </div>
 
@@ -76,13 +76,13 @@ echo
           <div>
               <div class="form-check form-check-inline">
                 <label class="form-control">
-                  <input type="radio" name="cat_func" value="e" <?=$obAgente->cat_func == 'e' ? 'checked' : ''?>> Efetivo
+                  <input type="radio" name="cat_func" value="e" <?php echo $obAgente->cat_func == 'e' ? 'checked' : ''; ?>> Efetivo
                 </label>
               </div>
     
               <div class="form-check form-check-inline">
                 <label class="form-control">
-                  <input type="radio" name="cat_func" value="c" <?=$obAgente->cat_func == 'c' ? 'checked' : ''?>> Colaborador
+                  <input type="radio" name="cat_func" value="c" <?php echo $obAgente->cat_func == 'c' ? 'checked' : ''; ?>> Colaborador
                 </label>
               </div>
           </div>
@@ -107,7 +107,7 @@ echo
 
      <div class="col">
        <div class="form-group">
-         <label>Senha <?= TITLE <> 'Cadastrar professor'? '<span class="badge badge-warning">Não mexa para não alterá-la</span>': null ?> </label>
+         <label>Senha <?php echo TITLE != 'Cadastrar professor' ? '<span class="badge badge-warning">Não mexa para não alterá-la</span>' : null; ?> </label>
          <input type="password" class="form-control" name="senha" >
        </div>
      </div>

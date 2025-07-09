@@ -288,10 +288,12 @@ if (in_array($obUsuario['config'], [1, 2, 3])) {
 
 <?php } ?> 
 
+   
+      
+<!--      <button type="button" class="btn btn-primary">Projetos</button>
+    -->     
+      <?php echo $menuPibis; ?>
       <?php echo $adminOpts; ?>
-<!--
-      <button type="button" class="btn btn-primary">Projetos</button>
-    -->  <?php echo $menuPibis; ?>
 
       <div clastoasts="btn-group btn-group-sm">
         <button type="button" class="btn btn-primary dropdown-toggle" data-toggle="dropdown">

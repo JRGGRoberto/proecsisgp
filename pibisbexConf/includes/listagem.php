@@ -32,9 +32,8 @@ foreach ($ProjPIbisBex as $ava) {
           <div class="d-flex flex-row-reverse ">
             <div class="p-1"></div>
             <div class="p-1"></div>
-            <a href="./avaliar.php?id='.$ava->link.'" target=""><button class="btn btn-success btn-sm mb-2"> Visualizar/Avaliar relatorio</button></a>
             <div class="p-1"></div>
-            <a href="../projetos/visualizar.php?id='.$ava->link.'&w=nw" target=""><button class="btn btn-success btn-sm mb-2"> Visualizar projeto</button></a>
+            <a href="./docs/'.$ava->link.'" target="_blank"><button class="btn btn-success btn-sm mb-2"> Visualizar projeto</button></a>
             <div class="p-1"></div>
           </div>
           
@@ -53,7 +52,7 @@ include '../includes/paginacao.php';
 
 ?>
 <main>
-  <h2 class="mt-0">Lista de projetos PIBIS / PIBEX</h2>
+  <h2 class="mt-0">ADM - Lista de projetos PIBIS / PIBEX</h2>
   
   <?php echo $msgAlert; ?>
 
