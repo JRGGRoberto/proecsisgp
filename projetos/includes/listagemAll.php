@@ -54,6 +54,8 @@ foreach ($projetos as $proj) {
             $progresso = '<span class="badge badge-success ">Excutado</span>';
         }
         $progresso .= '<a href="../projetos/visualizar.php?id='.$proj->id.'&v='.$proj->ver.'&w=nw" target="_blank">📄</a>';
+    } elseif ($proj->regras == '7c953457-5e79-11f0-9223-3a9832f2c2cb') {
+        $progresso = '<span class="badge badge-success ">Renovado</span>';
     } else {
         is_null($proj->colegiado) ? $col = 'A definir' : $col = $proj->colegiado;
 

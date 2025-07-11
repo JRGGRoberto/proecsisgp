@@ -406,6 +406,27 @@ class Projeto
     }
 
     /**
+     * Renovação, duplicação do projeto novo Período de vigência.
+     *
+     * @return Projeto
+     */
+    public function renovacao($ini, $fim)
+    {
+        $this->last_result = 'a';
+        $this->edt = 0;
+        $this->titulo = $this->titulo.'RENOVACAO['.$this->protocolo.']';
+        $this->protocolo = $this->protocolo.'R1';
+        $this->id = null;
+        $this->ver = 0;
+        $this->vigen_ini = $ini;
+        $this->vigen_fim = $fim;
+        $this->vigen_fim_orig = null;
+        $this->cadastrar();
+
+        return true;
+    }
+
+    /**
      * Método responsável por cadastrar um novo Registro no banco.
      *
      * @return bool
