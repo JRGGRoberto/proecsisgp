@@ -274,7 +274,7 @@ WHERE
 $obQAvalioRel = Outros::qry($sql);
 */
 
-if (in_array($obUsuario['config'], [1, 2, 3])) {
+if (in_array($obUsuario['config'], [1, 3])) {
     ?>
       <div class="btn-group btn-group-sm">
     <!--    <button type="button" class="btn btn-primary dropdown-toggle" data-toggle="dropdown">Manutenção temporária</button>-->
