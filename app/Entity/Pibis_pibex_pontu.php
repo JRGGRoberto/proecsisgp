@@ -94,7 +94,7 @@ class Pibis_pibex_pontu
      */
     public static function gets($where = null, $order = null, $limit = null)
     {
-        return (new Database('pibixpibex'))->select($where, $order, $limit)
+        return (new Database('pibispibex_v'))->select($where, $order, $limit)
                                        ->fetchAll(\PDO::FETCH_CLASS, self::class);
     }
 
@@ -118,7 +118,7 @@ class Pibis_pibex_pontu
      */
     public static function getQntd($where = null)
     {
-        return (new Database('pibixpibex'))->select($where, null, null, 'COUNT(*) as qtd')
+        return (new Database('pibispibex_v'))->select($where, null, null, 'COUNT(*) as qtd')
                                       ->fetchObject()
                                       ->qtd;
     }
