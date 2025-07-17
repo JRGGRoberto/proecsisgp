@@ -20,8 +20,8 @@ foreach ($ProjPIbisBex as $ava) {
   <div class="card-header">
      <div class="row">
         <div class="col-sm-6"><a class="collapsed card-link" data-toggle="collapse" href="#p'.$ava->id.'">📃 '.$ava->nome.'</a></div>
-        <div class="col-sm-4">aaaaa</div>
-        <div class="col-sm-1"><span class="badge badge-info">bbbb</span> </div>
+        <div class="col-sm-4">_</div>
+        <div class="col-sm-1"><span class="badge badge-info">_</span> </div>
         <div class="col-sm-1"><span class="badge badge-warning ">'.$ava->programa.'</span>
         </div>
         
@@ -33,7 +33,7 @@ foreach ($ProjPIbisBex as $ava) {
             <div class="p-1"></div>
             <div class="p-1"></div>
             <div class="p-1"></div>
-            <a href="./docs/'.$ava->link.'" target="_blank"><button class="btn btn-success btn-sm mb-2"> Visualizar projeto</button></a>
+            <a href="../pibisbex/docs/'.$ava->programa.'/'.$ava->link.'" target="_blank"><button class="btn btn-success btn-sm mb-2"> Visualizar projeto</button></a>
             <div class="p-1"></div>
           </div>
           
@@ -42,7 +42,7 @@ foreach ($ProjPIbisBex as $ava) {
       </div>
     </div>
            
-        </div>';
+        ';
 }
 $resultados .= '</div>';
 
@@ -57,7 +57,7 @@ include '../includes/paginacao.php';
   <?php echo $msgAlert; ?>
 
   <section>
-
+<!--
     <form method="get">
 
       <div class="row my-2">
@@ -65,7 +65,7 @@ include '../includes/paginacao.php';
         <div class="col">
           <label>Buscar por titulo</label> 
           <input type="text" name="busca" class="form-control form-control-sm" value="<?php echo $busca; ?>"  id="titulo"  onchange="showLimpar();">
-        </div>
+        </div>  -->
 <!--
         <div class="col">
           <label>Buscar Colegiado</label>
@@ -78,7 +78,7 @@ include '../includes/paginacao.php';
         </div>
 
 -->
-        <div class="col-1 d-flex align-items-end">
+ <!--       <div class="col-1 d-flex align-items-end">
           <button type="submit" class="btn btn-primary btn-sm mr-2">Filtrar</button>
           <a href="./" id="limpar"><span class="badge badge-primary">x</span></a>
         </div>
@@ -87,7 +87,7 @@ include '../includes/paginacao.php';
 
     </form>
 
-  </section>
+  </section> -->
 
   <section>
 

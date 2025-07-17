@@ -9,7 +9,7 @@ Login::requireLogin();
 $user = Login::getUsuarioLogado();
 
 use App\Db\Pagination;
-use App\Entity\pibis_pibex_proj;
+use App\Entity\Pibis_pibex_proj;
 
 // Busca
 $busca = filter_input(INPUT_GET, 'busca', FILTER_SANITIZE_STRING);
@@ -42,12 +42,12 @@ $condicoes = array_filter($condicoes);
 $where = implode(' AND ', $condicoes);
 
 // Qntd total de registros
-$qntProjPIbisBex = pibis_pibex_proj::getQntd($where);
+$qntProjPIbisBex = Pibis_pibex_proj::getQntd($where);
 
 // paginação
 $obPagination = new Pagination($qntProjPIbisBex, $_GET['pagina'] ?? 1, 10);
 
-$ProjPIbisBex = pibis_pibex_proj::gets($where, null, $obPagination->getLimite());
+$ProjPIbisBex = Pibis_pibex_proj::gets($where, null, $obPagination->getLimite());
 
 include '../includes/header.php';
 include __DIR__.'/includes/listagem.php';

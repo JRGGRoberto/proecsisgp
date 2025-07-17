@@ -1,7 +1,7 @@
 <hr>
 <h4>Avaliação do projeto [<?php echo $proj->programa; ?>]: <?php echo $proj->nome; ?>
 
-<a href="."                                               class="btn btn-warning btn-sm float-right" > ↩️ Voltar</button>  <a href="./docs/<?php echo $proj->link; ?>" target="_blank" class="btn btn-success btn-sm float-right">📃</a>
+<a href="."                                               class="btn btn-warning btn-sm float-right" > ↩️ Voltar</button>  <a href="./docs/<?php echo $proj->programa.'/'.$proj->link; ?>" target="_blank" class="btn btn-success btn-sm float-right">📃</a>
 
 </h4>
 
@@ -41,7 +41,7 @@
                 </ol>
                 <hr>
                 <div class="float-right">
-                    <input type="range" id="qn1" name="qn1" min="0" max="50"  value="<?php echo $pontuacao->qn1; ?>" onchange="atualizarValor(this)"> <label for="qn1"><?php echo $pontuacao->qn1; ?></label>
+                    <input type="range" id="qn1" name="qn1" min="0" max="50" step="10" value="<?php echo $pontuacao->qn1; ?>" onchange="atualizarValor(this)"> <label for="qn1"><?php echo $pontuacao->qn1; ?></label>
                 </div>
             </td>
         </tr>
@@ -55,7 +55,7 @@
                 </ol>
                 <hr>
                 <div class="float-right">
-                    <input type="range" id="qn2" name="qn2" min="0" max="40" value="<?php echo $pontuacao->qn2; ?>" onchange="atualizarValor(this)"> <label for="qn2"><?php echo $pontuacao->qn2; ?></label>
+                    <input type="range" id="qn2" name="qn2" min="10" max="40" step="30" value="<?php echo $pontuacao->qn2; ?>" onchange="atualizarValor(this)"> <label for="qn2"><?php echo $pontuacao->qn2; ?></label>
                 </div>
             
         </tr>
@@ -70,7 +70,7 @@
                 </ol>
                 <hr>
                 <div class="float-right">
-                    <input type="range" id="qn3" name="qn3" min="0" max="15" value="<?php echo $pontuacao->qn3; ?>" onchange="atualizarValor(this)"> <label for="qn3"><?php echo $pontuacao->qn3; ?></label>
+                    <input type="range" id="qn3" name="qn3" min="0" max="15" step="5" value="<?php echo $pontuacao->qn3; ?>" onchange="atualizarValor(this)"> <label for="qn3"><?php echo $pontuacao->qn3; ?></label>
                 </div>
             </td>
         </tr>
@@ -91,7 +91,7 @@
                 Obs. Para este item a pontuação é acumulativa para número de alunos e entre os itens a, b e c, somando no máximo 40 pontos. Os nomes deverão constar no anexo I da proposta.
                 <hr>
                 <div class="float-right">
-                    <input type="range" id="qn4" name="qn4" min="0" max="40" value="<?php echo $pontuacao->qn4; ?>" onchange="atualizarValor(this)"> <label for="qn4"><?php echo $pontuacao->qn4; ?></label>
+                    <input type="range" id="qn4" name="qn4" min="0" max="40"  step="5" value="<?php echo $pontuacao->qn4; ?>" onchange="atualizarValor(this)"> <label for="qn4"><?php echo $pontuacao->qn4; ?></label>
                 </div>
             </td>
         </tr>
@@ -105,7 +105,7 @@
                 Obs.Os nomes deverão constar no anexo I da proposta.
                 <hr>
                 <div class="float-right">
-                    <input type="range" id="qn5" name="qn5" min="0" max="15" value="<?php echo $pontuacao->qn5; ?>" onchange="atualizarValor(this)"> <label for="qn5"><?php echo $pontuacao->qn5; ?></label>
+                    <input type="range" id="qn5" name="qn5" min="0" step="5" max="15" value="<?php echo $pontuacao->qn5; ?>" onchange="atualizarValor(this)"> <label for="qn5"><?php echo $pontuacao->qn5; ?></label>
                 </div>
             </td>
         </tr>

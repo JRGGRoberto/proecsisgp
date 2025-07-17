@@ -32,7 +32,7 @@ $obAvaliador = Pibis_pibex_avaliadores::getQntd('id = "'.$idUser.'" and ativo = 
 if ($obAvaliador > 0) {
     $menuPibis = '
     <div class="btn-group btn-group-sm">
-       <button type="button" class="btn btn-primary dropdown-toggle" data-toggle="dropdown">PIBIS/BIBEX</button>
+       <button type="button" class="btn btn-primary dropdown-toggle" data-toggle="dropdown">PIBIS/PIBEX</button>
         <div class="dropdown-menu">
           <a class="dropdown-item btn-sm" href="../pibisbex">Avaliar</a>';
     $obAvaliador = Pibis_pibex_avaliadores::get($idUser, 'adm = 1');

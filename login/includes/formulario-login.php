@@ -40,7 +40,9 @@ $alertaLogin = strlen($alertaLogin) ? '<div class="alert alert-danger">'.$alerta
             
           <button type="submit"  class="btn btn-primary">🔑 Entrar</button>
           <div>&nbsp;</div>
-          <div class="alert alert-info col">Para as contas @unespar.edu.br você pode utilizar sua senha de acesso ao email <strong>@unespar.edu.br</strong></div>
+          <div class="alert alert-info col">Usuário = <strong>nome.sobrenome + @unespar.edu.br</strong><br>
+          Senha = (senha do Domínio da Rede Local)</div>
+
         </div> 
       
       </form>
