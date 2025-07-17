@@ -8,47 +8,27 @@ use App\Session\Login;
 Login::requireLogin();
 $user = Login::getUsuarioLogado();
 
-use App\Db\Pagination;
-use App\Entity\Pibis_pibex_proj;
+use App\Entity\Outros;
 
-// Busca
-$busca = filter_input(INPUT_GET, 'busca', FILTER_SANITIZE_STRING);
-/*
-$campus = filter_input(INPUT_GET, 'campus', FILTER_SANITIZE_STRING);
-$colegiado = filter_input(INPUT_GET, 'colegiado', FILTER_SANITIZE_STRING);
-$centro = filter_input(INPUT_GET, 'centro', FILTER_SANITIZE_STRING);
-*/
+$qry =
+"
+select 
+   ppa.id,
+   u.nome,  u.email, u.ca_nome campus, u.co_nome colegiado,
+   (select concat(p.nomeproj, ' ',p.doit, ' ', p.total) from pibispibex_v p where p.aval_id = pp.aval_id order by 1 limit 1 offset 0) prj1,
+   (select concat(p.nomeproj, ' ',p.doit, ' ', p.total)  from pibispibex_v p where p.aval_id = pp.aval_id order by 1 limit 1 offset 1) prj2,
+   (select concat(p.nomeproj, ' ',p.doit, ' ', p.total)  from pibispibex_v p where p.aval_id = pp.aval_id order by 1 limit 1 offset 2) prj3,
+   (select concat(p.nomeproj, ' ',p.doit, ' ', p.total)  from pibispibex_v p where p.aval_id = pp.aval_id order by 1 limit 1 offset 3) prj4
+FROM  
+   pibis_pibex_avaliadores ppa
+   left join usuarios u on ppa.id  = u.id 
+   left join pibispibex_v pp on pp.aval_id  = ppa.id
+group by 2
+order by 4, 2
+";
 
-// Filtro de status
-$filtroStatus = filter_input(INPUT_GET, 'filtroStatus', FILTER_SANITIZE_STRING);
-
-// Condições SQL
-$condicoes = [
-    strlen($busca) ? 'titulo LIKE "%'.str_replace(' ', '%', $busca).'%"' : null, /*,
-  strlen($campus) ? "campus = '$campus'": null,
-  strlen($colegiado) ? 'colegiado LIKE "%'.str_replace(' ','%',$colegiado).'%"': null,
-  strlen($centro) ? 'centros LIKE "%'.str_replace(' ','%',$centro).'%"': null
-  */
-];
-
-/*
-array_push($condicoes, 'id_instancia = "'.$inst_id.'"');
-array_push($condicoes, 'tp_avaliador = "'.$inst_tp.'"');
-*/
-// Remove posições vazias
-$condicoes = array_filter($condicoes);
-
-// Cláusula WHERE
-$where = implode(' AND ', $condicoes);
-
-// Qntd total de registros
-$qntProjPIbisBex = Pibis_pibex_proj::getQntd($where);
-
-// paginação
-$obPagination = new Pagination($qntProjPIbisBex, $_GET['pagina'] ?? 1, 10);
-
-$ProjPIbisBex = Pibis_pibex_proj::gets($where, null, $obPagination->getLimite());
+$lista = Outros::qry($qry);
 
 include '../includes/header.php';
-include __DIR__.'/includes/listagem.php';
+include __DIR__.'/includes/listagem2.php';
 include '../includes/footer.php';
