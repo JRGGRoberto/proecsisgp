@@ -37,7 +37,7 @@ if ($obAvaliador > 0) {
           <a class="dropdown-item btn-sm" href="../pibisbex">Avaliar</a>';
     $obAvaliador = Pibis_pibex_avaliadores::get($idUser, 'adm = 1');
     if ($obAvaliador instanceof Pibis_pibex_avaliadores) {
-        $menuPibis .= "<a class='dropdown-item btn-sm' href='../pibisbexConf'>Configurações</a>";
+        $menuPibis .= "<a class='dropdown-item btn-sm' href='../pibisbexConf'>Acompanhamento</a>";
     }
 
     $menuPibis .= '</div>

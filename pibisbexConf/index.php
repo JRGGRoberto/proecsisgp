@@ -24,7 +24,7 @@ FROM
    left join usuarios u on ppa.id  = u.id 
    left join pibispibex_v pp on pp.aval_id  = ppa.id
 group by 2
-order by 4, 2
+order by 2
 ";
 
 $lista = Outros::qry($qry);
