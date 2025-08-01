@@ -1,89 +1,215 @@
 <?php
 
 require '../includes/msgAlert.php';
-use App\Entity\Outros;
 
-$qnt1 = 0;
+use App\Entity\Avaliacoes;
+use App\Entity\Colegiado;
 
-function resumirTexto(string $texto, int $limite = 256): string
+class Blocos
 {
-    $textoLimpo = trim(strip_tags($texto));
-    if (mb_strlen($textoLimpo) <= $limite) {
-        return $textoLimpo;
-    }
+    public $pos;
+    public $cor;
 
-    return substr($textoLimpo, 0, $limite).' <span class="badge badge-pill badge-success">(continua...)</span>';
+    public function __construct($pos, $cor)
+    {
+        $this->pos = $pos;
+        $this->cor = $cor;
+    }
 }
 
+$qnt1 = 0;
+$col = '';
+$LastV = '';
+
+include './includes/funcoes.php';
+
 $resultados = '<div id="accordion">';
+
 foreach ($projetos as $proj) {
-    ++$qnt1;
-
-    is_null($proj->colegiado) ? $col = 'A definir' : $col = $proj->colegiado;
-
-    $dataA = '';
-    if (strlen($proj->vigen_fim) > 8) {
-        $dataA = substr($proj->vigen_fim, 8, 2).'/'.
-                 substr($proj->vigen_fim, 5, 2).'/'.
-                 substr($proj->vigen_fim, 0, 4);
+    $showRelatorios = false;
+    if ($proj->aprov == 1) {
+        $showRelatorios = true;
+    } else {
+        $showRelatorios = false;
     }
 
-    $query = "select * from relatorios r where r.publicado  = 1 and r.idproj = '".$proj->id."'";
-    $relatorios = Outros::qry($query);
-    // ----
+    ++$qnt1;
+    if (
+        in_array($proj->regras, ['e341e624-0715-11ef-b2c8-0266ad9885af', '287c102f-e5fa-11ee-b2c8-0266ad9885af'])
+        && ($proj->para_avaliar == -1)
+        && ($proj->last_result == 'a')
+        && ($proj->edt == 0)
+    ) {
+        $progresso = '<span class="badge badge-success ">Em execução/Excutado <a href="../projetos/visualizar.php?id='.$proj->id.'&amp;v='.$proj->ver.'&amp;w=nw" target="_blank">📄</a></span>'
+        // .' <br>e341e624-0715-11ef-b2c8-0266ad9885af <br>'. '287c102f-e5fa-11ee-b2c8-0266ad9885af <br>' . $proj->regras
+        ;
+    } else {
+        // /
+        is_null($proj->colegiado) ? $col = 'A definir' : $col = $proj->colegiado;
 
-    // 2023-03-09 00:00:00
+        $where = 'id_proj = "'.$proj->id.'"';
+        $order = 'ver desc, fase_seq desc';
+        $ListaVerAnts = Avaliacoes::getRegistros($where, $order, null);
+
+        $LastV =
+           '<table class="table table-bordered table-sm">
+          <thead class="thead-dark">
+            <tr>
+              <th>Projeto</th>
+              <th>Parecere(s)</th>
+              <th>Parte</th>
+            </tr>
+          </thead>
+          <tbody>';
+
+        $a = 0;
+        $etapas = 0;
+        $btnStatus = [];
+        foreach ($ListaVerAnts as $la) {
+            ++$a;
+            $class = '';
+            $td = '';
+
+            switch ($la->resultado) {
+                case 'a':
+                    $class = 'table-success';
+                    $td = '<td><a href="../forms/'.$la->form.'/vista.php?p='.$proj->id.'&v='.$la->ver.'" target="_blank">📄</a> '.$la->tp_instancia.'</td>';
+
+                    array_push($btnStatus, new Blocos($la->fase_seq, 'success')); // 'primary')); //
+                    break;
+                case 'r':
+                    $class = 'table-danger';
+                    $td = '<td><a href="../forms/'.$la->form.'/vista.php?p='.$proj->id.'&v='.$la->ver.'" target="_blank">📄</a> '.$la->tp_instancia.'</td>';
+
+                    array_push($btnStatus, new Blocos($la->fase_seq, 'danger'));
+                    break;
+                default:
+                    $class = 'table-warning';
+                    $td = '<td><span class="badge badge-light">Espera de parecer... ['.$la->tp_instancia.'] '.dt($la->created_at).'</span></td>';
+
+                    array_push($btnStatus, new Blocos($la->fase_seq, 'warning'));
+            }
+
+            $LastV .=
+            '<tr class="'.$class.'">
+              <td><a href="../projetos/visualizar.php?id='.$proj->id.'&v='.$la->ver.'&w=nw" target="_blank">📄 <span class="badge badge-info">'.($la->ver + 1).'</span></a></td>'
+
+              .$td.
+
+              '<td>'.$la->fase_seq.'/'.$la->etapas.'</td>
+             </tr>';
+
+            $etapas = $la->etapas;
+        }
+        $LastV .=
+          '</tbody>
+       </table>';
+
+        if ($a == 0) {
+            $LastV = '';
+            $progresso = '<span class="badge badge-warning">Não submetido</span>';
+        } else {
+            $btnStatus = array_reverse($btnStatus);
+
+            $btnS = [];  // / criando todos os blocos em CINZA
+            for ($x = 0; $x <= $etapas - 1; ++$x) {
+                array_push($btnS, new Blocos($x, 'secondary'));
+            }
+
+            $progresso =
+             '<span class="badge badge-light">Processo<br>
+            <div class="btn-group">';
+
+            foreach ($btnStatus as $btn) {
+                $btnS[$btn->pos - 1] = $btn;
+            }
+
+            foreach ($btnS as $btn) {
+                $progresso .= '<button type="button" class="btn btn-'.$btn->cor.'" disabled></button>';
+            }
+
+            $progresso .=
+              ' </div>
+          </span>';
+        }
+    }
+
     $resultados .= '
-<div class="card mt-2">
-  <div class="card-header">
-    <div class="row">
-        <div class="col-sm">📃 <strong>Título: </strong><a class="collapsed card-link" data-toggle="collapse" href="#p'.$proj->id.'"><strong>'.$proj->titulo.'</strong></a></div>
-    </div>
-    <div class="row">
-        <div class="col-sm-5"><strong>Tipo de Proposta:</strong> '.$proj->tipo_exten.'</div>
-        <div class="col-sm"><strong>Para:</strong> '.$col.'</div> 
-        <div class="col-sm"><strong>Fim de Vig.:</strong> '.$dataA.'</div> 
-        
-    </div>
-    <div class="row">
-        <div class="col-sm">
-          <strong>Coordenador:</strong> '.$proj->nome_prof.'
-        </div>
-        <div class="col-sm">
-          <strong>Campus:</strong> '.$proj->campus.'
-        </div>
-        <div class="col-sm">
-          <strong>TIDE:</strong> '.$proj->tide.'
-        </div>
-    </div>
-  </div>
-
-
-  
-    <div id="p'.$proj->id.'" class="collapse" data-parent="#accordion">
-      <div class="card-body">
-
-        <div class="row">
-          <div class="col-9">
-            <p><strong>Resumo:</strong> '.resumirTexto($proj->resumo).'</p>
-            <p><strong>Objetivos:</strong> '.resumirTexto($proj->objetivos).'</p>
+      <div class="card mt-2">
+        <div class="card-header">
+          <div class="row">
+              <div class="col-sm-5">📃 <strong>Título: </strong><a class="collapsed card-link" data-toggle="collapse" href="#p'.$proj->id.'"><strong>'.$proj->titulo.'</strong></a></div>
+              <div class="col-sm-5"><strong>Tipo de Proposta:</strong> '.$proj->tipo_exten.'</div>
+              <div class="col-sm-2">'.$progresso.'</div>
           </div>
-          <div class="col">
-          
+          <div class="row">
+              <div class="col-sm"><strong>Enviado para o colegiado de:</strong> '.$col.'</div> 
           </div>
         </div>
 
-        <hr>
-        
-        <div class="d-flex flex-row-reverse ">
-          <a href="visualizar.php?id='.$proj->id.'&v='.$proj->ver.'&w=1" target="_blank"><button class="btn btn-success btn-sm mb-2">Projeto 📃</button></a>
+
+      <div id="p'.$proj->id.'" class="collapse" data-parent="#accordion">
+        <div class="card-body">
+           <div class="row">
+        <div class="col-8">
+          <p><strong>Resumo:</strong> '.resumirTexto($proj->resumo).'</p>
+          <p><strong>Objetivos:</strong> '.resumirTexto($proj->objetivos).'</p>
         </div>
+        <div class="col-4">
+        '.$LastV.'
+        </div>
+      </div>
+
         ';
 
+    $verAnt = $proj->ver - 1;
+    // Btn Submeter ou
+
+    if ($proj->para_avaliar < 0) {
+        $btnSub =
+        '<button id="sub'.$proj->id.'v'.$proj->ver.'" class="btn btn-primary btn-sm mb-2" onclick="writeNumber(this)">📤 Submeter</button>
+         <div class="p-1"></div>
+         <button id="del'.$proj->id.'v'.$proj->ver.'" class="btn btn-danger  btn-sm mb-2" onclick="writeNumber(this)">🗑 Excluir</button>';
+    } else {
+        if ($proj->last_result == 'r') {
+            $btnSub = '<a href="../forms/'.$proj->form.'/vista.php?p='.$proj->id.'&v='.$verAnt.'"><button class="btn btn-danger btn-sm mb-2" >📑 Informações de adequações</button></a>';
+        } else {
+            $btnSub = '<button id="Alt'.$proj->id.'v'.$proj->ver.'" class="btn btn-primary btn-sm mb-2" onclick="writeNumber(this)">📤 Submeter novamente</button>';
+        }
+    }
+
+    if ($proj->edt == 1) {
+        $resultados .=
+      '<hr>
+         <div class="d-flex flex-row-reverse ">'
+         .$btnSub.
+        '
+          <div class="p-1"></div>
+          <a href="editar.php?id='.$proj->id.'&v='.$proj->ver.'"><button class="btn btn-success btn-sm mb-2">📄 Editar</button></a>
+        </div>';
+    } else {
+        $nomecol = Colegiado::getRegistro($proj->para_avaliar);
+
+        $reltorios = '';
+        if ($showRelatorios) {
+            $reltorios .=
+            '<a href="../relatorio/index.php?id='.$proj->id.'"><button class="btn btn-success btn-sm mb-2">📊 Relatório(s) Parcial/Final</button></a> ';
+        }
+
+        $resultados .=
+          '<hr>
+            
+            <div class="d-flex flex-row-reverse ">
+               <a href="visualizar.php?id='.$proj->id.'&v='.$proj->ver.'&w=1" target="_blank"><button class="btn btn-success btn-sm mb-2">Visualizar</button></a>
+               &nbsp;'.$reltorios.' &nbsp;  
+              
+            </div>';
+    }
+
     $resultados .= '
+        </div>
       </div>
-    </div>
-  </div>';
+    </div>';
 }
 $resultados .= '</div>';
 
@@ -93,8 +219,14 @@ include '../includes/paginacao.php';
 
 ?>
 
+
+
+
+
+
+
 <main>
-  <h2 class="mt-0">Projetos</h2>
+  <h2 class="mt-0">Meus projetos</h2>
   
   <?php echo $msgAlert; ?> 
   <section>
@@ -103,27 +235,15 @@ include '../includes/paginacao.php';
 
       <div class="row my-2">
 
-        <div class="col-4">
+        <div class="col-5">
           <label>Titulo</label> 
           <input type="text" name="titulo" class="form-control form-control-sm" value="<?php echo $titulo; ?>"  id="titulo"   onchange="showLimpar();">
         </div>
 
-        <div class="col-4">
-          <label>Coordenador</label> 
-          <input type="text" name="nome_prof" class="form-control form-control-sm" value="<?php echo $nome_prof; ?>"  id="nome_prof"   onchange="showLimpar();">
-        </div>
-
-        <div class="col-3">
-          <label>Campus</label> 
-          <input type="text" name="campus" class="form-control form-control-sm" value="<?php echo $campus; ?>"  id="campus"   onchange="showLimpar();">
-        </div>
-      
-
-        <div class="col-3">
+        <div class="col">
           <label>Palavra chave</label> 
           <input type="text" name="palavra" class="form-control form-control-sm" value="<?php echo $palavra; ?>"  id="palavra"   onchange="showLimpar();">
         </div>
-
 
 
         <div class="col-1 d-flex align-items-end">
@@ -226,9 +346,8 @@ echo '</script>';
   function showLimpar(){
     var titulo    = document.getElementById('titulo').value;
     var palavra   = document.getElementById('palavra').value;
-    var campus = document.getElementById('campus').value;
 
-    if((titulo.length > 0 ) || (campus.length > 0 ) || (palavra.length > 0 ) ) {
+    if((titulo.length > 0 ) || (palavra.length > 0 ) ) {
       btnLimpar.hidden = false;
     } 
   }
@@ -266,7 +385,14 @@ echo '</script>';
 
 
   function printSubAlt(data){
+    console.table(data);
+    let nomeLocal = '';
     modalTitle.innerText = 'Reenvio do projeto à PROEC';
+    if(data.colegiado === null){
+      nomeLocal = 'Campus';
+    } else {
+      nomeLocal = data.colegiado;
+    }
     modalBody.innerHTML = `
           <div class="modal-body" id="modalBody">
             <h4>${data.titulo}</h4>
@@ -274,9 +400,9 @@ echo '</script>';
               <div class="row">
                 <div class="col-12">
                   <div class="form-group">
-                    <label for="para_avaliar">Colegiado de </label>
+                    <label for="para_avaliar">Enviar para </label>
                     <select name="para_avaliar" id="selPara" class="form-control" onchange="ativaBTN();">
-                      <option value="${data.para_avaliar}" selected>${data.colegiado}</option>
+                      <option value="${data.para_avaliar}" selected>${nomeLocal}</option>
                     </select>
                   </div>
                 </div>
@@ -311,7 +437,7 @@ echo '</script>';
              <div class="row">
                <div class="col-12">
                  <div class="form-group">
-                    <label for="para_avaliar">Enviar para o colegiado de </label>
+                    <label for="para_avaliar">Enviar para </label>
                     <select name="para_avaliar" id="selPara" class="form-control" onchange="ativaBTN();">
                       <option value="-1">Selecione</option>
                       ${optspara}
@@ -359,6 +485,8 @@ echo '</script>';
   function writeNumber(elementId) {
     var outputValueTo =   elementId.id;
     getProjDados(outputValueTo);
+    
+
   
   }
 

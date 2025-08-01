@@ -6,14 +6,13 @@ ini_set('display_errors', 1);
 ini_set('display_startup_errors', 1);
 error_reporting(E_ALL);
 
-use App\Session\Login;
-use App\Entity\Projeto;
-use App\Entity\Professor;
 use App\Entity\Arquivo;
-use App\Entity\RelParcial;
 use App\Entity\Campi;
 use App\Entity\Colegiado;
-
+use App\Entity\Professor;
+use App\Entity\Projeto;
+use App\Entity\RelParcial;
+use App\Session\Login;
 
 // Obriga o usuário a estar logado
 Login::requireLogin();
@@ -21,22 +20,19 @@ $user = Login::getUsuarioLogado();
 
 $id = $_GET['id'];
 
-
-$relatorio = new RelParcial(); 
-$relatorio = (object)RelParcial::get($id);
-
+$relatorio = new RelParcial();
+$relatorio = (object) RelParcial::get($id);
 
 $editar = '';
 $scriptDisble = '';
 
-$obProjeto = (object)Projeto::getProjetoLast($relatorio->idproj);
+$obProjeto = (object) Projeto::getProjetoLast($relatorio->idproj);
 
 $obProjeto = Projeto::getProjeto($obProjeto->id, $obProjeto->ver);
 $obProfessor = Professor::getProfessor($obProjeto->id_prof);
 
-if(($relatorio->tramitar == 1) or ($obProjeto->id_prof != $user['id'])){
+if (($relatorio->tramitar == 1) or ($obProjeto->id_prof != $user['id'])) {
     $editar = 'readonly';
-    
 
     $scriptDisble = "<script>
                         $('#sumnot_atvd_per').summernote('disable');
@@ -46,19 +42,14 @@ if(($relatorio->tramitar == 1) or ($obProjeto->id_prof != $user['id'])){
                         btnArquivo =  document.getElementById('arquivo');
                         btnArquivo.hidden = true;
                     </script>";
-} 
-
-$msgSolicitacoAlteracao = '';
-if($relatorio->last_result == 'r'){
-   
-   include __DIR__.'/includes/msgAlteração.php';
 }
 
+$msgSolicitacoAlteracao = '';
+if ($relatorio->last_result == 'r') {
+    include __DIR__.'/includes/msgAlteração.php';
+}
 
 $anexados = Arquivo::getAnexados('relatorios', $relatorio->id);
-
-
-
 
 $anex = '<ul id="anexos_edt">';
 foreach ($anexados as $att) {
@@ -72,7 +63,7 @@ foreach ($anexados as $att) {
 }
 $anex .= '</ul>';
 
-$cursosetor ='';
+$cursosetor = '';
 
 if (Colegiado::getRegistro($obProjeto->para_avaliar) instanceof Colegiado) {
     $cursosetor = Colegiado::getRegistro($obProjeto->para_avaliar)->nome;
@@ -81,9 +72,6 @@ if (Colegiado::getRegistro($obProjeto->para_avaliar) instanceof Colegiado) {
 } else {
     $cursosetor = $user['ca_nome'];
 }
-
-
-
 
 // Quando a ação for para remover anexo
 if (isset($_POST['acao']) == 'removeAnexo') {
@@ -96,14 +84,13 @@ if (isset($_POST['acao']) == 'removeAnexo') {
         // Removendo arquivo
         unlink($caminho.$arquivo);
     }
-    // Finaliza a requisição 
+    // Finaliza a requisição
     exit;
-
 }
 
 // VALIDAÇÃO DO POST
 if (isset($_POST['atvd_per'])) {
-    $resultado ='';
+    $resultado = '';
     $relatorio->idproj = $obProjeto->id;
     $relatorio->periodo_ini = $_POST['periodo_ini'];
     $relatorio->periodo_fim = $_POST['periodo_fim'];
@@ -112,17 +99,16 @@ if (isset($_POST['atvd_per'])) {
     $relatorio->atvd_prox_per = $_POST['atvd_prox_per'];
     $relatorio->user = $user['id'];
     $relatorio->tramitar = $_POST['tramitar'];
-    if ($_POST['tramitar']== 1) {
+    if ($_POST['tramitar'] == 1) {
         $relatorio->last_result = 'n';
-    } 
+    }
     $relatorio->atualizar();
-
 
     $anexosJS = json_decode($_POST['anexosJS']);
     foreach ($anexosJS as &$anx) {
         $dados = Arquivo::getArquivo($anx);
-        $dados->tabela = $_POST['tabela'];
-        $dados->id_tab = $idprjP;
+        $dados->tabela = 'relatorios';
+        $dados->id_tab = $relatorio->id;
         $dados->user = $obProjeto->user;
         $dados->atualizar();
     }
@@ -131,8 +117,7 @@ if (isset($_POST['atvd_per'])) {
     exit;
 }
 
-
 include '../includes/header.php';
 include __DIR__.'/includes/formParcial.php';
-echo $scriptDisble; 
-include '../includes/footer.php'; 
+echo $scriptDisble;
+include '../includes/footer.php';

@@ -15,7 +15,7 @@ $erro = null;
 // Quando enviado o formulário
 if (isset($_FILES['arquivo'])) {
     // Configurações
-    $extensoes = ['.doc', '.txt', '.pdf', '.docx', '.jpg', '.png'];
+    $extensoes = ['.doc', '.txt', '.pdf', '.docx', '.jpg', '.png', '.xlsx', '.xls', '.pptx', '.ppt'];
     // $caminho = "uploads/";
     // $caminho = "/home/sistemaproec/www/sist/upload/uploads/";
     $caminho = '/home/sistemaproec/www/sistema/upload/uploads/';
@@ -99,7 +99,7 @@ if (isset($_FILES['arquivo'])) {
     <span id="status" style="display: none;">
       <img src="../imgs/loader.gif" alt="Enviando..." />
     </span> <br />
-    <input type="file" name="arquivo" id="arquivo" accept=".doc, .txt, .pdf, .docx, .jpg, .png")/>
+    <input type="file" name="arquivo" id="arquivo" accept=".doc, .txt, .pdf, .docx, .jpg, .png, .xlsx, .xls, .pptx, .ppt")/>
         
 </form>
 

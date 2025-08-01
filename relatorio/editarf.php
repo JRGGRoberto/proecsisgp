@@ -6,23 +6,21 @@ ini_set('display_errors', 1);
 ini_set('display_startup_errors', 1);
 error_reporting(E_ALL);
 
-use App\Session\Login;
-use App\Entity\Projeto;
-use App\Entity\Professor;
 use App\Entity\Arquivo;
-use App\Entity\RelFinal;
 use App\Entity\Campi;
 use App\Entity\Colegiado;
+use App\Entity\Professor;
+use App\Entity\Projeto;
+use App\Entity\RelFinal;
+use App\Session\Login;
 
 // Obriga o usuário a estar logado
 Login::requireLogin();
 $user = Login::getUsuarioLogado();
 
-
 $id = $_GET['id'];
 $relatorio = (object) RelFinal::get($id);
 $tf = $relatorio->tipo;
-
 
 $obProjeto = Projeto::getProjetoLast($relatorio->idproj);
 $obProjeto = Projeto::getProjeto($obProjeto->id, $obProjeto->ver);
@@ -30,7 +28,7 @@ $obProfessor = Professor::getProfessor($obProjeto->id_prof);
 
 $editar = '';
 $scriptDisble = '';
-if(($relatorio->tramitar == 1) or ($obProjeto->id_prof != $user['id'])){
+if (($relatorio->tramitar == 1) or ($obProjeto->id_prof != $user['id'])) {
     $editar = 'readonly';
 
     $scriptDisble = "<script>
@@ -42,18 +40,14 @@ if(($relatorio->tramitar == 1) or ($obProjeto->id_prof != $user['id'])){
                         btnArquivo.hidden = true;
                         
                     </script>";
-} 
+}
 
 $msgSolicitacoAlteracao = '';
-if($relatorio->last_result == 'r'){
-   
-   include __DIR__.'/includes/msgAlteração.php';
+if ($relatorio->last_result == 'r') {
+    include __DIR__.'/includes/msgAlteração.php';
 }
 
 $anexados = Arquivo::getAnexados('relatorios', $relatorio->id);
-
-
-
 
 $anex = '<ul id="anexos_edt">';
 foreach ($anexados as $att) {
@@ -67,7 +61,7 @@ foreach ($anexados as $att) {
 }
 $anex .= '</ul>';
 
-$cursosetor ='';
+$cursosetor = '';
 
 if (Colegiado::getRegistro($obProjeto->para_avaliar) instanceof Colegiado) {
     $cursosetor = Colegiado::getRegistro($obProjeto->para_avaliar)->nome;
@@ -76,7 +70,6 @@ if (Colegiado::getRegistro($obProjeto->para_avaliar) instanceof Colegiado) {
 } else {
     $cursosetor = $user['ca_nome'];
 }
-
 
 // Quando a ação for para remover anexo
 if (isset($_POST['acao']) == 'removeAnexo') {
@@ -89,46 +82,45 @@ if (isset($_POST['acao']) == 'removeAnexo') {
         // Removendo arquivo
         unlink($caminho.$arquivo);
     }
-    // Finaliza a requisição 
+    // Finaliza a requisição
     exit;
 }
 
 // VALIDAÇÃO DO POST
 if (isset($_POST['valida'])) {
-
     $relatorio->idproj = $obProjeto->id;
     $relatorio->tipo = $tf;
 
-    if($tf == 're'){
+    if ($tf == 're') {
         $relatorio->periodo_renov_fim = $_POST['periodo_renov_fim'];
         $relatorio->periodo_renov_ini = $_POST['periodo_renov_ini'];
     }
-    
-    if($tf == 'pr'){
-      $relatorio->periodo_prorroga_fim = $_POST['periodo_prorroga_fim'];
-      $relatorio->atvd_prox_per = $_POST['atvd_prox_per'];
+
+    if ($tf == 'pr') {
+        $relatorio->periodo_prorroga_fim = $_POST['periodo_prorroga_fim'];
+        $relatorio->atvd_prox_per = $_POST['atvd_prox_per'];
     }
-    
+
     $relatorio->ch_semanal = $_POST['ch_semanal'];
     $relatorio->dim_mem_com_ex = $_POST['dim_mem_com_ex'];
     $relatorio->dim_disc = $_POST['dim_disc'];
     $relatorio->dim_doce = $_POST['dim_doce'];
     $relatorio->dim_agent_estag = $_POST['dim_agent_estag'];
     $relatorio->atividades = $_POST['atividades'];
-    
+
     $relatorio->rel_tec_cien_executado = $_POST['rel_tec_cien_executado'];
     $relatorio->divulgacao = $_POST['divulgacao'];
     $relatorio->tramitar = $_POST['tramitar'];
-    if ($_POST['tramitar']== 1) {
+    if ($_POST['tramitar'] == 1) {
         $relatorio->last_result = 'n';
     }
     $relatorio->atualizar();
-    
+
     $anexosJS = json_decode($_POST['anexosJS']);
     foreach ($anexosJS as &$anx) {
         $dados = Arquivo::getArquivo($anx);
-        $dados->tabela = $_POST['tabela'];
-        $dados->id_tab = $idprjP;
+        $dados->tabela = 'relatorios';
+        $dados->id_tab = $relatorio->id;
         $dados->user = $obProjeto->user;
         $dados->atualizar();
     }
@@ -137,7 +129,7 @@ if (isset($_POST['valida'])) {
     exit;
 }
 
-include '../includes/header.php'; 
+include '../includes/header.php';
 include __DIR__.'/includes/formFinal.php';
-echo $scriptDisble; 
-include '../includes/footer.php'; 
+echo $scriptDisble;
+include '../includes/footer.php';

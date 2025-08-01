@@ -33,14 +33,9 @@ $id = $_GET['id'];
 
 // CONSULTA AO PROJETO
 $obProjeto = new Projeto();
-$obProjeto = Projeto::getProjetoLast($id);
-$obProjeto = Projeto::getProjeto($id, $obProjeto->ver);
-/*
-echo '<pre>';
-print_r($obProjeto);
-echo '</pre>';
-exit;
-*/
+$obProjeto1 = Projeto::getProjetoLast($id);
+$obProjeto = Projeto::getProjeto($id, $obProjeto1->ver);
+
 $novoBTNs = '';
 $opcoes = [
     'pa' => '<a class="dropdown-item btn-sm" href="./cadastrarp.php?t=1&i='.$obProjeto->id.'">Relatório parcial</a>',
@@ -139,6 +134,13 @@ if ($dataAtual < $vigen_ini) {
     // echo 'fechado ';
     unset($opcoes['pa']);
     $msgInfoEstado = '<span class="badge badge-info">Projeto finalizado, possível apenas criar relatório final</span>';
+}
+
+if ($user['id'] != $obProjeto->id_prof) {  // verifica se o usuário é o dono do projeto
+    unset($opcoes['pa']);
+    unset($opcoes['re']);
+    unset($opcoes['pr']);
+    unset($opcoes['fi']);
 }
 
 include '../includes/header.php';

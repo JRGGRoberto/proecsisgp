@@ -30,5 +30,5 @@ order by 2
 $lista = Outros::qry($qry);
 
 include '../includes/header.php';
-include __DIR__.'/includes/listagem2.php';
+include __DIR__.'/includes/listagem.php';
 include '../includes/footer.php';

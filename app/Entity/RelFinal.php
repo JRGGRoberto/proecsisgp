@@ -33,7 +33,7 @@ class RelFinal
     /**
      * Método responsável por cadastrar uma nova pessoa no banco.
      *
-     * @return bool
+     * @return varchar
      */
     public function cadastrar()
     {
@@ -66,7 +66,7 @@ class RelFinal
         ]);
 
         // RETORNAR SUCESSO
-        return true;
+        return $newId;
     }
 
     /**

@@ -206,7 +206,7 @@ if ($tf == 'pr') {
         <label>
           <h5><?php echo ++$n; ?>. Carga semanal*:</h5>
         </label>
-        <input type="number" min=0 max=44 class="form-control col-2" name="ch_semanal" value="<?php echo $relatorio->ch_semanal; ?>" <?php echo $editar; ?>>
+        <input type="number" min=0 max=44 class="form-control col-2"  required ="ch_semanal" value="<?php echo $relatorio->ch_semanal; ?>" <?php echo $editar; ?>>
       </div>
 
       <hr>
@@ -350,9 +350,9 @@ if ($tf == 'pr') {
       <div class="form-group">
         <h5 id="attc"><?php echo ++$n; ?>. Anexos</h5>
         <ul id="anexos"></ul>
-        <?php if ($editar != 'readonly') { ?>
+          <?php if ($editar != 'readonly') { ?>
             <iframe src="../upload/upload.php" frameborder="0" scrolling="no"></iframe>
-        <?php } ?>
+          <?php } ?>
         <?php echo $anex; ?>
       </div>
       <hr>

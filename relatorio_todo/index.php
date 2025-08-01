@@ -56,12 +56,15 @@ where
 
 switch ($user['config']) {
     case 3: // campus
-        $query .= ' ca_id = "'.$user['ca_id'].'" ';
-        $query .= 'and  etapa in (2) '; // Somente os relatórios que estão na etapa 1 ou 2
+        $query .= '(  (ca_id = "'.$user['ca_id'].'" and etapa = 1 and tipo = "pa")
+                        or  
+                      (ca_id = "'.$user['ca_id'].'" and etapa = 2 and tipo <> "pa")
+                    )';
+
         break;
     case 1: // colegiado
         $query .= ' co_id = "'.$user['co_id'].'" ';
-        $query .= 'and etapa = 1 ';
+        $query .= 'and etapa = 1  and tipo <> "pa" ';
         break;
     default:
         header('location: ../index.php?status=error');

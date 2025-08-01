@@ -3,7 +3,6 @@
 require '../includes/msgAlert.php';
 
 use App\Entity\Avaliacoes;
-use App\Entity\Colegiado;
 
 class Blocos
 {
@@ -37,29 +36,32 @@ function resumirTexto(string $texto, int $limite = 256): string
 }
 
 $resultados = '<div id="accordion">';
-foreach ($projetos as $proj) {
+
+foreach ($projetos as $Projt) {
     ++$qnt1;
+    $LastV = '';
 
     if (
-        in_array($proj->regras, ['e341e624-0715-11ef-b2c8-0266ad9885af', '287c102f-e5fa-11ee-b2c8-0266ad9885af'])
-        && ($proj->para_avaliar == -1)
-        && ($proj->last_result == 'a')
-        && ($proj->edt == 0)
+        in_array($Projt->regras, ['e341e624-0715-11ef-b2c8-0266ad9885af', '287c102f-e5fa-11ee-b2c8-0266ad9885af'])
+        && ($Projt->para_avaliar == -1)
+        && ($Projt->last_result == 'a')
+        && ($Projt->edt == 0)
     ) {
         $dt = date('Y-m-d H:i:s');
 
-        if ($proj->vigen_fim >= $dt) {
+        if ($Projt->vigen_fim >= $dt) {
             $progresso = '<span class="badge badge-success ">Em execução</span>';
         } else {
             $progresso = '<span class="badge badge-success ">Excutado</span>';
         }
-        $progresso .= '<a href="../projetos/visualizar.php?id='.$proj->id.'&v='.$proj->ver.'&w=nw" target="_blank">📄</a>';
-    } elseif ($proj->regras == '7c953457-5e79-11f0-9223-3a9832f2c2cb') {
+
+        $progresso .= '<a href="../projetos/visualizar.php?id='.$Projt->id.'&v='.$Projt->ver.'&w=nw" target="_blank">📄</a>';
+    } elseif ($Projt->regras == '7c953457-5e79-11f0-9223-3a9832f2c2cb') {
         $progresso = '<span class="badge badge-success ">Renovado</span>';
     } else {
-        is_null($proj->colegiado) ? $col = 'A definir' : $col = $proj->colegiado;
+        is_null($Projt->colegiado) ? $col = 'A definir' : $col = $Projt->colegiado;
 
-        $where = 'id_proj = "'.$proj->id.'"';
+        $where = 'id_proj = "'.$Projt->id.'"';
         $order = 'ver desc, fase_seq desc';
         $ListaVerAnts = Avaliacoes::getRegistros($where, $order, null);
         $LastV =
@@ -67,7 +69,7 @@ foreach ($projetos as $proj) {
           <thead class="thead-dark">
             <tr>
               <th>Projeto</th>
-              <th>Parecere(s) <a href="../prnRelatorios/index.php?id='.$proj->id.'" target="_blank"><span class="badge badge-secondary">Prn All🖨️</span></th>
+              <th>Parecere(s) <a href="../prnRelatorios/index.php?id='.$Projt->id.'" target="_blank"><span class="badge badge-secondary">Prn All🖨️</span></th>
               <th>Parte</th>
             </tr>
           </thead>
@@ -83,14 +85,14 @@ foreach ($projetos as $proj) {
             switch ($la->resultado) {
                 case 'a':
                     $class = 'table-success';
-                    $td = '<td><a href="../forms/'.$la->form.'/vista.php?p='.$proj->id.'&v='.$la->ver.'" target="_blank">📄 </a>'.$la->tp_instancia.'</td>';
+                    $td = '<td><a href="../forms/'.$la->form.'/vista.php?p='.$Projt->id.'&v='.$la->ver.'" target="_blank">📄 </a>'.$la->tp_instancia.'</td>';
 
                     array_push($btnStatus, new Blocos($la->fase_seq, 'success'));
                     break;
                 case 'r':
                     $class = 'table-danger';
                     $td = '<td><span class="badge badge-light">
-                          <a href="../forms/'.$la->form.'/vista.php?p='.$proj->id.'&v='.$la->ver.'" target="_blank">📄 </a>'.$la->tp_instancia.
+                          <a href="../forms/'.$la->form.'/vista.php?p='.$Projt->id.'&v='.$la->ver.'" target="_blank">📄 </a>'.$la->tp_instancia.
                            ' </span></td>';
 
                     array_push($btnStatus, new Blocos($la->fase_seq, 'danger'));
@@ -103,7 +105,7 @@ foreach ($projetos as $proj) {
             }
             $LastV .=
             '<tr class="'.$class.'">
-           <td><a href="../projetos/visualizar.php?id='.$proj->id.'&v='.$la->ver.'&w=nw" target="_blank">📄 <span class="badge badge-info">'.($la->ver + 1).'</span></a></td>'
+           <td><a href="../projetos/visualizar.php?id='.$Projt->id.'&v='.$la->ver.'&w=nw" target="_blank">📄 <span class="badge badge-info">'.($la->ver + 1).'</span></a></td>'
 
               .$td.
 
@@ -114,7 +116,7 @@ foreach ($projetos as $proj) {
         }
         $LastV .=
           '</tbody>
-       </table><span class="badge badge-light">
+            </table><span class="badge badge-light">
                  <span class="badge badge-secondary"> <span class="badge-light"> ca </span> Chefe de dividsão </span> 
                  <span class="badge badge-secondary"> <span class="badge-light"> ce </span> Dir centro de área </span> 
                  <span class="badge badge-secondary"> <span class="badge-light"> co </span> coordenador de colegiado </span> <br>
@@ -150,41 +152,47 @@ foreach ($projetos as $proj) {
         }
     }
 
+    $vigencia =
+    '<div class="btn-group">
+       <span type="badge" class="badge badge-light btn-sm" disabled>'.dt($Projt->vigen_ini).'</span>
+       <span type="badge" class="badge badge-light btn-sm" disabled>'.dt($Projt->vigen_fim).'</span> 
+    </div>';
+
     $resultados .= '
-<div class="card mt-2">
-  <div class="card-header">
-    <div class="row">
-        <div class="col-sm-5">📃 <strong>Título: </strong><a class="collapsed card-link" data-toggle="collapse" href="#p'.$proj->id.'"><strong>'.$proj->titulo.'</strong></a></div>
-        <div class="col-sm-5"><strong>Tipo de Proposta:</strong> '.$proj->tipo_exten.'</div>
-        
-        <div class="col-sm-2">'.$progresso.'</div>
-    </div>
-    <div class="row">
-      <div class="col-sm"><strong>Protocolo:</strong> '.$proj->protocolo.'</div>
-      <div class="col-sm"><strong>Enviado para:</strong> '.$col.'</div> 
-    </div>
-    <div class="row">
-        <div class="col-sm">
-          Coordenador: '.$proj->nome_prof.'
+      <div class="card mt-2">
+        <div class="card-header">
+          <div class="row">
+              <div class="col-sm-5">📃 <strong>Título: </strong><a class="collapsed card-link" data-toggle="collapse" href="#p'.$Projt->id.'"><strong>'.$Projt->titulo.'</strong></a></div>
+              <div class="col-sm-3"><strong>Tipo de Proposta:</strong> '.$Projt->tipo_exten.'</div>
+              <div class="col-sm-2">'.$vigencia.'</div>
+              <div class="col-sm-2">'.$progresso.'</div>
+          </div>
+          <div class="row">
+            <div class="col-sm"><strong>Protocolo:</strong> '.$Projt->protocolo.'</div>
+            <div class="col-sm"><strong>Enviado para:</strong> '.$col.'</div> 
+          </div>
+          <div class="row">
+              <div class="col-sm">
+                Coordenador: '.$Projt->nome_prof.'
+              </div>
+              <div class="col-sm">
+                Campus: '.$Projt->campus.'
+              </div>
+              <div class="col-sm">
+                TIDE: '.$Projt->tide.'
+              </div>
+          </div>
         </div>
-        <div class="col-sm">
-          Campus: '.$proj->campus.'
-        </div>
-        <div class="col-sm">
-          TIDE: '.$proj->tide.'
-        </div>
-    </div>
-  </div>
 
 
   
-    <div id="p'.$proj->id.'" class="collapse" data-parent="#accordion">
+    <div id="p'.$Projt->id.'" class="collapse" data-parent="#accordion">
       <div class="card-body">
 
         <div class="row">
           <div class="col-8">
-            <p><strong>Resumo:</strong> '.resumirTexto($proj->resumo).'</p>
-            <p><strong>Objetivos:</strong> '.resumirTexto($proj->objetivos).'</p>
+            <p><strong>Resumo:</strong> '.resumirTexto($Projt->resumo).'</p>
+            <p><strong>Objetivos:</strong> '.resumirTexto($Projt->objetivos).'</p>
           </div>
           <div class="col-4">
           '.$LastV.'
@@ -193,47 +201,28 @@ foreach ($projetos as $proj) {
 
         ';
 
-    $verAnt = $proj->ver - 1;
+    $verAnt = $Projt->ver - 1;
     // Btn Submeter ou
 
-    if ($proj->para_avaliar < 0) {
+    if ($Projt->para_avaliar < 0) {
         $btnSub =
-        '<button id="sub'.$proj->id.'v'.$proj->ver.'" class="btn btn-primary btn-sm mb-2" onclick="writeNumber(this)">📤 Submeter</button>
+        '<button id="sub'.$Projt->id.'v'.$Projt->ver.'" class="btn btn-primary btn-sm mb-2" onclick="writeNumber(this)">📤 Submeter</button>
          <div class="p-1"></div>
-         <button id="del'.$proj->id.'v'.$proj->ver.'" class="btn btn-danger  btn-sm mb-2" onclick="writeNumber(this)">🗑 Excluir</button>';
+         <button id="del'.$Projt->id.'v'.$Projt->ver.'" class="btn btn-danger  btn-sm mb-2" onclick="writeNumber(this)">🗑 Excluir</button>';
     } else {
-        if ($proj->last_result == 'r') {
-            $btnSub = '<a href="../forms/'.$proj->form.'/vista.php?p='.$proj->id.'&v='.$verAnt.'"><button class="btn btn-danger btn-sm mb-2" >📑 Informações de adequações</button></a>';
+        if ($Projt->last_result == 'r') {
+            $btnSub = '<a href="../forms/'.$Projt->form.'/vista.php?p='.$Projt->id.'&v='.$verAnt.'"><button class="btn btn-danger btn-sm mb-2" >📑 Informações de adequações</button></a>';
         } else {
-            $btnSub = '<button id="Alt'.$proj->id.'v'.$proj->ver.'" class="btn btn-primary btn-sm mb-2" onclick="writeNumber(this)">📤 Submeter novamente</button>';
+            $btnSub = '<button id="Alt'.$Projt->id.'v'.$Projt->ver.'" class="btn btn-primary btn-sm mb-2" onclick="writeNumber(this)">📤 Submeter novamente</button>';
         }
     }
 
-    /*    if ($proj->edt == 1) {
-            $resultados .=
-          '<hr>
-             <div class="d-flex flex-row-reverse ">'
-             .$btnSub.
-            '
-              <div class="p-1"></div>
-              <a href="editar.php?id='.$proj->id.'&v='.$proj->ver.'"><button class="btn btn-success btn-sm mb-2">📄 Editar</button></a>
-            </div>';
-        } else {
-            $nomecol = Colegiado::getRegistro($proj->para_avaliar);
-
-            $resultados .=
-          '<hr>
-
-            <div class="d-flex flex-row-reverse ">
-              <a href="visualizar.php?id='.$proj->id.'&v='.$proj->ver.'&w=1" target="_blank"><button class="btn btn-success btn-sm mb-2">Visualizar</button></a>
-            </div>';
-        }
-    */
     $resultados .= '
       </div>
     </div>
   </div>';
 }
+
 $resultados .= '</div>';
 
 $qnt1 > 0 ? $resultados : $resultados = 'Nenhum registro encontrado.';

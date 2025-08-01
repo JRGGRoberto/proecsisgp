@@ -4,106 +4,94 @@ use App\Session\Login;
 
 $user = Login::getUsuarioLogado();
 
-require '../includes/msgAlert.php';
+$res = '';
 
-$qnt1 = 0;
-$resultados = '<div id="accordion">';
+foreach ($lista as $l) {
+    $prj1 = explode(' ', trim($l->prj1));
+    $prj2 = explode(' ', trim($l->prj2));
+    $prj3 = explode(' ', trim($l->prj3));
+    $prj4 = explode(' ', trim($l->prj4));
 
-foreach ($ProjPIbisBex as $ava) {
-    ++$qnt1;
-    $estiloD = '';
-    // $cor = $ava->resultado == 'r' ? 'danger' : 'success';
-    $link = '';
+    $do1 = '';
+    $do2 = '';
+    $do3 = '';
+    $do4 = '';
 
-    $resultados .= '
-<div class="card mt-2">
-  <div class="card-header">
-     <div class="row">
-        <div class="col-sm-6"><a class="collapsed card-link" data-toggle="collapse" href="#p'.$ava->id.'">📃 '.$ava->nome.'</a></div>
-        <div class="col-sm-4">_</div>
-        <div class="col-sm-1"><span class="badge badge-info">_</span> </div>
-        <div class="col-sm-1"><span class="badge badge-warning ">'.$ava->programa.'</span>
-        </div>
-        
-     </div>
-  </div>
-    <div id="p'.$ava->id.'" class="collapse" data-parent="#accordion">
-       
-          <div class="d-flex flex-row-reverse ">
-            <div class="p-1"></div>
-            <div class="p-1"></div>
-            <div class="p-1"></div>
-            <a href="../pibisbex/docs/'.$ava->programa.'/'.$ava->link.'" target="_blank"><button class="btn btn-success btn-sm mb-2"> Visualizar projeto</button></a>
-            <div class="p-1"></div>
-          </div>
-          
+    $qntProj = 0;
+    $qntProjDone = 0;
 
-          
-      </div>
-    </div>
-           
-        ';
+    if (isset($prj1[1])) {
+        ++$qntProj;
+        if ($prj1[1] == 1) {
+            $do1 = '<div class="col"><button type="button" class="btn btn-success" >'.$prj1[0].'</button><br><sup>'.$prj1[2].'/190</sup></div>';
+            ++$qntProjDone;
+        } else {
+            $do1 = '<div class="col"><button type="button" class="btn btn-outline-secondary">'.$prj1[0].'</button></div>';
+        }
+    } else {
+        $do1 = '<div class="col"></div>';
+    }
+
+    if (isset($prj2[1])) {
+        ++$qntProj;
+        if ($prj2[1] == 1) {
+            $do2 = '<div class="col"><button type="button" class="btn btn-success" >'.$prj2[0].'</button><br><sup>'.$prj2[2].'/190</sup></div>';
+            ++$qntProjDone;
+        } else {
+            $do2 = '<div class="col"><button type="button" class="btn btn-outline-secondary">'.$prj2[0].'</button></div>';
+        }
+    } else {
+        $do2 = '<div class="col"></div>';
+    }
+
+    if (isset($prj3[1])) {
+        ++$qntProj;
+        if ($prj3[1] == 1) {
+            $do3 = '<div class="col"><button type="button" class="btn btn-success">'.$prj3[0].'</button><br><sup>'.$prj3[2].'/190</sup></div>';
+            ++$qntProjDone;
+        } else {
+            $do3 = '<div class="col"><button type="button" class="btn btn-outline-secondary">'.$prj3[0].'</button></div>';
+        }
+    } else {
+        $do3 = '<div class="col"></div>';
+    }
+
+    if (isset($prj4[1])) {
+        ++$qntProj;
+        if ($prj4[1] == 1) {
+            $do4 = '<div class="col"><button type="button" class="btn btn-success">'.$prj4[0].'</button><br><sup>'.$prj4[2].'/190</sup></div>';
+            ++$qntProjDone;
+        } else {
+            $do4 = '<div class="col"><button type="button" class="btn btn-outline-secondary">'.$prj4[0].'</button></div>';
+        }
+    } else {
+        $do4 = '<div class="col"></div>';
+    }
+
+    $res .= '<div class="row">';
+    $res .= '<div class="col-5"><strong>'.$l->nome.'</strong> ('.$qntProjDone.'/'.$qntProj.')<br><sub>'.$l->campus.' - '.$l->colegiado.'</sub><br><sup><a href="mailto:'.$l->email.'" target="_blank">'.$l->email.'</a></sup></div>';
+    $res .= $do1;
+    $res .= $do2;
+    $res .= $do3;
+    $res .= $do4;
+
+    $res .= '</div><div><hr></div>';
 }
-$resultados .= '</div>';
-
-$qnt1 > 0 ? $resultados : $resultados = 'Nenhum registro encontrado.';
-
-include '../includes/paginacao.php';
 
 ?>
 <main>
-  <h2 class="mt-0">ADM - Lista de projetos PIBIS / PIBEX</h2>
+  <h2 class="mt-0">ADM - Avaliadores - projetos PIBIS / PIBEX</h2>
   
-  <?php echo $msgAlert; ?>
-
-  <section>
-<!--
-    <form method="get">
-
-      <div class="row my-2">
-
-        <div class="col">
-          <label>Buscar por titulo</label> 
-          <input type="text" name="busca" class="form-control form-control-sm" value="<?php echo $busca; ?>"  id="titulo"  onchange="showLimpar();">
-        </div>  -->
-<!--
-        <div class="col">
-          <label>Buscar Colegiado</label>
-          <input type="text" name="colegiado" class="form-control form-control-sm" value="< ?=$colegiado?>" id="colegiado" onChange="showLimpar();">
-        </div>
-
-        <div class="col">
-          <label>Buscar por Centro</label>
-          <input type="text" name="centro" class="form-control form-control-sm" value="< ?=$centro?>" id="centro" onChange="showLimpar();">
-        </div>
-
--->
- <!--       <div class="col-1 d-flex align-items-end">
-          <button type="submit" class="btn btn-primary btn-sm mr-2">Filtrar</button>
-          <a href="./" id="limpar"><span class="badge badge-primary">x</span></a>
-        </div>
-
-      </div>
-
-    </form>
-
-  </section> -->
-
   <section>
 
-    
-    <?php echo $resultados; ?>
+  <hr>
+    <?php echo $res; ?>
     
   </section>
-
-  <section>
-    <div class="row mt-2 align-bottom">
-      <div class="col">
-         <?php echo $paginacao; ?>
-      </div>
-    </div>
-  </section>
+  
 </main>
+
+
 
 
 

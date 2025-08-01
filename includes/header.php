@@ -23,6 +23,8 @@ $all = '';
 $autorizados = [
     '91ad9f28-8819-42c9-b6a9-18f284ee7453', // [MARILDA DE LARA SANTOS] Agente Sol Ângela Deeke Curitiba I 11/06/2025
     '3d1be647-d7e3-4d00-a642-75ea14059b5b', // [IRENE OLIVEIRA        ] Agente Sol Ângela Deeke Curitiba I 11/07/2025
+    'c492dd7e-ac95-4d9f-b1c0-c7fc63340dd6', // [PAULO SERGIO SANTOS] Estágiário - Sérgio Dantas 21/07/2025
+    'a68f28dd-2b1b-49ec-8ef8-b6ed28ab3376', //  [SUWELLY GONÇALVES SUASSUI PICH] Solicitação  Daniela Machado 31/07/2025
 ];
 
 $menuPibis = '';

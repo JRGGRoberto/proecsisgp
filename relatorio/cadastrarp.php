@@ -2,12 +2,12 @@
 
 require '../vendor/autoload.php';
 
-use App\Session\Login;
-use App\Entity\Projeto;
-use App\Entity\Professor;
 use App\Entity\Arquivo;
-use App\Entity\RelParcial;
 use App\Entity\Colegiado;
+use App\Entity\Professor;
+use App\Entity\Projeto;
+use App\Entity\RelParcial;
+use App\Session\Login;
 
 // Obriga o usuário a estar logado
 Login::requireLogin();
@@ -17,28 +17,24 @@ $t = $_GET['t'];
 $id = $_GET['i'];
 
 if ($t != 1) {
-  header('location: index.php?status=error');
-  exit;
+    header('location: index.php?status=error');
+    exit;
 }
-
 
 $obProjeto = Projeto::getProjetoLast($id);
 $obProjeto = Projeto::getProjeto($id, $obProjeto->ver);
-$obProfessor = (object)Professor::getProfessor($obProjeto->id_prof);
+$obProfessor = (object) Professor::getProfessor($obProjeto->id_prof);
 
 if ($obProjeto->id_prof != $user['id']) {
-  header('location: ../index.php?status=errorOwner');
-  exit;
+    header('location: ../index.php?status=errorOwner');
+    exit;
 }
 
-
-
-
-$cursosetor = '' ;
-if($obProjeto->para_avaliar == -1){
-  $cursosetor = $user['ca_nome'];
+$cursosetor = '';
+if ($obProjeto->para_avaliar == -1) {
+    $cursosetor = $user['ca_nome'];
 } else {
-  $cursosetor = Colegiado::getRegistro($obProjeto->para_avaliar)->nome;
+    $cursosetor = Colegiado::getRegistro($obProjeto->para_avaliar)->nome;
 }
 
 $relatorio = new RelParcial();
@@ -52,13 +48,12 @@ if (isset($_POST['atvd_per'])) {
     $relatorio->atvd_prox_per = $_POST['atvd_prox_per'];
     $relatorio->user = $user['id'];
     $relatorio->tramitar = $_POST['tramitar'];
-    $relatorio->cadastrar();
-
+    $idprjP = $relatorio->cadastrar();
 
     $anexosJS = json_decode($_POST['anexosJS']);
     foreach ($anexosJS as &$anx) {
         $dados = Arquivo::getArquivo($anx);
-        $dados->tabela = $_POST['tabela'];
+        $dados->tabela = 'relatorios';
         $dados->id_tab = $idprjP;
         $dados->user = $obProjeto->user;
         $dados->atualizar();

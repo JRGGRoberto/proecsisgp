@@ -80,6 +80,7 @@ class Projeto
     public $user;
     // somente para views
     public $colegiado;
+    public $aprov;
 
     /**
      * Método responsável por cadastrar um novo projeto no banco.

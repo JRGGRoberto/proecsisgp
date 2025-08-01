@@ -213,7 +213,12 @@ function submitJSON() {
   var JsonEquipe = JSON.stringify(equipe);
   document.getElementById('equipeJS').value = JsonEquipe;
 
-  //Anexos
+}  
+
+
+function submitSumbeter(){
+  
+    //Anexos
   document.getElementById('anexosJS').value = '';
   let anx =[];
   for (var i = 0; i < anexos.childElementCount; i++) {
@@ -221,11 +226,6 @@ function submitJSON() {
   }
   anx = JSON.stringify(anx);
   document.getElementById('anexosJS').value = anx;
-}  
-
-
-function submitSumbeter(){
-  
 
   var atividades = document.getElementById("atividades");
   if(atividades){
