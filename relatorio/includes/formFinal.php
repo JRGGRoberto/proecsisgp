@@ -206,7 +206,7 @@ if ($tf == 'pr') {
         <label>
           <h5><?php echo ++$n; ?>. Carga semanal*:</h5>
         </label>
-        <input type="number" min=0 max=44 class="form-control col-2"  required ="ch_semanal" value="<?php echo $relatorio->ch_semanal; ?>" <?php echo $editar; ?>>
+        <input type="number" min=0 max=44 class="form-control col-2"  required name="ch_semanal" value="<?php echo $relatorio->ch_semanal; ?>" <?php echo $editar; ?>>
       </div>
 
       <hr>

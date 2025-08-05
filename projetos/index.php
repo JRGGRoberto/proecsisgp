@@ -12,9 +12,13 @@ Login::requireLogin();
 $user = Login::getUsuarioLogado();
 
 // Busca
+
 $titulo = filter_input(INPUT_GET, 'titulo', FILTER_SANITIZE_STRING);
 $palavra = filter_input(INPUT_GET, 'palavra', FILTER_SANITIZE_STRING);
+$protocolo = filter_input(INPUT_GET, 'protocolo', FILTER_SANITIZE_STRING);
 /*
+$palavra = filter_input(INPUT_GET, 'palavra', FILTER_SANITIZE_STRING);
+$protocolo = filter_input(INPUT_GET, 'palavra', FILTER_SANITIZE_STRING);
 $colegiado = filter_input(INPUT_GET, 'colegiado', FILTER_SANITIZE_STRING);
 $area = filter_input(INPUT_GET, 'area', FILTER_SANITIZE_STRING);
 $linh_ext = filter_input(INPUT_GET, 'linh_ext', FILTER_SANITIZE_STRING);
@@ -74,8 +78,8 @@ $condicoes = [
     'id_prof = "'.$user['id'].'"',
     strlen($titulo) ? 'titulo LIKE "%'.str_replace(' ', '%', $titulo).'%"' : null,
     strlen($palavra) ? $palavra : null,
+    strlen($protocolo) ? 'protocolo LIKE "%'.str_replace(' ', '%', $protocolo).'%"' : null,
     /*,
-  strlen($colegiado) ? 'colegiado LIKE "%'.str_replace(' ','%',$colegiado).'%"': null,
   strlen($area) ? "area_extensao = '$area_extensao'": null,
   strlen($linh_ext) ? 'linh_ext LIKE "%'.str_replace(' ','%',$linh_ext).'%"': null */
 ];

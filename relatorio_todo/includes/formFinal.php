@@ -321,6 +321,7 @@ if ($relatorio->tipo == 'pr') {
       </div>
 
 <?php } ?>
+
       <div class="form-group">
         <h5 id="attc"><?php echo ++$n; ?>. Anexos</h5>
         <ul id="anexos"></ul>

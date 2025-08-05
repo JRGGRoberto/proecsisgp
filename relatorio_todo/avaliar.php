@@ -111,17 +111,24 @@ $anex = '';
 function listarAnexos($id)
 {
     $anexados = Arquivo::getAnexados('relatorios', $id);
+
     $anex = '<ul id="anexos_edt">';
     foreach ($anexados as $att) {
         $anex .=
         '<li>
           <a href="/sistema/upload/uploads/'.$att->nome_rand.'" target="_blank">'.$att->nome_orig.'</a> 
-          <a href="../arquiv/index.php?tab='.$att->tabela.'&id='.$att->id_tab.'&arq='.$att->nome_rand.'" >  
-            <span class="badge badge-danger">🗑️ Excluir</span>
-          </a>
+         
       </li> ';
     }
+    /*
+     * < <a href="../arquiv/index.php?tab='.$att->tabela.'&id='.$att->id_tab.'&arq='.$att->nome_rand.'" >
+     * <span class="badge badge-danger">🗑️ Excluir</span>
+     * </a>
+     *
+     */
     $anex .= '</ul>';
+
+    return $anex;
 }
 
 $scriptDisbleFinal = "<script>
@@ -147,7 +154,7 @@ if ($tp == 'p') {
     $obProjeto = $obj->obProjeto;
     $obProfessor = $obj->obProfessor;
     $cursosetor = $obj->cursosetor;
-    listarAnexos($relatorio->id);
+    $anex = listarAnexos($relatorio->id);
     include __DIR__.'/includes/formParcial.php';
     $tipo_rela = 'pa';
     echo $scriptDisbleParcial;
@@ -158,7 +165,7 @@ if ($tp == 'p') {
     $obProjeto = $obj->obProjeto;
     $obProfessor = $obj->obProfessor;
     $cursosetor = $obj->cursosetor;
-    listarAnexos($relatorio->id);
+    $anex = listarAnexos($relatorio->id);
     include __DIR__.'/includes/formFinal.php';
     $tipo_rela = $relatorio->tipo;
     echo $scriptDisbleFinal;

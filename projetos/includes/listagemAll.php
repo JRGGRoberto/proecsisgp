@@ -246,6 +246,11 @@ include '../includes/paginacao.php';
           <input type="text" name="titulo" class="form-control form-control-sm" value="<?php echo $titulo; ?>"  id="titulo"   onchange="showLimpar();">
         </div>
 
+        <div class="col">
+          <label>Protocolo</label> 
+          <input type="text" name="protocolo" class="form-control form-control-sm" value="<?php echo $protocolo; ?>"  id="protocolo"   onchange="showLimpar();">
+        </div>
+
         <div class="col-4">
           <label>Coordenador</label> 
           <input type="text" name="nome_prof" class="form-control form-control-sm" value="<?php echo $nome_prof; ?>"  id="nome_prof"   onchange="showLimpar();">

@@ -2,20 +2,21 @@
 
 require '../vendor/autoload.php';
 
-use \App\Session\Login;
-use \App\Db\Pagination;
-use \App\Entity\Projeto;
-use \App\Entity\Palavras;
+use App\Db\Pagination;
+use App\Entity\Palavras;
+use App\Entity\Projeto;
+use App\Session\Login;
 
-//Obriga o usuário a estar logado
+// Obriga o usuário a estar logado
 Login::requireLogin();
 $user = Login::getUsuarioLogado();
 
-//Busca
+// Busca
 $titulo = filter_input(INPUT_GET, 'titulo', FILTER_SANITIZE_STRING);
-$palavra  = filter_input(INPUT_GET, 'palavra', FILTER_SANITIZE_STRING); 
+$palavra = filter_input(INPUT_GET, 'palavra', FILTER_SANITIZE_STRING);
 $nome_prof = filter_input(INPUT_GET, 'nome_prof', FILTER_SANITIZE_STRING);
 $campus = filter_input(INPUT_GET, 'campus', FILTER_SANITIZE_STRING);
+$protocolo = filter_input(INPUT_GET, 'protocolo', FILTER_SANITIZE_STRING);
 /*
 $colegiado = filter_input(INPUT_GET, 'colegiado', FILTER_SANITIZE_STRING);
 $area = filter_input(INPUT_GET, 'area', FILTER_SANITIZE_STRING);
@@ -24,67 +25,63 @@ $linh_ext = filter_input(INPUT_GET, 'linh_ext', FILTER_SANITIZE_STRING);
 $palavOrig = $palavra;
 
 if (strlen($palavra)) {
-  $palavra = Palavras::getProjByPalavra($palavra);
+    $palavra = Palavras::getProjByPalavra($palavra);
 } else {
-  $palavra = "";
+    $palavra = '';
 }
-
-
 
 $qry = 'select 
           ccc.co_id as id, 
           ccc.colegiado as nome,
           IFNULL(ccc.coord_id, "disabled") coord
-        from ca_ce_co ccc where ccc.ca_id  = "'. $user['ca_id'] .'"';
-use \App\Entity\Diversos;
+        from ca_ce_co ccc where ccc.ca_id  = "'.$user['ca_id'].'"';
+use App\Entity\Diversos;
+
 $sendColegiado = Diversos::qry($qry);
 $coolSelectSend = '';
 
-foreach($sendColegiado as $co){
-  $dis = '';
-  $info = '';
-  if($co->coord =='disabled'){
-    $dis = 'disabled';
-    $info = '[Sem coordenador]';
-  }
+foreach ($sendColegiado as $co) {
+    $dis = '';
+    $info = '';
+    if ($co->coord == 'disabled') {
+        $dis = 'disabled';
+        $info = '[Sem coordenador]';
+    }
 
-  $coolSelectSend .= '<option value="'.$co->id.'"  '. $dis . '>'.$co->nome.' '.$info.'</option>';
+    $coolSelectSend .= '<option value="'.$co->id.'"  '.$dis.'>'.$co->nome.' '.$info.'</option>';
 }
 
-
-
-
-//Filtro de status
+// Filtro de status
 $filtroStatus = filter_input(INPUT_GET, 'filtroStatus', FILTER_SANITIZE_STRING);
 
-//Condições SQL
-$condicoes = [  strlen($titulo) ? ' titulo LIKE "%'.str_replace(' ','%',$titulo).'%"': null,
-strlen($palavra) ? $palavra : null,
-strlen($campus) ? ' campus LIKE "%'.str_replace(' ','%',$campus).'%"': null,
-strlen($nome_prof) ? ' nome_prof LIKE "%'.str_replace(' ','%',$nome_prof).'%"': null
+// Condições SQL
+$condicoes = [strlen($titulo) ? ' titulo LIKE "%'.str_replace(' ', '%', $titulo).'%"' : null,
+    strlen($palavra) ? $palavra : null,
+    strlen($campus) ? ' campus LIKE "%'.str_replace(' ', '%', $campus).'%"' : null,
+    strlen($nome_prof) ? ' nome_prof LIKE "%'.str_replace(' ', '%', $nome_prof).'%"' : null,
+    strlen($protocolo) ? ' protocolo LIKE "%'.str_replace(' ', '%', $protocolo).'%"' : null,
 
-  /*,
+    /*,
   strlen($colegiado) ? 'colegiado LIKE "%'.str_replace(' ','%',$colegiado).'%"': null,
-  strlen($area) ? "area_extensao = '$area_extensao'": null,  
+  strlen($area) ? "area_extensao = '$area_extensao'": null,
   strlen($linh_ext) ? 'linh_ext LIKE "%'.str_replace(' ','%',$linh_ext).'%"': null */
 ];
 
-//array_push($condicoes, 'id_prof = "' .$user['id'] .'"');
+// array_push($condicoes, 'id_prof = "' .$user['id'] .'"');
 
-//Remove posições vazias
+// Remove posições vazias
 $condicoes = array_filter($condicoes);
 
 // Cláusula WHERE
 $where1 = implode(' AND ', $condicoes);
 
-
 $palavra = $palavOrig;
 
-//Qntd total de registros
+// Qntd total de registros
 $qntdProjetos = Projeto::getQntdRegistros($where1);
 
-//paginação
-$obPagination = new Pagination($qntdProjetos, $_GET['pagina']?? 1, 5);
+// paginação
+$obPagination = new Pagination($qntdProjetos, $_GET['pagina'] ?? 1, 5);
 
 $projetos = Projeto::getRegistros($where1, null, $obPagination->getLimite());
 
