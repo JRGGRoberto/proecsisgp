@@ -7,8 +7,9 @@ use App\Session\Login;
 $obUsuario = Login::getUsuarioLogado();
 
 use App\Entity\CompararAlunos;
+use App\Entity\MicroCred_avaliadores;
+// use App\Entity\Pibis_pibex_avaliadores;
 use App\Entity\Outros;
-use App\Entity\Pibis_pibex_avaliadores;
 
 $idPermitido = CompararAlunos::getIdPermitidos();
 
@@ -27,6 +28,7 @@ $autorizados = [
     'a68f28dd-2b1b-49ec-8ef8-b6ed28ab3376', //  [SUWELLY GONÇALVES SUASSUI PICH] Solicitação  Daniela Machado 31/07/2025
 ];
 
+/*
 $menuPibis = '';
 $idUser = $obUsuario['id'];
 // Verifica se o usuário é um avaliador do PIBIS
@@ -40,6 +42,31 @@ if ($obAvaliador > 0) {
     $obAvaliador = Pibis_pibex_avaliadores::get($idUser, 'adm = 1');
     if ($obAvaliador instanceof Pibis_pibex_avaliadores) {
         $menuPibis .= "<a class='dropdown-item btn-sm' href='../pibisbexConf'>Acompanhamento</a>";
+    }
+
+    $menuPibis .= '</div>
+      </div>
+    </div>
+
+    ';
+} else {
+    $menuPibis = '';
+}
+*/
+
+$menuPibis = '';
+$idUser = $obUsuario['id'];
+// Verifica se o usuário é um avaliador do PIBIS
+$obAvaliador = MicroCred_avaliadores::getQntd('id = "'.$idUser.'" and ativo = 1');
+if ($obAvaliador > 0) {
+    $menuPibis = '
+    <div class="btn-group btn-group-sm">
+       <button type="button" class="btn btn-primary dropdown-toggle" data-toggle="dropdown">Microcredenciais</button>
+        <div class="dropdown-menu">
+          <a class="dropdown-item btn-sm" href="../microcredenciais">Avaliar</a>';
+    $obAvaliador = MicroCred_avaliadores::get($idUser, 'adm = 1');
+    if ($obAvaliador instanceof MicroCred_avaliadores) {
+        $menuPibis .= "<a class='dropdown-item btn-sm' href='../microConf'>Acompanhamento</a>";
     }
 
     $menuPibis .= '</div>

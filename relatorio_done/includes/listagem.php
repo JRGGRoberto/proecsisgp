@@ -5,6 +5,7 @@ use App\Session\Login;
 $user = Login::getUsuarioLogado();
 
 require '../includes/msgAlert.php';
+require './detalhe.php';
 
 $qnt1 = 0;
 $resultados = '';
@@ -39,7 +40,7 @@ function notNull($valor)
     }
 }
 
-foreach ($avaliacoes as $ava) {
+foreach ($historicoRel as $ava) {
     ++$qnt1;
     $estiloD = '';
     $cor = $ava->resultado == 'r' ? 'danger' : 'success';
@@ -69,7 +70,8 @@ foreach ($avaliacoes as $ava) {
         </div>
         <div id="p'.$ava->id.'" class="collapse">
           <div class="card-body">
-            <p></p>
+            <p>'.prnDetalhe($ava->id_relat, $ava->tp_relatorio).'</p>
+
           </div>
         </div>
       </div>
