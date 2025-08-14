@@ -54,6 +54,24 @@ if ($obAvaliador > 0) {
 }
 */
 
+$menuAcompa = '';
+$qry123 = 'select distinct  prof_id from progradisp   where prof_id = "'.$obUsuario['id'].'"';
+$acompanha = Outros::qry($qry123);
+if (count($acompanha) > 0) {
+    $menuAcompa = '
+    <div class="btn-group btn-group-sm">
+        <button type="button" class="btn btn-primary dropdown-toggle" data-toggle="dropdown">Acompanhamento</button>
+        <div class="dropdown-menu">
+          <a class="dropdown-item btn-sm" href="../candidatos">Acompanhar</a>
+        </div>
+    </div>
+
+    ';
+} else {
+    $menuAcompa = '';
+}
+// $menuPibis
+
 $menuPibis = '';
 $idUser = $obUsuario['id'];
 // Verifica se o usuário é um avaliador do PIBIS
@@ -322,7 +340,9 @@ if (in_array($obUsuario['config'], [1, 3])) {
       
 <!--      <button type="button" class="btn btn-primary">Projetos</button>
     -->     
+      <?php echo $menuAcompa; ?>
       <?php echo $menuPibis; ?>
+    <!--  ?php echo $menuMicro; ?> -->
       <?php echo $adminOpts; ?>
 
       <div clastoasts="btn-group btn-group-sm">

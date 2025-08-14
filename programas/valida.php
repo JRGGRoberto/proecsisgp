@@ -3,59 +3,32 @@
 require '../vendor/autoload.php';
 use App\Entity\Candidato;
 use App\Entity\Inscricao;
-use App\Entity\Outros;
 
 $options = '';
 $idCand = '';
 
-$qryListaProg = "
-    select p.id id, concat( p.prof, ' [',p.prog, '] ', p.campus   ) data
-from 
-  divulga_proj p ";
-
-$programasInscritos = '';
-
 $cpf = $_POST['cpf'];
-$cand = Candidato::getCPF($_POST['cpf']);
+$cand = Candidato::getCPF($cpf);
+$msg = '';
 
 if (!$cand) {
     $cand = new Candidato();
+    $idCand = null;
     $evento = 'cadastrar';
 } else {
     $evento = 'editar';
     $cand2 = (object) Candidato::getCPF($_POST['cpf']);
     $idCand = $cand2->id;
-
-    $qryListaProg .= " where p.id not in ( 
-  select if_prog from inscricao where id_can = '".$idCand."'   )
-";
-
-    $qryCurInsc = '
-        select 
-          p.prof, p.prog, p.campus, p.colegiado, DATE_FORMAT(i.created_at, "%d/%m/%Y") em
-        from
-          inscricao i
-          inner join divulga_proj p on i.if_prog = p.id
-        where i.id_can = "'.$idCand.'"
-        ';
-    $curInscritos = Outros::qry($qryCurInsc);
-    $programasInscritos = '
-    <div class="row">
-      <div class="col">
-        <div class="form-group">';
-    foreach ($curInscritos as $program) {
-        $programasInscritos .= '<button type="button" class="btn btn-outline-success">'.$program->prog.' - '.$program->prof.' - '.$program->campus.' - '.$program->colegiado.'. Inscrição realizada em '.$program->em.'</button>';
-    }
-    $programasInscritos .= '      
-        </div>
-      </div>
-    </div>
-';
 }
 
-$listaProg = Outros::qry($qryListaProg);
-foreach ($listaProg as $prog) {
-    $options .= '<option value="'.$prog->id.'">'.$prog->data.'</option>';
+$ip = 'ααα.ABC.XYZ.ΩΩΩ';
+
+if (!empty($_SERVER['HTTP_CLIENT_IP'])) {
+    $ip = $_SERVER['HTTP_CLIENT_IP'];
+} elseif (!empty($_SERVER['HTTP_X_FORWARDED_FOR'])) {
+    $ip = $_SERVER['HTTP_X_FORWARDED_FOR'];
+} else {
+    $ip = $_SERVER['REMOTE_ADDR'];
 }
 
 if (isset($_POST['nome'])) {
@@ -73,11 +46,22 @@ if (isset($_POST['nome'])) {
     $cand->email = $_POST['email'];
     $cand->curso = $_POST['curso'];
     $cand->serie = $_POST['serie'];
+    $cand->ip_address = $ip;
 
     if ($evento == 'cadastrar') {
         $idCand = $cand->cadastrar();
+        $msg = '
+        <div class="alert alert-success alert-dismissible">
+          <button type="button" class="close" data-dismiss="alert">&times;</button>
+          <strong>Success!</strong> Cadastro de usuário realizado
+        </div>';
     } else {
         $cand->atualizar();
+        $msg = '
+        <div class="alert alert-success alert-dismissible">
+          <button type="button" class="close" data-dismiss="alert">&times;</button>
+          <strong>Success!</strong> Dados de usuário atualizado
+        </div>';
     }
 
     if ($_POST['inscricao'] != -1) {
@@ -85,12 +69,43 @@ if (isset($_POST['nome'])) {
         $inscricao->id_can = $idCand;
         $inscricao->if_prog = $_POST['inscricao'];
         $inscricao->cadastrar();
-        header('location: index.php');
-
-        // insert into inscricao(id_can, if_prog) value('67119620-76d5-11f0-8589-ee060fc70170' ,'b807ef99-76b8-11f0-953e-3a9832f2c2cb')
+        $msg = '
+        <div class="alert alert-success alert-dismissible">
+          <button type="button" class="close" data-dismiss="alert">&times;</button>
+          <strong>Success!</strong> Inscrição no programa realizada
+        </div>';
     }
 }
 
+if (isset($_POST['id_cand_del'])) {
+    $idCand = $_POST['id_cand_del'];
+    $idProg = $_POST['id_prog_del'];
+    $inscricao = Inscricao::get($idCand, $idProg);
+    if ($inscricao) {
+        $inscricao->delete();
+        $msg = '
+        <div class="alert alert-success alert-dismissible">
+          <button type="button" class="close" data-dismiss="alert">&times;</button>
+          <strong>Success!</strong> Remoção da inscrição do programa realizada com sucesso.
+        </div>
+        ';
+    } else {
+        $msg = '
+        <div class="alert alert-danger alert-dismissible">
+          <button type="button" class="close" data-dismiss="alert">&times;</button>
+          <strong>Success!</strong> Inscrição não encontrada ou já removida.
+        </div>
+        ';
+    }
+    $cand = (object) Candidato::get($idCand);
+    $cpf = $cand->cpf;
+}
+
 include '../includes/headers.php';
+echo $msg;
+echo '
+<script>
+   cand_id = "'.$idCand.'";
+</script>';
 include __DIR__.'/includes/formulario.php';
 include '../includes/footer.php';

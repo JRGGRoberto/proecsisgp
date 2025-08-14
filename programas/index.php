@@ -28,6 +28,15 @@ foreach ($lista as $item) {
     //  $txt .= '   <p>  '.$item->campus.'  ['.$item->qnt.']</p>';
 }
 
+$ip = 'ααα.ABC.XYZ.ΩΩΩ';
+if (!empty($_SERVER['HTTP_CLIENT_IP'])) {
+    $ip = $_SERVER['HTTP_CLIENT_IP'];
+} elseif (!empty($_SERVER['HTTP_X_FORWARDED_FOR'])) {
+    $ip = $_SERVER['HTTP_X_FORWARDED_FOR'];
+} else {
+    $ip = $_SERVER['REMOTE_ADDR'];
+}
+
 include '../includes/headersCl.php';
 include __DIR__.'/includes/acesso.php';
 include '../includes/footer.php';
