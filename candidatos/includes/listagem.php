@@ -28,8 +28,20 @@ if (isset($_POST['acao'])) {
            transform: scale(0.95);
     }
 
-    .fade-in {
-           opacity: 1;
+    .fade {
+        opacity: 0;
+        visibility: hidden;
+        transition: opacity 0.4s ease, visibility 0.4s ease;
+    }
+    
+    .fade.show {
+        opacity: 1;
+        visibility: visible;
+    }
+
+    .btn-container {
+        display: flex;
+        
     }
 
 </style>

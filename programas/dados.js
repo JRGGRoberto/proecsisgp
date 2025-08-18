@@ -14,22 +14,31 @@ function listarInscricoes() {
   deleteListarInscricoes();
 
   dataInscri.forEach(e => {
-    if (!e.em) {
+    if (!e.em ) {
       //inscricao
-      const option = document.createElement("option");
-      option.value = e.id;
-      option.text = `${e.prog} - ${e.prof} [ ${e.campus} ] ${e.colegiado}`;
-      elementoSelect.appendChild(option);
+      if(e.aberto == 1) {
+        const option = document.createElement("option");
+        option.value = e.id;
+        option.text = `${e.prog} - ${e.prof} [ ${e.campus} ] ${e.colegiado} - ${e.aberto}`;
+        elementoSelect.appendChild(option);
+      }
     } else {
       const div = document.createElement("div");
       div.className = "alert alert-secondary alert-dismissible fade show";
       div.id = e.id;
-      div.innerHTML = `
-        <strong>${e.prog}</strong> ${e.prof} <span class="badge badge-secondary">${e.campus}</span> ${e.colegiado}. <span class="badge badge-secondary">${e.em}</span>
-        <button type="button" class="fechar close" data-bs-dismiss="modal" aria-label="Close">
-          <span aria-hidden="true">&times;</span>
-        </button>
-      `;
+
+      let contHTML = `<strong>${e.prog}</strong> ${e.prof} <span class="badge badge-secondary">${e.campus}</span> ${e.colegiado}. <span class="badge badge-secondary">${e.em}</span>`;
+      if (e.aberto == 1) {
+        contHTML = contHTML + 
+              `<button type="button" class="fechar close" data-bs-dismiss="modal" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+              </button>`
+              ;
+      } else {
+        contHTML = contHTML + ` <span class="badge badge-pill badge-dark w-100">Prazo encerrado para alterações</span>`;
+      }
+        
+      div.innerHTML = contHTML;
       elementoPaiDiv.appendChild(div);
     }
   });

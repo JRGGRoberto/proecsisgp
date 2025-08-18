@@ -22,6 +22,7 @@ const btnSalvar = document.getElementById("btnSalvar");
 const lista = document.getElementById("listaRanc");
 const listaI = document.getElementById("listaInscricoes");
 
+
 document.addEventListener("DOMContentLoaded", () => {
 
   function renderLista() {
@@ -35,8 +36,8 @@ document.addEventListener("DOMContentLoaded", () => {
           div.dataset.index = index;
           item.classif = index + 1;
           div.innerHTML = `
-              <div style="text-align: left;"class="row">
-                <div class="col-6">
+              <div style="text-align: left;"class="row w-100">
+                <div class="col-7">
                     <span class="badge badge-primary">#${item.classif}</span>
                     <strong>${item.nome}</strong>
                 </div>
@@ -45,14 +46,15 @@ document.addEventListener("DOMContentLoaded", () => {
                 </div>
                 <div class="col">
                   <span class="badge badge-light">
-                     <a href="mailto:${item.email}">${item.email}</a> tel: 
-                     <a href="tel:${item.tel1}">${item.tel1}</a>
+                     ✉️ <a href="mailto:${item.email}">${item.email}</a> |
+                     ☎️ <a href="tel:${item.tel1}">${item.tel1}</a>
                   </span>
                 </div>
               </div>
             `;
 
           const btns = document.createElement("div");
+          btns.className = "btn-container";
 
           const btnDel = document.createElement("button");
           btnDel.className = "btn btn-sm btn-outline-light mr-2";
@@ -106,8 +108,8 @@ document.addEventListener("DOMContentLoaded", () => {
         div.textContent = item.texto;
         div.dataset.index = index;
         div.innerHTML = `
-            <div style="text-align: left;" class="row">
-              <div class="col-6">
+            <div style="text-align: left;" class="row w-100">
+              <div class="col-7">
                  ${icon} <strong>${item.nome}</strong>
               </div>
               <div class="col">
@@ -115,14 +117,15 @@ document.addEventListener("DOMContentLoaded", () => {
               </div>
               <div class="col">
                 <span class="badge badge-light">
-                    <a href="mailto:${item.email}">${item.email}</a> tel: 
-                    <a href="tel:${item.tel1}">${item.tel1}</a>
+                    ✉️ <a href="mailto:${item.email}">${item.email}</a> |
+                    ☎️ <a href="tel:${item.tel1}">${item.tel1}</a>
                 </span>
               </div>
             </div>
           `;
 
         const btns = document.createElement("div");
+        btns.className = "btn-container";
 
         if(cor  == 'secondary'){
           const btnDescl = document.createElement("button");
@@ -162,7 +165,7 @@ document.addEventListener("DOMContentLoaded", () => {
       elemOrig.classList.add("moving");
       elemDest.classList.add("moving");
 
-      btnSalvar.hidden = false;
+      mostarBtnSalvar();
 
       // Após animação, troca no array e re-renderiza
       setTimeout(() => {
@@ -177,7 +180,7 @@ document.addEventListener("DOMContentLoaded", () => {
     itensI[index].cancelado = 1;
     // Animação de saída
     //elem.classList.add("blink");
-    btnSalvar.hidden = false;
+    mostarBtnSalvar();
 
     setTimeout(() => {
         renderLista();
@@ -195,7 +198,7 @@ document.addEventListener("DOMContentLoaded", () => {
     // Animação de saída
     elem.classList.add("fade-out");
 
-    btnSalvar.hidden = false;
+    mostarBtnSalvar();
 
     setTimeout(() => {
         itensI.splice(index, 1);
@@ -213,15 +216,21 @@ document.addEventListener("DOMContentLoaded", () => {
     
     // Animação de saída
     elem.classList.add("fade-out");
-    btnSalvar.hidden = false;
-
-    btnSalvar.hidden = false;
+    mostarBtnSalvar();
 
     setTimeout(() => {
         itens.splice(index, 1);
         renderLista();
     }, 400);
-}
+  }
+
+  function mostarBtnSalvar() {
+    btnSalvar.hidden = false; // torna visível no fluxo
+    requestAnimationFrame(() => { // força repaint antes da transição
+        btnSalvar.classList.add("show");
+    });
+  }
+
 
   renderLista();
 });
