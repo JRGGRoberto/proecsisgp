@@ -13,7 +13,7 @@ $qryCurInsc = '
       DATE_FORMAT(i.created_at, "%d/%m/%Y") em      
     from
       divulga_proj p
-      left join  inscricao i  on i.if_prog = p.id AND i.id_can =  "'.$idCand.'"
+      left join  inscricao i  on i.id_prog = p.id AND i.id_can =  "'.$idCand.'"
   ';
 
 $curInscritos = Outros::qry($qryCurInsc);

@@ -13,6 +13,7 @@ function validaMail($email)
 }
 
 if (isset($_POST['email'])) {
+    /*
     if (validaMail($_POST['email'])) {
         $url = 'https://aut.unespar.edu.br/ws/autenticar/post/';
         $data = [
@@ -59,6 +60,7 @@ if (isset($_POST['email'])) {
         $alertaLogin = 'E-mail ou senha inválidos - tentar fora do LDAP';
         goto validaSemLDAP;
     }
+    */
 
     validaSemLDAP:
     $obUsuario = Usuario::getUsuarioPorEmail($_POST['email']);

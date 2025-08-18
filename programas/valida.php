@@ -67,7 +67,7 @@ if (isset($_POST['nome'])) {
     if ($_POST['inscricao'] != -1) {
         $inscricao = new Inscricao();
         $inscricao->id_can = $idCand;
-        $inscricao->if_prog = $_POST['inscricao'];
+        $inscricao->id_prog = $_POST['inscricao'];
         $inscricao->cadastrar();
         $msg = '
         <div class="alert alert-success alert-dismissible">

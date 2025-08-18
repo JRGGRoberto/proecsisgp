@@ -9,53 +9,83 @@ Login::requireLogin();
 $user = Login::getUsuarioLogado();
 
 use App\Entity\Outros;
-
-// Busca
-// ////$busca = filter_input(INPUT_GET, 'busca', FILTER_SANITIZE_STRING);
-/*
-$campus = filter_input(INPUT_GET, 'campus', FILTER_SANITIZE_STRING);
-$colegiado = filter_input(INPUT_GET, 'colegiado', FILTER_SANITIZE_STRING);
-$centro = filter_input(INPUT_GET, 'centro', FILTER_SANITIZE_STRING);
-*/
-
-// Filtro de status
-// /      $filtroStatus = filter_input(INPUT_GET, 'filtroStatus', FILTER_SANITIZE_STRING);
-
-// Condições SQL
-
-// /     array_push($condicoes, 'id_user = "'.$user['id'].'"', 'resultado in ("r", "a")');
-
-// Remove posições vazias
-// ////////////////$condicoes = array_filter($condicoes);
-/*echo "<pre>";
-print_r($condicoes);
-echo "</pre>";
-*/
-// Cláusula WHERE
-// /////$where = implode(' AND ', $condicoes);
-
-// Qntd total de registros
-// $qntAvaliacoes = Avaliacoes::getQntdRegistros($where);
+use App\Entity\inscricao;
 
 $iduser = $user['id'];
 
-$qry = 'select 
- p.idprof,  p.prog,
- c.nome, c.cidade, c.curso,
- DATE_FORMAT(i.created_at, "%d/%m/%Y %H:%i") dt_insc
+$qrySelProg = '
+select 
+   p.id, p.prog , COUNT(s.id_can) ok,  count(i.id_can) inscritos
 from 
-   candidatos c 
-   inner join inscricao i on i.id_can = c.id
-   inner join divulga_proj p on p.id = i.if_prog 
-where p.idprof = "'.$iduser.'"';
+   divulga_proj p
+   left join inscricao i on i.id_prog  = p.id 
+   left join inscricao s on s.id_prog  = p.id and s.cancelado = 0 AND s.classif = 1
+where 
+idprof = "'.$iduser.'"
+group by 1;
+';
+$programas = Outros::qry($qrySelProg);
+$candidatos = '';
 
-$candidatos = Outros::qry($qry);
+$btnsProgs = '<form method="post" name="getProg">';
+foreach ( $programas as $prog) {
+   $corClass = '';
+   if($prog->ok > 0 ){
+      $corClass = 'success';
+   } else {
+      $corClass = 'warning';
+   }
+   $btnsProgs .= '<button type="submit" class="btn btn-'.$corClass.' btn-sm mr-2" name="acao" value="'.$prog->id.'">'.$prog->prog.
+   ' Inscritos: '.$prog->inscritos. '</button>';
+}
 
-// paginação
-// $obPagination = new Pagination($qntAvaliacoes, $_GET['pagina'] ?? 1, 10);
+$btnSalvar  = '';
+$btnsProgs .= '</form>';
 
-// $avaliacoes = Avaliacoes::getRegistros($where, null, $obPagination->getLimite());
+$candidatos = '[]';
+
+if (isset($_POST['altDados'])){
+   $inscricoesAlt = $_POST['altDados'];
+   $arrayInsc = json_decode($inscricoesAlt, true);
+   
+   foreach ($arrayInsc as $key => $i) {
+        
+      if($i['cancelado'] == 1) {
+         $insc1 = Inscricao::get($i['id_can'],$i['id_prog'] );
+         $insc1->cancel(); 
+      } 
+
+      if($i['cancelado'] == 0) {
+         $insc1 = Inscricao::get($i['id_can'],$i['id_prog'] );
+         $insc1->posicao($i['classif']);
+      }
+   }
+}
+
+if (isset($_POST['acao'])){
+   $idP = $_POST['acao'];
+   $qry = 'select 
+               p.idprof,  p.prog,
+               c.nome, c.cidade, c.curso, c.uf, c.tel1, c.email,
+               DATE_FORMAT(i.created_at, "%d/%m/%Y %H:%i") dt_insc,
+               i.id_prog, i.id_can, i.classif, i.cancelado, i.obs
+              from 
+                 candidatos c 
+                 inner join inscricao i on i.id_can = c.id
+                 inner join divulga_proj p on p.id =  i.id_prog  
+              where 
+                  p.idprof = "'.$iduser.'"  and
+                  p.id = "'.$idP.'" 
+              order by i.cancelado, i.classif, i.created_at ';
+  
+  $candidatos = json_encode(Outros::qry($qry));
+  $btnSalvar  = '<button id="btnSalvar" class="btn btn-success btn-sm float-right" hidden onclick="salvaInfos()">Salvar classificação</button><hr>';
+}
 
 include '../includes/header.php';
+echo '<script> 
+   var dados = '. $candidatos .';
+</script>';
+
 include __DIR__.'/includes/listagem.php';
 include '../includes/footer.php';
