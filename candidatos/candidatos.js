@@ -18,6 +18,7 @@ function salvaInfos(){
 }
 
 const btnSalvar = document.getElementById("btnSalvar");
+
 const lista = document.getElementById("listaRanc");
 const listaI = document.getElementById("listaInscricoes");
 
@@ -34,11 +35,20 @@ document.addEventListener("DOMContentLoaded", () => {
           div.dataset.index = index;
           item.classif = index + 1;
           div.innerHTML = `
-              <div style="text-align: left;">
-                <span class="badge badge-primary"">#${item.classif}</span>
-                ${item.nome} <span class="badge badge-light">${item.curso}</span>
-                <span class="badge badge-light">${item.cidade}/${item.uf}</span>
-                <span class="badge badge-light">${item.email}/${item.tel1}</span>
+              <div style="text-align: left;"class="row">
+                <div class="col-6">
+                    <span class="badge badge-primary">#${item.classif}</span>
+                    <strong>${item.nome}</strong>
+                </div>
+                <div class="col">
+                    <span class="badge badge-light">${item.curso} <wbr> ${item.cidade}/${item.uf}</span>
+                </div>
+                <div class="col">
+                  <span class="badge badge-light">
+                     <a href="mailto:${item.email}">${item.email}</a> tel: 
+                     <a href="tel:${item.tel1}">${item.tel1}</a>
+                  </span>
+                </div>
               </div>
             `;
 
@@ -96,12 +106,19 @@ document.addEventListener("DOMContentLoaded", () => {
         div.textContent = item.texto;
         div.dataset.index = index;
         div.innerHTML = `
-            <div style="text-align: left;">
-            <span class="badge badge-light"">${icon}</span>
-              ${item.nome} <span class="badge badge-light">${item.curso}</span>
-              <span class="badge badge-light">${item.cidade}/${item.uf}</span>
-              <span class="badge badge-light">${item.email}/${item.tel1}</span>
-              
+            <div style="text-align: left;" class="row">
+              <div class="col-6">
+                 ${icon} <strong>${item.nome}</strong>
+              </div>
+              <div class="col">
+                <span class="badge badge-light">${item.curso} <wbr> ${item.cidade}/${item.uf}</span>
+              </div>
+              <div class="col">
+                <span class="badge badge-light">
+                    <a href="mailto:${item.email}">${item.email}</a> tel: 
+                    <a href="tel:${item.tel1}">${item.tel1}</a>
+                </span>
+              </div>
             </div>
           `;
 
@@ -156,7 +173,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
   function faltou(index) {
     const elementos = [...listaI.children];
-    const elem = elementos[index];
+   // const elem = elementos[index];
     itensI[index].cancelado = 1;
     // Animação de saída
     //elem.classList.add("blink");
