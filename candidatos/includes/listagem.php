@@ -4,6 +4,15 @@ use App\Session\Login;
 
 $user = Login::getUsuarioLogado();
 
+$nomeProgSelecionado = '';
+if (isset($_POST['acao'])) {
+    foreach ($programas as $prog3) {
+        if ($prog3->id == $idP) {
+            $nomeProgSelecionado = $prog3->prog;
+        }
+    }
+}
+
 ?>
 
 <style>
@@ -26,12 +35,15 @@ $user = Login::getUsuarioLogado();
 </style>
 
 <main>
-  <h2 class="mt-0">Lista de candidatos </h2>
-  <?php echo $btnsProgs ;?>
-  <?php echo $btnSalvar ;?>
+  <h2 class="mt-0">Lista de candidatos <?php echo $nomeProgSelecionado ? ' para o programa <br>'.$nomeProgSelecionado : ' <span class="badge badge-light">Selecione um progrograma.</span> '; ?> </h2>
+  <?php echo $btnsProgs; ?>
+  <?php echo $btnSalvar; ?>
   <form method="post" name="formSalvaDados" id="formSalvaDados" >
       <input type="hidden" name="altDados" id="altDados">
   </form>
+
+  
+  
   <section>
 Lista Ranqueada
     <div class="form-group" id="listaRanc">

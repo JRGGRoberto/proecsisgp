@@ -70,30 +70,30 @@ if (count($acompanha) > 0) {
 } else {
     $menuAcompa = '';
 }
-// $menuPibis
+// $menuPibis = '';
 
-$menuPibis = '';
+$menuMicro = '';
 $idUser = $obUsuario['id'];
 // Verifica se o usuário é um avaliador do PIBIS
 $obAvaliador = MicroCred_avaliadores::getQntd('id = "'.$idUser.'" and ativo = 1');
 if ($obAvaliador > 0) {
-    $menuPibis = '
+    $menuMicro = '
     <div class="btn-group btn-group-sm">
        <button type="button" class="btn btn-primary dropdown-toggle" data-toggle="dropdown">Microcredenciais</button>
         <div class="dropdown-menu">
           <a class="dropdown-item btn-sm" href="../microcredenciais">Avaliar</a>';
     $obAvaliador = MicroCred_avaliadores::get($idUser, 'adm = 1');
     if ($obAvaliador instanceof MicroCred_avaliadores) {
-        $menuPibis .= "<a class='dropdown-item btn-sm' href='../microConf'>Acompanhamento</a>";
+        $menuMicro .= "<a class='dropdown-item btn-sm' href='../microConf'>Acompanhamento</a>";
     }
 
-    $menuPibis .= '</div>
+    $menuMicro .= '</div>
       </div>
     </div>
 
     ';
 } else {
-    $menuPibis = '';
+    $menuMicro = '';
 }
 
 if ($obUsuario['config'] > 0 or in_array($obUsuario['id'], $autorizados)) {
@@ -341,8 +341,8 @@ if (in_array($obUsuario['config'], [1, 3])) {
 <!--      <button type="button" class="btn btn-primary">Projetos</button>
     -->     
       <?php echo $menuAcompa; ?>
-      <?php echo $menuPibis; ?>
-    <!--  ?php echo $menuMicro; ?> -->
+      <?php // echo $menuPibis;?>
+      <?php echo $menuMicro; ?>
       <?php echo $adminOpts; ?>
 
       <div clastoasts="btn-group btn-group-sm">

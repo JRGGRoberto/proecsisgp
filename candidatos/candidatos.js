@@ -35,9 +35,10 @@ document.addEventListener("DOMContentLoaded", () => {
           item.classif = index + 1;
           div.innerHTML = `
               <div style="text-align: left;">
-              <span class="badge badge-primary"">#${item.classif}</span>
-                ${item.prog} ${item.nome} ${item.curso}
-                ${item.cidade}/${item.uf} ${item.tel1} ${item.email}
+                <span class="badge badge-primary"">#${item.classif}</span>
+                ${item.nome} <span class="badge badge-light">${item.curso}</span>
+                <span class="badge badge-light">${item.cidade}/${item.uf}</span>
+                <span class="badge badge-light">${item.email}/${item.tel1}</span>
               </div>
             `;
 
@@ -88,14 +89,19 @@ document.addEventListener("DOMContentLoaded", () => {
           cor = 'secondary';
           icon = '⏳'
         }
+
+
+        
         div.className = `alert alert-${cor} mb-2 d-flex justify-content-between align-items-center`;
         div.textContent = item.texto;
         div.dataset.index = index;
         div.innerHTML = `
             <div style="text-align: left;">
             <span class="badge badge-light"">${icon}</span>
-              ${item.prog} ${item.nome} ${item.curso}
-              ${item.cidade}/${item.uf} ${item.tel1} ${item.email}
+              ${item.nome} <span class="badge badge-light">${item.curso}</span>
+              <span class="badge badge-light">${item.cidade}/${item.uf}</span>
+              <span class="badge badge-light">${item.email}/${item.tel1}</span>
+              
             </div>
           `;
 

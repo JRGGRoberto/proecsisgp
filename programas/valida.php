@@ -32,7 +32,7 @@ if (!empty($_SERVER['HTTP_CLIENT_IP'])) {
 }
 
 if (isset($_POST['nome'])) {
-    $cand->nome = $_POST['nome'];
+    $cand->nome = strtoupper($_POST['nome']);
     $cand->rg = $_POST['rg'];
     $cand->cpf = $_POST['cpf'];
     $cand->dt_nasc = $_POST['dt_nasc'];
