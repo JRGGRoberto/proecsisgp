@@ -1,273 +1,294 @@
-let itens = [];
-let itensI = [];
-
-var obsmsg = ''
-
-dados.forEach((e) => {
-  if((e.cancelado == 1) ||(e.classif == null)){
-    itensI.push(e);
-  } else {
-    itens.push(e);
-  }
-});
-
-function salvaInfos(){
-  console.table(dados);
-  const altDados = document.getElementById("altDados");
-  const formSalvaDados = document.getElementById("formSalvaDados");
-  altDados.value = JSON.stringify(dados);
-  formSalvaDados.submit();
-}
-
-const btnSalvar = document.getElementById("btnSalvar");
-
-const lista = document.getElementById("listaRanc");
-const listaI = document.getElementById("listaInscricoes");
-
-
 document.addEventListener("DOMContentLoaded", () => {
+  const lista   = document.getElementById("listaRanc");
+  const listaI  = document.getElementById("listaInscricoes");
+  const form    = document.getElementById("formSalvaDados");
+  const alt     = document.getElementById("altDados");
+  const btnSave = document.getElementById("btnSalvar");
+  const obsEl   = document.getElementById("obs");
+  const btnConf = document.getElementById("btnConfirmar");
 
-  function renderLista() {
-      lista.innerHTML = "";
-      listaI.innerHTML = "";
+  // Normaliza cancelado para número
+  dados.forEach(d => d.cancelado = Number(d.cancelado || 0));
 
-      itens.forEach((item, index) => {
-          const div = document.createElement("div");
-          div.className = "alert alert-primary mb-2 d-flex justify-content-between align-items-center";
-          div.textContent = item.texto;
-          div.dataset.index = index;
-          item.classif = index + 1;
-          div.innerHTML = `
-              <div style="text-align: left;"class="row w-100">
-                <div class="col-7">
-                    <span class="badge badge-primary">#${item.classif}</span>
-                    <strong>${item.nome}</strong>
-                </div>
-                <div class="col">
-                    <span class="badge badge-light">${item.curso} <wbr> ${item.cidade}/${item.uf}</span>
-                </div>
-                <div class="col">
-                  <span class="badge badge-light">
-                     ✉️ <a href="mailto:${item.email}">${item.email}</a> |
-                     ☎️ <a href="tel:${item.tel1}">${item.tel1}</a>
-                  </span>
-                </div>
-              </div>
-            `;
+  const state = {
+    ranked: [],
+    pool:   [],
+    modal:  { type: null, index: null },
+    obs:    ''
+  };
 
-          const btns = document.createElement("div");
-          btns.className = "btn-container";
+  // Particiona
+  dados.forEach(d => {
+    if (d.cancelado === 1 || d.classif == null) state.pool.push(d);
+    else state.ranked.push(d);
+  });
 
-          const btnDel = document.createElement("button");
-          btnDel.className = "btn btn-sm btn-outline-light mr-2";
-          btnDel.textContent = "❌";
-          btnDel.onclick = () => cnfDesc(index, 'd');
-          btns.appendChild(btnDel);
+  // Util
+  function mostrarBtnSalvar() {
+    console.log("Mostrar botão de salvar");
+    btnSave.classList.remove("d-none");
+  }
 
-          if(index == 0){
-            div.classList.remove("alert-primary");
-            div.classList.add("alert-success");
-          }
+  // --- RENDERIZAÇÃO DAS LISTAS ---
+  function render() {
+    lista.innerHTML = "";
+    listaI.innerHTML = "";
 
-          // Botão mover para cima (só mostra se não for o primeiro)
-          if (index > 0) {
-              const btnUp = document.createElement("button");
-              btnUp.className = "btn btn-sm btn-outline-light mr-1";
-              btnUp.textContent = "⬆️";
-              btnUp.onclick = () => mover(index, index - 1);
-              btns.appendChild(btnUp);
-          }
+    // ranked
+    state.ranked.forEach((item, index) => {
+      item.classif = index + 1;
 
-          // Botão mover para baixo (só mostra se não for o último)
-          if (index < itens.length - 1) {
-              const btnDown = document.createElement("button");
-              btnDown.className = "btn btn-sm btn-outline-light";
-              btnDown.textContent = "⬇️";
-              btnDown.onclick = () => mover(index, index + 1);
-              btns.appendChild(btnDown);
-          }
+      const div = document.createElement("div");
+      div.className = "alert mb-2 d-flex justify-content-between align-items-center " + 
+                      (index === 0 ? "alert-success" : "alert-primary");
 
-          div.appendChild(btns);
-          lista.appendChild(div);
+      const row = document.createElement("div");
+      row.className = "row w-100";
+      row.style.textAlign = "left";
+
+      const c1 = document.createElement("div");
+      c1.className = "col-7";
+      c1.innerHTML = `<span class="badge badge-primary">#${item.classif}</span> <strong></strong>`;
+      c1.querySelector("strong").textContent = item.nome;
+
+      const c2 = document.createElement("div");
+      c2.className = "col";
+      c2.innerHTML = `<span class="badge badge-light"></span>`;
+      c2.querySelector(".badge").textContent = `${item.curso} ${item.cidade}/${item.uf}`;
+
+      const c3 = document.createElement("div");
+      c3.className = "col";
+      c3.innerHTML = `
+        <span class="badge badge-light">
+          ✉️ <a></a> | ☎️ <a></a>
+        </span>`;
+      const [mail, tel] = c3.querySelectorAll("a");
+      mail.href = `mailto:${item.email}`;
+      mail.textContent = item.email;
+      tel.href = `tel:${item.tel1}`;
+      tel.textContent = item.tel1;
+
+      row.append(c1, c2, c3);
+
+      const btns = document.createElement("div");
+      btns.className = "btn-container";
+
+      const bDel = document.createElement("button");
+      bDel.className = "btn btn-sm btn-outline-light mr-2";
+      bDel.textContent = "❌";
+      bDel.addEventListener("click", () => openModal('d', index));
+      btns.appendChild(bDel);
+
+      if (index < state.ranked.length - 1) {
+        const bDown = document.createElement("button");
+        bDown.className = "btn btn-sm btn-outline-light";
+        bDown.textContent = "⬇️";
+        bDown.addEventListener("click", () => mover(index, index + 1));
+        btns.appendChild(bDown);
+      }
+      if (index > 0) {
+        const bUp = document.createElement("button");
+        bUp.className = "btn btn-sm btn-outline-light mr-1";
+        bUp.textContent = "⬆️";
+        bUp.addEventListener("click", () => mover(index, index - 1));
+        btns.appendChild(bUp);
+      }
+
+      div.append(row, btns);
+      lista.appendChild(div);
+
+      // animação de entrada
+      div.classList.add("fade-in");
+      requestAnimationFrame(() => {
+        div.classList.add("show");
+        div.addEventListener("transitionend", () => {
+          div.classList.remove("fade-in", "show");
+        }, { once: true });
       });
+    });
 
+    // pool
+    state.pool.forEach((item, index) => {
+      const div = document.createElement("div");
+      const cancelado = item.cancelado === 1;
+      const cor  = cancelado ? "dark" : "secondary";
+      const icon = cancelado ? "⛔" : "⏳";
 
-      itensI.forEach((item, index) => {
-        const div = document.createElement("div");
-        let cor = '';
-        let icon = '';
-        let msgCancelado = '';
-        if(item.cancelado == 1){
-          cor = 'dark';
-          icon = '⛔'
-          msgCancelado = item.obs ? `<hr><button type="button" class="btn btn-outline-light text-left text-dark w-100 disabled"><strong>[${item.dtava}] ${item.obs}</strong></button>` : '';
-        } else {
-          cor = 'secondary';
-          icon = '⏳'
-        }
+      div.className = `alert alert-${cor} mb-2 d-flex justify-content-between align-items-center`;
 
-        div.className = `alert alert-${cor} mb-2 d-flex justify-content-between align-items-center`;
-        div.textContent = item.texto;
-        div.dataset.index = index;
-        div.innerHTML = `
-            <div style="text-align: left;" class="row w-100">
-              <div class="col-7">
-                 ${icon} <strong>${item.nome}</strong>
-              </div>
-              <div class="col">
-                <span class="badge badge-light">${item.curso} <wbr> ${item.cidade}/${item.uf}</span>
-              </div>
-              <div class="col">
-                <span class="badge badge-light">
-                    ✉️ <a href="mailto:${item.email}">${item.email}</a> |
-                    ☎️ <a href="tel:${item.tel1}">${item.tel1}</a>
-                </span>${msgCancelado}
-              </div>
-            </div>
-          `;
+      const row = document.createElement("div");
+      row.className = "row w-100";
+      row.style.textAlign = "left";
 
-        const btns = document.createElement("div");
-        btns.className = "btn-container";
+      const c1 = document.createElement("div");
+      c1.className = "col-7";
+      c1.innerHTML = `${icon} <strong></strong>`;
+      c1.querySelector("strong").textContent = item.nome;
 
-        if(cor  == 'secondary'){
-          const btnDescl = document.createElement("button");
-          btnDescl.className = "btn btn-sm btn-outline-light mr-1";
-          btnDescl.textContent = "⛔";
-          btnDescl.onclick = () => cnfDesc(index, 'f');
-          btns.appendChild(btnDescl);
-        }
+      const c2 = document.createElement("div");
+      c2.className = "col";
+      c2.innerHTML = `<span class="badge badge-light"></span>`;
+      c2.querySelector(".badge").textContent = `${item.curso} ${item.cidade}/${item.uf}`;
 
-        const btnToRank = document.createElement("button");
-        btnToRank.className = "btn btn-sm btn-outline-light mr-2";
-        btnToRank.textContent = "🆗";
-        btnToRank.onclick = () => toRank(index);
-        btns.appendChild(btnToRank);
-        div.appendChild(btns);
-        listaI.appendChild(div);
+      const c3 = document.createElement("div");
+      c3.className = "col";
+      c3.innerHTML = `
+        <span class="badge badge-light">
+          ✉️ <a></a> | ☎️ <a></a>
+        </span>`;
+      const [mail, tel] = c3.querySelectorAll("a");
+      mail.href = `mailto:${item.email}`;
+      mail.textContent = item.email;
+      tel.href = `tel:${item.tel1}`;
+      tel.textContent = item.tel1;
+
+      if (cancelado && item.obs) {
+        const msg = document.createElement("div");
+        msg.className = "mt-2";
+        msg.innerHTML = `<button type="button" class="btn btn-outline-light text-left text-dark w-100 disabled"><strong>[${item.dtava}] </strong></button>`;
+        msg.querySelector("strong").append(document.createTextNode(" " + item.obs));
+        c3.appendChild(msg);
+      }
+
+      row.append(c1, c2, c3);
+
+      const btns = document.createElement("div");
+      btns.className = "btn-container";
+
+      if (!cancelado) {
+        const bDesc = document.createElement("button");
+        bDesc.className = "btn btn-sm btn-outline-light mr-1";
+        bDesc.textContent = "⛔";
+        bDesc.addEventListener("click", () => openModal('f', index));
+        btns.appendChild(bDesc);
+      }
+
+      const bToRank = document.createElement("button");
+      bToRank.className = "btn btn-sm btn-outline-light mr-2";
+      bToRank.textContent = "🆗";
+      bToRank.addEventListener("click", () => toRank(index));
+      btns.appendChild(bToRank);
+
+      div.append(row, btns);
+      listaI.appendChild(div);
+
+      // animação de entrada
+      div.classList.add("fade-in");
+      requestAnimationFrame(() => {
+        div.classList.add("show");
+        div.addEventListener("transitionend", () => {
+          div.classList.remove("fade-in", "show");
+        }, { once: true });
+      }); 
     });
   }
 
-  function mover(origIndex, destIndex) {
-      const elementos = [...lista.children];
-      const elemOrig = elementos[origIndex];
-      const elemDest = elementos[destIndex];
+  // --- ANIMAÇÕES ---
+  function mover(orig, dest) {
+    const els = lista.children;
+    const origEl = els[orig];
+    const destEl = els[dest];
 
-      const deslocamentoOrig = elemDest.offsetTop - elemOrig.offsetTop;
-      const deslocamentoDest = elemOrig.offsetTop - elemDest.offsetTop;
+    const origTop = origEl.offsetTop;
+    const destTop = destEl.offsetTop;
 
-      // Aplica deslocamento temporário
-      elemOrig.style.transform = `translateY(${deslocamentoOrig}px)`;
-      elemDest.style.transform = `translateY(${deslocamentoDest}px)`;
+    [state.ranked[orig], state.ranked[dest]] = [state.ranked[dest], state.ranked[orig]];
+    render();
 
-      elemOrig.classList.add("moving");
-      elemDest.classList.add("moving");
+    const newOrigEl = lista.children[dest];
+    const newDestEl = lista.children[orig];
 
-      mostarBtnSalvar();
+    const diffOrig = origTop - newOrigEl.offsetTop;
+    const diffDest = destTop - newDestEl.offsetTop;
 
-      // Após animação, troca no array e re-renderiza
-      setTimeout(() => {
-          [itens[origIndex], itens[destIndex]] = [itens[destIndex], itens[origIndex]];
-          renderLista();
-      }, 500);
+    newOrigEl.style.transition = "none";
+    newOrigEl.style.transform = `translateY(${diffOrig}px)`;
+    newDestEl.style.transition = "none";
+    newDestEl.style.transform = `translateY(${diffDest}px)`;
+
+    newOrigEl.offsetHeight; // força repaint
+
+    newOrigEl.style.transition = "transform 0.5s ease";
+    newOrigEl.style.transform = "";
+    newDestEl.style.transition = "transform 0.5s ease";
+    newDestEl.style.transform = "";
+
+    mostrarBtnSalvar();
   }
-
 
   function toRank(index) {
-    const elementos = [...listaI.children];
-    const elem = elementos[index];
+    const el = listaI.children[index];
+    el.style.transition = "transform 0.5s ease, opacity 0.5s ease";
+    el.style.transform = "translateX(100%)";
+    el.style.opacity = "0";
 
-    newItem = itensI[index];
-    newItem.cancelado = 0;
-    itens.push(newItem);
-    
-    // Animação de saída
-    elem.classList.add("fade-out");
-
-    mostarBtnSalvar();
-
-    setTimeout(() => {
-        itensI.splice(index, 1);
-        renderLista();
-    }, 400);
+    el.addEventListener("transitionend", () => {
+      const item = state.pool[index];
+      item.cancelado = 0;
+      state.ranked.push(item);
+      state.pool.splice(index, 1);
+      mostrarBtnSalvar();
+      render();
+    }, { once: true });
   }
 
-  function cnfDesc(index, tp){
-    $('#modalConfirmDesc').modal('show');
-    document.getElementById('obs').value = '';
-    document.getElementById('tp').innerHTML = tp;
-    document.getElementById('idx').innerHTML = index; 
-    document.getElementById('btnConfirmar').setAttribute('disabled', true);  
+  function desclassificar(index) {
+    const el = lista.children[index];
+    el.style.transition = "transform 0.5s ease, opacity 0.5s ease";
+    el.style.transform = "translateX(-100%)";
+    el.style.opacity = "0";
+
+    el.addEventListener("transitionend", () => {
+      const item = state.ranked[index];
+      item.cancelado = 1;
+      item.obs = state.obs;
+      state.pool.push(item);
+      state.ranked.splice(index, 1);
+      mostrarBtnSalvar();
+      render();
+    }, { once: true });
   }
 
   function faltou(index) {
-    const elementos = [...listaI.children];
-    itensI[index].cancelado = 1;
-    itensI[index].obs = obsmsg;
-    mostarBtnSalvar();
-    setTimeout(() => {
-        renderLista();
-    }, 400);
+    const el = listaI.children[index];
+    el.style.transition = "transform 0.5s ease, opacity 0.5s ease";
+    el.style.transform = "translateX(-100%)";
+    el.style.opacity = "0";
+
+    el.addEventListener("transitionend", () => {
+      const item = state.pool[index];
+      item.cancelado = 1;
+      item.obs = state.obs;
+      mostrarBtnSalvar();
+      render();
+    }, { once: true });
   }
 
-  function desclassifcar(index) {
-    const elementos = [...lista.children];
-    const elem = elementos[index];
-    newItem = itens[index]; 
-    newItem.cancelado = 1;
-    newItem.obs = obsmsg;
-    itensI.push(newItem);
-    
-    // Animação de saída
-    elem.classList.add("fade-out");
-    mostarBtnSalvar();
-
-    setTimeout(() => {
-        itens.splice(index, 1);
-        renderLista();
-    }, 400);
+  // --- Modal ---
+  function openModal(type, index) {
+    state.modal.type = type;
+    state.modal.index = index;
+    obsEl.value = "";
+    btnConf.disabled = true;
+    $('#modalConfirmDesc').modal({backdrop:'static', keyboard:false}).modal('show');
   }
 
-  function mostarBtnSalvar() {
-    btnSalvar.hidden = false; // torna visível no fluxo
-    requestAnimationFrame(() => { // força repaint antes da transição
-        btnSalvar.classList.add("show");
-    });
-  }
-
-
-  document.getElementById('obs').addEventListener('input', function() {
-    const btnConfirmar = document.getElementById('btnConfirmar');
-    if (this.value.trim().length >= 5) {
-      btnConfirmar.removeAttribute('disabled');
-    } else {
-      btnConfirmar.setAttribute('disabled', true);
-    }
+  obsEl.addEventListener('input', () => {
+    btnConf.disabled = obsEl.value.trim().length < 5;
   });
 
-  // Retornar valor de cada botão
-  document.getElementById('btnConfirmar').addEventListener('click', function() {
-    obsmsg  = document.getElementById('obs').value.trim();
-    const tp = document.getElementById('tp').innerHTML;
-    const idx = document.getElementById('idx').innerHTML;
-    console.log('Tipo de ação:', tp, 'Mensagem:', obsmsg);
-    if (tp == 'd') {
-        desclassifcar(idx);
-        console.table(itens[idx]);
-    } else if (tp == 'f') {
-        faltou(idx);
-        console.table(itensI[idx]);
-    }
-
-
+  btnConf.addEventListener('click', () => {
+    state.obs = obsEl.value.trim();
+    if (state.modal.type === 'd') desclassificar(state.modal.index);
+    if (state.modal.type === 'f') faltou(state.modal.index);
     $('#modalConfirmDesc').modal('hide');
-
   });
 
-  document.getElementById('btnCancelar').addEventListener('click', function() {
-    return false;
-  });
+  // salvar
+  window.salvaInfos = function() {
+    alt.value = JSON.stringify(dados);
+    form.submit();
+  };
 
-  renderLista();
+  render();
 });
-
-

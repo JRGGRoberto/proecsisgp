@@ -79,7 +79,8 @@ if (isset($_POST['acao'])) {
               order by i.cancelado, i.classif, i.created_at ';
 
     $candidatos = json_encode(Outros::qry($qry));
-    $btnSalvar = '<button id="btnSalvar" class="btn btn-success btn-sm float-right" hidden onclick="salvaInfos()">Salvar classificação</button><hr>';
+
+    $btnSalvar = '<button id="btnSalvar" class="btn btn-success btn-sm float-right d-none"" onclick="salvaInfos()">Salvar classificação</button><hr>';
 }
 
 include '../includes/header.php';

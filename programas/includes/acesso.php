@@ -27,10 +27,10 @@
             <label>CPF <sub> [Digite apenas os números]</sub></label>
             <div class="row">
               <div class="col-4">
-                <input id="cpf" type="text" class="form-control " name="cpf" maxlength="14" value="" inputmode="numeric" autocomplete="off" placeholder="000.000.000-00" required  />
+                <input id="cpf" type="text" class="form-control " name="cpf" minlength="14"  maxlength="14" inputmode="numeric" autocomplete="off" placeholder="000.000.000-00" required  />
               </div>
               <div class="col">
-                <button type="submit"  class="btn btn-primary">🔑 Entrar</button>
+                <button type="submit" id="btnOk"  class="btn btn-primary" disabled>🔑 Entrar</button>
               </div>
             </div>
         </div>
@@ -43,6 +43,7 @@
 <script>
 
 const cpfInput = document.getElementById('cpf');
+const btnOk = document.getElementById('btnOk');
 
     // Bloqueia teclas que não são dígitos (permite controles: backspace, setas, ctrl/cmd, delete, tab)
     cpfInput.addEventListener('keydown', (e) => {
@@ -71,6 +72,12 @@ const cpfInput = document.getElementById('cpf');
       cpfInput.value = formatCPF(onlyDigits);
       // colocar o cursor no fim (simples e robusto)
       cpfInput.setSelectionRange(cpfInput.value.length, cpfInput.value.length);
+      if(cpfInput.value.length == 14)  {
+        btnOk.disabled = false;
+      } else {
+        cpfInput.autofocus ;
+        btnOk.disabled = true;
+      }
     }
 
     function formatCPF(digits) {
@@ -80,5 +87,10 @@ const cpfInput = document.getElementById('cpf');
       if (digits.length <= 9) return digits.slice(0,3) + '.' + digits.slice(3,6) + '.' + digits.slice(6);
       return digits.slice(0,3) + '.' + digits.slice(3,6) + '.' + digits.slice(6,9) + '-' + digits.slice(9,11);
     }
+
+    /*cpfInput.addEventListener('onfocusout', (digits) => {
+
+
+    });*/
 
 </script>
