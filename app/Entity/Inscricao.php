@@ -14,7 +14,6 @@ class Inscricao
     public $created_at;
     public $updated_at;
 
-
     /**
      * Método responsável por cadastrar uma nova pessoa no banco.
      *
@@ -45,33 +44,35 @@ class Inscricao
         return (new Database('inscricao'))->delete(' (id_can, id_prog) = ("'.$this->id_can.'", "'.$this->id_prog.'" )');
     }
 
-      /**
-   * Método responsável por atualizar a Registro no banco
-   * @return boolean
-   */
-  public function posicao($num){
-    return (new Database('inscricao'))->update('(id_can, id_prog) = ("'.$this->id_can.'", "'.$this->id_prog.'" )',
-                                                            [
-                                                                'classif'    => $num,
-                                                                'obs'        => $this->obs,
-                                                                'cancelado'  => 0,
-                                                                'updated_at' => date("Y-m-d H:i:s")
-                                                            ]);
-  }
+    /**
+     * Método responsável por atualizar a Registro no banco.
+     *
+     * @return bool
+     */
+    public function posicao($num)
+    {
+        return (new Database('inscricao'))->update('(id_can, id_prog) = ("'.$this->id_can.'", "'.$this->id_prog.'" )',
+            [
+                'classif' => $num,
+                'obs' => null,
+                'cancelado' => 0,
+                'updated_at' => date('Y-m-d H:i:s'),
+            ]);
+    }
 
-     /**
-   * Método responsável por atualizar a Registro no banco
-   * @return boolean
-   */
-  public function cancel(){
-    return (new Database('inscricao'))->update('(id_can, id_prog) = ("'.$this->id_can.'", "'.$this->id_prog.'" )',
-                                                            [
-                                                                'classif'    => null,
-                                                                'obs'        => $this->obs,
-                                                                'cancelado'  => 1,
-                                                                'updated_at' => date("Y-m-d H:i:s")
-                                                            ]);
-  }
-
-
+    /**
+     * Método responsável por atualizar a Registro no banco.
+     *
+     * @return bool
+     */
+    public function cancel($msg)
+    {
+        return (new Database('inscricao'))->update('(id_can, id_prog) = ("'.$this->id_can.'", "'.$this->id_prog.'" )',
+            [
+                'classif' => null,
+                'obs' => $msg,
+                'cancelado' => 1,
+                'updated_at' => date('Y-m-d H:i:s'),
+            ]);
+    }
 }

@@ -43,6 +43,9 @@ if (isset($_POST['acao'])) {
         display: flex;
         
     }
+    .hidden-div {
+        display: none;
+    }
 
 </style>
 
@@ -67,11 +70,42 @@ Lista de desclassificados ou não ranqueados
     </div>
     
   </section>
-
-  <script src="candidatos.js"></script>
-
 </main>
 
+
+
+    <!-- The Modal -->
+    <div class="modal" id="modalConfirmDesc">
+        <div class="modal-dialog">
+          <div class="modal-content">
+      
+            <!-- Modal Header -->
+            <div class="modal-header">
+              <h4 class="modal-title">Desclassificar candidato</h4>
+              <button type="button" class="close" data-dismiss="modal">&times;</button>
+            </div>
+      
+            <!-- Modal body -->
+            <div class="modal-body">
+              <p>Para realizar a desclassificação, é obrigatório informar uma justificativa no campo abaixo</p>
+              <textarea name="obs" id="obs" rows="5" class="form-control"></textarea>
+            </div>
+      
+            <!-- Modal footer -->
+            <div class="modal-footer">
+              <button type="button" id="btnConfirmar" class="btn btn-danger" disabled>Confirmar cancelamento</button>
+              <button type="button" id="btnCancelar" class="btn btn-secondary" data-dismiss="modal">Não alterar</button>
+            </div>
+            <div id='tp'class="hidden-div"></div>
+            <div id='idx'class="hidden-div"></div>
+          </div>
+        </div>
+    </div>
+    
+  
+    <!--  The Modal ADD / EDT Fim-->
+
+<script src="candidatos.js"></script>
 
 
 

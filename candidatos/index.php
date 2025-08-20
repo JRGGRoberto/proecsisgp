@@ -51,7 +51,7 @@ if (isset($_POST['altDados'])) {
     foreach ($arrayInsc as $key => $i) {
         if ($i['cancelado'] == 1) {
             $insc1 = Inscricao::get($i['id_can'], $i['id_prog']);
-            $insc1->cancel();
+            $insc1->cancel($i['obs']);
         }
 
         if ($i['cancelado'] == 0) {
@@ -67,6 +67,7 @@ if (isset($_POST['acao'])) {
                p.idprof,  p.prog,
                c.nome, c.cidade, c.curso, c.uf, c.tel1, c.email,
                DATE_FORMAT(i.created_at, "%d/%m/%Y %H:%i") dt_insc,
+               DATE_FORMAT(i.updated_at, "%d/%m/%Y %H:%i") dtava,
                i.id_prog, i.id_can, i.classif, i.cancelado, i.obs
               from 
                  candidatos c 
