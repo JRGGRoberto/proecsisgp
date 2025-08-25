@@ -94,7 +94,13 @@ document.addEventListener("DOMContentLoaded", () => {
         btns.appendChild(bUp);
       }
 
-      div.append(row, btns);
+      //Se passar da data de seleção, não deixa selecionar mais, não mostar botões
+      if(item.sel_cand == 1) {
+        div.append(row, btns);
+      } else {
+        div.append(row);
+      }
+      
       lista.appendChild(div);
 
       // animação de entrada
@@ -169,7 +175,14 @@ document.addEventListener("DOMContentLoaded", () => {
       bToRank.addEventListener("click", () => toRank(index));
       btns.appendChild(bToRank);
 
-      div.append(row, btns);
+
+      //Se passar da data de seleção, não deixa selecionar mais, não mostar botões
+      if(item.sel_cand == 1) {
+        div.append(row, btns);
+      } else {
+        div.append(row);
+      }
+
       listaI.appendChild(div);
 
       // animação de entrada

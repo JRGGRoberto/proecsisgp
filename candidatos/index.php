@@ -68,7 +68,7 @@ if (isset($_POST['acao'])) {
                c.nome, c.cidade, c.curso, c.uf, c.tel1, c.email,
                DATE_FORMAT(i.created_at, "%d/%m/%Y %H:%i") dt_insc,
                DATE_FORMAT(i.updated_at, "%d/%m/%Y %H:%i") dtava,
-               i.id_prog, i.id_can, i.classif, i.cancelado, i.obs
+               i.id_prog, i.id_can, i.classif, i.cancelado, i.obs, p.sel_cand
               from 
                  candidatos c 
                  inner join inscricao i on i.id_can = c.id
