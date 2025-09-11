@@ -36,7 +36,7 @@ foreach ($avaliacoes as $ava) {
 
               '.$detalhes.'
             <div class="col-sm-1"><span class="badge badge-'.$cor[0].'">'.$cor[1].'</span></div>';
-    if ($ava->avaliavel == 1) {
+    if ($ava->dentro_limite == 1) {
         $resultados .= '<div class="col-sm-1"><a href="./pontuar.php?p='.$ava->proj_id.'&a='.$ava->aval_id.'" class="badge badge-success">'.$cor[3].'</a></div>';
     } else {
         $resultados .= '<div class="col-sm-1"><span class="badge badge-secondary">Fechado</span></div>';

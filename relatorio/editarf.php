@@ -42,24 +42,28 @@ if (($relatorio->tramitar == 1) or ($obProjeto->id_prof != $user['id'])) {
                     </script>";
 }
 
-$msgSolicitacoAlteracao = '';
-if ($relatorio->last_result == 'r') {
-    include __DIR__.'/includes/msgAlteração.php';
-}
-
 $anexados = Arquivo::getAnexados('relatorios', $relatorio->id);
 
 $anex = '<ul id="anexos_edt">';
 foreach ($anexados as $att) {
     $anex .=
     '<li>
-      <a href="/sistema/upload/uploads/'.$att->nome_rand.'" target="_blank">'.$att->nome_orig.'</a> 
-      <a href="../arquiv/index.php?tab='.$att->tabela.'&id='.$att->id_tab.'&arq='.$att->nome_rand.'" >  
-        <span class="badge badge-danger">🗑️ Excluir</span>
-      </a>
+      <a href="/sistema/upload/uploads/'.$att->nome_rand.'" target="_blank">'.$att->nome_orig.'</a> ';
+    if ($editar == '') {
+        $anex .=
+        '<a href="../arquiv/index.php?tab='.$att->tabela.'&id='.$att->id_tab.'&arq='.$att->nome_rand.'" >  
+            <span class="badge badge-danger">🗑️ Excluir</span>
+          </a>';
+    }
+    $anex .= '
   </li> ';
 }
 $anex .= '</ul>';
+
+$msgSolicitacoAlteracao = '';
+if ($relatorio->last_result == 'r') {
+    include __DIR__.'/includes/msgAlteração.php';
+}
 
 $cursosetor = '';
 
@@ -111,6 +115,7 @@ if (isset($_POST['valida'])) {
     $relatorio->rel_tec_cien_executado = $_POST['rel_tec_cien_executado'];
     $relatorio->divulgacao = $_POST['divulgacao'];
     $relatorio->tramitar = $_POST['tramitar'];
+    $relatorio->visita_tec_qtd = $_POST['visita_tec_qtd'];
     if ($_POST['tramitar'] == 1) {
         $relatorio->last_result = 'n';
     }

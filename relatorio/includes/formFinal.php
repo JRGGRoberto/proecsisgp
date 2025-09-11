@@ -19,9 +19,9 @@ switch ($tf) {
 <main>
   
   <section>
-    <a href="./index.php?id=<?php echo $obProjeto->id; ?>">
-      <button class="btn btn-success btn-sm float-right">Voltar</button>
-    </a>
+    
+      <button class="btn btn-success btn-sm float-right" id="backBtn">Voltar</button>
+    
   </section>
   <hr>
   <h4 style="text-align: center">ANEXO V</h4>
@@ -82,6 +82,22 @@ switch ($tf) {
       </label>
       <input type="text" class="form-control" name="coordNome" readonly value="<?php echo $obProjeto->nome_prof; ?>">
     </div>
+
+    
+    <hr>
+
+
+      <!-- visita tecnica -->
+      <div class="row">
+        <div class="col">
+          <div class="form-group">
+            <label for="visita_tec_qtd">
+              <h5><?php echo ++$n; ?>. Quantidade de visitas técnicas realizadas</h5>
+            </label>
+            <input type="number" id="visita_tec_qtd" name="visita_tec_qtd" class="form-control my-2 w-25" min="0" value="<?php echo $relatorio->visita_tec_qtd; ?>" <?php echo $editar; ?> >
+          </div>
+        </div>
+      </div>
 
     <hr>
 

@@ -1,5 +1,5 @@
 app/Db/config.php
-app/Db/Database.php
+# app/Db/Database.php
 teste.php
 upload/uploads/*
 # Ignore os arquivos de sistema do Mac

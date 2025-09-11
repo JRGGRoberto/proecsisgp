@@ -28,35 +28,35 @@ foreach ($projetos as $proj) {
                  substr($proj->vigen_fim, 0, 4);
     }
 
-    $query = "select * from relatorios r where r.publicado  = 1 and r.idproj = '".$proj->id."'";
+    $query = "select * from relatorios r where r.publicado = 1 and r.idproj = '".$proj->id."'";
     $relatorios = Outros::qry($query);
     // ----
 
     // 2023-03-09 00:00:00
     $resultados .= '
-<div class="card mt-2">
-  <div class="card-header">
-    <div class="row">
-        <div class="col-sm">📃 <strong>Título: </strong><a class="collapsed card-link" data-toggle="collapse" href="#p'.$proj->id.'"><strong>'.$proj->titulo.'</strong></a></div>
+  <div class="card mt-2">
+    <div class="card-header">
+      <div class="row">
+          <div class="col-sm">📃 <strong>Título: </strong><a class="collapsed card-link" data-toggle="collapse" href="#p'.$proj->id.'"><strong>'.$proj->titulo.'</strong></a></div>
+      </div>
+      <div class="row">
+          <div class="col-sm-5"><strong>Tipo de Proposta:</strong> '.$proj->tipo_exten.'</div>
+          <div class="col-sm"><strong>Para:</strong> '.$col.'</div> 
+          <div class="col-sm"><strong>Fim de Vig.:</strong> '.$dataA.'</div> 
+          
+      </div>
+      <div class="row">
+          <div class="col-sm">
+            <strong>Coordenador:</strong> '.$proj->nome_prof.'
+          </div>
+          <div class="col-sm">
+            <strong>Campus:</strong> '.$proj->campus.'
+          </div>
+          <div class="col-sm">
+            <strong>TIDE:</strong> '.$proj->tide.'
+          </div>
+      </div>
     </div>
-    <div class="row">
-        <div class="col-sm-5"><strong>Tipo de Proposta:</strong> '.$proj->tipo_exten.'</div>
-        <div class="col-sm"><strong>Para:</strong> '.$col.'</div> 
-        <div class="col-sm"><strong>Fim de Vig.:</strong> '.$dataA.'</div> 
-        
-    </div>
-    <div class="row">
-        <div class="col-sm">
-          <strong>Coordenador:</strong> '.$proj->nome_prof.'
-        </div>
-        <div class="col-sm">
-          <strong>Campus:</strong> '.$proj->campus.'
-        </div>
-        <div class="col-sm">
-          <strong>TIDE:</strong> '.$proj->tide.'
-        </div>
-    </div>
-  </div>
 
 
   
@@ -72,12 +72,31 @@ foreach ($projetos as $proj) {
           
           </div>
         </div>
+        ';
 
-        <hr>
-        
-        <div class="d-flex flex-row-reverse ">
-          <a href="visualizar.php?id='.$proj->id.'&v='.$proj->ver.'&w=1" target="_blank"><button class="btn btn-success btn-sm mb-2">Projeto 📃</button></a>
-        </div>
+    $resultados .= !empty($relatorios) ? '<hr><span><strong> Relatórios 📊</strong></span>' : '<span class="badge badge-secondary"> Nenhum relatório aprovado.</span>';
+
+    foreach ($relatorios as $rel) {
+        $resultados .= '
+            <div class="d-flex flex-row">
+              <div class="">
+                <a  href="../relatorio/editar'.$rel->tipo[0].'.php?id='.$rel->id.'" >
+                  <button class="btn-success border border-0 my-2 rounded  btn-sm">';
+        $resultados .=
+          $rel->tipo == 'fi' ? 'FINAL - '.$rel->created_at : 'PARCIAL - '.$rel->created_at;
+        $resultados .=
+        '</button>
+                </a>
+              </div>
+            </div>
+          ';
+    }
+
+    $resultados .= '
+          <hr>
+          <div class="d-flex flex-row-reverse ">
+            <a href="visualizar.php?id='.$proj->id.'&v='.$proj->ver.'&w=1" target="_blank"><button class="btn btn-success btn-sm mb-2">Projeto 📃</button></a>
+          </div>
         ';
 
     $resultados .= '
@@ -188,7 +207,7 @@ include '../includes/paginacao.php';
         
         <!-- Modal body -->
         <div class="modal-body" id="modalBody">
-          
+            <p>teste</p>
 
         </div>
         

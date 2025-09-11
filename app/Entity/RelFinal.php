@@ -23,6 +23,8 @@ class RelFinal
     public $divulgacao;
     public $rel_finac;
     public $tramitar;
+    public $visita_tec_qtd;
+
     public $last_result;
     public $etapa;
     public $etapas;
@@ -58,6 +60,7 @@ class RelFinal
             'divulgacao' => $this->divulgacao,
             'rel_finac' => $this->rel_finac,
             'tramitar' => $this->tramitar,
+            'visita_tec_qtd' => $this->visita_tec_qtd,
             'etapa' => 1,
             // 'etapas'                 => 4,
             'last_result' => 'n',
@@ -93,6 +96,7 @@ class RelFinal
             'divulgacao' => $this->divulgacao,
             'rel_finac' => $this->rel_finac,
             'tramitar' => $this->tramitar,
+            'visita_tec_qtd' => $this->visita_tec_qtd,
             'etapa' => $this->etapa,
             'etapas' => $this->etapas,
             'last_result' => $this->last_result,

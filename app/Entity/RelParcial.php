@@ -21,6 +21,7 @@ class RelParcial
     public $last_result;
     public $etapa;
     public $etapas;
+    public $visita_tec_qtd;
 
     public $created_at;
     public $updated_at;
@@ -44,6 +45,7 @@ class RelParcial
             'atvd_per' => $this->atvd_per,
             'alteracoes' => $this->alteracoes,
             'atvd_prox_per' => $this->atvd_prox_per,
+            'visita_tec_qtd' => $this->visita_tec_qtd,
 
             'tramitar' => $this->tramitar,
             'last_result' => 'n',
@@ -71,6 +73,7 @@ class RelParcial
             'alteracoes' => $this->alteracoes,
             'atvd_prox_per' => $this->atvd_prox_per,
             'tramitar' => $this->tramitar,
+            'visita_tec_qtd' => $this->visita_tec_qtd,
             'last_result' => $this->last_result,
             'updated_at' => date('Y-m-d H:i:s'),
             'user' => $this->user,

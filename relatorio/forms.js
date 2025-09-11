@@ -206,6 +206,16 @@ $('#sumnot_divulgacao').summernote({
   ]
 });
 
+document.getElementById("backBtn").addEventListener("click", (e) => {
+    e.preventDefault();
+    history.back();
+    console.log('Voltando!!');
+})
+
+
+
+ 
+
 
 function submitJSON() {
   // Equipe

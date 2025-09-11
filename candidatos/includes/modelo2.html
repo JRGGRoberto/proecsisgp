@@ -1,3 +1,210 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="robots" content="noindex">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.1/dist/css/bootstrap.min.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.1/dist/umd/popper.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.1/dist/js/bootstrap.bundle.min.js"></script>
+    <style>
+        .alert {
+            transition: transform 0.4s ease, opacity 0.4s ease;
+        }
+        .moving {
+            z-index: 1;
+        }
+        /* Animação ao excluir */
+        .fade-out {
+               opacity: 0;
+               transform: scale(0.95);
+        }
+    
+        .fade {
+            opacity: 0;
+            visibility: hidden;
+            transition: opacity 0.4s ease, visibility 0.4s ease;
+        }
+        
+        .fade.show {
+            opacity: 1;
+            visibility: visible;
+        }
+    
+        .btn-container {
+            display: flex;
+            
+        }
+        .hidden-div {
+            display: none;
+        }
+
+    </style>
+    <title>Document</title>
+</head>
+<body><div class="container">
+    <main>
+       <h2 class="mt-0">Lista de candidatos </h2>
+  
+       <form method="post" name="formSalvaDados" id="formSalvaDados" >
+           <input type="hidden" name="altDados" id="altDados">
+       </form>
+       <button id="btnSalvar" class="btn btn-success btn-sm float-right show" hidden onclick="salvaInfos()" si>Salvar classificação</button>
+       <hr>
+
+      <section>
+        Lista Ranqueada
+        <div class="form-group" id="listaRanc">
+          <!-- Lista será carregada dinamicamente -->
+        </div>
+    
+        Lista de desclassificados ou não ranqueados
+        <div class="form-group" id="listaInscricoes">
+          <!-- Lista será carregada dinamicamente -->
+        </div>
+        
+      </section>
+    </main>
+</div>
+    <!-- The Modal -->
+    <div class="modal" id="modalConfirmDesc">
+        <div class="modal-dialog">
+          <div class="modal-content">
+      
+            <!-- Modal Header -->
+            <div class="modal-header">
+              <h4 class="modal-title">Desclassificar candidato</h4>
+              <button type="button" class="close" data-dismiss="modal">&times;</button>
+            </div>
+      
+            <!-- Modal body -->
+            <div class="modal-body">
+              <p>Para realizar a desclassificação, é obrigatório informar uma justificativa no campo abaixo</p>
+              <textarea name="obs" id="obs" rows="5" class="form-control"></textarea>
+            </div>
+      
+            <!-- Modal footer -->
+            <div class="modal-footer">
+              <button type="button" id="btnConfirmar" class="btn btn-danger" disabled>Confirmar cancelamento</button>
+              <button type="button" id="btnCancelar" class="btn btn-secondary" data-dismiss="modal">Não alterar</button>
+            </div>
+            <div id='tp'class="hidden-div"></div>
+            <div id='idx'class="hidden-div"></div>
+          </div>
+        </div>
+    </div>
+
+</body>
+
+<script>
+    var dados = 
+[
+  {
+    "idprof": "81506c70-becd-11ee-801b-0266ad9885af",
+    "prog": "FORMULA-1",
+    "nome": "MAX VERSTAPPEN",
+    "cidade": "Apucarana",
+    "curso": "Ci\u00eancias econ\u00f4micas",
+    "uf": "PR",
+    "tel1": "(43)999999999",
+    "email": "email@domain.com",
+    "dt_insc": "12/08/2025 14:54",
+    "dtava": "19/08/2025 16:47",
+    "id_prog": "b806d792-76b8-11f0-953e-3a9832f2c2cb",
+    "id_can": "5807be05-cbc0-4ddd-8f49-94e1feb5ad1c",
+    "classif": null,
+    "cancelado": "0",
+    "obs": null
+  },
+  {
+    "idprof": "81506c70-becd-11ee-801b-0266ad9885af",
+    "prog": "FORMULA-1",
+    "nome": "LANDO NORRIS",
+    "cidade": "Apucarana",
+    "curso": "Pedagogia ",
+    "uf": "RP",
+    "tel1": "(43)999999999",
+    "email": "email@domain.com",
+    "dt_insc": "12/08/2025 16:44",
+    "dtava": "19/08/2025 16:47",
+    "id_prog": "b806d792-76b8-11f0-953e-3a9832f2c2cb",
+    "id_can": "8ec878e6-c48a-4f7a-864b-ee06c412cbda",
+    "classif": null,
+    "cancelado": "0",
+    "obs": null
+  },
+  {
+    "idprof": "81506c70-becd-11ee-801b-0266ad9885af",
+    "prog": "FORMULA-1",
+    "nome": "GABRIEL BORTOLETO",
+    "cidade": "Apucarana",
+    "curso": "Ci\u00eancias Cont\u00e1beis ",
+    "uf": "PR",
+    "tel1": "(43)999999999",
+    "email": "email@domain.com",
+    "dt_insc": "13/08/2025 13:00",
+    "dtava": "19/08/2025 16:47",
+    "id_prog": "b806d792-76b8-11f0-953e-3a9832f2c2cb",
+    "id_can": "fe829b16-40fc-44c2-aafb-476396b49508",
+    "classif": null,
+    "cancelado": "0",
+    "obs": null
+  },
+  {
+    "idprof": "81506c70-becd-11ee-801b-0266ad9885af",
+    "prog": "FORMULA-1",
+    "nome": "ISACK HADJAR",
+    "cidade": "Apucarana",
+    "curso": "Licenciatura em Letras Espanhol ",
+    "uf": "PR",
+    "tel1": "(43)999999999",
+    "email": "email@domain.com",
+    "dt_insc": "13/08/2025 13:56",
+    "dtava": "19/08/2025 16:47",
+    "id_prog": "b806d792-76b8-11f0-953e-3a9832f2c2cb",
+    "id_can": "bae8236a-a953-4d7e-8b5f-51d557c556cc",
+    "classif": null,
+    "cancelado": "0",
+    "obs": null
+  },
+  {
+    "idprof": "81506c70-becd-11ee-801b-0266ad9885af",
+    "prog": "FORMULA-1",
+    "nome": "FERNANDO ALONSO",
+    "cidade": "Cambira",
+    "curso": "Letras Portugu\u00eas ",
+    "uf": "PR",
+    "tel1": "(43)999999999",
+    "email": "email@domain.com",
+    "dt_insc": "13/08/2025 20:43",
+    "dtava": "19/08/2025 16:47",
+    "id_prog": "b806d792-76b8-11f0-953e-3a9832f2c2cb",
+    "id_can": "f5a2d581-2659-426b-b8ae-b10c5ecc955c",
+    "classif": null,
+    "cancelado": "0",
+    "obs": null
+  },
+  {
+    "idprof": "81506c70-becd-11ee-801b-0266ad9885af",
+    "prog": "FORMULA-1",
+    "nome": "YUKI TOSUNODA",
+    "cidade": "Apucarana",
+    "curso": "Letras Espanhol",
+    "uf": "PR",
+    "tel1": "(43)999999999",
+    "email": "email@domain.com",
+    "dt_insc": "14/08/2025 19:52",
+    "dtava": "19/08/2025 16:47",
+    "id_prog": "b806d792-76b8-11f0-953e-3a9832f2c2cb",
+    "id_can": "0e0573f8-8d64-4c12-98b5-40508a9d6032",
+    "classif": null,
+    "cancelado": "0",
+    "obs": null
+  }
+];
+
+
 document.addEventListener("DOMContentLoaded", () => {
   const lista   = document.getElementById("listaRanc");
   const listaI  = document.getElementById("listaInscricoes");
@@ -25,7 +232,6 @@ document.addEventListener("DOMContentLoaded", () => {
 
   // Util
   function mostrarBtnSalvar() {
-    console.log("Mostrar botão de salvar");
     btnSave.classList.remove("d-none");
   }
 
@@ -94,19 +300,7 @@ document.addEventListener("DOMContentLoaded", () => {
         btns.appendChild(bUp);
       }
 
-      const btnsFP = document.createElement("div");
-      const fimPrazo = document.createElement("button");
-      fimPrazo.className = "btn btn-sm btn-outline-light text-left text-dark disabled";
-      fimPrazo.innerHTML = '<strong>Prazo expirado</strong>';
-      btnsFP.appendChild(fimPrazo);
-
-      //Se passar da data de seleção, não deixa selecionar mais, não mostar botões
-      if(item.sel_cand == 1) {
-        div.append(row, btns);
-      } else {
-        div.append(row, btnsFP);
-      }
-      
+      div.append(row, btns);
       lista.appendChild(div);
 
       // animação de entrada
@@ -181,19 +375,7 @@ document.addEventListener("DOMContentLoaded", () => {
       bToRank.addEventListener("click", () => toRank(index));
       btns.appendChild(bToRank);
 
-      const btnsFP = document.createElement("div");
-      const fimPrazo = document.createElement("button");
-      fimPrazo.className = "btn btn-sm btn-outline-light text-left text-dark disabled";
-      fimPrazo.innerHTML = '<strong>Prazo expirado</strong>';
-      btnsFP.appendChild(fimPrazo);
-
-      //Se passar da data de seleção, não deixa selecionar mais, não mostar botões
-      if(item.sel_cand == 1) {
-        div.append(row, btns);
-      } else {
-        div.append(row, btnsFP);
-      }
-
+      div.append(row, btns);
       listaI.appendChild(div);
 
       // animação de entrada
@@ -316,3 +498,9 @@ document.addEventListener("DOMContentLoaded", () => {
 
   render();
 });
+
+
+</script>
+
+</html>
+

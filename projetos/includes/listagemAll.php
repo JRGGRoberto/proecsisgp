@@ -121,6 +121,7 @@ foreach ($projetos as $Projt) {
                  <span class="badge badge-secondary"> <span class="badge-light"> ce </span> Dir centro de área </span> 
                  <span class="badge badge-secondary"> <span class="badge-light"> co </span> coordenador de colegiado </span> <br>
                  <span class="badge badge-secondary"> <span class="badge-light"> pf </span> professor </span> 
+                 <span class="badge badge-secondary"> <span class="badge-light"> dc </span> Dir Campus </span> 
                 </span>';
 
         if ($a == 0) {
