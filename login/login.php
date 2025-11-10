@@ -20,7 +20,11 @@ if (isset($_POST['email'])) {
             'login' => validaMail($_POST['email']),
             'senha' => $_POST['senha'],
 <<<<<<< HEAD
+<<<<<<< HEAD
             'hashSistema' => 'hashSistema',
+=======
+            'hashSistema' => '2f1b19468e9e4a9756e62d892045c89a5a08a06d',
+>>>>>>> parent of 1d8aa37 (Go back)
 =======
             'hashSistema' => '2f1b19468e9e4a9756e62d892045c89a5a08a06d',
 >>>>>>> parent of 1d8aa37 (Go back)

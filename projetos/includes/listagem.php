@@ -36,10 +36,14 @@ foreach ($projetos as $proj) {
     $msg1 = '';
 
 <<<<<<< HEAD
+<<<<<<< HEAD
     if (($proj->regras == 'e341e624-0715-11ef-b2c8-0266ad9885af')
         or ($proj->aprov == 1)
         or ($proj->etapas = $proj->fase_seq and $proj->last_result = 'a')
     ) {
+=======
+    if ($proj->aprov == 1) {
+>>>>>>> parent of 1d8aa37 (Go back)
 =======
     if ($proj->aprov == 1) {
 >>>>>>> parent of 1d8aa37 (Go back)
