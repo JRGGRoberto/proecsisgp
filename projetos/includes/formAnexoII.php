@@ -5,16 +5,6 @@
     let formulario = 2;
   </script>
 
-  <?php
-    // use App\Entity\Projeto;
-
-    if (isset($_GET['pass']) and $_GET['pass'] === 'false') {
-        $missing = $_SESSION['missing_fields'] ?? [];
-        unset($_SESSION['missing_fields']);
-    }
-
-  ?>
-
   <section>
     <a href="index.php">
       <button class="btn btn-success btn-sm float-right">Voltar</button>
@@ -24,21 +14,12 @@
   <h4 style="text-align: center">ANEXO II</h4>
   <h3 class="mt-3" style="text-align: center"><?php echo TITLE; ?></h3>
 
-  <?php if (!empty($missing)) { ?>
-    <div class="alert alert-warning text-center mt-3" role="alert">
-      ⚠️ O formulário não está completamente preenchido. Complete os campos em destaque para enviar.
-    </div>
-  <?php } ?>
-  
-
   <form name="formAnexo" id="formAnexo" method="POST" enctype="multipart/form-data">
     <input type="hidden" name="id_prof" value="<?php echo $obProjeto->id_prof; ?>">
     <input type="hidden" name="tabela" value="projetos">
-
     <hr>
-    
     <div class="form-group">
-      <label style="color: <?php echo in_array('titulo', $missing) ? 'red' : 'black'; ?>;">
+      <label>
         <h5><?php echo $n = 1; ?>. Título da proposta</h5>
       </label>
       <input type="text" class="form-control" name="titulo" id="titulo"  maxlength="265" value="<?php echo $obProjeto->titulo; ?>" required>
@@ -323,46 +304,33 @@
       <hr>
 
       <div class="form-group">
-        <h5>
-          <label style="color: <?php echo in_array('resumo', $missing) ? 'red' : 'black'; ?>;">
-            <?php echo ++$n; ?>. Resumo do Projeto e Palavras-chaves
-          </label>
-        </h5>
+        <h5><label><?php echo ++$n; ?>. Resumo do Projeto e Palavras-chaves</label></h5>
 
-        <!-- Verifica se 'resumo' está faltando -->
-        <label for="resumo">
-          Resumo do Projeto
-        </label>
+        <label for="resumo">Resumo do Projeto</label>
         <div id="sumnot_resumo"><?php echo $obProjeto->resumo; ?></div>
         <textarea id="resumo" name="resumo" rows="10" hidden></textarea>
-
-        <!-- Verifica se 'palav1' está faltando -->
-        <label for="palavras">
-          Palavras-chave
+        <label for="palavras">Palavras-chave
+          <div class="row">
+            <div class="col-4">
+              <input type="text" class="form-control" name="palav1" id="palav1" value="<?php echo $palav1; ?>">
+            </div>
+            <div class="col-4">
+              <input type="text" class="form-control" name="palav2" id="palav2" value="<?php echo $palav2; ?>">
+            </div>
+            <div class="col-4">
+              <input type="text" class="form-control" name="palav3" id="palav3" value="<?php echo $palav3; ?>">
+            </div>
+          </div>
         </label>
-        <div class="row">
-          <div class="col-4">
-            <input type="text" class="form-control" name="palav1" id="palav1" 
-              value="<?php echo $palav1; ?>">
-          </div>
-          <div class="col-4">
-            <input type="text" class="form-control" name="palav2" id="palav2" 
-              value="<?php echo $palav2; ?>">
-          </div>
-          <div class="col-4">
-            <input type="text" class="form-control" name="palav3" id="palav3" 
-              value="<?php echo $palav3; ?>">
-          </div>
-        </div>
-      </div>
 
+      </div>
 
       <hr>
 
       <div class="row">
         <div class="col">
           <div class="form-group">
-            <label for="justificativa" style="color: <?php echo in_array('justificativa', $missing) ? 'red' : 'black'; ?>;">
+            <label for="justificativa">
               <h5><?php echo ++$n; ?>. Problema e justificativa da proposta</h5>
             </label>
             <div id="sumnot_justificativa"><?php echo $obProjeto->justificativa; ?></div>

@@ -50,11 +50,6 @@ switch ($tf) {
 */
 ?>
 
-  <?php if (isset($_GET['pass']) && $_GET['pass'] === 'false') { ?>
-    <div class="alert alert-warning text-center mt-3" role="alert">
-      ⚠️ O relatório não está completamente preenchido. Complete os campos em destaque para enviar.
-    </div>
-  <?php } ?>
 
   <form name="formAnexo" id="formAnexo" method="POST" enctype="multipart/form-data">
     <input type="hidden" name="id_prof" value="<?php echo $obProjeto->id_prof; ?>">
@@ -99,7 +94,7 @@ switch ($tf) {
             <label for="visita_tec_qtd">
               <h5><?php echo ++$n; ?>. Quantidade de visitas técnicas realizadas</h5>
             </label>
-            <input type="number" id="visita_tec_qtd" name="visita_tec_qtd" class="form-control my-2 w-25" min="0" value="<?php echo $relatorio->visita_tec_qtd = ($relatorio->visita_tec_qtd) ?: 0; ?>" <?php echo $editar; ?> >
+            <input type="number" id="visita_tec_qtd" name="visita_tec_qtd" class="form-control my-2 w-25" min="0" value="<?php echo $relatorio->visita_tec_qtd; ?>" <?php echo $editar; ?> >
           </div>
         </div>
       </div>
@@ -377,6 +372,20 @@ if ($tf == 'pr') {
         <?php echo $anex; ?>
       </div>
       <hr>
+      <?php
+              if ($relatorio->tramitar == 0) {
+                  if ($obProjeto->id_prof != $user['id']) {
+                      echo '';
+                  } else {
+                      ?>
+      <div class="form-group">
+        <h5 id="">Pronto para tramitação</h5>
+        <label for="tramitar">Ao marcar esta <input type="checkbox" id="tramitar" name="tramitar" value="1"> opção, depois de salvo, este relatório ficará visível para aprovação e perderá o modo de edição.</label>
+           
+      </div>
+      <hr>
+      <?php }
+                  }  ?>
 
       <div class="row" >
 
@@ -388,26 +397,12 @@ if ($tf == 'pr') {
         </div>
       </div>
 
-      <hr>
-
-      <?php
-        if ($relatorio->tramitar == 0) {
-            if ($obProjeto->id_prof != $user['id']) {
-                echo '';
-            } else {
-                ?>
-        <div class="form-group">
-          <h5 id="">Pronto para tramitação</h5>
-          <label for="tramitar">Ao marcar esta <input type="checkbox" id="tramitar" name="tramitar" value="1"> opção, depois de salvo, este relatório ficará visível para aprovação e perderá o modo de edição.</label>
-        </div>
-      <?php }
-            }
-?>
+      
 
       <div class="form-group">
       <?php
-            if ($editar == '') {
-                ?>
+                  if ($editar == '') {
+                      ?>
           <a href="javascript: submitSumbeter()" class="btn btn-success btn-sm" >↗️ Salvar </a>
       <?php } ?>
          <a href="javascript: history.go(-1)" class="btn btn-warning btn-sm" >↗️ Voltar </a>

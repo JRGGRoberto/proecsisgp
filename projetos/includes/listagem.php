@@ -34,12 +34,15 @@ foreach ($projetos as $proj) {
     $submetido = false;
 
     $msg1 = '';
-    // regras == 'e341e624-0715-11ef-b2c8-0266ad9885af' 2024Exec - importado, já aprovado anteriormente
 
+<<<<<<< HEAD
     if (($proj->regras == 'e341e624-0715-11ef-b2c8-0266ad9885af')
         or ($proj->aprov == 1)
         or ($proj->etapas = $proj->fase_seq and $proj->last_result = 'a')
     ) {
+=======
+    if ($proj->aprov == 1) {
+>>>>>>> parent of 1d8aa37 (Go back)
         $submetido = true;
         $showRelatorios = true;
         switch ($proj->estado) {

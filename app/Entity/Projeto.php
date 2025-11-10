@@ -57,10 +57,6 @@ class Projeto
     public $last_result;
     public $edt;
 
-    public $palav1;
-    public $palav2;
-    public $palav3;
-
     public $acec;
     public $vinculo;
     public $tituloprogvinc;
@@ -85,7 +81,6 @@ class Projeto
     // somente para views
     public $colegiado;
     public $aprov;
- 
 
     /**
      * Método responsável por cadastrar um novo projeto no banco.
@@ -369,15 +364,16 @@ class Projeto
         }
 
         $sql = "
-            insert into
+          insert into
             avaliacoes 
             ( id, id_proj, ver, regra_def, fase_seq, form, tp_instancia, id_instancia, resultado )
-            select 
-                id, id_proj, ver, regra_def, fase_seq, form, tp_avaliador, $inst , if(last_result='n', 'e', last_result)  
-            from to_avaliar 
-            where 
+          select 
+             id, id_proj, ver, regra_def, fase_seq, form, tp_avaliador, $inst , if(last_result='n', 'e', last_result)  
+          from to_avaliar 
+          where 
             id_proj = '".$this->id."' and
             fase_seq = (select IFNULL(max(fase_seq), 1)   from avaliacoes a where id_proj  = '".$this->id."')";
+
         $a = new Database();
         $a->execute($sql);
 
@@ -392,6 +388,7 @@ class Projeto
         }
 
         return true;
+        // ->fetchAll(PDO::FETCH_CLASS,self::class);
     }
 
     /**

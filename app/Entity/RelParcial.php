@@ -34,29 +34,6 @@ class RelParcial
      */
     public function cadastrar()
     {
-        $missing = [];
-        $list = [
-            'idproj' => $this->idproj,
-            'periodo_ini' => $this->periodo_ini,
-            'periodo_fim' => $this->periodo_fim,
-            'visita_tec_qtd' => $this->visita_tec_qtd,
-            'atvd_per' => $this->atvd_per,
-            'alteracoes' => $this->alteracoes,
-            'atvd_prox_per' => $this->atvd_prox_per            
-        ];
-
-        foreach ($list as $field => $value) {
-            if ($value === null || $value === '') {
-                $missing[] = $field;
-            }
-        }
-
-        if (!empty($missing)) {
-            header('Location: ./cadastrarp.php?t=1&i='.$this->idproj.'&pass=false');
-            exit;
-        }
-
-        
         // INSERIR A REGISTRO NO BANCO
         $newId = UuiuD::gera(); // exec('uuidgen -r');
         $obDatabase = new Database('rel_parcial');
@@ -80,7 +57,6 @@ class RelParcial
         // RETORNAR SUCESSO
         return $newId;
     }
-
 
     /**
      * Método responsável por atualizar REGISTRO no banco.
