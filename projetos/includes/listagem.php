@@ -35,18 +35,7 @@ foreach ($projetos as $proj) {
 
     $msg1 = '';
 
-<<<<<<< HEAD
-<<<<<<< HEAD
-    if (($proj->regras == 'e341e624-0715-11ef-b2c8-0266ad9885af')
-        or ($proj->aprov == 1)
-        or ($proj->etapas = $proj->fase_seq and $proj->last_result = 'a')
-    ) {
-=======
-    if ($proj->aprov == 1) {
->>>>>>> parent of 1d8aa37 (Go back)
-=======
-    if ($proj->aprov == 1) {
->>>>>>> parent of 1d8aa37 (Go back)
+    if ($proj->aprov == 1 or $proj->regras == '7692e8bd-882e-11f0-b5b5-fed708dafd3c') {
         $submetido = true;
         $showRelatorios = true;
         switch ($proj->estado) {
@@ -396,7 +385,6 @@ echo '</script>';
              </div>
           </div>
     `;
-  
     modalFooter.innerHTML = data.innerHTML = `
             
             <form method="post" action="submeter.php?">
