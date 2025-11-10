@@ -36,10 +36,9 @@ foreach ($projetos as $proj) {
     $msg1 = '';
     // regras == 'e341e624-0715-11ef-b2c8-0266ad9885af' 2024Exec - importado, já aprovado anteriormente
 
-    if (
-        ($proj->regras == 'e341e624-0715-11ef-b2c8-0266ad9885af')
-         or ($proj->aprov == 1)
-        //  or (($proj->etapas = $proj->fase_seq) and ($proj->edt === 0) and (($proj->last_result = 'a') or ($proj->resultado = 'a')))
+    if (($proj->regras == 'e341e624-0715-11ef-b2c8-0266ad9885af')
+        or ($proj->aprov == 1)
+        or ($proj->etapas = $proj->fase_seq and $proj->last_result = 'a')
     ) {
         $submetido = true;
         $showRelatorios = true;

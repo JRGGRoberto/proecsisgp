@@ -14,53 +14,53 @@ function validaMail($email)
 
 if (isset($_POST['email'])) {
     /*
-      if (validaMail($_POST['email'])) {
-          $url = 'https://aut.unespar.edu.br/ws/autenticar/post/';
-          $data = [
-              'login' => validaMail($_POST['email']),
-              'senha' => $_POST['senha'],
-              'hashSistema' => '2f1b19468e9e4a9756e62d892045c89a5a08a06d',
-          ];
+    if (validaMail($_POST['email'])) {
+        $url = 'https://aut.unespar.edu.br/ws/autenticar/post/';
+        $data = [
+            'login' => validaMail($_POST['email']),
+            'senha' => $_POST['senha'],
+            'hashSistema' => 'hashSistema',
+        ];
 
-          $data_string = json_encode($data);
+        $data_string = json_encode($data);
 
-          $ch = curl_init($url);
+        $ch = curl_init($url);
 
-          curl_setopt($ch, CURLOPT_CUSTOMREQUEST, 'POST');
-          curl_setopt($ch, CURLOPT_POSTFIELDS, $data_string);
-          curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
-          curl_setopt($ch, CURLOPT_HTTPHEADER, [
-              'Content-Type: application/json',
-              'Content-Length: '.strlen($data_string),
-          ]
-          );
+        curl_setopt($ch, CURLOPT_CUSTOMREQUEST, 'POST');
+        curl_setopt($ch, CURLOPT_POSTFIELDS, $data_string);
+        curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+        curl_setopt($ch, CURLOPT_HTTPHEADER, [
+            'Content-Type: application/json',
+            'Content-Length: '.strlen($data_string),
+        ]
+        );
 
-          $result = curl_exec($ch);
-          curl_close($ch);
-          $obj = (object) json_decode($result);
+        $result = curl_exec($ch);
+        curl_close($ch);
+        $obj = (object) json_decode($result);
 
-          if (property_exists($obj, 'mail')) {
-              $obUsuario = Usuario::getUsuarioPorEmail($_POST['email']);
-              if ($obUsuario instanceof Usuario) {
-                  if ($obUsuario->ativo != 1) {
-                      $alertaLogin = 'Conta desativada';
-                      goto montaTela;
-                  }
-                  Login::login($obUsuario);
-                  exit;   // logou pelo AD e criou a  sessão<<<---
-              } else {
-                  $alertaLogin = 'Autenticação Ok. Porém não há relação no sistema PROEC/ePAD';
-                  goto montaTela;
-              }
-          } else {
-              $alertaLogin = 'No [LDAP]';
-              goto validaSemLDAP;
-          }
-      } else {
-          $alertaLogin = 'E-mail ou senha inválidos - tentar fora do LDAP';
-          goto validaSemLDAP;
-      }
-      */
+        if (property_exists($obj, 'mail')) {
+            $obUsuario = Usuario::getUsuarioPorEmail($_POST['email']);
+            if ($obUsuario instanceof Usuario) {
+                if ($obUsuario->ativo != 1) {
+                    $alertaLogin = 'Conta desativada';
+                    goto montaTela;
+                }
+                Login::login($obUsuario);
+                exit;   // logou pelo AD e criou a  sessão<<<---
+            } else {
+                $alertaLogin = 'Autenticação Ok. Porém não há relação no sistema PROEC/ePAD';
+                goto montaTela;
+            }
+        } else {
+            $alertaLogin = 'No [LDAP]';
+            goto validaSemLDAP;
+        }
+    } else {
+        $alertaLogin = 'E-mail ou senha inválidos - tentar fora do LDAP';
+        goto validaSemLDAP;
+    }
+    */
 
     validaSemLDAP:
     $obUsuario = Usuario::getUsuarioPorEmail($_POST['email']);
@@ -74,7 +74,6 @@ if (isset($_POST['email'])) {
         $alertaLogin = 'Conta desativada';
         goto montaTela;
     }
-
     Login::login($obUsuario);
 }
 
