@@ -48,7 +48,10 @@ if (isset($_POST['atvd_per'])) {
     $relatorio->atvd_prox_per = $_POST['atvd_prox_per'];
     $relatorio->user = $user['id'];
     $relatorio->tramitar = $_POST['tramitar'];
-    $relatorio->visita_tec_qtd = $_POST['visita_tec_qtd'];
+
+    $vtq = $_POST['visita_tec_qtd'];
+    $relatorio->visita_tec_qtd = $vtq = ($vtq) ?: 0;
+
     $idprjP = $relatorio->cadastrar();
 
     $anexosJS = json_decode($_POST['anexosJS']);

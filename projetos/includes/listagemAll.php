@@ -42,7 +42,7 @@ foreach ($projetos as $Projt) {
     $LastV = '';
 
     if (
-        in_array($Projt->regras, ['e341e624-0715-11ef-b2c8-0266ad9885af', '287c102f-e5fa-11ee-b2c8-0266ad9885af'])
+        in_array($Projt->regras, ['e341e624-0715-11ef-b2c8-0266ad9885af', '287c102f-e5fa-11ee-b2c8-0266ad9885af', '7692e8bd-882e-11f0-b5b5-fed708dafd3c'])
         && ($Projt->para_avaliar == -1)
         && ($Projt->last_result == 'a')
         && ($Projt->edt == 0)
@@ -52,11 +52,11 @@ foreach ($projetos as $Projt) {
         if ($Projt->vigen_fim >= $dt) {
             $progresso = '<span class="badge badge-success ">Em execução</span>';
         } else {
-            $progresso = '<span class="badge badge-success ">Excutado</span>';
+            $progresso = '<span class="badge badge-success ">Executado</span>';
         }
 
         $progresso .= '<a href="../projetos/visualizar.php?id='.$Projt->id.'&v='.$Projt->ver.'&w=nw" target="_blank">📄</a>';
-    } elseif ($Projt->regras == '7c953457-5e79-11f0-9223-3a9832f2c2cb') {
+    } elseif ($Projt->regras == '7692e8bd-882e-11f0-b5b5-fed708dafd3c') {
         $progresso = '<span class="badge badge-success ">Renovado</span>';
     } else {
         is_null($Projt->colegiado) ? $col = 'A definir' : $col = $Projt->colegiado;

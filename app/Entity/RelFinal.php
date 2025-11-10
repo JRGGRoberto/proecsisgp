@@ -39,6 +39,38 @@ class RelFinal
      */
     public function cadastrar()
     {
+        $missing = [];
+        $list = [
+            /*  'idproj' => $this->idproj,
+            'tipo' => $this->tipo,
+            'periodo_renov_ini' => $this->periodo_renov_ini,
+            'periodo_renov_fim' => $this->periodo_renov_fim,
+            'periodo_prorroga_fim' => $this->periodo_prorroga_fim,
+            'ch_semanal' => $this->ch_semanal,
+            'dim_mem_com_ex' => $this->dim_mem_com_ex,
+            'dim_disc' => $this->dim_disc,
+            'dim_doce' => $this->dim_doce,
+            'dim_agent_estag' => $this->dim_agent_estag,
+            'atvd_prox_per' => $this->atvd_prox_per,
+            'atividades' => $this->atividades,
+            'rel_tec_cien_executado' => $this->rel_tec_cien_executado,
+            'divulgacao' => $this->divulgacao,
+            'rel_finac' => $this->rel_finac,
+            'visita_tec_qtd' => $this->visita_tec_qtd
+            */
+        ];
+
+        foreach ($list as $field => $value) {
+            if ($value === null || $value === '') {
+                $missing[] = $field;
+            }
+        }
+
+        if (!empty($missing)) {
+            header('Location: ./cadastrarf.php?t=2&i='.$this->idproj.'&f='.$this->tipo.'&pass=false');
+            exit;
+        }
+
         $newId = UuiuD::gera(); // exec('uuidgen -r');
         // INSERIR A REGISTRO NO BANCO
         $obDatabase = new Database('rel_final');

@@ -52,12 +52,12 @@ if (isset($_POST['etapa'])) {
                     $obProjeto->vigen_fim_orig = $obProjeto->vigen_fim;
                     $obProjeto->vigen_fim = $_POST['periodo_prorroga_fim1'];
                     $obProjeto->atualizar();
-                } elseif ($_POST['tp_relatorio'] == 're') {  // / se ultima etapa e Prorrogação
+                } elseif ($_POST['tp_relatorio'] == 're') {  // / se ultima etapa e Renovação
                     $relatorio = new RelFinal();
                     $relatorio = (object) RelFinal::get($id);
                     $obProjeto = (object) Projeto::getProjetoLast($relatorio->idproj);
                     $obProjeto = Projeto::getProjeto($obProjeto->id, $obProjeto->ver);
-                    $obProjeto->regras = '7c953457-5e79-11f0-9223-3a9832f2c2cb';
+                    $obProjeto->regras = '7692e8bd-882e-11f0-b5b5-fed708dafd3c';
                     $obProjeto->renovacao($relatorio->periodo_renov_ini, $relatorio->periodo_renov_fim);
                 }
             }

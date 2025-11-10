@@ -10,6 +10,11 @@ $user = Login::getUsuarioLogado();
 
 use App\Entity\Outros;
 
+// echo '<pre>';
+// print_r($user['id']);
+// echo '</pre>';
+// exit;
+
 // Busca
 $busca = filter_input(INPUT_GET, 'busca', FILTER_SANITIZE_STRING);
 /*
@@ -45,31 +50,75 @@ $where = implode(' AND ', $condicoes);
 
 // $avaliacoes = Avaliacoes::getRegistros($where, 'created_at', $obPagination->getLimite());
 
-$query = "
-select * 
-from   
-   relatorios  
+$idUser = $user['id'];
+
+$query = '
+select 
+    r.*
+from relatorios r
+join (
+    select 
+        id local_id, nome, "dir_camp" tipo, "campi" local
+    from campi where dir_campus_id = "'.$idUser.'" 
+    union all
+    select 
+        id, nome, "chef_div" tipo, "campi" local
+    from campi where chef_div_id = "'.$idUser.'"
+    union all
+    select 
+        id, nome, "dir_ca" tipo, "centros" local
+    from centros where dir_ca_id = "'.$idUser.'"
+    union all
+    select 
+        id, nome, "coord" tipo, "colegiados" local
+    from colegiados where coord_id = "'.$idUser.'"
+) juncao
+on 
+(
+    (juncao.local = "campi" AND r.ca_id = juncao.local_id)
+    OR
+    (juncao.local = "centros" AND r.ce_id = juncao.local_id)
+    OR
+    (juncao.local = "colegiados" AND r.co_id = juncao.local_id)
+)
 where 
-   tramitar = 1 and 
-   last_result = 'n' and 
-";
+    r.tramitar = 1
+    AND r.last_result = "n"
+';
+
+// echo '<pre>';
+// print_r($queryCargos);
+// echo '</pre>';
+// exit;
 
 switch ($user['config']) {
-    case 3: // campus
-        $query .= '(  (ca_id = "'.$user['ca_id'].'" and etapa = 1 and tipo = "pa")
-                        or  
-                      (ca_id = "'.$user['ca_id'].'" and etapa = 2 and tipo <> "pa")
-                    )';
+    // chefe divisao
+    case 3:
+        $query .= ' 
+            AND ( 
+                (r.etapa = 1 AND r.tipo = "pa") 
+                OR 
+                (r.etapa = 2 AND r.tipo <> "pa") 
+            )';
+        break;
 
+        // Coordenador colegiado
+    case 1:
+        $query .= ' 
+            AND r.etapa = 1 
+            AND r.tipo <> "pa" 
+        ';
         break;
-    case 1: // colegiado
-        $query .= ' co_id = "'.$user['co_id'].'" ';
-        $query .= 'and etapa = 1  and tipo <> "pa" ';
-        break;
+
     default:
         header('location: ../index.php?status=error');
         exit;
 }
+/*
+echo '<pre>';
+echo $query;
+echo '</pre>';
+*/
 
 // 'fi','re','pr', 'pa'
 function tipoRelatori($tp)
@@ -92,6 +141,16 @@ function tipoRelatori($tp)
             break;
     }
 }
+
+// echo '<pre>';
+// print_r($user);
+// echo '</pre>';
+// exit;
+
+// echo '<pre>';
+// print_r($query);
+// echo '</pre>';
+// exit;
 
 $avaliacoes = Outros::qry($query);
 
