@@ -3,174 +3,354 @@
 require '../vendor/autoload.php';
 use App\Entity\Avaliacoes;
 use App\Entity\Colegiado;
+use App\Session\Login;
+
+// Obriga o usuário a estar logado
+Login::requireLogin();
+$user = Login::getUsuarioLogado();
 
 require '../includes/msgAlert.php';
 
+
 class Blocos
 {
-    public $pos;
-    public $cor;
+  public $pos;
+  public $cor;
 
-    public function __construct($pos, $cor)
-    {
-        $this->pos = $pos;
-        $this->cor = $cor;
-    }
+  public function __construct($pos, $cor)
+  {
+      $this->pos = $pos;
+      $this->cor = $cor;
+  }
 }
 
 $qnt1 = 0;
 $col = '';
 $LastV = '';
+// echo '<pre>';
+// print_r($user);
+// echo '</pre>';
 
 include './includes/funcoes.php';
 
 $resultados =
 '<div id="accordion">';
 
+function createBT($tipo, $id, $ver, $form = null, $tipo_exten = null, $titulo = null): string
+{
+    switch ($tipo) {
+        case 'submeter':
+            return '<button id="sub'.$id.'v'.$ver.'" class="btn btn-primary btn-sm mb-2" onclick="writeNumber(this)">📤 Submeter</button>';
+        case 'submeterNovamente':
+            return '<button id="Alt'.$id.'v'.$ver.'" class="btn btn-primary btn-sm mb-2" onclick="writeNumber(this)">📤 Submeter novamente</button>';
+        case 'editar':
+            return '<a href="editar.php?id='.$id.'&v='.$ver.'"><button class="btn btn-success btn-sm mb-2">📄 Editar</button></a>';
+        case 'excluir':
+            return '<button id="del'.$id.'v'.$ver.'" class="btn btn-danger  btn-sm mb-2" onclick="writeNumber(this)">🗑 Excluir</button>';
+        case 'visualizar':
+            return '<a href="visualizar.php?id='.$id.'&v='.$ver.'&w=1" target="_blank"><button class="btn btn-success btn-sm mb-2"> 📄 Projeto</button></a>';
+            // <a href="cancelar.php?id='.$id.'&v='.$ver.'&w=1" target="_blank"></a>
+       case 'cancelar':
+            return '
+              <button class="btn btn-danger btn-sm mb-2" data-toggle="modal" data-target="#modalCancel'.$id.'">
+                  Cancelar
+              </button>
+              
+              <div class="modal fade" id="modalCancel'.$id.'" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel'.$id.'" aria-hidden="true">
+                <div class="modal-dialog" role="document">
+                  <div class="modal-content">
+                    <div class="modal-header">
+                      <h5 class="modal-title" id="exampleModalLabel'.$id.'">Confirmar Cancelamento</h5>
+                      <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                      </button>
+                    </div>
+                    <div class="modal-body">
+                      Tem certeza que deseja cancelar o projeto "<strong>'.$titulo.'</strong>"?
+                    </div>
+                    <div class="modal-footer">
+                      <button type="button" class="btn btn-secondary btn-sm" data-dismiss="modal">Fechar</button>
+                      <a href="cancelar.php?id='.$id.'&v='.$ver.'">
+                        <button class="btn btn-danger btn-sm">Confirmar Cancelamento</button>
+                      </a>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            ';
+        case 'adequacoes':
+            return '<a href="../forms/'.$form.'/vista.php?p='.$id.'&v='.($ver - 1).'"><button class="btn btn-danger btn-sm mb-2" >📑 Informações de adequações</button></a>';
+        case 'relatorioParcial':
+            if ($tipo_exten != 2) { 
+              return  '
+                <a href="../relatorio/index.php?id='.$id.'"><button class="btn btn-success btn-sm mb-2">📊 Relatório Parcial</button></a> &nbsp; 
+              ';
+            } else { 
+              return '
+                <a href="../relatorio/index.php?id='.$id.'"><button class="btn btn-success btn-sm mb-2" data-toggle="tooltip" data-placement="bottom" title="Não é possível criar relatório parcial para Eventos." disabled>📊 Relatório Parcial</button></a> &nbsp; 
+              ';
+            }
+        case 'relatorioFinal':
+            return  '<a href="../relatorio/index.php?id='.$id.'"><button class="btn btn-success btn-sm mb-2">📊 Relatório Final</button></a> &nbsp; ';
+        default:
+            return '';
+    }
+}
+
+function naoSubmetido($p): string
+{
+    $i = $p->id;
+    $v = $p->ver;
+    return 
+      createBT('submeter', $i, $v).'  	&nbsp; '.
+      createBT('editar', $i, $v).'  	&nbsp; '.
+      createBT('visualizar', $i, $v).' &nbsp; '.
+      createBT('excluir', $i, $v)
+    ;
+
+}
+
+function emAvaliacao($p): string
+{
+  $i = $p->id;
+  $v = $p->ver;
+  $t = $p->titulo;
+  if ($p->resultado == 'r') {
+    return 
+        createBT(  'visualizar', $i, $v).'  	&nbsp; '.
+        createBT('editar', $i, $v).'  	&nbsp; '.
+        createBT('adequacoes', $i, $v, $p->form).'  	&nbsp; '.
+        createBT('cancelar', $i, $v, null, null, $t);
+  } elseif ($p->resultado == 'n') {
+      if ($p->edt == 0) {
+        return 
+          createBT('visualizar', $i, $v). 
+          createBT('cancelar', $i, $v).'  	&nbsp; ';
+      } else {
+        return 
+          createBT('visualizar', $i, $v).'  	&nbsp; '.
+          createBT('editar', $i, $v).'  	&nbsp; '.
+          createBT('adequacoes', $i, $v, $p->form).'  	&nbsp; '.
+          createBT('submeterNovamente', $i, $v).'  	&nbsp; '.
+          createBT('cancelar', $i, $v);
+      }
+  } else {
+        return '';
+  }
+}
+
+function naoIniciado($p): string
+{
+    $i = $p->id;
+    $v = $p->ver;
+    $t = $p->titulo;
+
+    return 
+      createBT('visualizar', $i, $v).' &nbsp; '. 
+      createBT('cancelar', $i, $v, null, null, $t);
+}
+
+function emExecucao($p): string
+{
+    $i = $p->id;
+    $v = $p->ver;
+    $tipo = $p->tipo_exten;
+
+
+    return (
+      createBT('visualizar', $i, $v) . ' &nbsp;'. 
+      createBT('relatorioParcial', $i, $v, null, $tipo)   
+      // createBT('cancelar', $i, $v).' &nbsp; '
+        );
+    // if ($tipo != 2)
+    //     return (
+    //       createBT('cancelar', $i, $v).' &nbsp; '.
+    //       createBT('visualizar', $i, $v) . ' &nbsp;'. 
+    //       createBT('relatorioParcial', $i, $v)
+    //     );
+    // else { 
+    //   return (
+    //       createBT('cancelar', $i, $v).' &nbsp; '.
+    //       createBT('visualizar', $i, $v)
+    //   );
+    // }
+}
+
+function finalizado($p): string
+{
+    $i = $p->id;
+    $v = $p->ver;
+    return 
+      createBT('visualizar', $i, $v).' &nbsp; '.
+      createBT('relatorioFinal', $i, $v);
+          
+}
+
+function cancelado($p): string
+{
+    $i = $p->id;
+    $v = $p->ver;
+    return createBT('visualizar', $i, $v);
+}
+
 foreach ($projetos as $proj) {
     ++$qnt1;
-    $apvov = false;
+    // $showRelatorios = false;
+    // $submetido = false;
+    $progresso = '';
     $showRelatorios = false;
-    $submetido = false;
+    // echo ($proj->estado);
 
-    $msg1 = '';
-
-    if ($proj->aprov == 1 or $proj->regras == '7692e8bd-882e-11f0-b5b5-fed708dafd3c') {
-        $submetido = true;
-        $showRelatorios = true;
-        switch ($proj->estado) {
-            case 'nini':  // Não iniciado
-                $msg1 = 'Não iniciado';
-                break;
-            case 'exec': // Em execução
-                $msg1 = 'Em execução';
-                break;
-            case 'fina': // Finalizado
-                $msg1 = 'Finalizado';
-                break;
-            default:
-                $msg1 = '<span class="badge badge-danger">Erro</span>';
-                break;
-        }
-    } elseif ($proj->aprov == 0) {
-        if ($proj->para_avaliar == -1) {
-            $msg1 = '<span class="badge badge-warning">Não submetido</span>';
-            $submetido = false;
-        }
-    } else { // Erro
-        $msg1 = '<span class="badge badge-info">Não definido</span>';
+    switch ($proj->estado) {
+      case 0:  // Não iniciado
+          $progresso = '<span class="badge badge-info">Não submetido</span>';
+          $btn = naoSubmetido($proj);
+          break;
+      case 1: // Em avaliação
+          $progresso = '<span class="badge badge-warning ">Em avaliação</span> ';
+          $btn = emAvaliacao($proj);
+          break;
+      case 2: // Não iniciado
+          $progresso = '<span class="badge badge-secondary ">Não iniciado</span> ';
+          $btn = naoIniciado($proj);
+          break;
+      case 3: // Em execução   -- ou seja, já aprovado.
+          $btn = emExecucao($proj);
+          $progresso = '<span class="badge badge-primary ">Em execução</span> ';
+          break;
+      case 4: // Finalizado
+          $progresso = '<span class="badge badge-success ">Finalizado</span> ';
+          $btn = finalizado($proj);
+          break;
+      case 9: // Cancelado
+          $progresso = '<span class="badge badge-danger ">Cancelado</span> ';
+          $btn = cancelado($proj);
+          break;
+      default:
+          $progresso = '<span class="badge badge-danger">Erro estado</span>';
+          break;
     }
 
-    is_null($proj->colegiado) ? $col = 'A definir' : $col = $proj->colegiado;
+    // is_null($proj->colegiado) ? $col = 'A definir' : $col = $proj->colegiado;
 
     $where = 'id_proj = "'.$proj->id.'"';
     $order = 'ver desc, fase_seq desc';
     $ListaVerAnts = Avaliacoes::getRegistros($where, $order, null);
 
     $qntAvaliacoes = count($ListaVerAnts);
-
+    $btnAvaliacoes = '';
     $LastV = '';
-    $progresso = '';
+    
     if ($qntAvaliacoes > 0) {
-        $retorno = montarTblEProgress($ListaVerAnts, $proj->id, $msg1); // return [$progresso, $LastV];
-        $progresso = $retorno[0];
-        $LastV = $retorno[1];
-    } else {
-        $progresso = $msg1;
-        $LastV = '<span class="badge badge-light">Nenhuma avaliação</span>';
-    }
+        $retorno = montarTblEProgress($ListaVerAnts, $proj->id, $progresso);
 
+        $LastV          = $retorno[1];
+        $btnAvaliacoes  = $retorno[2] ?? '';
+    } else if ($proj->aprov_auto == 1){
+        // $progresso = $msg1;
+        $LastV = '<span class="badge badge-info mb-2">Projeto aprovado via e-Protocolo.</span>';
+    } else { 
+        $LastV = '<span class="badge badge-info mb-2">Não possui avaliações.</span>';
+    }
+   
     $resultados .= '
-  <div class="card mt-2">
-    <div class="card-header">
-        <div class="row">
-          <div class="col-sm-6"><a class="collapsed card-link" data-toggle="collapse" href="#p'.$proj->id.'">📃 '.$proj->titulo.'</a></div>
-          <div class="col-sm-4">'.$proj->tipo_exten.'</div>
-          <div class="col-sm-1"><span class="badge badge-light ">'.$progresso.'</span> </div>
-          <div class="col-sm-1"></div>
+      <div class="card mt-2">
+        <div class="card-header">
+            <div class="row">
+              <div class="col-sm-6"><a class="collapsed card-link" data-toggle="collapse" href="#p'.$proj->id.'">📃 '.$proj->titulo.'</a></div>';
+              switch ($proj->tipo_exten){
+                case 1: 
+                  $proj->tipo_exten = 'Curso';
+                  break;
+                case 2:
+                  $proj->tipo_exten = 'Evento';
+                  break;
+                case 3: 
+                  $proj->tipo_exten = 'Prestação de Serviço';
+                  break;
+                case 4: 
+                  $proj->tipo_exten = 'Programa';
+                  break;
+                case 5: 
+                  $proj->tipo_exten = 'Projeto';
+                  break;
+                default:
+                  $proj->tipo_exten = 'Sem tipo definido.';
+                  break;
+              }
+              $resultados .= '<div class="col-sm-4">'.$proj->tipo_exten.'</div>
+              <div class="col-sm-1">'
+              .$progresso.'
+              </div>
+              <div class="col-sm-1"></div>
+            </div>
+            <div class="row">
+              <div class="col-sm"><strong>Submetido para:</strong> '.$proj->submetido_para.'</div> 
+            </div>
         </div>
-        <div class="row">
-          <div class="col-sm"><strong>Submetido para:</strong> '.$col.'</div> 
-        </div>
-    </div>
 
-    <div id="p'.$proj->id.'" class="collapse" data-parent="#accordion">
-      <div class="card-body">
-        <div class="row">
-          <div class="col-8">
-            <p><strong>Resumo:</strong> '.resumirTexto($proj->resumo).'</p>
-            <p><strong>Objetivos:</strong> '.resumirTexto($proj->objetivos).'</p>
+        <div id="p'.$proj->id.'" class="collapse" data-parent="#accordion">
+          <div class="card-body">
+            <div class="row">
+              <div class="col-12">
+                <p><strong>Resumo:</strong> '.resumirTexto($proj->resumo).'</p>
+            
+              </div>
+              <div class="row mt-2">
+                <div class="col-12  mx-3">
+                  '.$LastV.'
+                </div>
+              </div>
+            </div>
+            
+            <div class=""> 
+            ';
+              $resultados .= $btn . ' ' . $btnAvaliacoes;
+              $resultados .= '        
+            </div>
           </div>
-          <div class="col-4">'.$LastV.'</div>
-        </div>
-        
-        <div class="d-flex justify-content-end"> 
-           <hr>
-        ';
-    // / btns Inicio
-
-    $verAnt = $proj->ver - 1;
-    if (!$submetido) {
-        $btnSub =
-        '
-       &nbsp;  <button id="sub'.$proj->id.'v'.$proj->ver.'" class="btn btn-primary btn-sm mb-2" onclick="writeNumber(this)">📤 Submeter</button> &nbsp; 
-       &nbsp; <button id="del'.$proj->id.'v'.$proj->ver.'" class="btn btn-danger  btn-sm mb-2" onclick="writeNumber(this)">🗑 Excluir</button> &nbsp; ';
-    } else {
-        if ($proj->last_result == 'r') {
-            $btnSub = ' &nbsp; <a href="../forms/'.$proj->form.'/vista.php?p='.$proj->id.'&v='.$verAnt.'"><button class="btn btn-danger btn-sm mb-2" >📑 Informações de adequações</button></a> &nbsp; ';
-        } else {
-            $btnSub = ' &nbsp; <button id="Alt'.$proj->id.'v'.$proj->ver.'" class="btn btn-primary btn-sm mb-2" onclick="writeNumber(this)">📤 Submeter novamente</button> &nbsp; ';
-        }
-    }
-
-    if ($proj->edt == 1) {
-        $resultados .=
-
-        $btnSub.
-        ' &nbsp; <a href="editar.php?id='.$proj->id.'&v='.$proj->ver.'"><button class="btn btn-success btn-sm mb-2">📄 Editar</button></a> &nbsp;';
-    } else {
-        $nomecol = Colegiado::getRegistro($proj->para_avaliar);
-
-        $reltorios = '';
-        if ($showRelatorios) {
-            $reltorios .=
-            ' &nbsp; <a href="../relatorio/index.php?id='.$proj->id.'"><button class="btn btn-success btn-sm mb-2">📊 Relatório(s) Parcial/Final</button></a> &nbsp; ';
-        }
-
-        $resultados .=
-          '
-            <a href="visualizar.php?id='.$proj->id.'&v='.$proj->ver.'&w=1" target="_blank"><button class="btn btn-success btn-sm mb-2">Visualizar</button></a>
-            &nbsp;'.$reltorios.' &nbsp;';
-    }
-
-    // / btns Fim
-
-    $resultados .= '        </div>
+        </div> 
       </div>
-    </div> 
-  </div>
-    ';
+  ';
 }
 $resultados .=
 '</div>';
 
 $qnt1 > 0 ? $resultados : $resultados = 'Nenhum registro encontrado.';
+  // echo '<pre>';
+  // print_r($projetos);
+  // echo '</pre>';
+
+
+$page = basename($_SERVER['PHP_SELF']);
+$todosProjetos = ($page === 'projetos_all.php');
 
 include '../includes/paginacao.php';
-
 ?>
-
 
 <main>
   <h2 class="mt-0">Meus projetos</h2>
   
   <?php echo $msgAlert; ?> 
   <section>
-
+      
     <form method="get">
+      <label for="listar-projetos">Listar:</label>
+      <select id="listar-projetos"
+              class="custom-select custom-select-sm w-auto"
+              onchange="trocarPagina(this)"> 
+          <option value="meus-projetos" <?= $todosProjetos ? '' : 'selected' ?>>
+              Meus projetos
+          </option>
 
+          <option value="todos-projetos" <?= $todosProjetos ? 'selected' : '' ?>>
+              Todos os projetos
+          </option>
+
+      </select>
+          
       <div class="row my-2">
-
+        
         <div class="col-5">
           <label>Titulo</label> 
           <input type="text" name="titulo" class="form-control form-control-sm" value="<?php echo $titulo; ?>"  id="titulo"   onchange="showLimpar();">
@@ -195,6 +375,8 @@ include '../includes/paginacao.php';
 
     </form>
 
+
+    
   </section>
 
   <section>
@@ -281,6 +463,14 @@ echo '</script>';
 
   btnLimpar.hidden = true;
 
+  function trocarPagina(sel) {
+    if (sel.value === 'meus-projetos') {
+      location.href = "../proj_master";
+    } else {
+      location.href = "projetos_all.php";
+    }
+  }
+
   function showLimpar(){
     var titulo    = document.getElementById('titulo').value;
     var palavra   = document.getElementById('palavra').value;
@@ -297,11 +487,9 @@ echo '</script>';
     var opt = document.getElementById('selPara');
     var b = document.getElementById('selecOpt');
     b.value = opt.value;
-  
-    
+
     if((opt.value != -1 ) ){
       btn.disabled=false;
-      
     } else {
       btn.disabled=true;
   
@@ -314,7 +502,7 @@ echo '</script>';
     modalBody.innerHTML =  `<h4>Tem certeza que deseja apagar o registro abaixo?</h4><p class="justify-content-center"> ${data.titulo}</p><span class="badge badge-warning float-right" ><span class="badge badge-light">⚠️</span>Atenção! O processo não pode ser revertido</span>`;
     modalFooter.innerHTML = `
             <a href="excluir.php?id=${data.id}&v=${data.created_at}" 
-                                  class="btn btn-danger    btn-sm mb-2">🗑  Excluir</a>
+              class="btn btn-danger    btn-sm mb-2">🗑  Excluir</a>
             <button type="button" class="btn btn-secondary btn-sm mb-2" data-dismiss="modal">Fechar</button>
     `;
     $('#modalSub').modal('show');
@@ -332,30 +520,30 @@ echo '</script>';
       nomeLocal = data.colegiado;
     }
     modalBody.innerHTML = `
-          <div class="modal-body" id="modalBody">
-            <h4>${data.titulo}</h4>
-            <p>Ao confirmar que realizou as solicitações de alterações, clique para submeter a nova versão.</p>
-              <div class="row">
-                <div class="col-12">
-                  <div class="form-group">
-                    <label for="para_avaliar">Enviar para </label>
-                    <select name="para_avaliar" id="selPara" class="form-control" onchange="ativaBTN();">
-                      <option value="${data.para_avaliar}" selected>${nomeLocal}</option>
-                    </select>
-                  </div>
-                </div>
-             </div>
+      <div class="modal-body" id="modalBody">
+        <h4>${data.titulo}</h4>
+        <p>Ao confirmar que realizou as solicitações de alterações, clique para submeter a nova versão.</p>
+          <div class="row">
+            <div class="col-12">
+              <div class="form-group">
+                <label for="para_avaliar">Enviar para </label>
+                <select name="para_avaliar" id="selPara" class="form-control" onchange="ativaBTN();">
+                  <option value="${data.para_avaliar}" selected>${nomeLocal}</option>
+                </select>
+              </div>
+            </div>
           </div>
+      </div>
     `;
     modalFooter.innerHTML = data.innerHTML = `
-            <form method="post" action="submeter.php?">
-                <input type="hidden" name="modIDprj"   value="${data.id}">
-                <input type="hidden" name="selecOpt"   value="${data.para_avaliar}" id="selecOpt">
-                <input type="hidden" name="modVerPrj"  value="${data.ver}">
-                <input type="hidden" name="modCreated" value="${data.created_at}">
-                <button type="submit" class="btn btn-primary btn-sm mb-2" id="btnSubmitN">📤 Submeter nova versão</button>
-            </form>                    
-            <button type="button" class="btn btn-secondary btn-sm mb-2" data-dismiss="modal">Fechar</button>
+      <form method="post" action="submeter.php?">
+        <input type="hidden" name="modIDprj"   value="${data.id}">
+        <input type="hidden" name="selecOpt"   value="${data.para_avaliar}" id="selecOpt">
+        <input type="hidden" name="modVerPrj"  value="${data.ver}">
+        <input type="hidden" name="modCreated" value="${data.created_at}">
+        <button type="submit" class="btn btn-primary btn-sm mb-2" id="btnSubmitN">📤 Submeter nova versão</button>
+      </form>                    
+      <button type="button" class="btn btn-secondary btn-sm mb-2" data-dismiss="modal">Fechar</button>
     `;
     $('#modalSub').modal('show');
   }
@@ -365,28 +553,25 @@ echo '</script>';
   function printSub(data){
     modalTitle.innerText = 'Submissão de projeto';
     modalBody.innerHTML = `
-          <div class="modal-body" id="modalBody">
-            <h4>${data.titulo}</h4>
-            <p>Ao submeter o projeto à PROEC, estás a aceitar que este será avaliado pelas instâncias competentes.</p>
-            <p>Não será mais possível editá-lo a não ser que haja uma solicitação para isso.</p>
-            <p>Concordando com o informado, selecione o colegiado o qual julga ser relacionado a ele e clique em Submeter.</p>
-            
-            
-             <div class="row">
-               <div class="col-12">
-                 <div class="form-group">
-                    <label for="para_avaliar">Enviar para </label>
-                    <select name="para_avaliar" id="selPara" class="form-control" onchange="ativaBTN();">
-                      <option value="-1">Selecione</option>
-                      ${optspara}
-                    </select>
-                 </div>
-               </div>
-             </div>
+      <div class="modal-body" id="modalBody">
+        <h4>${data.titulo}</h4>
+        <p>Ao submeter o projeto à PROEC, estás a aceitar que este será avaliado pelas instâncias competentes.</p>
+        <p>Não será mais possível editá-lo a não ser que haja uma solicitação para isso.</p>
+        <p>Concordando com o informado, selecione o colegiado o qual julga ser relacionado a ele e clique em Submeter.</p>
+          <div class="row">
+            <div class="col-12">
+              <div class="form-group">
+                <label for="para_avaliar">Enviar para </label>
+                <select name="para_avaliar" id="selPara" class="form-control" onchange="ativaBTN();">
+                  <option value="-1">Selecione</option>
+                  ${optspara}
+                </select>
+              </div>
+            </div>
           </div>
+      </div>
     `;
     modalFooter.innerHTML = data.innerHTML = `
-            
             <form method="post" action="submeter.php?">
                 <input type="hidden" name="modIDprj"   value="${data.id}">
                 <input type="hidden" name="selecOpt"   value="" id="selecOpt">
@@ -427,6 +612,10 @@ echo '</script>';
   
   }
 
+  $(function () {
+    $('[data-toggle="tooltip"]').tooltip()
+  })
+
   const btnOpen = document.getElementById("excluir1");
   const modal = document.querySelector("dialog");
   
@@ -434,6 +623,4 @@ echo '</script>';
   btnOpen.onclick = function(){
     modal.showModa();
   }
-
-
 </script>

@@ -31,7 +31,6 @@ if (strlen($palavra)) {
     $palavra = '';
 }
 
-//Query pros colegiados
 $qry = '';
 if (($user['tipo'] == 'professor') || $user['tipo'] == 'prof') {
     $qry = 'select 
@@ -56,7 +55,6 @@ if (($user['tipo'] == 'professor') || $user['tipo'] == 'prof') {
 }
 
 use App\Entity\Diversos;
-use App\Entity\ProjMaster;
 
 $sendColegiado = Diversos::qry($qry);
 $coolSelectSend = '';
@@ -97,18 +95,12 @@ $where1 = implode(' AND ', $condicoes);
 $palavra = $palavOrig;
 
 // Qntd total de registros
-$qntdProjetos = ProjMaster::getQntdRegistros($where1);
+$qntdProjetos = Projeto::getQntdRegistros($where1);
 
 // paginação
 $obPagination = new Pagination($qntdProjetos, $_GET['pagina'] ?? 1, 10);
 
-$projetos = ProjMaster::getRegistros($where1, null, $obPagination->getLimite());
-
-// echo '<pre>';
-// print_r($projetos);
-// echo '</pre>';
-
-
+$projetos = Projeto::getRegistros($where1, null, $obPagination->getLimite());
 
 /*
 use \App\Entity\Tipo_exten;

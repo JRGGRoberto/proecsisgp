@@ -14,6 +14,7 @@ use App\Entity\Projeto;
 use App\Entity\RelParcial;
 use App\Session\Login;
 
+
 // Obriga o usuário a estar logado
 Login::requireLogin();
 $user = Login::getUsuarioLogado();
@@ -44,8 +45,12 @@ if (($relatorio->tramitar == 1) or ($obProjeto->id_prof != $user['id'])) {
                     </script>";
 }
 
+$anexados = Arquivo::getAnexados('relatorios', $relatorio->id);
+
 $anex = '<ul id="anexos_edt">';
-foreach ($anexados as $att) {
+
+
+foreach ($anexos as $att) {
     $anex .=
     '<li>
       <a href="/sistema/upload/uploads/'.$att->nome_rand.'" target="_blank">'.$att->nome_orig.'</a> ';
@@ -65,7 +70,7 @@ if ($relatorio->last_result == 'r') {
     include __DIR__.'/includes/msgAlteração.php';
 }
 
-$anexados = Arquivo::getAnexados('relatorios', $relatorio->id);
+
 
 $cursosetor = '';
 

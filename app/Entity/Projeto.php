@@ -57,6 +57,10 @@ class Projeto
     public $last_result;
     public $edt;
 
+    public $palav1;
+    public $palav2;
+    public $palav3;
+
     public $acec;
     public $vinculo;
     public $tituloprogvinc;
@@ -421,6 +425,7 @@ class Projeto
         $this->ver = 0;
         $this->vigen_ini = $ini;
         $this->vigen_fim = $fim;
+        $this->regras = '7692e8bd-882e-11f0-b5b5-fed708dafd3c'; // Regra de renovação
         $this->vigen_fim_orig = null;
         $this->cadastrar();
 

@@ -17,12 +17,19 @@ $id = $_GET['id'];
 $ver = $_GET['v'];
 
 $obProjeto = Projeto::getProjeto($id, $ver);
-$ini = '2024-04-02 00:00:00';
-$fim = '2026-04-02 00:00:00';
-$obProjeto->para_avaliar = 'c3bd1034-3b64-11ed-9793-0266ad9885af';
+$ini = '2026-03-02 00:00:00';
+$fim = '2026-03-04 00:00:00';
+$obProjeto->para_avaliar = 'c3bd0ba4-3b64-11ed-9793-0266ad9885af';
 $obProjeto->renovacao($ini, $fim);
 echo 'ok';
 /*
+
+select * from projetos where id  = 'c2a0cb6f-d0e4-4014-bcfa-6cb8c76dc2ca'
+
+
+
+
+
 echo '<pre>';
 print_r($obProjeto);
 echo '</pre>';

@@ -25,7 +25,7 @@ $autorizados = [
     '91ad9f28-8819-42c9-b6a9-18f284ee7453', // [MARILDA DE LARA SANTOS] Agente Sol Ângela Deeke Curitiba I 11/06/2025
     '3d1be647-d7e3-4d00-a642-75ea14059b5b', // [IRENE OLIVEIRA        ] Agente Sol Ângela Deeke Curitiba I 11/07/2025
     'c492dd7e-ac95-4d9f-b1c0-c7fc63340dd6', // [PAULO SERGIO SANTOS] Estágiário - Sérgio Dantas 21/07/2025
-    'a68f28dd-2b1b-49ec-8ef8-b6ed28ab3376', //  [SUWELLY GONÇALVES SUASSUI PICH] Solicitação  Daniela Machado 31/07/2025
+    'a68f28dd-2b1b-49ec-8ef8-b6ed28ab3376', // [SUWELLY GONÇALVES SUASSUI PICH] Solicitação  Daniela Machado 31/07/2025
 ];
 
 /*
@@ -95,14 +95,28 @@ if ($obAvaliador > 0) {
 } else {
     $menuMicro = '';
 }
-
+/*
 if ($obUsuario['config'] > 0 or in_array($obUsuario['id'], $autorizados)) {
     $all = "<div class='dropdown-divider'></div>
           <a class='dropdown-item btn-sm' href='../projetos/indexAll.php'>Todos os Projetos</a>";
+}*/
+
+if ($obUsuario['config'] == 3) {
+    $all .= "<div class='dropdown-divider'></div>
+  <a class='dropdown-item btn-sm' href='../projetos_parados/'>Projetos Parados</a>";
 }
 
 $adminOpts = '';
 if ($obUsuario['adm'] == 1) {
+    $permssao = [
+        '2bebba9e-226a-11ef-b2c8-0266ad9885af',
+        'b8fa555f-cedb-47cf-91cc-7581736aac88',
+        'bfd757a5-4f2d-4a10-87a8-a872ae69f1fd'];
+    $qryAdm5 = '';
+    if (in_array($obUsuario['id'], $permssao)) {
+        $qryAdm5 = "<a class='dropdown-item btn-sm' href='../qryADM'>ConsultADM</a>";
+    }
+
     $adminOpts =
       "<div class='btn-group btn-group-sm'>
         <button type='button' class='btn btn-primary dropdown-toggle' data-toggle='dropdown'>
@@ -116,8 +130,12 @@ if ($obUsuario['adm'] == 1) {
           <a class='dropdown-item btn-sm' href='../hierarquia/index.php?hi=cnf'>Configurar hierarquia</a>
           <div class='dropdown-divider'></div>
           <a class='dropdown-item btn-sm' href='../projetos/indexAll.php'>Todos os Projetos</a>
+          <div class='dropdown-divider'></div>";
 
+    $adminOpts .= $qryAdm5;
+    $adminOpts .= "<a class='dropdown-item btn-sm' href='../projetos_parados_all'>Propostas paradas ADM</a>
                         
+          <div class='dropdown-divider'></div>
           <button class='btn btn-light dropdown-toggle' type='button' id='dropdownMenuButton' data-toggle='dropdown' aria-haspopup='true' aria-expanded='false'>
                 Propostas ADM
           </button>
@@ -278,11 +296,11 @@ img.remover {
           <a class="dropdown-item btn-sm" href="../projetos/cadastrar.php?t=1">Novo Curso</a>
           <a class="dropdown-item btn-sm" href="../projetos/cadastrar.php?t=2">Novo Evento</a>
           <div class="dropdown-divider"></div>
-          <a class="dropdown-item btn-sm" href="../projetos">Listar minhas propostas</a>
+         <!-- <a class="dropdown-item btn-sm" href="../projetos">Listar minhas propostas</a>
           <div class="dropdown-divider"></div>
-          <a class="dropdown-item btn-sm" href="../projetostb">Listar todos os projetos aprovados</a>
-
-          <?php echo $all; ?>
+          <a class="dropdown-item btn-sm" href="../projetostb">Listar todos os projetos aprovados</a> -->
+          <a class="dropdown-item btn-sm" href="../projetos">Listar propostas</a>
+          <!--< ?php echo $all; ? > -->
         </div>
       </div>
 

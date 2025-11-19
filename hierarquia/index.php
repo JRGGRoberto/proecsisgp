@@ -1,38 +1,36 @@
 <?php
 
 require '../vendor/autoload.php';
-use \App\Session\Login;
-use \App\Entity\Campi;
-use \App\Entity\Centro;
-use \App\Entity\Colegiado;
-use \App\Entity\Professor;
-use \App\Entity\Diversos;
+use App\Entity\Campi;
+use App\Entity\Centro;
+use App\Entity\Colegiado;
+use App\Entity\Diversos;
+use App\Entity\Professor;
+use App\Session\Login;
 
-//Obriga o usuário a estar logado
+// Obriga o usuário a estar logado
 Login::requireLogin();
 $user = Login::getUsuarioLogado();
 
-require('../includes/msgAlert.php');
-
+require '../includes/msgAlert.php';
 
 $opc = $_GET['hi'];
 
+// ///////////////////////////////////
 
-/////////////////////////////////////
+function showAll($adm = 0, $nivel = 0, $caU, $ceU, $coU)
+{
+    $qry2 =
+     'select id from campi';
 
-function showAll($adm=0, $nivel=0, $caU, $ceU, $coU){
+    $contudo = '';
 
-  $qry2 = 
-   'select id from campi';
+    $listCampus = Diversos::qry($qry2);
+    foreach ($listCampus as $ca) {
+        $contudo .= addInfoCa($ca->id, $adm, $nivel, $caU, $ceU, $coU, 'show');
+    }
 
-  $contudo = '';
-
-  $listCampus = Diversos::qry($qry2);
-  foreach($listCampus as $ca){ 
-    $contudo .= addInfoCa($ca->id, $adm, $nivel, $caU, $ceU, $coU, 'show');
-  }
-  
-  return '
+    return '
   
   <div id="accordion_allCa">
 
@@ -67,50 +65,44 @@ function showAll($adm=0, $nivel=0, $caU, $ceU, $coU){
   
     </div>
   ';
-
-
-
 }
-/////////////////////////////////////
-function addInfoCa($idca, $adm, $nivel, $caU, $ceU, $coU, $show = ''){
+// ///////////////////////////////////
+function addInfoCa($idca, $adm, $nivel, $caU, $ceU, $coU, $show = '')
+{
+    $ca = Campi::getRegistro($idca);
 
-  $ca = Campi::getRegistro($idca);
+    if ($ca->chef_div_id != null) {
+        $prof = (object) Professor::getProfessor($ca->chef_div_id); //
+        $chef_div = '<strong>'.$prof->nome.'</strong><br><sup><span class="badge" >'.$prof->email.'</span></sup>';
+    } else {
+        $chef_div = ' <span class="badge badge-danger">a definir</span>';
+    }
 
-  if ($ca->chef_div_id != null){
-    $prof = Professor::getProfessor($ca->chef_div_id);
-    $chef_div = '<strong>'. $prof->nome .'</strong>';
-  } else {
-    $chef_div = ' <span class="badge badge-danger">a definir</span>';
-  }
+    if ($ca->dir_campus_id != null) {
+        $prof = (object) Professor::getProfessor($ca->dir_campus_id);
+        $dir_camp = '<strong>'.$prof->nome.'</strong><br><sup><span class="badge">'.$prof->email.'</span></sup>';
+    } else {
+        $dir_camp = ' <span class="badge badge-danger">a definir</span>';
+    }
 
-  if ($ca->dir_campus_id != null){
-    $prof = Professor::getProfessor($ca->dir_campus_id);
-    $dir_camp = '<strong>'. $prof->nome .'</strong>';
-  } else {
-    $dir_camp = ' <span class="badge badge-danger">a definir</span>';
-  }
-  
+    $qry2 =
+     'select id from centros c where c.campus_id = "'.$ca->id.'"';
 
-  $qry2 = 
-   'select id from centros c where c.campus_id = "'.$ca->id .'"';
+    $contudo = '';
 
-  $contudo = '';
+    $listCentros = Diversos::qry($qry2);
+    foreach ($listCentros as $cent) {
+        $contudo .= addInfoCe($cent->id, $adm, $nivel, $caU, $ceU, $coU);
+    }
 
-  $listCentros = Diversos::qry($qry2);
-  foreach($listCentros as $cent){ 
-    $contudo .= addInfoCe($cent->id, $adm, $nivel, $caU, $ceU, $coU);
+    $alteraCA_DC = '';
+    $alteraCA_CD = '';
+    if ($adm == '1') {
+        $alteraCA_DC = '<span class="badge badge-light"><a href="./ch.php?a=0&b='.$ca->id.'">Alterar</a></span>';
+        $alteraCA_CD = '<span class="badge badge-light"><a href="./ch.php?a=1&b='.$ca->id.'">Alterar</a></span>';
+    }
 
-  }
-
-  $alteraCA_DC = '';
-  $alteraCA_CD = '';
-  if ($adm == '1' ){
-    $alteraCA_DC = '<span class="badge badge-light"><a href="./ch.php?a=0&b='.$ca->id.'">Alterar</a></span>';
-    $alteraCA_CD = '<span class="badge badge-light"><a href="./ch.php?a=1&b='.$ca->id.'">Alterar</a></span>';
-  }
-  
-  
-  return '
+    return '
   
   <div id="accordion_ca">
 
@@ -118,19 +110,19 @@ function addInfoCa($idca, $adm, $nivel, $caU, $ceU, $coU, $show = ''){
       <div class="card-header">
         <div class="row">
           <div class="col-sm-6">
-            <a class="collapsed card-link" data-toggle="collapse" href="#ce'. $ca->id .'"><span class="badge badge badge-primary">
-            &nbsp; &nbsp; </span> &nbsp; Campus <strong>'. $ca->nome .'</strong></a>
+            <a class="collapsed card-link" data-toggle="collapse" href="#ce'.$ca->id.'"><span class="badge badge badge-primary">
+            &nbsp; &nbsp; </span> &nbsp; Campus <strong>'.$ca->nome.'</strong></a>
           </div>
           <div class="col-sm-6">
-            <div>Diretor de Campus: &nbsp; '. $dir_camp .'<br>'.$alteraCA_DC .'</div>
-            <div>Chefe de Divisão: &nbsp; '. $chef_div .'<br>'.$alteraCA_CD .'</div>
+            <div>Diretor de Campus: &nbsp; '.$dir_camp.'<br>'.$alteraCA_DC.'</div>
+            <div>Chefe de Divisão: &nbsp; '.$chef_div.'<br>'.$alteraCA_CD.'</div>
           </div>
           
         </div>
 
         </a>
       </div>
-      <div id="ce'. $ca->id .'" class="collapse '.$show.'" data-parent="#accordion_ca">
+      <div id="ce'.$ca->id.'" class="collapse '.$show.'" data-parent="#accordion_ca">
         <div class="card-body">
         <!-- conteudo -->
         '.$contudo.'
@@ -141,54 +133,53 @@ function addInfoCa($idca, $adm, $nivel, $caU, $ceU, $coU, $show = ''){
   
     </div>
   ';
-
 }
 
-/////////////////////////////////////
+// ///////////////////////////////////
 
-function addInfoCe($idcen, $adm, $nivel, $caU, $ceU, $coU, $show = ''){
+function addInfoCe($idcen, $adm, $nivel, $caU, $ceU, $coU, $show = '')
+{
+    $ce = (object) Centro::getRegistro($idcen);
 
-  $ce = Centro::getRegistro($idcen);
+    if ($ce->dir_ca_id != null) {
+        $prof = (object) Professor::getProfessor($ce->dir_ca_id);
+        $nome = '<strong>'.$prof->nome.'</strong><br><sup><span class="badge">'.$prof->email.'</span></sup>';
+    } else {
+        $nome = ' <span class="badge badge-danger">a definir</span>';
+    }
 
-  if ($ce->dir_ca_id != null){
-    $prof = Professor::getProfessor($ce->dir_ca_id);
-    $nome = '<strong>'.$prof->nome .'</strong>';
-  } else {
-    $nome = ' <span class="badge badge-danger">a definir</span>';
-  }
+    $qry2 =
+     'select id from colegiados c where c.centro_id = "'.$ce->id.'"';
 
-  $qry2 = 
-   'select id from colegiados c where c.centro_id = "'.$ce->id .'"';
+    $contudo = '';
 
-  $contudo = '';
+    $listColeg = Diversos::qry($qry2);
+    foreach ($listColeg as $col) {
+        $contudo .= addInfoCo($col->id, $adm, $nivel, $caU, $ceU, $coU);
+    }
 
-  $listColeg = Diversos::qry($qry2);
-  foreach($listColeg as $col){ 
-    $contudo .= addInfoCo($col->id, $adm, $nivel, $caU, $ceU, $coU);
-  }
-
-  $user_adm = $adm;
-  $texto = 
-  '
+    $user_adm = $adm;
+    $texto =
+    '
   <div id="accordion_ce">
   
     <div class="card mb-1">
       <div class="card-header">
         <div class="row">
           <div class="col-sm-6">
-          <a class="collapsed card-link" data-toggle="collapse" href="#ce'. $ce->id .'"><span class="badge badge badge-secondary">
-          &nbsp; &nbsp; </span> &nbsp; <strong>'. $ce->nome .'</strong></a></div>
-          <div class="col-sm-6">'. $user_adm .' Diretor(ª) de Centro de Área: &nbsp; '. $nome ;
-  
-  if (  ($adm == 1 ) or ((in_array($nivel, [1]))   and ( $caU == $ce->campus_id )) ){
-    $texto .=  '<br><span class="badge badge-light"><a href="./ch.php?a=2&b='.$ce->id.'">Alterar</a></span>';
-  } 
-          
-   $texto .=   '</div>
+          <a class="collapsed card-link" data-toggle="collapse" href="#ce'.$ce->id.'"><span class="badge badge badge-secondary">
+          &nbsp; &nbsp; </span> &nbsp; <strong>'.$ce->nome.'</strong></a></div>
+          <div class="col-sm-6">'.$user_adm.' Diretor(ª) de Centro de Área: &nbsp; '.$nome;
+
+    if (($adm == 1) or (in_array($nivel, [1]) and ($caU == $ce->campus_id))) {
+        $texto .= '<br><span class="badge badge-light"><a href="./ch.php?a=2&b='.$ce->id.'">Alterar</a></span>';
+    }
+
+    $texto .= '</div>
        </div>
         </a>
       </div>
-      <div id="ce'. $ce->id .'" class="collapse '.$show.'" data-parent="#accordion_ce">
+      <div id="ce'.$ce->id.'" class="collapse '.$show.'" data-parent="#accordion_ce">
         <div class="card-body">
         <!-- conteudo -->
         '.$contudo.'
@@ -200,39 +191,37 @@ function addInfoCe($idcen, $adm, $nivel, $caU, $ceU, $coU, $show = ''){
   </div>
   ';
 
-  return $texto;
-
+    return $texto;
 }
 
-/////////////////////////////////////
+// ///////////////////////////////////
 
-function addInfoCo($idcol, $adm, $nivel, $caU, $ceU, $coU, $show = ''){
+function addInfoCo($idcol, $adm, $nivel, $caU, $ceU, $coU, $show = '')
+{
+    $co = Colegiado::getRegistro($idcol);
 
-  $co = Colegiado::getRegistro($idcol);
+    if ($co->coord_id != null) {
+        $prof = (object) Professor::getProfessor($co->coord_id);
+        $nome = '<strong>'.$prof->nome.'</strong><br><sup><span class="badge">'.$prof->email.'</span></sup>';
+    } else {
+        $nome = ' <span class="badge badge-danger">a definir</span>';
+    }
 
-  if ($co->coord_id != null){
-    $prof = Professor::getProfessor($co->coord_id);
-    $nome = '<strong>'.$prof->nome .'</strong>';
-  } else {
-    $nome = ' <span class="badge badge-danger">a definir</span>';
-  }
+    $qry2 =
+    'SELECT nome, email, titulacao, lattes
+   from professores p where p.id_colegiado  = "'.$idcol.'"';
 
-  $qry2 = 
-  'SELECT nome, email, titulacao, lattes
-   from professores p where p.id_colegiado  = "'.$idcol .'"';
+    $contudo = '';
 
-  $contudo = '';
-
-  $listaProf = Diversos::qry($qry2);
-  foreach($listaProf as $pf){ 
-    
-    $contudo .= ' <div class="row">
+    $listaProf = Diversos::qry($qry2);
+    foreach ($listaProf as $pf) {
+        $contudo .= ' <div class="row">
                     <div class="col-sm-4 mb-1">
                       <div>
-                        <strong>'. $pf->nome .'</strong>
+                        <strong>'.$pf->nome.'</strong>
                       </div>
                       <div>
-                        '. $pf->titulacao .'
+                        '.$pf->titulacao.'
                       </div>
                     </div>
                     <div class="col-sm-4">
@@ -242,25 +231,23 @@ function addInfoCo($idcol, $adm, $nivel, $caU, $ceU, $coU, $show = ''){
                        <a href="http://lattes.cnpq.br/'.$pf->lattes.'" target="_blank">http://lattes.cnpq.br/'.$pf->lattes.'</a>
                     </div>
                   </div> <hr>';
-  }
-
-  $alteraCO = '';
-  $printAlt = '<span class="badge badge-light"><a href="./ch.php?a=3&b='.$co->id.'">Alterar</a></span>';
-
-
-  if ($adm == 1 ){
-    $alteraCO = $printAlt;
-  } elseif (($ceU == $co->centro_id ) and in_array($nivel, [2])){
-    $alteraCO = $printAlt;
-  } elseif ( in_array($nivel, [1]) ){
-    $ce1 = Centro::getRegistro($co->centro_id);
-    if($caU == $ce1->campus_id){
-      $alteraCO = $printAlt;
     }
-  }
- 
 
-  return '
+    $alteraCO = '';
+    $printAlt = '<span class="badge badge-light"><a href="./ch.php?a=3&b='.$co->id.'">Alterar</a></span>';
+
+    if ($adm == 1) {
+        $alteraCO = $printAlt;
+    } elseif (($ceU == $co->centro_id) and in_array($nivel, [2])) {
+        $alteraCO = $printAlt;
+    } elseif (in_array($nivel, [1])) {
+        $ce1 = (object) Centro::getRegistro($co->centro_id);
+        if ($caU == $ce1->campus_id) {
+            $alteraCO = $printAlt;
+        }
+    }
+
+    return '
     <div id="accordion_co">
 
 
@@ -268,14 +255,14 @@ function addInfoCo($idcol, $adm, $nivel, $caU, $ceU, $coU, $show = ''){
       <div class="card-header">
         <div class="row">
           <div class="col-sm-6">
-          <a class="collapsed card-link" data-toggle="collapse" href="#co'. $co->id .'"><span class="badge badge badge-success">
-          &nbsp; &nbsp; </span> &nbsp; Colegiado de <strong>'. $co->nome .'</strong></a></div>
-          <div class="col-sm-6">Coordenador(ª): &nbsp; '. $nome .'<br>'.$alteraCO .'</div>
+          <a class="collapsed card-link" data-toggle="collapse" href="#co'.$co->id.'"><span class="badge badge badge-success">
+          &nbsp; &nbsp; </span> &nbsp; Colegiado de <strong>'.$co->nome.'</strong></a></div>
+          <div class="col-sm-6">Coordenador(ª): &nbsp; '.$nome.'<br>'.$alteraCO.'</div>
        </div>
 
         </a>
       </div>
-      <div id="co'. $co->id .'" class="collapse '.$show.'" data-parent="#accordion_co">
+      <div id="co'.$co->id.'" class="collapse '.$show.'" data-parent="#accordion_co">
         <div class="card-body">
         <!-- conteudo -->
 
@@ -287,44 +274,39 @@ function addInfoCo($idcol, $adm, $nivel, $caU, $ceU, $coU, $show = ''){
   
     </div>  
   ';
-
 }
-
 
 $msg = '';
 
 switch ($opc) {
     case 'ca':
-      $msg =  addInfoCa($user['ca_id'], $user['adm'], $user['niveln'], $user['ca_id'], $user['ce_id'], $user['co_id'], "show");
+        $msg = addInfoCa($user['ca_id'], $user['adm'], $user['niveln'], $user['ca_id'], $user['ce_id'], $user['co_id'], 'show');
 
-      break;
+        break;
 
-    case 'ce': 
-      $msg = addInfoCe($user['ce_id'], $user['adm'], $user['niveln'], $user['ca_id'], $user['ce_id'], $user['co_id'], "show");
-            
-      break;
+    case 'ce':
+        $msg = addInfoCe($user['ce_id'], $user['adm'], $user['niveln'], $user['ca_id'], $user['ce_id'], $user['co_id'], 'show');
+
+        break;
 
     case 'co':
-      $msg = addInfoCo($user['co_id'], $user['adm'], $user['niveln'], $user['ca_id'], $user['ce_id'], $user['co_id'], "show");
-      
-      
-      break;
+        $msg = addInfoCo($user['co_id'], $user['adm'], $user['niveln'], $user['ca_id'], $user['ce_id'], $user['co_id'], 'show');
+
+        break;
 
     case 'cnf':
-      if( !(in_array($user['niveln'], [1, 2, 3]) or $user['adm'] == 1 )   ){
-        header('location: ../index.php?status=error');
-        exit;
-      } 
-      $msg = showAll($user['adm'], $user['niveln'], $user['ca_id'], $user['ce_id'], $user['co_id'] );
-      break;
-    
+        if (!(in_array($user['niveln'], [1, 2, 3]) or $user['adm'] == 1)) {
+            header('location: ../index.php?status=error');
+            exit;
+        }
+        $msg = showAll($user['adm'], $user['niveln'], $user['ca_id'], $user['ce_id'], $user['co_id']);
+        break;
+
     default:
         header('location: ../');
         exit;
-      break;
- }
-
-
+        break;
+}
 
 include '../includes/header.php';
 
@@ -334,4 +316,4 @@ echo $msgAlert;
 
 echo $msg;
 
-include '../includes/footer.php'; 
+include '../includes/footer.php';

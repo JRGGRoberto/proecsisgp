@@ -66,7 +66,9 @@ if (isset($_POST['valida'])) {
     $relatorio->rel_tec_cien_executado = $_POST['rel_tec_cien_executado'];
     $relatorio->divulgacao = $_POST['divulgacao'];
     $relatorio->tramitar = $_POST['tramitar'];
-    $relatorio->visita_tec_qtd = $_POST['visita_tec_qtd'];
+    
+    $vtq = $_POST['visita_tec_qtd'];
+    $relatorio->visita_tec_qtd = $vtq = ($vtq) ?: 0;
 
     $idprjP = $relatorio->cadastrar();
 
