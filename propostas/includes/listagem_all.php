@@ -391,10 +391,22 @@ include '../includes/paginacao.php';
                   value="<?php echo $protocolo; ?>" id="protocolo" onchange="showLimpar();">
           </div>
 
+
+
           <div class="col-4">
             <label>Campus</label>
-            <input type="text" name="campus" class="form-control form-control-sm"
-                  value="<?php echo $campus; ?>" id="campus" onchange="showLimpar();">
+            <!-- input type="text" name="campus" class="form-control form-control-sm" value="< ?php echo $campus; ?>" id="campus" onchange="showLimpar();"> -->
+              <select id="campus"  name="campus" role="button" class="form-control form-control-sm" onchange="showLimpar();">
+                <option <?=$selectedOpt = ($campus ==  "")or($campus ==  null)?  "selected" : ""  ?> value=""                   >Todos</option>
+                <option <?=$selectedOpt = $campus == "Apucarana"              ?  "selected" : ""; ?> value="Apucarana"          >Apucarana</option>
+                <option <?=$selectedOpt = $campus == "Campo Mourão"           ?  "selected" : ""; ?> value="Campo Mourão"       >Campo Mourão</option>
+                <option <?=$selectedOpt = $campus == "Curitiba I (EMBAP)"     ?  "selected" : ""; ?> value="Curitiba I (EMBAP)" >Curitiba I (EMBAP)</option>
+                <option <?=$selectedOpt = $campus == "Curitiba II (FAP)"      ?  "selected" : ""; ?> value="Curitiba II (FAP)"  >Curitiba II (FAP)</option>
+                <option <?=$selectedOpt = $campus == "Paranaguá"              ?  "selected" : ""; ?> value="Paranaguá"          >Paranaguá</option>
+                <option <?=$selectedOpt = $campus == "Paranavaí"              ?  "selected" : ""; ?> value="Paranavaí"          >Paranavaí</option>
+                <option <?=$selectedOpt = $campus == "União da Vitória"       ?  "selected" : ""; ?> value="União da Vitória"   >União da Vitória</option>
+                <option <?=$selectedOpt = $campus == "Loanda"                 ?  "selected" : ""; ?> value="Loanda"             >Loanda</option>
+              </select>
           </div>
 
           <div class="col-4">
@@ -557,7 +569,7 @@ echo '</script>';
     let titulo = document.getElementById('titulo').value;
     let nome_prof = document.getElementById('nome_prof').value;
     let palavra   = document.getElementById('palavra').value;
-    let campus = document.getElementById('campus').value;
+    let campus = document.getElementById('campus');
     let protocolo   = document.getElementById('protocolo').value;
     let filtrarBtn = document.getElementById('filtroBtn');
 
@@ -570,7 +582,7 @@ echo '</script>';
 
     if (
       titulo.length > 0 ||
-      campus.length > 0 ||
+      campus.selectedIndex  > 0 ||
       palavra.length > 0 ||
       nome_prof.length > 0 ||
       protocolo.length > 0 ||
