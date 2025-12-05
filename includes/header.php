@@ -95,11 +95,6 @@ if ($obAvaliador > 0) {
 } else {
     $menuMicro = '';
 }
-/*
-if ($obUsuario['config'] > 0 or in_array($obUsuario['id'], $autorizados)) {
-    $all = "<div class='dropdown-divider'></div>
-          <a class='dropdown-item btn-sm' href='../projetos/indexAll.php'>Todos os Projetos</a>";
-}*/
 
 if ($obUsuario['config'] == 3) {
     $all .= "<div class='dropdown-divider'></div>
@@ -141,12 +136,12 @@ if ($obUsuario['adm'] == 1) {
           </button>
          
           <div class='dropdown-menu dropdown-menu-right' aria-labelledby='dropdownMenuButton'>
-                <a class='dropdown-item btn-sm' href='../projetos/cadastrarADM.php?t=4'>Novo Programa ADM</a>
-                <a class='dropdown-item btn-sm' href='../projetos/cadastrarADM.php?t=5'>Novo Projeto ADM</a>
-                <a class='dropdown-item btn-sm' href='../projetos/cadastrarADM.php?t=3'>Nova Prestação de Serviço ADM</a>
+                <a class='dropdown-item btn-sm' href='../propostas/cadastrarADM.php?t=4'>Novo Programa ADM</a>
+                <a class='dropdown-item btn-sm' href='../propostas/cadastrarADM.php?t=5'>Novo Projeto ADM</a>
+                <a class='dropdown-item btn-sm' href='../propostas/cadastrarADM.php?t=3'>Nova Prestação de Serviço ADM</a>
                 <div class='dropdown-divider'></div>
-                <a class='dropdown-item btn-sm' href='../projetos/cadastrarADM.php?t=1'>Novo Curso ADM</a>
-                <a class='dropdown-item btn-sm' href='../projetos/cadastrarADM.php?t=2'>Novo Evento ADM</a>
+                <a class='dropdown-item btn-sm' href='../propostas/cadastrarADM.php?t=1'>Novo Curso ADM</a>
+                <a class='dropdown-item btn-sm' href='../propostas/cadastrarADM.php?t=2'>Novo Evento ADM</a>
           </div>
         </div>
       </div>";
@@ -289,18 +284,25 @@ img.remover {
         Propostas
         </button>
         <div class="dropdown-menu">
-          <a class="dropdown-item btn-sm" href="../projetos/cadastrar.php?t=4">Novo Programa</a>
-          <a class="dropdown-item btn-sm" href="../projetos/cadastrar.php?t=5">Novo Projeto</a>
-          <a class="dropdown-item btn-sm" href="../projetos/cadastrar.php?t=3">Nova Prestação de Serviço</a>
+          <a class="dropdown-item btn-sm" href="../propostas/cadastrar.php?t=4">Novo Programa</a>
+          <a class="dropdown-item btn-sm" href="../propostas/cadastrar.php?t=5">Novo Projeto</a>
+          <a class="dropdown-item btn-sm" href="../propostas/cadastrar.php?t=3">Nova Prestação de Serviço</a>
           <div class="dropdown-divider"></div>
-          <a class="dropdown-item btn-sm" href="../projetos/cadastrar.php?t=1">Novo Curso</a>
-          <a class="dropdown-item btn-sm" href="../projetos/cadastrar.php?t=2">Novo Evento</a>
+          <a class="dropdown-item btn-sm" href="../propostas/cadastrar.php?t=1">Novo Curso</a>
+          <a class="dropdown-item btn-sm" href="../propostas/cadastrar.php?t=2">Novo Evento</a>
           <div class="dropdown-divider"></div>
-         <!-- <a class="dropdown-item btn-sm" href="../projetos">Listar minhas propostas</a>
-          <div class="dropdown-divider"></div>
-          <a class="dropdown-item btn-sm" href="../projetostb">Listar todos os projetos aprovados</a> -->
-          <a class="dropdown-item btn-sm" href="../projetos">Listar propostas</a>
-          <!--< ?php echo $all; ? > -->
+          <a class="dropdown-item btn-sm" href="../propostas">Listar propostas</a>
+          <?php
+           
+           if((in_array($obUsuario['config'], [1,2,3])) or $obUsuario['adm'] == 1){
+             echo '<div class="dropdown-divider"></div>';
+             echo '<a class="dropdown-item btn-sm" href="../projlist">Listar projetos para exportação</a>';
+             if($obUsuario['config'] == 3 or $obUsuario['adm'] == 1){
+              echo '<a class="dropdown-item btn-sm" href="../projetos_parados">Tramitação</a>';
+            }
+           }
+          ?>
+
         </div>
       </div>
 

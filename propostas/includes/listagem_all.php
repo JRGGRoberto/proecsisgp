@@ -3,21 +3,23 @@
 require '../includes/msgAlert.php';
 include './includes/funcoes.php';
 
-use App\Entity\Avaliacoes;
 use App\Entity\Outros;
 use App\Session\Login;
+use App\Entity\Avaliacoes;
 
 // Obriga o usuário a estar logado
 Login::requireLogin();
 $user = Login::getUsuarioLogado();
 $userConfig = $user['config'];
 $userTipo = $user['tipo'];
+$userId = $user['id'];
 
-$osCabeca = [1, 2, 3, 4]; // só a elite
+$osCabeca = [1,2,3,4]; //só a elite
+
 
 // if (in_array($userConfig, $osCabeca)) {
 //   print_r($osCabeca);
-// }
+// } 
 
 class Blocos
 {
@@ -31,10 +33,13 @@ class Blocos
     }
 }
 
+
 $currentUrl = $_SERVER['REQUEST_URI'];
 // echo '<pre>';
 // print_r($user);
 // echo '</pre>';
+
+
 
 $qnt1 = 0;
 
@@ -50,61 +55,106 @@ $qnt1 = 0;
 
 $resultados = '<div id="accordion">';
 foreach ($projetos as $proj) {
-    switch ($proj->estado) {
-        case 1:
-            $proj->estado = 'Em avaliação';
-            break;
-        case 2:
-            $proj->estado = 'Não iniciado';
-            break;
-        case 3:
-            $proj->estado = 'Em execução';
-            break;
-        case 4:
-            $proj->estado = 'Finalizado';
-            break;
-    }
+  // opção sem badge na listagem dos projetos:
+  // switch ($proj->estado){
+  //   case 1: 
+  //     $proj->estado = 'Em avaliação';
+  //     break;
+  // case 2: 
+  //     $proj->estado = 'Não iniciado';
+  //     break;
+  //   case 3: 
+  //     $proj->estado = 'Em execução';
+  //     break;
+  //   case 4: 
+  //     $proj->estado = 'Finalizado';
+  //     break;
+  // };
 
-    switch ($proj->tipo_exten) {
-        case 1:
-            $proj->tipo_exten = 'Curso';
-            break;
-        case 2:
-            $proj->tipo_exten = 'Evento';
-            break;
-        case 3:
-            $proj->tipo_exten = 'Prestação de Serviço';
-            break;
-        case 4:
-            $proj->tipo_exten = 'Programa';
-            break;
-        case 5:
-            $proj->tipo_exten = 'Projeto';
-            break;
-    }
-    ++$qnt1;
+  // print_r($proj->aprov_auto);
+  // 
 
-    is_null($proj->submetido_para) ? $col = 'A definir' : $col = $proj->submetido_para;
+  switch ($proj->tipo_exten){
+    case 1: 
+      $proj->tipo_exten = 'Curso';
+      break;
+    case 2: 
+      $proj->tipo_exten = 'Evento';
+      break;
+    case 3: 
+      $proj->tipo_exten = 'Prestação de Serviço';
+      break;
+    case 4: 
+      $proj->tipo_exten = 'Programa';
+      break;
+    case 5: 
+      $proj->tipo_exten = 'Projeto';
+      break;
+  };
+  ++$qnt1;
 
-    $dataFim = '';
-    if (strlen($proj->vigen_fim) > 8) {
-        $dataFim = substr($proj->vigen_fim, 8, 2).'/'.
-                  substr($proj->vigen_fim, 5, 2).'/'.
-                  substr($proj->vigen_fim, 0, 4);
-    }
+  is_null($proj->submetido_para) ? $col = 'A definir' : $col = $proj->submetido_para;
 
-    $dataInicio = '';
-    if (strlen($proj->vigen_ini) > 8) {
-        $dataInicio = substr($proj->vigen_ini, 8, 2).'/'.
-                  substr($proj->vigen_ini, 5, 2).'/'.
-                  substr($proj->vigen_ini, 0, 4);
-    }
+  $dataFim = '';
+  if (strlen($proj->vigen_fim) > 8) {
+      $dataFim = substr($proj->vigen_fim, 8, 2).'/'.
+                substr($proj->vigen_fim, 5, 2).'/'.
+                substr($proj->vigen_fim, 0, 4);
+  }
 
-    $query = "select * from relatorios r where r.publicado = 1 and r.idproj = '".$proj->id."'";
-    $relatorios = Outros::qry($query);
+  $dataInicio = '';
+  if (strlen($proj->vigen_ini) > 8) {
+      $dataInicio = substr($proj->vigen_ini, 8, 2).'/'.
+                substr($proj->vigen_ini, 5, 2).'/'.
+                substr($proj->vigen_ini, 0, 4);
+  }
 
-    // 2023-03-09 00:00:00
-    $resultados .= '
+  $query = "select * from relatorios r where r.publicado = 1 and r.idproj = '".$proj->id."'";
+  $relatorios = Outros::qry($query);
+  $qtdRelatorios = count($relatorios);
+
+  $query = "select * from relatorios r where r.publicado <> 1 and r.idproj = '".$proj->id."'";
+  $relatoriosNaoPublicados = Outros::qry($query);
+
+
+  switch ($proj->estado) {
+    case 0:  // Não iniciado
+        $proj->estado = '<span class="badge badge-info">Não submetido</span>';
+        $nomeEstado = 'Não submetido';
+        $btn = naoSubmetido($proj, $user);
+        break;
+    case 1: // Em avaliação
+        $proj->estado = '<span class="badge badge-warning ">Em avaliação</span> ';
+        $nomeEstado = 'Em avaliação';
+        $btn = emAvaliacao($proj, $user);
+        break;
+    case 2: // Não iniciado
+        $proj->estado = '<span class="badge badge-secondary ">Não iniciado</span> ';
+        $nomeEstado = 'Não iniciado';
+        $btn = naoIniciado($proj, $userId);
+        break;
+    case 3: // Em execução   -- ou seja, já aprovado.
+        $proj->estado = '<span class="badge badge-primary ">Em execução</span> ';
+        $nomeEstado = 'Em execução';
+        $btn = emExecucao($proj, $userId);        
+        break;
+    case 4: // Finalizado
+        $proj->estado = '<span class="badge badge-success ">Finalizado</span> ';
+        $nomeEstado = 'Finalizado';
+        $btn = finalizado($proj, $user);
+        break;
+    case 9: // Cancelado
+        $proj->estado = '<span class="badge badge-danger ">Cancelado</span> ';
+        $nomeEstado = 'Cancelado';
+        $btn = cancelado($proj);
+        break;
+    default:
+        $proj->estado = '<span class="badge badge-danger">Erro estado</span>';
+        break;
+  }
+
+  // 2023-03-09 00:00:00
+  $resultados .= '
   <div class="card mt-3">
     <div class="card-header">
 
@@ -116,7 +166,7 @@ foreach ($projetos as $proj) {
           </a>
         </div>
       </div>
-
+        
       <div class="row mb-1">
         <div class="col-md-4"><strong>Coordenador:</strong> '.$proj->coord.'</div>
         <div class="col-md-4"><strong>Colegiado:</strong> '.$col.'</div>
@@ -125,14 +175,13 @@ foreach ($projetos as $proj) {
 
       <div class="row mb-1">
         <div class="col-md-4"><strong>Situação:</strong> '.$proj->estado.'</div>
-        <div class="col-md-4"><strong>Início:</strong> '.$dataInicio.'</div>
-        <div class="col-md-4"><strong>Fim:</strong> '.$dataFim.'</div>
+        <div class="col-md-4"><strong>Protocolo:</strong> '.$proj->protocolo.' </div>
+        <div class="col-md-4"><strong>Vigência:</strong> '.$dataInicio.' - '.$dataFim.'</div>
       </div>
 
       <div class="row">
         <div class="col"><strong>Tipo de Proposta:</strong> '.$proj->tipo_exten.'</div>
       </div>
-
     </div>
 
     <div id="p'.$proj->id.'" class="collapse" data-parent="#accordion">
@@ -141,89 +190,106 @@ foreach ($projetos as $proj) {
         <div class="row">
           <div class="col-12"><p><strong>Resumo:</strong> '.resumirTexto($proj->resumo).'</p></div>
         </div>
-    ';
 
-    // print_r($proj->estado);
-    if ($proj->estado == 'Em avaliação' && in_array($userConfig, $osCabeca) || $user['id'] == $proj->id_prof) {
-        $resultados .= '
-      <div class="d-flex">
-        <a href="visualizar.php?id='.$proj->id.'&v='.$proj->ver.'&w=1" target="_blank">
-          <button class="btn btn-success btn-sm mb-2">Projeto 📃</button>
-        </a>
-      </div>
-    
+        <div class=""> 
+        ';
+          $resultados .= $btn;
+          $resultados .= '        
+        </div>
     ';
-    } elseif (in_array($proj->estado, ['Finalizado', 'Em execução', 'Não iniciado'])) {
-        $resultados .= '
-        <div class="d-flex">
-          <a href="visualizar.php?id='.$proj->id.'&v='.$proj->ver.'&w=1" target="_blank">
-            <button class="btn btn-success btn-sm mb-2">Projeto 📃</button>
-          </a> &nbsp;
-          ';
-        if (($proj->estado == 'Em execução' || $proj->estado == 'Finalizado' || $proj->estado == 'Não iniciado')
-            && in_array($userConfig, $osCabeca)
-        ) {
-            $resultados .= '
-              <a href="../prnRelatorios/index.php?id='.$proj->id.'" target="_blank" 
-                class="btn btn-primary btn-sm mb-2" data-toggle="tooltip" data-placement="bottom" title="Visualizar todas as avaliações realizadas.">
-                🖨️ Avaliações
+    if ($proj->aprov_auto == 1) {
+      $resultados .= '<p class="badge badge-info p-2 mb-2"> Projeto aprovado via e-Protocolo.</p>';
+    } else {
+      $estadosPermitidos = [
+          "Finalizado",
+          "Em execução",
+          "Não iniciado"
+      ];
+      if (
+          in_array($nomeEstado, $estadosPermitidos) &&
+          ( in_array($userConfig, $osCabeca) || $userId == $proj->id_prof )
+      ) {
+          $resultados .= '
+              <a href="../prnRelatorios/index.php?id='.$proj->id.'" target="_blank"
+                  class="btn btn-primary btn-sm mb-2">
+                  🖨️ Avaliações
               </a>
-            ';
-        }
-        $resultados .= '</div>';
+        ';
+      }
     }
 
-    // Avaliacoes
+  
+    //Avaliacoes
     $where = 'id_proj = "'.$proj->id.'"';
     $order = 'ver desc, fase_seq desc';
-
+    
     $avaliacoesAnteriores = Avaliacoes::getRegistros($where, $order, null);
     $qntAvaliacoes = count($avaliacoesAnteriores);
 
     $progresso = '';
     $btnAvaliacoes = '';
 
-    $LastV = '';
-    if ($proj->estado == 'Em avaliação' && in_array($userConfig, $osCabeca)) {
-        $resultados .= !empty($avaliacoesAnteriores)
-        ? '<hr><span><strong> Avaliações 📊</strong></span>'
-        : '';
-
-        if ($qntAvaliacoes > 0) {
-            $retorno = montarTblEProgress($avaliacoesAnteriores, $proj->id, $progresso);
-            $LastV = $retorno[1];
-            // print_r($retorno[2]);
-            $btnAvaliacoes = $retorno[2] ?? '';
-        }
-
-        $resultados .= '
+    $LastV = "";
+    //Se estiver em avaliação E o usuário for cabeça OU for o dono do projeto aparece as avaliações
+    if ((
+          $nomeEstado == "Em avaliação" && 
+          in_array($userConfig, $osCabeca)) || 
+          $userId == $proj->id_prof 
+        ) 
+      {
+          
+      $resultados .= !empty($avaliacoesAnteriores) 
+      ? '<hr><span><strong> Avaliações 📊</strong></span>' 
+      : '';
+      
+      if ($qntAvaliacoes > 0) {
+        $retorno = montarTblEProgress($avaliacoesAnteriores, $proj->id, $progresso);
+        $LastV         = $retorno[1];
+        // print_r($retorno[2]);
+        $btnAvaliacoes = $retorno[2] ?? "";
+      } 
+    
+      $resultados .= '
         <div class="row mt-2">
           <div class="col-12">
             '.$LastV.'
           </div>
-        </div>
-
-        <div> 
-          ';
-        $resultados .= $btnAvaliacoes;
-        $resultados .= '        
-        </div>
+          <div>';
+            $resultados .= $btnAvaliacoes;
+            $resultados .= '  
+          </div>
+        </div>     
       ';
-    }
+    } 
+    
 
-    $resultados .= !empty($relatorios)
-    ? '<hr><span><strong> Relatórios 📊</strong></span>'
-    : '<br><p class="badge badge-secondary p-2"> Nenhum relatório publicado.</p>';
+    $resultados .= !empty($relatorios) 
+    ? '<hr><span><strong> Relatórios Publicados 📊</strong></span>' 
+    : '<br><p class="badge badge-secondary p-2"> Nenhum relatório publicado.</p> &nbsp ';
 
     foreach ($relatorios as $rel) {
-        $resultados .= '
+      //flag pra pegar se existe relatório final do projeto (pode estar em tramitação ainda)
+      if (in_array($rel->tipo, ['fi', 're', 'pr']) ){
+        $temRelFinal = true;
+        // print_r($rel->titulo.' tem relatorio final');
+
+        break;
+      } 
+    }
+
+    foreach ($relatorios as $rel) {
+      //se tiver final e o tipo do relatório apresentado é final, continua aplicação
+
+      $texto = in_array($rel->tipo, ['fi', 're', 'pr'])
+          ? 'FINAL - '.$rel->created_at
+          : 'PARCIAL - '.$rel->created_at;
+
+      $resultados .= '
         <div class="d-flex flex-row">
-          <div class="">
-            <a href="../relatorio/editar'.$rel->tipo[0].'.php?id='.$rel->id.'">
-              <button class="btn-success border border-0 my-2 rounded btn-sm">';
-        $resultados .=
-        $rel->tipo == 'fi' ? 'FINAL - '.$rel->created_at : 'PARCIAL - '.$rel->created_at;
-        $resultados .= '
+          <div>
+            <a href="../relatorio/editar'. strtolower($texto [0]).'.php?id='.$rel->id.'">
+              <button class="btn-success border border-0 my-2 rounded btn-sm">
+                '.$texto.'
               </button>
             </a>
           </div>
@@ -231,22 +297,49 @@ foreach ($projetos as $proj) {
       ';
     }
 
+    
+    //relatorios nao publicados (em tramitacao)
+    if (in_array($userConfig, $osCabeca)) { 
+      if (!empty($relatoriosNaoPublicados)) {
+        $resultados .= '<hr><span><strong> Relatório em aprovação ⏳</strong></span>';
+      } elseif ($qtdRelatorios > 0) {
+        $resultados .= '';
+      } else {
+        $resultados .= '<p class="badge badge-secondary p-2"> Nenhum relatório em tramitação.</p>';
+      }
+
+
+      foreach ($relatoriosNaoPublicados as $relNao) {
+        $texto = $relNao->tipo == 'fi'
+          ? 'FINAL - '.$relNao->created_at
+          : 'PARCIAL - '.$relNao->created_at;
+
+        $resultados .= '
+          <div class="d-flex flex-row">
+            <div>
+              <a href="../relatorio/editar'.$relNao->tipo[0].'.php?id='.$relNao->id.'">
+                <button class="btn-success border border-0 my-2 rounded btn-sm">
+                  '.$texto.'
+                </button>
+              </a>
+            </div>
+          </div>
+        ';
+      }
+    }
+
     $resultados .= '
           </div> 
         </div>  
       </div>    
     ';
+
 }
+
 
 $qnt1 > 0 ? $resultados : $resultados = 'Nenhum registro encontrado.';
 
 $listar = $_GET['listar-projetos'] ?? 'meus-projetos';
-
-if ($listar === 'todos-projetos') {
-    // busca todos os projetos
-} else {
-    // busca apenas os do usuário
-}
 
 $page = basename($_SERVER['PHP_SELF']);
 $todosProjetos = ($page === 'projetos_all.php');
@@ -264,14 +357,15 @@ include '../includes/paginacao.php';
       <div class="row-my-2">
           <div class="">
             <label for="listar-projetos">Listar:</label>
-            <select id="listar-projetos"
-                    class="custom-select custom-select-sm w-auto"
+            <select id="listar-projetos" 
+                    role="button"
+                    class="custom-select custom-select-sm w-auto cursor" 
                     onchange="trocarPagina(this)">
-              <option value="meus-projetos" <?php echo $todosProjetos ? '' : 'selected'; ?>>
+              <option value="meus-projetos" <?= $todosProjetos ? '' : 'selected' ?> >
                 Meus projetos
               </option>
 
-              <option value="todos-projetos" <?php echo $todosProjetos ? 'selected' : ''; ?>>
+              <option value="todos-projetos" <?= $todosProjetos ? 'selected' : '' ?>  >
                 Todos os projetos
               </option>
             </select>
@@ -279,17 +373,22 @@ include '../includes/paginacao.php';
         </div>
 
         <div class="row my-2">
-
-          <div class="col-4">
+          <div class="col-6">
             <label>Título</label>
             <input type="text" name="titulo" class="form-control form-control-sm"
                   value="<?php echo $titulo; ?>" id="titulo" onchange="showLimpar();">
           </div>
 
-          <div class="col-4">
+          <div class="col-6">
             <label>Coordenador</label>
             <input type="text" name="nome_prof" class="form-control form-control-sm"
                   value="<?php echo $nome_prof; ?>" id="nome_prof" onchange="showLimpar();">
+          </div>
+
+          <div class="col-4">
+            <label>Protocolo</label>
+            <input type="text" name="protocolo" class="form-control form-control-sm"
+                  value="<?php echo $protocolo; ?>" id="protocolo" onchange="showLimpar();">
           </div>
 
           <div class="col-4">
@@ -298,59 +397,59 @@ include '../includes/paginacao.php';
                   value="<?php echo $campus; ?>" id="campus" onchange="showLimpar();">
           </div>
 
-          <div class="col-3">
+          <div class="col-4">
             <label>Palavra-chave</label>
             <input type="text" name="palavra" class="form-control form-control-sm"
                   value="<?php echo $palavra; ?>" id="palavra" onchange="showLimpar();">
           </div>
 
-          <div class="col-2 d-flex justify-content-center align-items-center">
-            <div class="form-check mt-4">
-              <input class="form-check-input" type="checkbox" onchange="showLimpar();"
-                    name="emAvaliacao" id="emAvaliacao" value="7"
-                    <?php echo isset($_GET['emAvaliacao']) ? 'checked' : ''; ?>>
-              <label class="form-check-label" for="emAvaliacao">
-                Em avaliação
-              </label>
+          <div class="w-100"></div>
+          <div class="col-2 my-2 row-2">
+            <label>Estado</label>
+            <div class=" d-flex flex-column flex-wrap gap-3 p-2 form-control form-control-sm" 
+              <?php if(in_array($userConfig, $osCabeca)) :?>
+                style="min-height:105px;" 
+                <?php else: ?>
+                style="min-height:85px;" 
+                <?php endif ?>
+                >
+                <div class="form-check d-flex align-items-center mr-4 justify-content-between">
+                    <input class="form-check-input mb-1" type="checkbox" onchange="showLimpar();"
+                          name="emAvaliacao" id="emAvaliacao"
+                          <?= isset($_GET['emAvaliacao']) ? 'checked' : ''; ?>>
+                    <label class="form-check-label ml-1" for="emAvaliacao">Em avaliação</label>
+                </div>
+
+                <div class="form-check d-flex align-items-center mr-4 justify-content-between">
+                    <input class="form-check-input mb-1" type="checkbox" onchange="showLimpar();"
+                          name="execucao" id="execucao"
+                          <?= isset($_GET['execucao']) ? 'checked' : ''; ?>>
+                    <label class="form-check-label ml-1" for="execucao">Em execução</label>
+                </div>
+
+                <div class="form-check d-flex align-items-center mr-4 justify-content-between">
+                    <input class="form-check-input mb-1" type="checkbox" onchange="showLimpar();"
+                          name="finalizados" id="finalizados"
+                          <?= isset($_GET['finalizados']) ? 'checked' : ''; ?>>
+                    <label class="form-check-label ml-1" for="finalizados">Finalizados</label>
+                </div>
+
+                <?php if (in_array($userConfig, $osCabeca)) :?>
+                <div class="form-check d-flex align-items-center mr-4 justify-content-between">
+                    <input class="form-check-input mb-1" type="checkbox" onchange="showLimpar();"
+                          name="naoIniciados" id="naoIniciados"
+                          <?= isset($_GET['naoIniciados']) ? 'checked' : ''; ?>>
+                    <label class="form-check-label ml-1" for="naoIniciados">Não iniciados</label>
+                </div>
+                <?php endif ?>
+
             </div>
           </div>
 
-          <div class="col-2 d-flex justify-content-center align-items-center">
-            <div class="form-check mt-4">
-              <input class="form-check-input" type="checkbox" onchange="if(this.checked) showLimpar();"
-                    name="execucao" id="execucao" value="7"
-                    <?php echo isset($_GET['execucao']) ? 'checked' : ''; ?>>
-              <label class="form-check-label" for="execucao">
-                Em execução
-              </label>
-            </div>
-          </div>
 
-          <div class="col-2 d-flex justify-content-center align-items-center">
-            <div class="form-check mt-4">
-              <input class="form-check-input" type="checkbox" onchange="if(this.checked) showLimpar();"
-                    name="finalizados" id="finalizados" value="30"
-                    <?php echo isset($_GET['finalizados']) ? 'checked' : ''; ?>>
-              <label class="form-check-label" for="finalizados">
-                Finalizados
-              </label>
-            </div>
-          </div>
-
-          <div class="col-2 d-flex justify-content-center align-items-center">
-            <div class="form-check mt-4">
-              <input class="form-check-input" type="checkbox" onchange="if(this.checked) showLimpar();"
-                    name="naoIniciados" id="naoIniciados" value="30"
-                    <?php echo isset($_GET['naoIniciados']) ? 'checked' : ''; ?>>
-              <label class="form-check-label" for="naoIniciados">
-                Não iniciados
-              </label>
-            </div>
-          </div>
-
-          <div class="col-1 d-flex align-items-end">
-            <button type="submit" class="btn btn-primary btn-sm mr-2">Filtrar</button>
-            <a href="<?php echo $currentUrl; ?>" id="limpar">
+          <div class="col-1 d-flex align-items-end mb-2">
+            <button type="submit" class="btn btn-primary btn-sm mr-2 " id="filtroBtn">Filtrar</button>
+            <a href="<?= $currentUrl ?>" id="limpar">
               <span class="badge badge-primary">X</span>
             </a>
           </div>
@@ -372,6 +471,7 @@ include '../includes/paginacao.php';
          <?php echo $paginacao; ?>
       </div>
       <div class="col" >
+        
         <!-- <a href="cadastrar.php"><button class="btn btn-success float-right btn-sm">Novo</button></a> -->
         <div class="dropup">
           <button type="button" class="btn btn-success dropdown-toggle btn-sm float-right" data-toggle="dropdown" >
@@ -449,38 +549,43 @@ echo '</script>';
     if (sel.value === 'meus-projetos') {
       location.href = "./";
     } else {
-      location.href = "./projetos_all.php";
+      location.href = "projetos_all.php";
     }
   }
   
   function showLimpar(){
-    var titulo    = document.getElementById('titulo').value;
-    var prof = document.getElementById('prof').value;
-    var palavra   = document.getElementById('palavra').value;
-    var campus = document.getElementById('campus').value;
+    let titulo = document.getElementById('titulo').value;
+    let nome_prof = document.getElementById('nome_prof').value;
+    let palavra   = document.getElementById('palavra').value;
+    let campus = document.getElementById('campus').value;
+    let protocolo   = document.getElementById('protocolo').value;
+    let filtrarBtn = document.getElementById('filtroBtn');
 
-    var emAvaliacao = document.getElementById('emAvaliacao').checked;
-    var execucao    = document.getElementById('execucao').checked;
-    var finalizados = document.getElementById('finalizados').checked;
-    var naoIniciados = document.getElementById('naoIniciados').checked;
+    let emAvaliacao = document.getElementById('emAvaliacao').checked;
+    let execucao    = document.getElementById('execucao').checked;
+    let finalizados = document.getElementById('finalizados').checked;
+    let naoIniciados = document.getElementById('naoIniciados').checked;
+
+
 
     if (
       titulo.length > 0 ||
       campus.length > 0 ||
       palavra.length > 0 ||
       nome_prof.length > 0 ||
+      protocolo.length > 0 ||
       emAvaliacao ||
       execucao ||
       finalizados ||
       naoIniciados
     ) {
       btnLimpar.hidden = false;
+
     } else {
       btnLimpar.hidden = true;
+      
     }
   }
-
-  showLimpar();
   
   function ativaBTN() {
     var btn = document.getElementById('btnSubmit');
@@ -609,6 +714,10 @@ echo '</script>';
   
   }
 
+  $(function () {
+    $('[data-toggle="tooltip"]').tooltip()
+  })
+
   const btnOpen = document.getElementById("excluir1");
   const modal = document.querySelector("dialog");
   
@@ -619,3 +728,4 @@ echo '</script>';
 
 
 </script>
+

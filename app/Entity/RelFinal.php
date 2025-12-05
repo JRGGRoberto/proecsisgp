@@ -9,6 +9,7 @@ class RelFinal
     public $id;
     public $idproj;
     public $tipo;
+    public $regra;
     public $periodo_renov_ini;
     public $periodo_renov_fim;
     public $periodo_prorroga_fim;
@@ -46,6 +47,7 @@ class RelFinal
             'id' => $newId,
             'idproj' => $this->idproj,
             'tipo' => $this->tipo,
+            'regra ' => $this->regra,
             'periodo_renov_ini' => $this->periodo_renov_ini,
             'periodo_renov_fim' => $this->periodo_renov_fim,
             'periodo_prorroga_fim' => $this->periodo_prorroga_fim,

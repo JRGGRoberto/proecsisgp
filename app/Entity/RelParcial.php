@@ -11,6 +11,7 @@ class RelParcial
 {
     public $id;
     public $idproj;
+    public $regra;
     public $periodo_ini;
     public $periodo_fim;
     public $atvd_per;
@@ -40,6 +41,7 @@ class RelParcial
         $obDatabase->insert([
             'id' => $newId,
             'idproj' => $this->idproj,
+            'regra ' => $this->regra,
             'periodo_ini' => $this->periodo_ini,
             'periodo_fim' => $this->periodo_fim,
             'atvd_per' => $this->atvd_per,

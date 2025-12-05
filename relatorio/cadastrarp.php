@@ -41,6 +41,9 @@ $relatorio = new RelParcial();
 // VALIDAÇÃO DO POST
 if (isset($_POST['atvd_per'])) {
     $relatorio->idproj = $obProjeto->id;
+
+        $relatorio->regra = '7692eb56-882e-11f0-b5b5-fed708dafd3c';
+
     $relatorio->periodo_ini = $_POST['periodo_ini'];
     $relatorio->periodo_fim = $_POST['periodo_fim'];
     $relatorio->atvd_per = $_POST['atvd_per'];
@@ -65,6 +68,7 @@ if (isset($_POST['atvd_per'])) {
 $anex = '';
 $editar = '';
 $msgSolicitacoAlteracao = '';
+$relatorio->visita_tec_qtd = 0;
 
 include '../includes/header.php';
 

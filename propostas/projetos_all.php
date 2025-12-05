@@ -6,6 +6,7 @@ use App\Db\Pagination;
 use App\Entity\Palavras;
 use App\Entity\Projeto;
 use App\Session\Login;
+use App\Entity\ProjMaster;
 
 // Obriga o usuário a estar logado
 Login::requireLogin();
@@ -16,12 +17,16 @@ $nome_prof = filter_input(INPUT_GET, 'nome_prof', FILTER_SANITIZE_STRING);
 $titulo = filter_input(INPUT_GET, 'titulo', FILTER_SANITIZE_STRING);
 $campus = filter_input(INPUT_GET, 'campus', FILTER_SANITIZE_STRING);
 $palavra = filter_input(INPUT_GET, 'palavra', FILTER_SANITIZE_STRING);
+$protocolo = filter_input(INPUT_GET, 'protocolo', FILTER_SANITIZE_STRING);
+
 /*
 $colegiado = filter_input(INPUT_GET, 'colegiado', FILTER_SANITIZE_STRING);
 $area = filter_input(INPUT_GET, 'area', FILTER_SANITIZE_STRING);
 $linh_ext = filter_input(INPUT_GET, 'linh_ext', FILTER_SANITIZE_STRING);
 */
 $palavOrig = $palavra;
+
+
 
 if (strlen($palavra)) {
     $palavra = Palavras::getProjByPalavra($palavra);
@@ -37,7 +42,7 @@ if (strlen($palavra)) {
 
 
 // use App\Entity\Diversos;
-use App\Entity\ProjMaster;
+
 
 // $sendColegiado = Diversos::qry($qry);
 $coolSelectSend = '';
@@ -60,29 +65,38 @@ $finalizados = filter_input(INPUT_GET, 'finalizados', FILTER_SANITIZE_NUMBER_INT
 $naoIniciados = filter_input(INPUT_GET, 'naoIniciados', FILTER_SANITIZE_NUMBER_INT);
 $emAvaliacao  = filter_input(INPUT_GET, 'emAvaliacao', FILTER_SANITIZE_NUMBER_INT);
 
+// echo '<pre>';
+// print_r($condicoes);
+// echo '</pre>';
 
 // Condições SQL
 $condicoes = [
     strlen($titulo) ? ' titulo LIKE "%'.str_replace(' ', '%', $titulo).'%"' : null,
     strlen($palavra) ? $palavra : null,
+    strlen($protocolo) ? ' protocolo LIKE "%'.str_replace(' ', '%', $protocolo).'%"' : null,
     strlen($campus) ? ' campus LIKE "%'.str_replace(' ', '%', $campus).'%"' : null,
     strlen($nome_prof) ? ' coord LIKE "%'.str_replace(' ', '%', $nome_prof).'%"' : null,
 ];
 
-
+//Puxa os estados via get dos checkboxs
 $estados = [];
-if ($emAvaliacao) {
+if (isset($_GET['emAvaliacao'])) {
     $estados[] = 1;
 }
-if ($naoIniciados) {
+if (isset($_GET['naoIniciados'])) {
     $estados[] = 2;
 }
-if ($execucao) {
+if (isset($_GET['execucao'])) {
     $estados[] = 3;
 }    
-if ($finalizados)  {
+if (isset($_GET['finalizados']))  {
     $estados[] = 4;
 }
+
+
+// echo '<pre>';
+// print_r($estados);
+// echo '</pre>';
 
 
 //adiciona os filtros do checkbox
@@ -97,13 +111,17 @@ if (!empty($estados)) {
 
 //  ');
 
+
+// echo '<pre>';
+// print_r($condicoes);
+// echo '</pre>';
 // Remove posições vazias
 $condicoes = array_filter($condicoes);
 
 // Cláusula WHERE
 $where1 = implode(' AND ', $condicoes);
 
-// $palavra = $palavOrig;
+$palavra = $palavOrig;
 
 // Qntd total de registros
 $qntdProjetos = ProjMaster::getQntdRegistros($where1);

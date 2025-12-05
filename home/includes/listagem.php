@@ -43,10 +43,11 @@ if ($conta[1] == 'unespar.edu.br') {
   <div class="container p-3 my-3 bg-white text-dark" style="padding : 25px">
     <div class="row">
       <div class="col-6">
-        <p><a href="../projetos/index.php" class="btn btn-primary btn-sm">Meus projetos/propostas</a></p>
+        <p><a href="../propostas/index.php" class="btn btn-primary btn-sm">Meus projetos/propostas</a></p>
         
         
-      
+        <p><a href="../propostas/projetos_all.php" class="btn btn-primary btn-sm">Todos os projetos/propostas</a></p>
+
        
       </div>
       <div class="col">

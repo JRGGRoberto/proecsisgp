@@ -15,79 +15,43 @@ function resumirTexto(string $texto, int $limite = 256): string
     return substr($textoLimpo, 0, $limite).' <span class="badge badge-pill badge-success">(continua...)</span>';
 }
 
-//Monta tabela de avaliações dos projetos
 function montarTblEProgress(array $ListaVerAnts, $projId, $msg1)
-{   
-    
-    $todasConcluidas = false;
+{
     $LastV =
         '<table class="table table-bordered table-sm">
           <thead class="thead-dark">
             <tr>
-                <th>Projeto</th>
-                <th class="mx-4">Parecere(s) 
-                    <a href="../prnRelatorios/index.php?id='.$projId.'" target="_blank"><span class="badge badge-secondary">Visualizar  🖨️</span></a>
-                </th>
-                <th>Situação</th>
-                <th>Parte</th>
+              <th>Projeto</th>
+              <th>Parecere(s) <a href="../prnRelatorios/index.php?id='.$projId.'" target="_blank"><span class="badge badge-secondary">Prn All🖨️</span></a></th>
+              <th>Parte</th>
             </tr>
           </thead>
           <tbody>';
+
     $a = 0;
     $etapas = 0;
     $btnStatus = [];
-
-    
     foreach ($ListaVerAnts as $la) {
         ++$a;
         $class = '';
         $td = '';
-        switch ($la->tp_instancia){
-            case 'ca':
-                $la->tp_instancia = 'Chefe de Divisão';
-                break;
-            case 'ce':
-                $la->tp_instancia = 'Dir. de Centro de Área';
-                break;
-            case 'co':
-                $la->tp_instancia = 'Coord. de Colegiado';
-                break;
-            case 'pf':
-                $la->tp_instancia = 'Professor Parecerista';
-                break;
-            case 'dc':
-                $la->tp_instancia = 'Dir. de Campus';
-                break;
-            default: 
-                $la->tp_instancia = 'Cargo não definido';
-                break;
-        };
 
         switch ($la->resultado) {
             case 'a':
-                $la->resultado = 'Aprovado';
-                $badgeSituacao = 'success';
-
                 $class = 'table-success';
-                $td = '<td class="text-nowrap"><a href="../forms/'.$la->form.'/vista.php?p='.$projId.'&v='.$la->ver.'" target="_blank">📄</a> '.$la->tp_instancia.'</td>';
+                $td = '<td><a href="../forms/'.$la->form.'/vista.php?p='.$projId.'&v='.$la->ver.'" target="_blank">📄</a> '.$la->tp_instancia.'</td>';
 
                 array_push($btnStatus, new Blocos($la->fase_seq, 'success')); // 'primary')); //
                 break;
-                
             case 'r':
-                $la->resultado = 'Solicitação de alterações';
-                $badgeSituacao = 'danger';
-
                 $class = 'table-danger';
-                $td = '<td class="text-nowrap"><a href="../forms/'.$la->form.'/vista.php?p='.$projId.'&v='.$la->ver.'" target="_blank">📄</a> '.$la->tp_instancia.'</td>';
+                $td = '<td><a href="../forms/'.$la->form.'/vista.php?p='.$projId.'&v='.$la->ver.'" target="_blank">📄</a> '.$la->tp_instancia.'</td>';
 
                 array_push($btnStatus, new Blocos($la->fase_seq, 'danger'));
                 break;
             default:
-                $la->resultado = 'Em análise';
-                $badgeSituacao = 'warning';
                 $class = 'table-warning';
-                $td = '<td class="text-nowrap"><span class="badge badge-light">Espera de parecer... ['.$la->tp_instancia.'] '.dt($la->created_at).'</span></td>';
+                $td = '<td><span class="badge badge-light">Espera de parecer... ['.$la->tp_instancia.'] '.dt($la->created_at).'</span></td>';
 
                 array_push($btnStatus, new Blocos($la->fase_seq, 'warning'));
         }
@@ -99,19 +63,12 @@ function montarTblEProgress(array $ListaVerAnts, $projId, $msg1)
                 </td>'
 
           .$td.
-                '<td><span class="align-middle badge badge-'.$badgeSituacao.'">'.$la->resultado.'</span></td>'.
+
                 '<td>'.$la->fase_seq.'/'.$la->etapas.'</td>
-
-
             </tr>';
 
         $etapas = $la->etapas;
-        
-        if ($la->etapas == $la->fase_seq && $la->resultado == 'a') {
-            $todasConcluidas = true;
-        }
     }
-    
     $LastV .=
       '</tbody>
     </table>';
@@ -139,16 +96,5 @@ function montarTblEProgress(array $ListaVerAnts, $projId, $msg1)
           ' </div>
         </span>';
 
-    $btnAvaliacoes = '';
-
-    if ($todasConcluidas) {
-        $btnAvaliacoes = 
-            '<a href="../prnRelatorios/index.php?id='.$projId.'" target="_blank" 
-                class="btn btn-primary btn-sm mb-2" data-toggle="tooltip" data-placement="bottom" title="Visualizar todas as avaliações realizadas.">
-                🖨️ Avaliações
-            </a>';
-    }
-
-    
-    return [$progresso, $LastV, $btnAvaliacoes];
+    return [$progresso, $LastV];
 }

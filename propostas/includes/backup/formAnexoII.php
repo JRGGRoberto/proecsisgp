@@ -5,22 +5,6 @@
     let formulario = 2;
   </script>
 
-  <?php
-    // use App\Entity\Projeto;
-    if (isset($_GET['pass']) and $_GET['pass'] === 'false') {
-        $missing = $_SESSION['missing_fields'] ?? [];
-        unset($_SESSION['missing_fields']);
-
-        // echo '<pre>';
-        //   print_r($missing);
-        //   echo '</pre>';
-        // exit;
-    }
-
-  // $id = $_GET['id'] ?? null;
-  // $pass = $_GET['p'] ?? null;
-  ?>
-
   <section>
     <a href="index.php">
       <button class="btn btn-success btn-sm float-right">Voltar</button>
@@ -29,13 +13,6 @@
   <hr>
   <h4 style="text-align: center">ANEXO II</h4>
   <h3 class="mt-3" style="text-align: center"><?php echo TITLE; ?></h3>
-
-  <?php if (!empty($missing)): ?>
-    <div class="alert alert-warning text-center mt-3" role="alert">
-      ⚠️ O formulário não está completamente preenchido. Complete os campos em destaque para enviar.
-    </div>
-  <?php endif; ?>
-
 
   <form name="formAnexo" id="formAnexo" method="POST" enctype="multipart/form-data">
     <input type="hidden" name="id_prof" value="<?php echo $obProjeto->id_prof; ?>">

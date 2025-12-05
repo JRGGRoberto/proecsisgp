@@ -12,17 +12,19 @@ Login::requireLogin();
 $user = Login::getUsuarioLogado();
 
 // Busca
-
 $titulo = filter_input(INPUT_GET, 'titulo', FILTER_SANITIZE_STRING);
 $palavra = filter_input(INPUT_GET, 'palavra', FILTER_SANITIZE_STRING);
+$nome_prof = filter_input(INPUT_GET, 'nome_prof', FILTER_SANITIZE_STRING);
+$campus = filter_input(INPUT_GET, 'campus', FILTER_SANITIZE_STRING);
 $protocolo = filter_input(INPUT_GET, 'protocolo', FILTER_SANITIZE_STRING);
+
 /*
-$palavra = filter_input(INPUT_GET, 'palavra', FILTER_SANITIZE_STRING);
-$protocolo = filter_input(INPUT_GET, 'palavra', FILTER_SANITIZE_STRING);
 $colegiado = filter_input(INPUT_GET, 'colegiado', FILTER_SANITIZE_STRING);
 $area = filter_input(INPUT_GET, 'area', FILTER_SANITIZE_STRING);
 $linh_ext = filter_input(INPUT_GET, 'linh_ext', FILTER_SANITIZE_STRING);
 */
+
+
 $palavOrig = $palavra;
 
 if (strlen($palavra)) {
@@ -31,29 +33,11 @@ if (strlen($palavra)) {
     $palavra = '';
 }
 
-$qry = '';
-if (($user['tipo'] == 'professor') || $user['tipo'] == 'prof') {
-    $qry = 'select 
-            ccc.co_id as id, 
-            CONCAT("Colegiado de ", ccc.colegiado) as nome,
-            IFNULL(ccc.coord_id, "disabled") coord
-          from ca_ce_co ccc where ccc.ca_id  = "'.$user['ca_id'].'"';
-} elseif ($user['tipo'] == 'agente') {
-    $qry = 'select 
-            c.id as id,
-            c.nome as nome,
-            IFNULL(c.dir_campus_id, "disabled")  coord
-          from campi c
-          where c.id  = "'.$user['ca_id'].'"';
-
-    /* $qry = 'select
-               c.id as id,
-               c.nome as nome,
-               IFNULL(c.dir_ca_id, "disabled")  coord
-             from centros c
-             where c.campus_id = "'. $user['ca_id'] .'"'; */
-}
-
+$qry = 'select 
+          ccc.co_id as id, 
+          ccc.colegiado as nome,
+          IFNULL(ccc.coord_id, "disabled") coord
+        from ca_ce_co ccc where ccc.ca_id  = "'.$user['ca_id'].'"';
 use App\Entity\Diversos;
 
 $sendColegiado = Diversos::qry($qry);
@@ -64,7 +48,7 @@ foreach ($sendColegiado as $co) {
     $info = '';
     if ($co->coord == 'disabled') {
         $dis = 'disabled';
-        $info = ($user['tipo'] == 'professor' || $user['tipo'] == 'prof') ? '[Sem coordenador]' : '[Sem diretor de centro]';
+        $info = '[Sem coordenador]';
     }
 
     $coolSelectSend .= '<option value="'.$co->id.'"  '.$dis.'>'.$co->nome.' '.$info.'</option>';
@@ -74,12 +58,14 @@ foreach ($sendColegiado as $co) {
 $filtroStatus = filter_input(INPUT_GET, 'filtroStatus', FILTER_SANITIZE_STRING);
 
 // Condições SQL
-$condicoes = [
-    'id_prof = "'.$user['id'].'"',
-    strlen($titulo) ? 'titulo LIKE "%'.str_replace(' ', '%', $titulo).'%"' : null,
+$condicoes = [strlen($titulo) ? ' titulo LIKE "%'.str_replace(' ', '%', $titulo).'%"' : null,
     strlen($palavra) ? $palavra : null,
-    strlen($protocolo) ? 'protocolo LIKE "%'.str_replace(' ', '%', $protocolo).'%"' : null,
+    strlen($campus) ? ' campus LIKE "%'.str_replace(' ', '%', $campus).'%"' : null,
+    strlen($nome_prof) ? ' nome_prof LIKE "%'.str_replace(' ', '%', $nome_prof).'%"' : null,
+    strlen($protocolo) ? ' protocolo LIKE "%'.str_replace(' ', '%', $protocolo).'%"' : null,
+
     /*,
+  strlen($colegiado) ? 'colegiado LIKE "%'.str_replace(' ','%',$colegiado).'%"': null,
   strlen($area) ? "area_extensao = '$area_extensao'": null,
   strlen($linh_ext) ? 'linh_ext LIKE "%'.str_replace(' ','%',$linh_ext).'%"': null */
 ];
@@ -98,7 +84,7 @@ $palavra = $palavOrig;
 $qntdProjetos = Projeto::getQntdRegistros($where1);
 
 // paginação
-$obPagination = new Pagination($qntdProjetos, $_GET['pagina'] ?? 1, 10);
+$obPagination = new Pagination($qntdProjetos, $_GET['pagina'] ?? 1, 5);
 
 $projetos = Projeto::getRegistros($where1, null, $obPagination->getLimite());
 
@@ -112,5 +98,5 @@ foreach($proposta as $prop){
 */
 
 include '../includes/header.php';
-include __DIR__.'/includes/listagem.php';
+include __DIR__.'/includes/listagemAll.php';
 include '../includes/footer.php';

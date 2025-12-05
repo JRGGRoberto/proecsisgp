@@ -186,7 +186,7 @@ if (!$acessoOk) {
 // VALIDAÇÃO DO POST
 if (isset($_POST['nome'])) {
     // $obProfessor->id = $_POST['id'];
-    // $obProfessor->nome = strtoupper($_POST['nome']);
+    $obProfessor->nome = strtoupper($_POST['nome']);
     $obProfessor->cpf = $_POST['cpf'];
     $obProfessor->telefone = $_POST['telefone'];
     $obProfessor->lattes = $_POST['lattes'];

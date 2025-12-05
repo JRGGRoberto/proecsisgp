@@ -26,31 +26,20 @@ foreach ($avaliacoes as $ava) {
         <div class="col-sm-6"><a class="collapsed card-link" data-toggle="collapse" href="#p'.$ava->id.'">📃 '.$ava->titulo.'</a></div>
         <div class="col-sm-4">'.$ava->nome_prof.'</div>
         <div class="col-sm-1"><span class="badge badge-info">'.tipoRelatori($ava->tipo).'</span> </div>
-        <div class="col-sm-1"><span class="badge badge-warning ">'.$ava->etapa.'/'.$ava->etapas.'</span>
-        </div>
-        
+        <div class="col-sm-1"><span class="badge badge-warning ">'.$ava->etapa.'/'.$ava->etapas.'</span></div>  
      </div>
   </div>
-    <div id="p'.$ava->id.'" class="collapse" data-parent="#accordion">
-       
-          <div class="d-flex flex-row-reverse ">
-            <div class="p-1"></div>
-<!-- <a href="../forms/index.php?i='.$ava->idproj.'"><button class="btn btn-primary btn-sm mb-2"> ⚖️ Avaliar</button></a>    -->
-            <div class="p-1"></div>
-            <a href="./avaliar.php?id='.$ava->id.'&t='.$num.'" target=""><button class="btn btn-success btn-sm mb-2"> Visualizar/Avaliar relatorio</button></a>
-            <div class="p-1"></div>
-            <a href="../projetos/visualizar.php?id='.$ava->idproj.'&v='.$ava->ver.'&w=nw" target=""><button class="btn btn-success btn-sm mb-2"> Visualizar projeto</button></a>
-            <div class="p-1"></div>
-          </div>
-          
-
-          
+  <div id="p'.$ava->id.'" class="collapse" data-parent="#accordion">
+      <div class="d-flex flex-row-reverse ">
+        <div class="p-1"></div>
+        <div class="p-1"></div>
+        <div class="p-1"><a href="./avaliar.php?id='.$ava->id.'&t='.$num.'" target=""><button class="btn btn-success btn-sm mb-2"> Visualizar/Avaliar relatorio</button></a></div>
+        <div class="p-1"><a href="../projetos/visualizar.php?id='.$ava->idproj.'&v='.$ava->ver.'&w=nw" target=""><button class="btn btn-success btn-sm mb-2"> Visualizar projeto</button></a></div>
       </div>
-    </div>
-           
-        </div>';
+  </div>        
+</div>';
 }
-$resultados .= '</div>';
+$resultados .= '</div>';  // fecha o $resultados = '<div id="accordion">';
 
 $qnt1 > 0 ? $resultados : $resultados = 'Nenhum registro encontrado.';
 

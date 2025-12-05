@@ -32,6 +32,7 @@ if ($obProjeto->id_prof != $user['id']) {
     exit;
 }
 
+
 $cursosetor = '';
 if ($obProjeto->para_avaliar == -1) {
     $cursosetor = ''.$user['ca_nome'];
@@ -45,6 +46,15 @@ $relatorio = new RelFinal();
 if (isset($_POST['valida'])) {
     $relatorio->idproj = $obProjeto->id;
     $relatorio->tipo = $tf;
+
+    // Esses ids de regra estão na base de dados na tabela regras, definidas em 2025.
+    // Caso crie outras regras que substituam estas, atualizar aqui e manter os que estão no banco para histórico.
+    $regras = array (
+   	   'fi' => '7692259f-882e-11f0-b5b5-fed708dafd3c',
+   	   're' => '8b71423b-cc7b-11f0-9444-3a9832f2c2cb',
+   	   'pr' => '7692ea6e-882e-11f0-b5b5-fed708dafd3c'
+    );
+    $relatorio->regra = $regras[$tf];
 
     if ($tf == 're') {
         $relatorio->periodo_renov_ini = $_POST['periodo_renov_ini'];
@@ -86,6 +96,13 @@ if (isset($_POST['valida'])) {
 $anex = '';
 $editar = '';
 $msgSolicitacoAlteracao = '';
+// $relatorio
+$relatorio->visita_tec_qtd = 0;
+$relatorio->ch_semanal = 0;
+$relatorio->dim_mem_com_ex = 0;
+$relatorio->dim_disc = 0;
+$relatorio->dim_doce = 0;
+$relatorio->dim_agent_estag = 0;
 
 include '../includes/header.php';
 
