@@ -3,15 +3,35 @@
 require '../vendor/autoload.php';
 
 use App\Entity\Arquivo;
+use App\Entity\Campi;
 use App\Entity\Colegiado;
 use App\Entity\Professor;
 use App\Entity\Projeto;
 use App\Entity\RelParcial;
 use App\Session\Login;
+use App\Entity\Outros;
 
 // Obriga o usuário a estar logado
 Login::requireLogin();
 $user = Login::getUsuarioLogado();
+
+
+function getRegras($user) : string
+{ 
+     // Esses ids de regra estão na base de dados na tabela regras, definidas em 2025.
+    // Caso crie outras regras que substituam estas, atualizar aqui e manter os que estão no banco para histórico.
+   $tpu = $user['tipo'][0];
+
+   $sql = 'select id
+           from regras 
+           where 
+             tp_regra = "relatórios"
+             and detalhe = "pa"
+             and  tp_user = "'.$tpu.'"
+          ';
+    return Outros::qry($sql);
+
+}
 
 $t = $_GET['t'];
 $id = $_GET['i'];
@@ -32,17 +52,21 @@ if ($obProjeto->id_prof != $user['id']) {
 
 $cursosetor = '';
 if ($obProjeto->para_avaliar == -1) {
-    $cursosetor = $user['ca_nome'];
+    $cursosetor = ''.$user['ca_nome'];
 } else {
-    $cursosetor = Colegiado::getRegistro($obProjeto->para_avaliar)->nome;
+    $cursosetor = ''.  $user['tipo'] == 'prof' ?
+    Colegiado::getRegistro($obProjeto->para_avaliar)->nome :
+    Campi::getRegistro($obProjeto->para_avaliar)->nome;
 }
+$regras = getRegras($user);
 
 $relatorio = new RelParcial();
 // VALIDAÇÃO DO POST
 if (isset($_POST['atvd_per'])) {
     $relatorio->idproj = $obProjeto->id;
 
-        $relatorio->regra = '7692eb56-882e-11f0-b5b5-fed708dafd3c';
+        $relatorio->regra = $regras;
+
 
     $relatorio->periodo_ini = $_POST['periodo_ini'];
     $relatorio->periodo_fim = $_POST['periodo_fim'];

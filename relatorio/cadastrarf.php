@@ -4,14 +4,35 @@ require '../vendor/autoload.php';
 
 use App\Entity\Arquivo;
 use App\Entity\Colegiado;
+use App\Entity\Campi;
 use App\Entity\Professor;
 use App\Entity\Projeto;
 use App\Entity\RelFinal;
 use App\Session\Login;
+use App\Entity\Outros;
 
 // Obriga o usuário a estar logado
 Login::requireLogin();
 $user = Login::getUsuarioLogado();
+
+
+function getRegras($tp_regra, $user) : string
+{ 
+     // Esses ids de regra estão na base de dados na tabela regras, definidas em 2025.
+    // Caso crie outras regras que substituam estas, atualizar aqui e manter os que estão no banco para histórico.
+   $tpu = $user['tipo'][0];
+
+   $sql = 'select id
+           from regras 
+           where 
+             tp_regra = "relatórios"
+             and detalhe = "'.$tp_regra.'"
+             and  tp_user = "'.$tpu.'"
+          ';
+    return Outros::qry($sql);
+
+}
+
 
 $t = $_GET['t'];
 $id = $_GET['i'];
@@ -21,6 +42,8 @@ if ($t != 2) {
     header('location: index.php?status=error');
     exit;
 }
+
+
 
 $obProjeto = Projeto::getProjetoLast($id);
 
@@ -37,7 +60,9 @@ $cursosetor = '';
 if ($obProjeto->para_avaliar == -1) {
     $cursosetor = ''.$user['ca_nome'];
 } else {
-    $cursosetor = ''.Colegiado::getRegistro($obProjeto->para_avaliar)->nome;
+    $cursosetor = ''.  $user['tipo'] == 'prof' ?
+    Colegiado::getRegistro($obProjeto->para_avaliar)->nome :
+    Campi::getRegistro($obProjeto->para_avaliar)->nome;
 }
 
 $relatorio = new RelFinal();
@@ -47,14 +72,8 @@ if (isset($_POST['valida'])) {
     $relatorio->idproj = $obProjeto->id;
     $relatorio->tipo = $tf;
 
-    // Esses ids de regra estão na base de dados na tabela regras, definidas em 2025.
-    // Caso crie outras regras que substituam estas, atualizar aqui e manter os que estão no banco para histórico.
-    $regras = array (
-   	   'fi' => '7692259f-882e-11f0-b5b5-fed708dafd3c',
-   	   're' => '8b71423b-cc7b-11f0-9444-3a9832f2c2cb',
-   	   'pr' => '7692ea6e-882e-11f0-b5b5-fed708dafd3c'
-    );
-    $relatorio->regra = $regras[$tf];
+
+    $relatorio->regra = getRegras($regras[$tf], $user) ;
 
     if ($tf == 're') {
         $relatorio->periodo_renov_ini = $_POST['periodo_renov_ini'];
@@ -105,6 +124,88 @@ $relatorio->dim_doce = 0;
 $relatorio->dim_agent_estag = 0;
 
 include '../includes/header.php';
+
+
+$reg = getRegras($tf, $user['tipo']) ;
+ 
+echo $tf .'<br>'. $user['tipo'].'<br>'. $reg;
+
+$sql = '
+select 
+	r.id ,  r.nome, rd.sequencia etapas, r.obs,  r.tp_regra, r.aprov_auto ,
+	rd.nome, rd.form, 
+ 	case rd.tp_avaliador 
+        when "ca" then "Chefe de Divisão"
+        when "ce" then "Diretor(ª) de Centro de Área"
+        when "co" then "Coordenador(ª) de colegiado"
+        when "dc" then "Diretor(ª) de campus"
+    end as avaliador
+from 
+  	regras r
+  	inner join regras_defin rd on rd.id_reg  = r.id 
+where 
+  	r.tp_regra = "relatorios" and
+    r.id = "'. $reg .'"
+order by
+  	r.aprov_auto, r.nome,  rd.sequencia ;
+';
+
+$modalRelatorio = Outros::qry($sql);
+
+// echo '<pre>';
+// print_r($modalRelatorio);
+// echo '</pre>';
+
+$resultModal = '';
+
+foreach ($modalRelatorio as $modalRel) {
+    $resultModal .=
+       '<tr>
+        <td>'.$modalRel->etapas.'</td>
+        <td>'.$modalRel->avaliador.' </td>
+      </tr>
+  ';
+}
+
+echo '
+<!-- The Modal -->
+<div class="modal fade" id="modelEtapasAvala">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <!-- Modal Header -->
+      <div class="modal-header">
+        <h4 class="modal-title">Ordem de tramitação</h4>
+        <button type="button" class="close" data-dismiss="modal">&times;</button>
+      </div>
+      <!-- Modal body -->
+      <div class="modal-body">
+        *O responsável pelo preenchimento e encaminhamento é o coordenador da Proposta de Extensão
+        <table class="table table-bordered">
+  <thead class="thead-light">
+    <tr>
+      <th>Etapa</th>
+      <th>Quem avalia</th>
+    </tr>
+  </thead>
+  <tbody>'
+    .$resultModal.
+  '</tbody>
+</table>
+      </div>
+      <!-- Modal footer -->
+      <div class="modal-footer">
+        <button type="button" class="btn btn-danger" data-dismiss="modal">Fechar</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+<script>
+$("#modelEtapasAvala").modal("show");
+</script>
+
+';
 
 include __DIR__.'/includes/formFinal.php';
 
