@@ -16,11 +16,11 @@ Login::requireLogin();
 $user = Login::getUsuarioLogado();
 
 
-function getRegras($tp_regra, $user) : string
+function getRegras($tp_regra, $AGorPROF) : string
 { 
      // Esses ids de regra estão na base de dados na tabela regras, definidas em 2025.
     // Caso crie outras regras que substituam estas, atualizar aqui e manter os que estão no banco para histórico.
-   $tpu = $user['tipo'][0];
+   $tpu = $AGorPROF[0];
 
    $sql = 'select id
            from regras 
@@ -29,8 +29,8 @@ function getRegras($tp_regra, $user) : string
              and detalhe = "'.$tp_regra.'"
              and  tp_user = "'.$tpu.'"
           ';
-    return Outros::qry($sql);
 
+    return Outros::q($sql)->id;
 }
 
 
@@ -67,13 +67,18 @@ if ($obProjeto->para_avaliar == -1) {
 
 $relatorio = new RelFinal();
 
+
+$regra = getRegras($tf, $user['tipo']) ;
+
+
+
 // VALIDAÇÃO DO POST
 if (isset($_POST['valida'])) {
     $relatorio->idproj = $obProjeto->id;
     $relatorio->tipo = $tf;
 
 
-    $relatorio->regra = getRegras($regras[$tf], $user) ;
+    $relatorio->regra = $regra ;
 
     if ($tf == 're') {
         $relatorio->periodo_renov_ini = $_POST['periodo_renov_ini'];
@@ -128,7 +133,7 @@ include '../includes/header.php';
 
 $reg = getRegras($tf, $user['tipo']) ;
  
-echo $tf .'<br>'. $user['tipo'].'<br>'. $reg;
+
 
 $sql = '
 select 

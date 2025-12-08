@@ -29,7 +29,7 @@ function getRegras($user) : string
              and detalhe = "pa"
              and  tp_user = "'.$tpu.'"
           ';
-    return Outros::qry($sql);
+    return Outros::q($sql)->id;
 
 }
 
@@ -58,6 +58,7 @@ if ($obProjeto->para_avaliar == -1) {
     Colegiado::getRegistro($obProjeto->para_avaliar)->nome :
     Campi::getRegistro($obProjeto->para_avaliar)->nome;
 }
+
 $regras = getRegras($user);
 
 $relatorio = new RelParcial();
