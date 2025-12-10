@@ -55,25 +55,6 @@ $qnt1 = 0;
 
 $resultados = '<div id="accordion">';
 foreach ($projetos as $proj) {
-  // opção sem badge na listagem dos projetos:
-  // switch ($proj->estado){
-  //   case 1: 
-  //     $proj->estado = 'Em avaliação';
-  //     break;
-  // case 2: 
-  //     $proj->estado = 'Não iniciado';
-  //     break;
-  //   case 3: 
-  //     $proj->estado = 'Em execução';
-  //     break;
-  //   case 4: 
-  //     $proj->estado = 'Finalizado';
-  //     break;
-  // };
-
-  // print_r($proj->aprov_auto);
-  // 
-
   switch ($proj->tipo_exten){
     case 1: 
       $proj->tipo_exten = 'Curso';
@@ -109,13 +90,13 @@ foreach ($projetos as $proj) {
                 substr($proj->vigen_ini, 0, 4);
   }
 
-  $query = "select * from relatorios r where r.publicado = 1 and r.idproj = '".$proj->id."'";
+  $query = "select * from relatorios r where  r.idproj = '".$proj->id."'";
   $relatorios = Outros::qry($query);
   $qtdRelatorios = count($relatorios);
-
+/*
   $query = "select * from relatorios r where r.publicado <> 1 and r.idproj = '".$proj->id."'";
   $relatoriosNaoPublicados = Outros::qry($query);
-
+*/
 
   switch ($proj->estado) {
     case 0:  // Não iniciado
@@ -138,7 +119,12 @@ foreach ($projetos as $proj) {
         $nomeEstado = 'Em execução';
         $btn = emExecucao($proj, $userId);        
         break;
-    case 4: // Finalizado
+    case 4: // Finalizada a vigência
+        $proj->estado = '<span class="badge badge-success ">Aguarde Relatório Final</span> ';
+        $nomeEstado = 'Aguarde Relatório Final';
+        $btn = finalizado($proj, $user);
+        break;
+    case 5: // Finalizado e entregue o relatório final/renovação
         $proj->estado = '<span class="badge badge-success ">Finalizado</span> ';
         $nomeEstado = 'Finalizado';
         $btn = finalizado($proj, $user);
@@ -261,72 +247,6 @@ foreach ($projetos as $proj) {
         </div>     
       ';
     } 
-    
-
-    $resultados .= !empty($relatorios) 
-    ? '<hr><span><strong> Relatórios Publicados 📊</strong></span>' 
-    : '<br><p class="badge badge-secondary p-2"> Nenhum relatório publicado.</p> &nbsp ';
-
-    foreach ($relatorios as $rel) {
-      //flag pra pegar se existe relatório final do projeto (pode estar em tramitação ainda)
-      if (in_array($rel->tipo, ['fi', 're', 'pr']) ){
-        $temRelFinal = true;
-        // print_r($rel->titulo.' tem relatorio final');
-
-        break;
-      } 
-    }
-
-    foreach ($relatorios as $rel) {
-      //se tiver final e o tipo do relatório apresentado é final, continua aplicação
-
-      $texto = in_array($rel->tipo, ['fi', 're', 'pr'])
-          ? 'FINAL - '.$rel->created_at
-          : 'PARCIAL - '.$rel->created_at;
-
-      $resultados .= '
-        <div class="d-flex flex-row">
-          <div>
-            <a href="../relatorio/editar'. strtolower($texto [0]).'.php?id='.$rel->id.'">
-              <button class="btn-success border border-0 my-2 rounded btn-sm">
-                '.$texto.'
-              </button>
-            </a>
-          </div>
-        </div>
-      ';
-    }
-
-    
-    //relatorios nao publicados (em tramitacao)
-    if (in_array($userConfig, $osCabeca)) { 
-      if (!empty($relatoriosNaoPublicados)) {
-        $resultados .= '<hr><span><strong> Relatório em aprovação ⏳</strong></span>';
-      } elseif ($qtdRelatorios > 0) {
-        $resultados .= '';
-      } else {
-        $resultados .= '<p class="badge badge-secondary p-2"> Nenhum relatório em tramitação.</p>';
-      }
-
-
-      foreach ($relatoriosNaoPublicados as $relNao) {
-        $texto = $relNao->tipo == 'fi'
-          ? 'FINAL - '.$relNao->created_at
-          : 'PARCIAL - '.$relNao->created_at;
-
-        $resultados .= '
-          <div class="d-flex flex-row">
-            <div>
-              <a href="../relatorio/editar'.$relNao->tipo[0].'.php?id='.$relNao->id.'">
-                <button class="btn-success border border-0 my-2 rounded btn-sm">
-                  '.$texto.'
-                </button>
-              </a>
-            </div>
-          </div>
-        ';
-      }
-    }
 
     $resultados .= '
           </div> 
@@ -416,7 +336,7 @@ include '../includes/paginacao.php';
           </div>
 
           <div class="w-100"></div>
-          <div class="col-2 my-2 row-2">
+          <div class="col-4 my-2 row-2">
             <label>Estado</label>
             <div class=" d-flex flex-column flex-wrap gap-3 p-2 form-control form-control-sm" 
               <?php if(in_array($userConfig, $osCabeca)) :?>
@@ -437,6 +357,14 @@ include '../includes/paginacao.php';
                           name="execucao" id="execucao"
                           <?= isset($_GET['execucao']) ? 'checked' : ''; ?>>
                     <label class="form-check-label ml-1" for="execucao">Em execução</label>
+                </div>
+
+
+                <div class="form-check d-flex align-items-center mr-4 justify-content-between">
+                    <input class="form-check-input mb-1" type="checkbox" onchange="showLimpar();"
+                          name="vigenciaFinalizada" id="vigenciaFinalizada"
+                          <?= isset($_GET['vigenciaFinalizada']) ? 'checked' : ''; ?>>
+                    <label class="form-check-label ml-1" for="vigenciaFinalizada">Vigência Finalizada</label>
                 </div>
 
                 <div class="form-check d-flex align-items-center mr-4 justify-content-between">

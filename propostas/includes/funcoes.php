@@ -1,5 +1,6 @@
 <?php
 
+use App\Entity\Outros;
 use App\Session\Login;
 
 Login::requireLogin();
@@ -329,24 +330,34 @@ function emExecucao($p, $userId): string
     $v = $p->ver;
     $tipo = $p->tipo_exten;
     $profId = $p->id_prof;
+    $rel_parInfos = '';
 
+    $rel_par = Outros::qry("
+                                select 
+                                   rp.id,
+                                   if(tramitar = 1 and rp.last_result = 'a' and rp.etapa = rp.etapas, 1, 0 ) publicado, 
+                                   DATE_FORMAT(rp.created_at , '%d/%m/%Y') dt_create
+                                from 
+                                   rel_parcial rp 
+                                where 
+                                   rp.idproj = '" . $i . "' 
+                                order by rp.created_at desc");
+    if (isset($rel_par) ){
+        foreach ($rel_par as $rp) {
+            $pub = '<span class="badge badge-warning float-right">Em avaliação</span>';
+            if ($rp->publicado == 1) {
+                $pub = '<span class="badge badge-success" id="bco">Publicado</span>';
+            }
+     
+            $rel_parInfos = '<a href="../relatorio/editarp.php?id='.$rp->id.'" target="_blank"><p class="badge badge-secondary p-2">Parcial '.$pub.' <span class="badge badge-info">'. $rp->dt_create. '</span></p></a> &nbsp; ';
+        }
+    } 
     return (
         createBT('visualizar', $i, $v) . ' &nbsp;'. 
-        createBT('relatorioParcial', $i, $v, null, $tipo, null, $userId, $profId) 
+        createBT('relatorioParcial', $i, $v, null, $tipo, null, $userId, $profId)   . ' &nbsp;'. 
+        $rel_parInfos
         // createBT('cancelar', $i, $v).' &nbsp; '
     );
-    // if ($tipo != 2)
-    //     return (
-    //       createBT('cancelar', $i, $v).' &nbsp; '.
-    //       createBT('visualizar', $i, $v) . ' &nbsp;'. 
-    //       createBT('relatorioParcial', $i, $v)
-    //     );
-    // else { 
-    //   return (
-    //       createBT('cancelar', $i, $v).' &nbsp; '.
-    //       createBT('visualizar', $i, $v)
-    //   );
-    // }
 }
 
 function finalizado($p, $userId): string
@@ -354,10 +365,54 @@ function finalizado($p, $userId): string
     $i = $p->id;
     $v = $p->ver;
     $profId = $p->id_prof;
+    $rel_Infos = '';
+
+    $rel_par = Outros::qry(" Select 
+                                r.id, r.tipo, r.publicado, r.created_at 
+                            from 
+                                relatorios r 
+                            where 
+                                r.idproj = '" . $i . "' 
+                            order by r.created_at desc
+                        ");
+                                   
+                                
+    if (isset($rel_par) ){
+        $rel_Infos = '';
+        foreach ($rel_par as $rp) {
+            $tipoRel ='';
+            switch ($rp->tipo) {
+                case 'fi':
+                    $tipoRel = 'Final';
+                    break;
+                case 're':
+                    $tipoRel = 'Final com renovação';
+                    break;
+                case 'pr':
+                    $tipoRel = 'Final com prorrogação';
+                    break;
+                case 'pa':
+                    $tipoRel = 'Relatório parcial';
+                    break;
+                default:
+                    $tipoRel = 'ERROR';
+            }
+
+            $pub = '<span class="badge badge-warning float-right">Em avaliação</span>';
+            if ($rp->publicado == 1) {
+                $pub = '<span class="badge badge-success" id="bco">Publicado</span>';
+            }
+            $link = in_array($rp->tipo, ['fi', 're', 'pr']) ? 'f' : 'p';
+            $link = '<a href="../relatorio/editar'.$link .'.php?id='.$rp->id.'" target="_blank">';
+     
+            $rel_Infos .=  $link .'<p class="badge badge-secondary p-2">'.$tipoRel.' '.$pub.' <span class="badge badge-info">'. $rp->created_at. '</span></p>'. '</a> &nbsp; ';
+        }
+    } 
 
     return 
       createBT('visualizar', $i, $v).' &nbsp; '.
-      createBT('relatorioFinal', $i, $v, null, null, null, $userId, $profId);         
+      createBT('relatorioFinal', $i, $v, null, null, null, $userId, $profId) .' &nbsp; '.
+      $rel_Infos;         
 }
 
 function cancelado($p): string

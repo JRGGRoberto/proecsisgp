@@ -2,7 +2,6 @@
 
 require '../vendor/autoload.php';
 use App\Entity\Avaliacoes;
-use App\Entity\Colegiado;
 use App\Session\Login;
 
 // Obriga o usuário a estar logado
@@ -63,15 +62,21 @@ foreach ($projetos as $proj) {
         $progresso = '<span class="badge badge-primary ">Em execução</span> ';
         $btn = emExecucao($proj, $userId);
         break;
-      case 4: // Finalizado
-        $progresso = '<span class="badge badge-success ">Finalizado</span> ';
-        $btn = finalizado($proj, $userId);
+    case 4: // Finalizada a vigência
+        $proj->estado = '<span class="badge badge-success ">Aguarde Relatório Final</span> ';
+        $nomeEstado = 'Aguarde Relatório Final';
+        $btn = finalizado($proj, $user);
         break;
-      case 9: // Cancelado
+    case 5: // Finalizado e entregue o relatório final/renovação
+        $proj->estado = '<span class="badge badge-success ">Finalizado</span> ';
+        $nomeEstado = 'Finalizado';
+        $btn = finalizado($proj, $user);
+        break;
+    case 9: // Cancelado
         $progresso = '<span class="badge badge-danger ">Cancelado</span> ';
         $btn = cancelado($proj);
         break;
-      default:
+    default:
         $progresso = '<span class="badge badge-danger">Erro estado</span>';
         break;
     }

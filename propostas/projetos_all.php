@@ -62,6 +62,7 @@ $coolSelectSend = '';
 $filtroStatus = filter_input(INPUT_GET, 'filtroStatus', FILTER_SANITIZE_STRING);
 $execucao = filter_input(INPUT_GET, 'execucao', FILTER_SANITIZE_NUMBER_INT);
 $finalizados = filter_input(INPUT_GET, 'finalizados', FILTER_SANITIZE_NUMBER_INT);
+$vigenciaFinalizada = filter_input(INPUT_GET, 'vigenciaFinalizada', FILTER_SANITIZE_NUMBER_INT);
 $naoIniciados = filter_input(INPUT_GET, 'naoIniciados', FILTER_SANITIZE_NUMBER_INT);
 $emAvaliacao  = filter_input(INPUT_GET, 'emAvaliacao', FILTER_SANITIZE_NUMBER_INT);
 
@@ -89,9 +90,13 @@ if (isset($_GET['naoIniciados'])) {
 if (isset($_GET['execucao'])) {
     $estados[] = 3;
 }    
-if (isset($_GET['finalizados']))  {
+if (isset($_GET['vigenciaFinalizada']))  {
     $estados[] = 4;
 }
+if (isset($_GET['finalizados']))  {
+    $estados[] = 5;
+}
+
 
 
 // echo '<pre>';
