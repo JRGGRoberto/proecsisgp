@@ -15,7 +15,7 @@ class Database
      *
      * @var string
      */
-    public const HOST = 'mysql';
+    public const HOST = 'mariadb';
 
     /**
      * Nome do banco de dados.

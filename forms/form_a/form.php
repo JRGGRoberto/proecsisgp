@@ -59,14 +59,14 @@
                     <div class="col-6">Contém toda a documentação necessária?</div>
                     <div class="col">
                         <div class="form-check-inline">
-                            <label class="form-check-label" for="radio1">
-                              <input type="radio" class="form-check-input" id="radio1" name="r3_1" value="1" <?=$form->r3_1 == '1'? "checked" : "" ?>> Sim
+                            <label class="form-check-label" >
+                              <input type="radio" class="form-check-input" name="r3_1" value="1" <?=$form->r3_1 == '1'? "checked" : "" ?>> Sim
                             </label>
                           </div>
                           
                           <div class="form-check-inline">
                             <label class="form-check-label" for="radio2">
-                              <input type="radio" class="form-check-input" id="radio2" name="r3_1" value="0" <?=$form->r3_1 == '0'? "checked" : "" ?>> Não
+                              <input type="radio" class="form-check-input" name="r3_1" value="0" <?=$form->r3_1 == '0'? "checked" : "" ?>> Não
                             </label>
                           </div>
                     </div>
@@ -76,14 +76,14 @@
                     <div class="col-6">Prevê a participação de estudantes como equipe executora da ação de extensão?</div>
                     <div class="col">
                         <div class="form-check-inline">
-                            <label class="form-check-label" for="radio1">
-                              <input type="radio" class="form-check-input" id="radio1" name="r3_2" value="1" <?=$form->r3_2 == '1'? "checked" : "" ?>> Sim
+                            <label class="form-check-label" >
+                              <input type="radio" class="form-check-input"  name="r3_2" value="1" <?=$form->r3_2 == '1'? "checked" : "" ?>> Sim
                             </label>
                           </div>
                           
                           <div class="form-check-inline">
                             <label class="form-check-label" for="radio2">
-                              <input type="radio" class="form-check-input" id="radio2" name="r3_2" value="0" <?=$form->r3_2 == '0'? "checked" : "" ?>> Não
+                              <input type="radio" class="form-check-input" name="r3_2" value="0" <?=$form->r3_2 == '0'? "checked" : "" ?>> Não
                             </label>
                           </div>
                     </div>
@@ -93,14 +93,14 @@
                     <div class="col-6">Prevê a participação da Comunidade externa?</div>
                     <div class="col">
                         <div class="form-check-inline">
-                            <label class="form-check-label" for="radio1">
-                              <input type="radio" class="form-check-input" id="radio1" name="r3_3" value="1" <?=$form->r3_3 == '1'? "checked" : "" ?>> Sim
+                            <label class="form-check-label" >
+                              <input type="radio" class="form-check-input"  name="r3_3" value="1" <?=$form->r3_3 == '1'? "checked" : "" ?>> Sim
                             </label>
                           </div>
                           
                           <div class="form-check-inline">
                             <label class="form-check-label" for="radio2">
-                              <input type="radio" class="form-check-input" id="radio2" name="r3_3" value="0" <?=$form->r3_3 == '0'? "checked" : "" ?>> Não
+                              <input type="radio" class="form-check-input" name="r3_3" value="0" <?=$form->r3_3 == '0'? "checked" : "" ?>> Não
                             </label>
                           </div>
                     </div>
@@ -110,14 +110,14 @@
                     <div class="col-6">Está de acordo com os princípios da extensão na UNESPAR?</div>
                     <div class="col">
                         <div class="form-check-inline">
-                            <label class="form-check-label" for="radio1">
-                              <input type="radio" class="form-check-input" id="radio1" name="r3_4" value="1" <?=$form->r3_4 == '1'? "checked" : "" ?>> Sim
+                            <label class="form-check-label" >
+                              <input type="radio" class="form-check-input"  name="r3_4" value="1" <?=$form->r3_4 == '1'? "checked" : "" ?>> Sim
                             </label>
                           </div>
                           
                           <div class="form-check-inline">
                             <label class="form-check-label" for="radio2">
-                              <input type="radio" class="form-check-input" id="radio2" name="r3_4" value="0" <?=$form->r3_4 == '0'? "checked" : "" ?>> Não
+                              <input type="radio" class="form-check-input" name="r3_4" value="0" <?=$form->r3_4 == '0'? "checked" : "" ?>> Não
                             </label>
                           </div>
                     </div>
@@ -127,14 +127,14 @@
                     <div class="col-6">Está de acordo com os objetivos da extensão na UNESPAR?</div>
                     <div class="col">
                         <div class="form-check-inline">
-                            <label class="form-check-label" for="radio1">
-                              <input type="radio" class="form-check-input" id="radio1" name="r3_5" value="1" <?=$form->r3_5 == '1'? "checked" : "" ?>> Sim
+                            <label class="form-check-label" >
+                              <input type="radio" class="form-check-input"  name="r3_5" value="1" <?=$form->r3_5 == '1'? "checked" : "" ?>> Sim
                             </label>
                           </div>
                           
                           <div class="form-check-inline">
                             <label class="form-check-label" for="radio2">
-                              <input type="radio" class="form-check-input" id="radio2" name="r3_5" value="0" <?=$form->r3_5 == '0'? "checked" : "" ?>> Não
+                              <input type="radio" class="form-check-input" name="r3_5" value="0" <?=$form->r3_5 == '0'? "checked" : "" ?>> Não
                             </label>
                           </div>
                     </div>
@@ -144,14 +144,14 @@
                     <div class="col-6">Prevê parcerias com outras instituições (públicas ou privadas)?</div>
                     <div class="col">
                         <div class="form-check-inline">
-                            <label class="form-check-label" for="radio1">
-                              <input type="radio" class="form-check-input" id="radio1" name="r3_6" value="1" <?=$form->r3_6 == '1'? "checked" : "" ?>> Sim
+                            <label class="form-check-label" >
+                              <input type="radio" class="form-check-input"  name="r3_6" value="1" <?=$form->r3_6 == '1'? "checked" : "" ?>> Sim
                             </label>
                           </div>
                           
                           <div class="form-check-inline">
                             <label class="form-check-label" for="radio2">
-                              <input type="radio" class="form-check-input" id="radio2" name="r3_6" value="0" <?=$form->r3_6 == '0'? "checked" : "" ?>> Não
+                              <input type="radio" class="form-check-input" name="r3_6" value="0" <?=$form->r3_6 == '0'? "checked" : "" ?>> Não
                             </label>
                           </div>
                     </div>
@@ -161,14 +161,14 @@
                     <div class="col-6">Prevê a difusão dos resultados alcançados?</div>
                     <div class="col">
                         <div class="form-check-inline">
-                            <label class="form-check-label" for="radio1">
-                              <input type="radio" class="form-check-input" id="radio1" name="r3_7" value="1" <?=$form->r3_7 == '1'? "checked" : "" ?>> Sim
+                            <label class="form-check-label" >
+                              <input type="radio" class="form-check-input"  name="r3_7" value="1" <?=$form->r3_7 == '1'? "checked" : "" ?>> Sim
                             </label>
                           </div>
                           
                           <div class="form-check-inline">
                             <label class="form-check-label" for="radio2">
-                              <input type="radio" class="form-check-input" id="radio2" name="r3_7" value="0" <?=$form->r3_7 == '0'? "checked" : "" ?>> Não
+                              <input type="radio" class="form-check-input" name="r3_7" value="0" <?=$form->r3_7 == '0'? "checked" : "" ?>> Não
                             </label>
                           </div>
                     </div>
@@ -200,14 +200,14 @@
               Como surgiu este projeto? Por qual demanda? De que forma a execução deste projeto promove transformação entre a universidade e a sociedade?</i></div>
             <div class="col-2">
               <div class="form-check-inline">
-                <label class="form-check-label" for="radio1">
-                  <input type="radio" class="form-check-input" id="radio1" name="r4_1" value="1" <?=$form->r4_1 == '1'? "checked" : "" ?>> Sim
+                <label class="form-check-label" >
+                  <input type="radio" class="form-check-input"  name="r4_1" value="1" <?=$form->r4_1 == '1'? "checked" : "" ?>> Sim
                 </label>
               </div>
               
               <div class="form-check-inline">
                 <label class="form-check-label" for="radio2">
-                  <input type="radio" class="form-check-input" id="radio2" name="r4_1" value="0" <?=$form->r4_1 == '0'? "checked" : "" ?>> Não
+                  <input type="radio" class="form-check-input" name="r4_1" value="0" <?=$form->r4_1 == '0'? "checked" : "" ?>> Não
                 </label>
               </div>
             </div>
@@ -223,14 +223,14 @@
             
               <div class="col-2">
                 <div class="form-check-inline">
-                  <label class="form-check-label" for="radio1">
-                    <input type="radio" class="form-check-input" id="radio1" name="r4_2" value="1" <?=$form->r4_2 == '1'? "checked" : "" ?>> Sim
+                  <label class="form-check-label" >
+                    <input type="radio" class="form-check-input"  name="r4_2" value="1" <?=$form->r4_2 == '1'? "checked" : "" ?>> Sim
                   </label>
                 </div>
                 
                 <div class="form-check-inline">
                   <label class="form-check-label" for="radio2">
-                    <input type="radio" class="form-check-input" id="radio2" name="r4_2" value="0" <?=$form->r4_2 == '0'? "checked" : "" ?>> Não
+                    <input type="radio" class="form-check-input" name="r4_2" value="0" <?=$form->r4_2 == '0'? "checked" : "" ?>> Não
                   </label>
                 </div>
             </div>
@@ -245,14 +245,14 @@
               O projeto prevê o envolvimento de alunos de vários períodos do mesmo curso ou de outros cursos? Envolve aluno da residência ou pós-graduação? Com objetivo de fortalecer a produção acadêmica, relaciona prática com teoria? Do projeto de extensão é possível gerar trabalho de conclusão de curso ou associação com a iniciação científica?</i></div>
               <div class="col-2">
               <div class="form-check-inline">
-                <label class="form-check-label" for="radio1">
-                  <input type="radio" class="form-check-input" id="radio1" name="r4_3" value="1" <?=$form->r4_3 == '1'? "checked" : "" ?>> Sim
+                <label class="form-check-label" >
+                  <input type="radio" class="form-check-input"  name="r4_3" value="1" <?=$form->r4_3 == '1'? "checked" : "" ?>> Sim
                 </label>
               </div>
               
               <div class="form-check-inline">
                 <label class="form-check-label" for="radio2">
-                  <input type="radio" class="form-check-input" id="radio2" name="r4_3" value="0" <?=$form->r4_3 == '0'? "checked" : "" ?>> Não
+                  <input type="radio" class="form-check-input" name="r4_3" value="0" <?=$form->r4_3 == '0'? "checked" : "" ?>> Não
                 </label>
               </div>
             </div>
@@ -266,14 +266,14 @@
               As atividades previstas possibilitam reforçar o papel das/dos estudantes na comunidade promovendo sua formação como profissional e como cidadã/cidadão? As/Os estudantes conseguirão desempenhar bem seu papel como agentes de transformação da sociedade, aplicando os conhecimentos adquiridos?</i></div>
               <div class="col-2">
               <div class="form-check-inline">
-                <label class="form-check-label" for="radio1">
-                  <input type="radio" class="form-check-input" id="radio1" name="r4_4" value="1" <?=$form->r4_4 == '1'? "checked" : "" ?>> Sim
+                <label class="form-check-label" >
+                  <input type="radio" class="form-check-input"  name="r4_4" value="1" <?=$form->r4_4 == '1'? "checked" : "" ?>> Sim
                 </label>
               </div>
               
               <div class="form-check-inline">
                 <label class="form-check-label" for="radio2">
-                  <input type="radio" class="form-check-input" id="radio2" name="r4_4" value="0" <?=$form->r4_4 == '0'? "checked" : "" ?>> Não
+                  <input type="radio" class="form-check-input" name="r4_4" value="0" <?=$form->r4_4 == '0'? "checked" : "" ?>> Não
                 </label>
               </div>
             </div>
@@ -286,13 +286,13 @@
               O projeto consegue apresentar contribuições significativas de mudanças na comunidade local, produzindo soluções efetivas na resolução de problemas? A proposta do projeto visa promover também mudanças na Universidade, na medida em que ela se envolve com a comunidade local?</i></div>
               <div class="col-2">
               <div class="form-check-inline">
-                <label class="form-check-label" for="radio1">
-                  <input type="radio" class="form-check-input" id="radio1" name="r4_5" value="1" <?=$form->r4_5 == '1'? "checked" : "" ?>> Sim
+                <label class="form-check-label" >
+                  <input type="radio" class="form-check-input"  name="r4_5" value="1" <?=$form->r4_5 == '1'? "checked" : "" ?>> Sim
                 </label>
               </div>
               <div class="form-check-inline">
                 <label class="form-check-label" for="radio2">
-                  <input type="radio" class="form-check-input" id="radio2" name="r4_5" value="0" <?=$form->r4_5 == '0'? "checked" : "" ?>> Não
+                  <input type="radio" class="form-check-input" name="r4_5" value="0" <?=$form->r4_5 == '0'? "checked" : "" ?>> Não
                 </label>
               </div>
             </div>

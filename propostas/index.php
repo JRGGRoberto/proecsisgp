@@ -77,7 +77,7 @@ $filtroStatus = filter_input(INPUT_GET, 'filtroStatus', FILTER_SANITIZE_STRING);
 
 // Condições SQL
 $condicoes = [
-    'id_prof = "'.$user['id'].'"',
+    'trim(id_prof) = "'.$user['id'].'"',
     strlen($titulo) ? 'titulo LIKE "%'.str_replace(' ', '%', $titulo).'%"' : null,
     strlen($palavra) ? $palavra : null,
     strlen($protocolo) ? 'protocolo LIKE "%'.str_replace(' ', '%', $protocolo).'%"' : null,

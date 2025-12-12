@@ -360,14 +360,15 @@ function emExecucao($p, $userId): string
     );
 }
 
-function finalizado($p, $userId): string
+
+function aguardandoRelatorio($p, $userId): string
 {
     $i = $p->id;
     $v = $p->ver;
     $profId = $p->id_prof;
     $rel_Infos = '';
 
-    $rel_par = Outros::qry(" Select 
+    $rel = Outros::qry(" Select 
                                 r.id, r.tipo, r.publicado, r.created_at 
                             from 
                                 relatorios r 
@@ -377,9 +378,10 @@ function finalizado($p, $userId): string
                         ");
                                    
                                 
-    if (isset($rel_par) ){
-        $rel_Infos = '';
-        foreach ($rel_par as $rp) {
+    if (isset($rel) ){
+        
+        
+        foreach ($rel as $rp) {
             $tipoRel ='';
             switch ($rp->tipo) {
                 case 'fi':
@@ -403,9 +405,68 @@ function finalizado($p, $userId): string
                 $pub = '<span class="badge badge-success" id="bco">Publicado</span>';
             }
             $link = in_array($rp->tipo, ['fi', 're', 'pr']) ? 'f' : 'p';
-            $link = '<a href="../relatorio/editar'.$link .'.php?id='.$rp->id.'" target="_blank">';
+            $linkFeito = '<a href="../relatorio/editar'.$link .'.php?id='.$rp->id.'" target="_blank">';
      
-            $rel_Infos .=  $link .'<p class="badge badge-secondary p-2">'.$tipoRel.' '.$pub.' <span class="badge badge-info">'. $rp->created_at. '</span></p>'. '</a> &nbsp; ';
+            $rel_Infos .=  $linkFeito .'<p class="badge badge-secondary p-2">'.$tipoRel.' '.$pub.' <span class="badge badge-info">'. $rp->created_at. '</span></p>'. '</a> &nbsp; ';
+        }
+    } 
+
+    return 
+      createBT('visualizar', $i, $v).' &nbsp; '.
+      createBT('relatorioFinal', $i, $v, null, null, null, $userId, $profId) .' &nbsp; '.
+      '<a href="../relatorio/index.php?id='.$i. '" class="btn btn-success btn-sm mb-2">Criar relatório</a>'.
+      $rel_Infos;         
+}
+
+
+
+function finalizado($p, $userId): string
+{
+    $i = $p->id;
+    $v = $p->ver;
+    $profId = $p->id_prof;
+    $rel_Infos = '';
+
+    $rel = Outros::qry(" Select 
+                                r.id, r.tipo, r.publicado, r.created_at 
+                            from 
+                                relatorios r 
+                            where 
+                                r.idproj = '" . $i . "' 
+                            order by r.created_at desc
+                        ");
+                                   
+                                
+    if (isset($rel) ){
+        
+        
+        foreach ($rel as $rp) {
+            $tipoRel ='';
+            switch ($rp->tipo) {
+                case 'fi':
+                    $tipoRel = 'Final';
+                    break;
+                case 're':
+                    $tipoRel = 'Final com renovação';
+                    break;
+                case 'pr':
+                    $tipoRel = 'Final com prorrogação';
+                    break;
+                case 'pa':
+                    $tipoRel = 'Relatório parcial';
+                    break;
+                default:
+                    $tipoRel = 'ERROR';
+            }
+
+            $pub = '<span class="badge badge-warning float-right">Em avaliação</span>';
+            if ($rp->publicado == 1) {
+                $pub = '<span class="badge badge-success" id="bco">Publicado</span>';
+            }
+            $link = in_array($rp->tipo, ['fi', 're', 'pr']) ? 'f' : 'p';
+            $linkFeito = '<a href="../relatorio/editar'.$link .'.php?id='.$rp->id.'" target="_blank">';
+     
+            $rel_Infos .=  $linkFeito .'<p class="badge badge-secondary p-2">'.$tipoRel.' '.$pub.' <span class="badge badge-info">'. $rp->created_at. '</span></p>'. '</a> &nbsp; ';
         }
     } 
 
@@ -414,6 +475,9 @@ function finalizado($p, $userId): string
       createBT('relatorioFinal', $i, $v, null, null, null, $userId, $profId) .' &nbsp; '.
       $rel_Infos;         
 }
+
+
+
 
 function cancelado($p): string
 {

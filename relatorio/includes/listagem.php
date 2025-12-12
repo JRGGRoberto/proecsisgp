@@ -152,7 +152,7 @@ echo $novoBTNs;
 
 ?>
   <div class="form-group">
-    <a href="../projetos/" class="btn btn-success btn-sm mb-2">Voltar</a>&nbsp; &nbsp;  <?php echo $msgInfoEstado; ?>
+    <a href="../propostas/" class="btn btn-success btn-sm mb-2">Voltar</a>&nbsp; &nbsp;  <?php echo $msgInfoEstado; ?>
   </div>
 
 </main>

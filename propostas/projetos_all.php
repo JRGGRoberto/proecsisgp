@@ -4,7 +4,7 @@ require '../vendor/autoload.php';
 
 use App\Db\Pagination;
 use App\Entity\Palavras;
-use App\Entity\Projeto;
+// use App\Entity\Projeto;
 use App\Session\Login;
 use App\Entity\ProjMaster;
 
