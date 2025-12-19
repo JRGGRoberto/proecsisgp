@@ -12,6 +12,8 @@ class RelParcial
     public $id;
     public $idproj;
     public $regra;
+    public $caminho;
+
     public $periodo_ini;
     public $periodo_fim;
     public $atvd_per;
@@ -42,12 +44,15 @@ class RelParcial
             'id' => $newId,
             'idproj' => $this->idproj,
             'regra ' => $this->regra,
+            'caminho ' => $this->caminho,
+            
             'periodo_ini' => $this->periodo_ini,
             'periodo_fim' => $this->periodo_fim,
             'atvd_per' => $this->atvd_per,
             'alteracoes' => $this->alteracoes,
             'atvd_prox_per' => $this->atvd_prox_per,
             'visita_tec_qtd' => $this->visita_tec_qtd,
+            'etapas' => $this->etapas,
 
             'tramitar' => $this->tramitar,
             'last_result' => 'n',
@@ -75,6 +80,7 @@ class RelParcial
             'alteracoes' => $this->alteracoes,
             'atvd_prox_per' => $this->atvd_prox_per,
             'tramitar' => $this->tramitar,
+
             'visita_tec_qtd' => $this->visita_tec_qtd,
             'last_result' => $this->last_result,
             'updated_at' => date('Y-m-d H:i:s'),

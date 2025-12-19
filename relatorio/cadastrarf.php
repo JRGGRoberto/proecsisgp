@@ -16,21 +16,25 @@ Login::requireLogin();
 $user = Login::getUsuarioLogado();
 
 
-function getRegras($tp_regra, $AGorPROF) : string
+function getRegras($tp_regra, $AGorPROF) : array
 { 
      // Esses ids de regra estão na base de dados na tabela regras, definidas em 2025.
     // Caso crie outras regras que substituam estas, atualizar aqui e manter os que estão no banco para histórico.
    $tpu = $AGorPROF[0];
 
-   $sql = 'select id
-           from regras 
-           where 
-             tp_regra = "relatórios"
-             and detalhe = "'.$tp_regra.'"
-             and  tp_user = "'.$tpu.'"
+   $sql ='select 
+            r.id, count(1) etapas
+          from 
+            regras r
+            inner join regras_defin rd on rd.id_reg  = r.id 
+          where 
+            r.tp_regra = "relatórios"    and 
+            r.detalhe = "'.$tp_regra.'"  and  
+            r.tp_user = "'.$tpu.'"
+          group by r.id
           ';
 
-    return Outros::q($sql)->id;
+    return (array)Outros::q($sql);
 }
 
 
@@ -68,7 +72,7 @@ if ($obProjeto->para_avaliar == -1) {
 $relatorio = new RelFinal();
 
 
-$regra = getRegras($tf, $user['tipo']) ;
+$regra = getRegras($tf, $user['tipo']);
 
 
 
@@ -78,7 +82,10 @@ if (isset($_POST['valida'])) {
     $relatorio->tipo = $tf;
 
 
-    $relatorio->regra = $regra ;
+    $relatorio->regra = $regra['id']; ;
+    $relatorio->etapas = $regra['etapas']; ;
+
+    $relatorio->caminho = $obProjeto->para_avaliar;
 
     if ($tf == 're') {
         $relatorio->periodo_renov_ini = $_POST['periodo_renov_ini'];
@@ -131,8 +138,7 @@ $relatorio->dim_agent_estag = 0;
 include '../includes/header.php';
 
 
-$reg = getRegras($tf, $user['tipo']) ;
- 
+$reg = getRegras($tf, $user['tipo'])['id'] ;
 
 
 $sql = '
@@ -150,7 +156,7 @@ from
   	inner join regras_defin rd on rd.id_reg  = r.id 
 where 
   	r.tp_regra = "relatorios" and
-    r.id = "'. $reg .'"
+    r.id = "'. $reg  .'"
 order by
   	r.aprov_auto, r.nome,  rd.sequencia ;
 ';

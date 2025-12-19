@@ -10,6 +10,8 @@ class RelFinal
     public $idproj;
     public $tipo;
     public $regra;
+    public $caminho;
+
     public $periodo_renov_ini;
     public $periodo_renov_fim;
     public $periodo_prorroga_fim;
@@ -48,6 +50,9 @@ class RelFinal
             'idproj' => $this->idproj,
             'tipo' => $this->tipo,
             'regra ' => $this->regra,
+
+            'caminho ' => $this->caminho,
+
             'periodo_renov_ini' => $this->periodo_renov_ini,
             'periodo_renov_fim' => $this->periodo_renov_fim,
             'periodo_prorroga_fim' => $this->periodo_prorroga_fim,
@@ -64,7 +69,7 @@ class RelFinal
             'tramitar' => $this->tramitar,
             'visita_tec_qtd' => $this->visita_tec_qtd,
             'etapa' => 1,
-            // 'etapas'                 => 4,
+            'etapas'  =>  $this->etapas,
             'last_result' => 'n',
             'created_at' => date('Y-m-d H:i:s'),
             'user' => $this->user,
@@ -100,7 +105,7 @@ class RelFinal
             'tramitar' => $this->tramitar,
             'visita_tec_qtd' => $this->visita_tec_qtd,
             'etapa' => $this->etapa,
-            'etapas' => $this->etapas,
+            
             'last_result' => $this->last_result,
             'updated_at' => date('Y-m-d H:i:s'),
             'user' => $this->user,

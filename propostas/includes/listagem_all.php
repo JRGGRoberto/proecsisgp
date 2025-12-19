@@ -122,7 +122,7 @@ foreach ($projetos as $proj) {
     case 4: // Finalizada a vigência
         $proj->estado = '<span class="badge badge-success ">Aguarde Relatório Final</span> ';
         $nomeEstado = 'Aguarde Relatório Final';
-        $btn = finalizado($proj, $user);
+        $btn = aguardandoRelatorio($proj, $userId);
         break;
     case 5: // Finalizado e entregue o relatório final/renovação
         $proj->estado = '<span class="badge badge-success ">Finalizado</span> ';

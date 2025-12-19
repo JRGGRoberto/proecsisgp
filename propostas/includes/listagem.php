@@ -28,6 +28,9 @@ class Blocos
 $qnt1 = 0;
 $col = '';
 $LastV = '';
+// echo '<pre>';
+// print_r($user);
+// echo '</pre>';
 
 include './includes/funcoes.php';
 
@@ -35,15 +38,14 @@ $resultados =
 '<div id="accordion">';
 
 foreach ($projetos as $proj) {
-
-
     ++$qnt1;
     // $showRelatorios = false;
     // $submetido = false;
     $progresso = '';
     $showRelatorios = false;
+    
     // echo ($proj->estado);
-
+    
     switch ($proj->estado) {
       case 0:  // Não iniciado
         $progresso = '<span class="badge badge-info">Não submetido</span>';
@@ -63,12 +65,12 @@ foreach ($projetos as $proj) {
         break;
     case 4: // Finalizada a vigência
         $progresso = '<span class="badge badge-success ">Aguarde Relatório Final</span> ';
-        $nomeEstado = 'Aguarde Relatório Final';
-        $btn = aguardandoRelatorio($proj, $user);
+        // $nomeEstado = 'Aguarde Relatório Final';
+        $btn = aguardandoRelatorio($proj, $userId);
         break;
     case 5: // Finalizado e entregue o relatório final/renovação
         $progresso = '<span class="badge badge-success ">Finalizado</span> ';
-        $nomeEstado = 'Finalizado';
+        // $nomeEstado = 'Finalizado';
         $btn = finalizado($proj, $user);
         break;
     case 9: // Cancelado
@@ -183,7 +185,9 @@ $resultados .=
 '</div>';
 
 $qnt1 > 0 ? $resultados : $resultados = 'Nenhum registro encontrado.';
-
+  // echo '<pre>';
+  // print_r($projetos);
+  // echo '</pre>';
 
 
 $page = basename($_SERVER['PHP_SELF']);
