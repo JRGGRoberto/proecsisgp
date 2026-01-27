@@ -18,7 +18,7 @@ foreach ($anexados as $att) {
     ++$x;
     $anex .=
     ' <li>
-      <a href="/sistema/upload/uploads/'.$att->nome_rand.'" target="_blank">'.$att->nome_orig.'</a> 
+      <a href="../upload/uploads/'.$att->nome_rand.'" target="_blank">'.$att->nome_orig.'</a> 
     </li> ';
 }
 $anex .= '</ul>';

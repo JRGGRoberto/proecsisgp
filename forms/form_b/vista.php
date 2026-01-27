@@ -16,11 +16,12 @@ $form = Form_b::getRegistro($pGET, $vGET);
 $anexados = Arquivo::getAnexados('forms', $form->id_avaliacao);
 $x = 0;
 $anex = '<ul id="anexos_edt" >';
+$localFiles = __DIR__ . '/../upload/uploads/';
 foreach ($anexados as $att) {
     ++$x;
     $anex .=
     ' <li>
-      <a href="/sistema/upload/uploads/'.$att->nome_rand.'" target="_blank">'.$att->nome_orig.'</a> 
+      <a href="'. $localFiles. '' .$att->nome_rand.'" target="_blank">'.$att->nome_orig.'</a> 
     </li> ';
 }
 $anex .= '</ul>';

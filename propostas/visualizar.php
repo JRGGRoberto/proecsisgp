@@ -744,7 +744,7 @@ $conutAnexo = 0;
 foreach($anexados as $att){
   $anex .= 
   '<li>
-    <a href="https://sistemaproec.unespar.edu.br/sistema/upload/uploads/'.$att->nome_rand.'" target="_blank">'.$att->nome_orig.'</a>   
+    <a href="../upload/uploads/'.$att->nome_rand.'" target="_blank">'.$att->nome_orig.'</a>   
   </li> ';
   $conutAnexo++;
 }

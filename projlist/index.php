@@ -90,7 +90,8 @@ $condicoes = [
     strlen($protocolo) ? ' protocolo LIKE "%'.str_replace(' ', '%', $protocolo).'%"' : null,
     strlen($campus) ? ' campus LIKE "%'.str_replace(' ', '%', $campus).'%"' : null,
     strlen($nome_prof) ? ' coord LIKE "%'.str_replace(' ', '%', $nome_prof).'%"' : null,
-    strlen($tipoProj) ? ' tipo_exten = '.$tipoProj.'' : null
+    strlen($tipoProj) ? ' tipo_exten = '.$tipoProj.'' : null,
+    'estado <> 0'
 ];
 
 //Puxa os estados via get dos checkboxs

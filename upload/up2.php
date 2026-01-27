@@ -1,6 +1,7 @@
 <?php
 
-$diretorio_destino = '/home/sistemaproec/www/sistema/upload/uploads/'; // Certifique-se de que esta pasta exista e tenha permissões de escrita
+// $diretorio_destino = '/home/sistemaproec/www/sistema/upload/uploads/'; // Certifique-se de que esta pasta exista e tenha permissões de escrita
+$diretorio_destino = 'C:/Users/Roberto/Dev/dockersist/www/php7/proecsisgp/upload/uploads/'; // Certifique-se de que esta pasta exista e tenha permissões de escrita
 $nome_arquivo = $_FILES['arquivo']['name'];
 $caminho_temporario = $_FILES['arquivo']['tmp_name'];
 $caminho_destino = $diretorio_destino.$nome_arquivo;

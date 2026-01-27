@@ -11,7 +11,7 @@ use App\Entity\Campi;
 use App\Entity\Colegiado;
 use App\Entity\Professor;
 use App\Entity\Projeto;
-use App\Entity\RelParcial;
+use App\Entity\RelFinal;
 use App\Session\Login;
 
 // Obriga o usuário a estar logado
@@ -19,35 +19,32 @@ Login::requireLogin();
 $user = Login::getUsuarioLogado();
 
 $id = $_GET['id'];
+$relatorio = (object) RelFinal::get($id);
+$tf = $relatorio->tipo;
 
-$relatorio = new RelParcial();
-$relatorio = (object) RelParcial::get($id);
-
-$editar = '';
-$scriptDisble = '';
-
-$obProjeto = (object) Projeto::getProjetoLast($relatorio->idproj);
-
+$obProjeto = Projeto::getProjetoLast($relatorio->idproj);
 $obProjeto = Projeto::getProjeto($obProjeto->id, $obProjeto->ver);
 $obProfessor = Professor::getProfessor($obProjeto->id_prof);
 
+$editar = '';
+$scriptDisble = '';
 if (($relatorio->tramitar == 1) or ($obProjeto->id_prof != $user['id'])) {
     $editar = 'readonly';
 
     $scriptDisble = "<script>
-                        $('#sumnot_atvd_per').summernote('disable');
-                        $('#sumnot_alteracoes').summernote('disable');
+                        $('#sumnot_atividades').summernote('disable');
                         $('#sumnot_atvd_prox_per').summernote('disable');
-                        $('#sumnot_atvd_prox_per').summernote('disable');
+                        $('#sumnot_rel_tec_cien_executado').summernote('disable');
+                        $('#sumnot_divulgacao').summernote('disable');
                         btnArquivo =  document.getElementById('arquivo');
                         btnArquivo.hidden = true;
+                        
                     </script>";
 }
 
 $anexados = Arquivo::getAnexados('relatorios', $relatorio->id);
 
 $anex = '<ul id="anexos_edt">';
-
 foreach ($anexados as $att) {
     $anex .=
     '<li>
@@ -94,15 +91,29 @@ if (isset($_POST['acao']) == 'removeAnexo') {
 }
 
 // VALIDAÇÃO DO POST
-if (isset($_POST['atvd_per'])) {
-    $resultado = '';
+if (isset($_POST['valida'])) {
     $relatorio->idproj = $obProjeto->id;
-    $relatorio->periodo_ini = $_POST['periodo_ini'];
-    $relatorio->periodo_fim = $_POST['periodo_fim'];
-    $relatorio->atvd_per = $_POST['atvd_per'];
-    $relatorio->alteracoes = $_POST['alteracoes'];
-    $relatorio->atvd_prox_per = $_POST['atvd_prox_per'];
-    $relatorio->user = $user['id'];
+    $relatorio->tipo = $tf;
+
+    if ($tf == 're') {
+        $relatorio->periodo_renov_fim = $_POST['periodo_renov_fim'];
+        $relatorio->periodo_renov_ini = $_POST['periodo_renov_ini'];
+    }
+
+    if ($tf == 'pr') {
+        $relatorio->periodo_prorroga_fim = $_POST['periodo_prorroga_fim'];
+        $relatorio->atvd_prox_per = $_POST['atvd_prox_per'];
+    }
+
+    $relatorio->ch_semanal = $_POST['ch_semanal'];
+    $relatorio->dim_mem_com_ex = $_POST['dim_mem_com_ex'];
+    $relatorio->dim_disc = $_POST['dim_disc'];
+    $relatorio->dim_doce = $_POST['dim_doce'];
+    $relatorio->dim_agent_estag = $_POST['dim_agent_estag'];
+    $relatorio->atividades = $_POST['atividades'];
+
+    $relatorio->rel_tec_cien_executado = $_POST['rel_tec_cien_executado'];
+    $relatorio->divulgacao = $_POST['divulgacao'];
     $relatorio->tramitar = $_POST['tramitar'];
     $relatorio->visita_tec_qtd = $_POST['visita_tec_qtd'];
     if ($_POST['tramitar'] == 1) {
@@ -124,6 +135,6 @@ if (isset($_POST['atvd_per'])) {
 }
 
 include '../includes/header.php';
-include __DIR__.'/includes/formParcial.php';
+include __DIR__.'/includes/formImpot.php';
 echo $scriptDisble;
 include '../includes/footer.php';

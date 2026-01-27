@@ -7,6 +7,10 @@ Login::requireLogin();
 $user = Login::getUsuarioLogado();
 
 $userId = $user['id'];
+use App\Entity\Campi;
+
+
+
 
 
 function dt($dt)
@@ -104,7 +108,7 @@ function montarTblEProgress(array $ListaVerAnts, $projId, $msg1)
         $LastV .=
            '<tr class="'.$class.'">
                 <td>
-                   <a href="../propostas/projetos.php?id='.$projId.'&v='.$la->ver.'&w=nw" target="_blank">📄 <span class="badge badge-info">'.($la->ver + 1).'</span></a>
+                   <a href="../propostas/visualizar.php?id='.$projId.'&v='.$la->ver.'&w=nw" target="_blank">📄 <span class="badge badge-info">'.($la->ver + 1).'</span></a>
                 </td>'
 
           .$td.
@@ -370,7 +374,7 @@ function finalizado($p, $userId): string
     $rel_Infos = '';
 
     $rel_par = Outros::qry(" Select 
-                                r.id, r.tipo, r.publicado, r.created_at 
+                                r.id, r.tipo, r.publicado, r.created_at, r.caminho
                             from 
                                 relatorios r 
                             where 
@@ -396,6 +400,9 @@ function finalizado($p, $userId): string
                 case 'pa':
                     $tipoRel = '📊 Relatório Parcial ';
                     break;
+                case 'im':
+                    $tipoRel = '📊 Final importado ';
+                    break;
                 default:
                     $tipoRel = 'ERROR';
             }
@@ -403,8 +410,14 @@ function finalizado($p, $userId): string
             $pub = '<span class="badge badge-light">Em avaliação</span>';
             if ($rp->publicado == 1) {
                 $pub = '';
+
                 $link = in_array($rp->tipo, ['fi', 're', 'pr']) ? 'f' : 'p';
                 $linkFeito = '<a href="../relatorio/editar'.$link .'.php?id='.$rp->id.'" target="_blank">';
+
+                if($rp->tipo == 'im'){
+                    $tipoRel = '📊 Relatório Final (importado) ';
+                    $linkFeito = '<a href="../upload/uploads/'.$rp->caminho.'" target="_blank">';
+                }
         
             
                 $rel_Infos .=  $linkFeito .'<button class="btn btn-primary btn-sm mb-2">'.$tipoRel. '&nbsp;' . $rp->created_at. '&nbsp;' .$pub.'</button>'. '</a> &nbsp; ';
@@ -428,13 +441,14 @@ function aguardandoRelatorio($p, $userId)
     $profId = $p->id_prof;
     $rel_Infos = '';
 
-    
-    $usuariosEspecificos = [
-        'df0a6f11-bf6c-11ee-801b-0266ad9885af', // CARLA CAROLINE HOLM 
-        '06f54bf0-bf9e-11ee-801b-0266ad9885af', // LUCIANA FERREIRA LEAL
-        'bfd757a5-4f2d-4a10-87a8-a872ae69f1fd', // MATHEUS ESCOBOZO GUIZILINI
-        'b8fa555f-cedb-47cf-91cc-7581736aac88'  // JOSé ROBERTO DE GÓES GOMES
-    ];
+    $ids_DirCampus = Campi::getRegistros();
+    $usuariosEspecificos =
+      array_merge( [ 'bfd757a5-4f2d-4a10-87a8-a872ae69f1fd', // MATHEUS ESCOBOZO GUIZILINI
+                     'b8fa555f-cedb-47cf-91cc-7581736aac88'  // JOSé ROBERTO DE GÓES GOMES
+                   ],
+        array_column($ids_DirCampus, 'chef_div_id')
+      )  ;
+
 
     $rel = Outros::qry(" 
         select 

@@ -48,6 +48,7 @@ if ($conta[1] == 'unespar.edu.br') {
         
         <p><a href="../propostas/projetos_all.php" class="btn btn-primary btn-sm">Todos os projetos/propostas</a></p>
 
+        <?= $btnDashboard ?>
        
       </div>
       <div class="col">

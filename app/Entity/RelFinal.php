@@ -1,7 +1,7 @@
 <?php
 
 namespace App\Entity;
-
+use \PDO;
 use App\Db\Database;
 
 class RelFinal
@@ -130,10 +130,11 @@ class RelFinal
      *
      * @return array
      */
-    public static function gets($where = null, $order = null, $limit = null)
-    {
-        return (new Database('rel_final'))->select($where, $order, $limit)
-                                      ->fetchAll(\PDO::FETCH_CLASS, self::class);
+    public static function gets($where = null, $order = null, $limit = null, $fields = '*')
+    {   
+   
+        return (new Database('rel_final'))->select($where, $order, $limit, $fields)
+                                      ->fetchAll(PDO::FETCH_CLASS, self::class);
     }
 
     /**

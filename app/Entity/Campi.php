@@ -57,8 +57,8 @@ class Campi{
    * @param  string $limit
    * @return array
    */
-  public static function getRegistros($where = null, $order = null, $limit = null){
-    return (new Database('campi'))->select($where,$order,$limit)
+  public static function getRegistros($where = null, $order = null, $limit = null, $fields = '*'){
+    return (new Database('campi'))->select($where, $order, $limit, $fields)
                                   ->fetchAll(PDO::FETCH_CLASS,self::class);
   }
 

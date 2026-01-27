@@ -16,6 +16,11 @@ $userId = $user['id'];
 
 $osCabeca = [1,2,3,4]; //só a elite
 
+/*
+echo '<pre>';
+print_r($user);
+echo '</pre>';
+*/
 
 // if (in_array($userConfig, $osCabeca)) {
 //   print_r($osCabeca);
@@ -125,6 +130,11 @@ foreach ($projetos as $proj) {
         $btn = aguardandoRelatorio($proj, $userId);
         break;
     case 5: // Finalizado e entregue o relatório final/renovação
+        $proj->estado = '<span class="badge badge-success ">Finalizado</span> ';
+        $nomeEstado = 'Finalizado';
+        $btn = finalizado($proj, $user);
+        break;
+    case 51: // Finalizado e entregue o relatório final/renovação
         $proj->estado = '<span class="badge badge-success ">Finalizado</span> ';
         $nomeEstado = 'Finalizado';
         $btn = finalizado($proj, $user);

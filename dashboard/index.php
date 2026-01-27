@@ -12,12 +12,12 @@ $user = Login::getUsuarioLogado();
 header('location: ../projetos/index.php');
   exit;
 */
-
- $btnDashboard= '';
-if($user['config'] == 3 or $user['adm'] == 1)
-    $btnDashboard ='<p><a href="../dashboard" class="btn btn-primary btn-sm">Dashboard [TESTES]</a></p>';
+include './todosProjetos.php';
+include './projetosUsuario.php';
+include './avaliacaoUsuario.php';
+include './relatoriosPublicados.php';
 
 include '../includes/header.php';
-
 include __DIR__.'/includes/listagem.php';
 include '../includes/footer.php';
+

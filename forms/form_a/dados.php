@@ -11,10 +11,12 @@ $form = Form_a::getRegistro($_GET['p'], $_GET['v']);
 
 $anexados = Arquivo::getAnexados('forms', $id_ava);
 $anex = '<ul id="anexos_edt">';
+
+$localFiles = __DIR__ . '/../upload/uploads/';
 foreach($anexados as $att){
   $anex .= 
   '<li>
-      <a href="/sistema/upload/uploads/'.$att->nome_rand.'" target="_blank">'.$att->nome_orig.'</a> 
+      <a href="'. $localFiles. '' .$att->nome_rand.'" target="_blank">'.$att->nome_orig.'</a> 
       <a href="../arquiv/index.php?tab='.$att->tabela. '&id='.$att->id_tab. '&arq='.$att->nome_rand.'" >  
         <span class="badge badge-danger">🗑️ Excluir</span>
       </a>

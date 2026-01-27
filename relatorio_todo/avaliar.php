@@ -116,7 +116,7 @@ function listarAnexos($id)
     foreach ($anexados as $att) {
         $anex .=
         '<li>
-          <a href="/sistema/upload/uploads/'.$att->nome_rand.'" target="_blank">'.$att->nome_orig.'</a> 
+          <a href="../upload/uploads/'.$att->nome_rand.'" target="_blank">'.$att->nome_orig.'</a> 
          
       </li> ';
     }

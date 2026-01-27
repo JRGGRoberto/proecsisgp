@@ -48,7 +48,7 @@ $anex = '<ul id="anexos_edt">';
 foreach ($anexados as $att) {
     $anex .=
     '<li>
-      <a href="/sistema/upload/uploads/'.$att->nome_rand.'" target="_blank">'.$att->nome_orig.'</a> ';
+      <a href="../upload/uploads/'.$att->nome_rand.'" target="_blank">'.$att->nome_orig.'</a> ';
     if ($editar == '') {
         $anex .=
         '<a href="../arquiv/index.php?tab='.$att->tabela.'&id='.$att->id_tab.'&arq='.$att->nome_rand.'" >  

@@ -90,10 +90,11 @@ if (($user['tipo'] == 'professor') || $user['tipo'] == 'prof') {
 
 $anexados = Arquivo::getAnexados('projetos', $obProjeto->id);
 $anex = '<ul id="anexos_edt">';
+$localFiles =  '../upload/uploads/';
 foreach ($anexados as $att) {
     $anex .=
     '<li>
-      <a href="/sistema/upload/uploads/'.$att->nome_rand.'" target="_blank">'.$att->nome_orig.'</a> 
+      <a href="'. $localFiles. '' .$att->nome_rand.'" target="_blank">'.$att->nome_orig.'</a> 
       <a href="../arquiv/index.php?tab='.$att->tabela.'&id='.$att->id_tab.'&arq='.$att->nome_rand.'" >  
         <span class="badge badge-danger">🗑️ Excluir</span>
       </a>
