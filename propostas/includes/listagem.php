@@ -9,20 +9,18 @@ Login::requireLogin();
 $user = Login::getUsuarioLogado();
 $userId = $user['id'];
 
-
 require '../includes/msgAlert.php';
-
 
 class Blocos
 {
-  public $pos;
-  public $cor;
+    public $pos;
+    public $cor;
 
-  public function __construct($pos, $cor)
-  {
-      $this->pos = $pos;
-      $this->cor = $cor;
-  }
+    public function __construct($pos, $cor)
+    {
+        $this->pos = $pos;
+        $this->cor = $cor;
+    }
 }
 
 $qnt1 = 0;
@@ -43,61 +41,65 @@ foreach ($projetos as $proj) {
     // $submetido = false;
     $progresso = '';
     $showRelatorios = false;
-    
+
     // echo ($proj->estado);
-    
+
     switch ($proj->estado) {
-      case 0:  // Não iniciado
-        $progresso = '<span class="badge badge-info">Não submetido</span>';
-        $btn = naoSubmetido($proj, $user);
-        break;
-      case 1: // Em avaliação
-        $progresso = '<span class="badge badge-warning ">Em avaliação</span> ';
-        $btn = emAvaliacao($proj, $user);
-        break;
-      case 2: // Não iniciado
-        $progresso = '<span class="badge badge-secondary ">Não iniciado</span> ';
-        $btn = naoIniciado($proj, $userId);
-        break;
-    case 3: // Em execução   -- ou seja, já aprovado.
-        $progresso = '<span class="badge badge-primary ">Em execução</span> ';
-        $btn = emExecucao($proj, $userId);
-        break;
-    case 4: // Finalizada a vigência
-        $progresso = '<span class="badge badge-success ">Aguarde Relatório Final</span> ';
-        // $nomeEstado = 'Aguarde Relatório Final';
-        $btn = aguardandoRelatorio($proj, $userId);
-        break;
-    case 5: // Finalizado e entregue o relatório final/renovação
-        $progresso = '<span class="badge badge-success ">Finalizado</span> ';
-        // $nomeEstado = 'Finalizado';
-        $btn = finalizado($proj, $user);
-        break;
-    case 9: // Cancelado
-        $progresso = '<span class="badge badge-danger ">Cancelado</span> ';
-        $btn = cancelado($proj);
-        break;
-    default:
-        $progresso = '<span class="badge badge-danger">Erro estado</span>';
-        break;
+        case 0:  // Não iniciado
+            $progresso = '<span class="badge badge-info">Não submetido</span>';
+            $btn = naoSubmetido($proj, $user);
+            break;
+        case 1: // Em avaliação
+            $progresso = '<span class="badge badge-warning ">Em avaliação</span> ';
+            $btn = emAvaliacao($proj, $user);
+            break;
+        case 2: // Não iniciado
+            $progresso = '<span class="badge badge-secondary ">Não iniciado</span> ';
+            $btn = naoIniciado($proj, $userId);
+            break;
+        case 3: // Em execução   -- ou seja, já aprovado.
+            $progresso = '<span class="badge badge-primary ">Em execução</span> ';
+            $btn = emExecucao($proj, $userId);
+            break;
+        case 4: // Finalizada a vigência
+            $progresso = '<span class="badge badge-success ">Aguarde Relatório Final</span> ';
+            // $nomeEstado = 'Aguarde Relatório Final';
+            $btn = aguardandoRelatorio($proj, $userId);
+            break;
+        case 5: // Finalizado e entregue o relatório final/renovação
+            $progresso = '<span class="badge badge-success ">Finalizado</span> ';
+            // $nomeEstado = 'Finalizado';
+            $btn = finalizado($proj, $user);
+            break;
+        case 51: // Finalizado e entregue o relatório final/renovação
+            $proj->estado = '<span class="badge badge-success ">Finalizado</span> ';
+            $nomeEstado = 'Finalizado';
+            $btn = finalizado($proj, $user);
+            break;
+        case 9: // Cancelado
+            $progresso = '<span class="badge badge-danger ">Cancelado</span> ';
+            $btn = cancelado($proj);
+            break;
+        default:
+            $progresso = '<span class="badge badge-danger">Erro estado</span>';
+            break;
     }
 
     // is_null($proj->colegiado) ? $col = 'A definir' : $col = $proj->colegiado;
 
-  $dataFim = '';
-  if (strlen($proj->vigen_fim) > 8) {
-      $dataFim = substr($proj->vigen_fim, 8, 2).'/'.
-                substr($proj->vigen_fim, 5, 2).'/'.
-                substr($proj->vigen_fim, 0, 4);
-  }
+    $dataFim = '';
+    if (strlen($proj->vigen_fim) > 8) {
+        $dataFim = substr($proj->vigen_fim, 8, 2).'/'.
+                  substr($proj->vigen_fim, 5, 2).'/'.
+                  substr($proj->vigen_fim, 0, 4);
+    }
 
-  $dataInicio = '';
-  if (strlen($proj->vigen_ini) > 8) {
-      $dataInicio = substr($proj->vigen_ini, 8, 2).'/'.
-                substr($proj->vigen_ini, 5, 2).'/'.
-                substr($proj->vigen_ini, 0, 4);
-  }
-
+    $dataInicio = '';
+    if (strlen($proj->vigen_ini) > 8) {
+        $dataInicio = substr($proj->vigen_ini, 8, 2).'/'.
+                  substr($proj->vigen_ini, 5, 2).'/'.
+                  substr($proj->vigen_ini, 0, 4);
+    }
 
     $where = 'id_proj = "'.$proj->id.'"';
     $order = 'ver desc, fase_seq desc';
@@ -106,47 +108,47 @@ foreach ($projetos as $proj) {
     $qntAvaliacoes = count($ListaVerAnts);
     $btnAvaliacoes = '';
     $LastV = '';
-    
-    if ($qntAvaliacoes > 0) {
-      $retorno = montarTblEProgress($ListaVerAnts, $proj->id, $progresso);
 
-      $LastV          = $retorno[1];
-      $btnAvaliacoes  = $retorno[2] ?? '';
-    } else if ($proj->aprov_auto == 1){
-      // $progresso = $msg1;
-      $LastV = '<span class="badge badge-info mb-2">Projeto aprovado via e-Protocolo.</span>';
-    } else { 
-      $LastV = '<span class="badge badge-info mb-2">Não possui avaliações.</span>';
+    if ($qntAvaliacoes > 0) {
+        $retorno = montarTblEProgress($ListaVerAnts, $proj->id, $progresso);
+
+        $LastV = $retorno[1];
+        $btnAvaliacoes = $retorno[2] ?? '';
+    } elseif ($proj->aprov_auto == 1) {
+        // $progresso = $msg1;
+        $LastV = '<span class="badge badge-info mb-2">Projeto aprovado via e-Protocolo.</span>';
+    } else {
+        $LastV = '<span class="badge badge-info mb-2">Não possui avaliações.</span>';
     }
-   
+
     $resultados .= '
       <div class="card mt-2">
         <div class="card-header">
             <div class="row">
               <div class="col-sm-6"><a class="collapsed card-link" data-toggle="collapse" href="#p'.$proj->id.'">📃 '.$proj->titulo.'</a></div>';
-              switch ($proj->tipo_exten){
-                case 1: 
-                  $proj->tipo_exten = 'Curso';
-                  break;
-                case 2:
-                  $proj->tipo_exten = 'Evento';
-                  break;
-                case 3: 
-                  $proj->tipo_exten = 'Prestação de Serviço';
-                  break;
-                case 4: 
-                  $proj->tipo_exten = 'Programa';
-                  break;
-                case 5: 
-                  $proj->tipo_exten = 'Projeto';
-                  break;
-                default:
-                  $proj->tipo_exten = 'Sem tipo definido.';
-                  break;
-              }
-              $resultados .= '<div class="col-sm-4">'.$proj->tipo_exten.'</div>
+    switch ($proj->tipo_exten) {
+        case 1:
+            $proj->tipo_exten = 'Curso';
+            break;
+        case 2:
+            $proj->tipo_exten = 'Evento';
+            break;
+        case 3:
+            $proj->tipo_exten = 'Prestação de Serviço';
+            break;
+        case 4:
+            $proj->tipo_exten = 'Programa';
+            break;
+        case 5:
+            $proj->tipo_exten = 'Projeto';
+            break;
+        default:
+            $proj->tipo_exten = 'Sem tipo definido.';
+            break;
+    }
+    $resultados .= '<div class="col-sm-4">'.$proj->tipo_exten.'</div>
               <div class="col-sm-1">'
-              .$progresso.'
+    .$progresso.'
               </div>
               <div class="col-sm-1"></div>
             </div>
@@ -173,8 +175,8 @@ foreach ($projetos as $proj) {
             
             <div class=""> 
             ';
-              $resultados .= $btn . ' ' . $btnAvaliacoes;
-              $resultados .= '        
+    $resultados .= $btn.' '.$btnAvaliacoes;
+    $resultados .= '        
             </div>
           </div>
         </div> 
@@ -185,10 +187,9 @@ $resultados .=
 '</div>';
 
 $qnt1 > 0 ? $resultados : $resultados = 'Nenhum registro encontrado.';
-  // echo '<pre>';
-  // print_r($projetos);
-  // echo '</pre>';
-
+// echo '<pre>';
+// print_r($projetos);
+// echo '</pre>';
 
 $page = basename($_SERVER['PHP_SELF']);
 $todosProjetos = ($page === 'projetos_all.php');
@@ -208,11 +209,11 @@ include '../includes/paginacao.php';
               class="custom-select custom-select-sm w-auto"
               role="button"
               onchange="trocarPagina(this)"> 
-          <option value="meus-projetos" <?= $todosProjetos ? '' : 'selected' ?>>
+          <option value="meus-projetos" <?php echo $todosProjetos ? '' : 'selected'; ?>>
               Meus projetos
           </option>
 
-          <option value="todos-projetos" <?= $todosProjetos ? 'selected' : '' ?>>
+          <option value="todos-projetos" <?php echo $todosProjetos ? 'selected' : ''; ?>>
               Todos os projetos
           </option>
 

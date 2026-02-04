@@ -79,22 +79,22 @@ use App\Entity\Agente;
 use App\Entity\Professor;
 
 if (($user['tipo'] == 'professor') || $user['tipo'] == 'prof') {
-    $dadosProf = (object)Professor::getDadosProf($obProjeto->id_prof);
-    $telefone =  $dadosProf->telefone;
+    $dadosProf = (object) Professor::getDadosProf($obProjeto->id_prof);
+    $telefone = $dadosProf->telefone;
     $email = $dadosProf->email;
 } elseif ($user['tipo'] == 'agente') {
-    $dadosAgentes = (object)Agente::get($obProjeto->id_prof);
+    $dadosAgentes = (object) Agente::get($obProjeto->id_prof);
     $telefone = $dadosAgentes->telefone;
     $email = $dadosAgentes->email;
 }
 
 $anexados = Arquivo::getAnexados('projetos', $obProjeto->id);
 $anex = '<ul id="anexos_edt">';
-$localFiles =  '../upload/uploads/';
+$localFiles = '../upload/uploads/';
 foreach ($anexados as $att) {
     $anex .=
     '<li>
-      <a href="'. $localFiles. '' .$att->nome_rand.'" target="_blank">'.$att->nome_orig.'</a> 
+      <a href="'.$localFiles.''.$att->nome_rand.'" target="_blank">'.$att->nome_orig.'</a> 
       <a href="../arquiv/index.php?tab='.$att->tabela.'&id='.$att->id_tab.'&arq='.$att->nome_rand.'" >  
         <span class="badge badge-danger">🗑️ Excluir</span>
       </a>
@@ -278,10 +278,10 @@ if (isset($_POST['titulo'])) {
 
 include '../includes/header.php';
 
-echo "
+echo '
 <script>
-campusNome = ".$user['ca_nome']." 
-</script>";
+campusNome = '.$user['ca_nome'].' 
+</script>';
 
 // verifica se o usuário é dono do projeto
 if ($user['id'] == $obProjeto->id_prof) {
@@ -376,7 +376,7 @@ if ($user['id'] == $obProjeto->id_prof) {
     echo '</div>';
 }
 
-echo "
+echo " <script>
 
 let area_extensao   = document.getElementById('area_extensao');
 let linh_ext   = document.getElementById('linh_ext');
