@@ -171,6 +171,8 @@ class Projeto
             'user' => $this->user,
         ]);
 
+        // EmailService::cadastrarProposta();
+
         // RETORNAR SUCESSO
         return $ida;
     }

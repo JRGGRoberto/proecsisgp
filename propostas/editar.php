@@ -179,6 +179,8 @@ if (isset($_POST['titulo'])) {
         }
         $obProjeto->cnpq_garea = $cnpq_garea;
 
+        $obProjeto->cnpq_area = $_POST['cnpq_area'];
+
         $obProjeto->cnpq_sarea = $_POST['cnpq_sarea'];
         $obProjeto->area_extensao = $_POST['area_extensao'];
         $obProjeto->linh_ext = $_POST['linh_ext'];
@@ -335,15 +337,16 @@ if ($user['id'] == $obProjeto->id_prof) {
             ';
 
             include __DIR__.'/includes/formAnexoII.php';
-            echo '<script src="cnpq.js"></script>';
 
             echo '<script>
 
       var ga = document.querySelector("#cnpq_garea");
       var ar = document.querySelector("#cnpq_area");
       var sa = document.querySelector("#cnpq_sarea");
+      </script>
+      <script src="cnpq.js"></script>
 
-
+      <script>
 
 
       '.

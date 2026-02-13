@@ -72,7 +72,7 @@ function addInfoCa($idca, $adm, $nivel, $caU, $ceU, $coU, $show = '')
     $ca = Campi::getRegistro($idca);
 
     if ($ca->chef_div_id != null) {
-        $prof = (object) Professor::getProfessor($ca->chef_div_id); //
+        $prof = (object) Professor::getProfessor($ca->chef_div_id);
         $chef_div = '<strong>'.$prof->nome.'</strong><br><sup><span class="badge" >'.$prof->email.'</span></sup>';
     } else {
         $chef_div = ' <span class="badge badge-danger">a definir</span>';
@@ -169,7 +169,7 @@ function addInfoCe($idcen, $adm, $nivel, $caU, $ceU, $coU, $show = '')
           <div class="col-sm-6">
           <a class="collapsed card-link" data-toggle="collapse" href="#ce'.$ce->id.'"><span class="badge badge badge-secondary">
           &nbsp; &nbsp; </span> &nbsp; <strong>'.$ce->nome.'</strong></a></div>
-          <div class="col-sm-6">'.$user_adm.' Diretor(ª) de Centro de Área: &nbsp; '.$nome;
+          <div class="col-sm-6"> Diretor(ª) de Centro de Área: &nbsp; '.$nome;
 
     if (($adm == 1) or (in_array($nivel, [1]) and ($caU == $ce->campus_id))) {
         $texto .= '<br><span class="badge badge-light"><a href="./ch.php?a=2&b='.$ce->id.'">Alterar</a></span>';

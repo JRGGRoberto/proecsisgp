@@ -6,7 +6,25 @@ namespace Composer\Autoload;
 
 class ComposerStaticInitbd6d21b54bba82c7248b8102adf020c3
 {
+    public static $files = array (
+        '7b11c4dc42b3b3023073cb14e519683c' => __DIR__ . '/..' . '/ralouphie/getallheaders/src/getallheaders.php',
+        'a0edc8309cc5e1d60e3047b5df6b7052' => __DIR__ . '/..' . '/guzzlehttp/psr7/src/functions_include.php',
+    );
+
     public static $prefixLengthsPsr4 = array (
+        'P' =>
+        array (
+            'Psr\\Http\\Message\\' => 17,
+            'PHPMailer\\PHPMailer\\' => 20,
+        ),
+        'I' =>
+        array (
+            'Intervention\\Image\\' => 19,
+        ),
+        'G' =>
+        array (
+            'GuzzleHttp\\Psr7\\' => 16,
+        ),
         'A' =>
         array (
             'App\\' => 4,
@@ -14,6 +32,22 @@ class ComposerStaticInitbd6d21b54bba82c7248b8102adf020c3
     );
 
     public static $prefixDirsPsr4 = array (
+        'Psr\\Http\\Message\\' =>
+        array (
+            0 => __DIR__ . '/..' . '/psr/http-message/src',
+        ),
+        'PHPMailer\\PHPMailer\\' =>
+        array (
+            0 => __DIR__ . '/..' . '/phpmailer/phpmailer/src',
+        ),
+        'Intervention\\Image\\' =>
+        array (
+            0 => __DIR__ . '/..' . '/intervention/image/src/Intervention/Image',
+        ),
+        'GuzzleHttp\\Psr7\\' =>
+        array (
+            0 => __DIR__ . '/..' . '/guzzlehttp/psr7/src',
+        ),
         'App\\' =>
         array (
             0 => __DIR__ . '/../..' . '/app',

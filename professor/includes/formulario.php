@@ -129,25 +129,8 @@ $user = Login::getUsuarioLogado();
 
   
     <div class="row">
-      <div class="col">
-        
-        <div class="form-group">
-          <label>Categoria funcional</label>
-          <div>
-              <div class="form-check form-check-inline">
-                <label class="form-control">
-                  <input type="radio" name="cat_func" value="e" <?php echo $obProfessor->cat_func == 'e' ? 'checked' : ''; ?>> Efetivo
-                </label>
-              </div>
-    
-              <div class="form-check form-check-inline">
-                <label class="form-control">
-                  <input type="radio" name="cat_func" value="c" <?php echo $obProfessor->cat_func == 'c' ? 'checked' : ''; ?>> Colaborador
-                </label>
-              </div>
-          </div>
-        </div>
-      </div>
+
+       <?php echo $selectCat; ?>
 
       <div class="col-2">
         <div class="form-group">
@@ -173,11 +156,7 @@ $user = Login::getUsuarioLogado();
   }
 ?>
         </div>
-      </div>
-
-      
-
-
+     </div>
      <div class="col">
        <div class="form-group">
          <label>Senha <?php echo TITLE != 'Cadastrar professor' ? '<span class="badge badge-warning">Não mexa para não alterá-la</span>' : null; ?> </label>

@@ -3,7 +3,9 @@
   "description": "Projeto de desenvolvimento - PHP 7.4",
   "type": "project",
   "require": {
-    "php": "^7.2"
+    "php": "^7.2",
+    "intervention/image": "^2.7",
+    "phpmailer/phpmailer": "7.0.2"
   },
   "autoload": {
     "psr-4": {

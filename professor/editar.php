@@ -217,6 +217,51 @@ function validaMail1($email)
 }
 $infoMail = validaMail1($obProfessor->email);
 
+$selectCat =
+       '<div class="col-2">
+          <div class="form-group">
+            <label for="cat_func">Categoria funcional</label>
+            <select name="cat_func" id="cat_func" class="form-control" required="">';
+if ($user['adm'] == 1) {
+    switch ($obProfessor->cat_func) {
+        case 'e':
+            $selectCat .= '<option value="e" selected>Efetivo</option>
+                           <option value="c">Colaborador</option>
+                           <option value="d">Definir</option>';
+            break;
+        case 'c':
+            $selectCat .= '<option value="e">Efetivo</option>
+                           <option value="c" selected>Colaborador</option>
+                           <option value="d">Definir</option>';
+
+            break;
+        case 'd':
+            $selectCat .= '
+                            <option value="e">Efetivo</option>
+                            <option value="c">Colaborador</option>
+                            <option value="d" selected>Definir</option>';
+            break;
+    }
+} else {
+    switch ($obProfessor->cat_func) {
+        case 'e':
+            $selectCat .= '<option value="e" selected>Efetivo</option>';
+            break;
+        case 'c':
+            $selectCat .= '<option value="c" selected>Colaborador</option>';
+
+            break;
+        case 'd':
+            $selectCat .= '<option value="d" selected>Definir</option>';
+            break;
+    }
+}
+
+$selectCat .=
+    '	</select>
+          </div> 
+        </div>';
+
 include '../includes/header.php';
 include __DIR__.'/includes/formulario.php';
 include '../includes/footer.php';

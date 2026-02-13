@@ -4,5 +4,7 @@ teste.php
 upload/uploads/*
 # Ignore os arquivos de sistema do Mac
 .DS_store
+app/Entity/EmailService.php
+vendor/*
 
 qryADM/

@@ -80,6 +80,17 @@ $padsv = '';
 
 $infoMail = ['', ''];
 
+$selectCat = '<div class="col-2">
+          <div class="form-group">
+            <label for="cat_func">Categoria funcional</label>
+            <select name="cat_func" id="cat_func" class="form-control" required="">
+                <option value="e">Efetivo</option>
+                <option value="c">Colaborador</option>
+                <option value="d">Definir</option>
+			      </select>
+          </div> 
+        </div>';
+
 include '../includes/header.php';
 include __DIR__.'/includes/formulario.php';
 include '../includes/footer.php';
