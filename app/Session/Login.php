@@ -75,11 +75,27 @@ class Login{
       
     ];
 
-    // redireciona usuário para Index
-    header('location: ../index.php');
-    exit;
+//se tiver algo no caminho_url:
+    if(isset($_SESSION['caminho_url'])){
 
+      //pega o caminho da sessão que será enviado e o remove após armazenar
+      $url = $_SESSION['caminho_url'];
+      unset($_SESSION['caminho_url']);
+
+
+      //verifica se é um caminho interno do sistema $url == 'proecsis/todo_avaliar' 
+      if (substr($url, 0, 1) === '/') {
+        header("location: $url");
+      } else {
+        header("location: ../index.php");
+      }
+
+    } else {
+      header('location: ../index.php');
+    }
+    exit;
   }
+
 
   /**
    * Método responsável para deslogar o usuário
@@ -114,6 +130,9 @@ class Login{
    */
   public static function requireLogin(){
     if(!self::isLogged()){
+      //salvando a url q o cara recebeu se ele nao tiver logado
+      $_SESSION['caminho_url'] = $_SERVER['REQUEST_URI'];
+
       header('location: ../login/login.php');
       exit;
     }
