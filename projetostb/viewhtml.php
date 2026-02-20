@@ -96,12 +96,12 @@ switch($t) {
     exit;
 }
 
-$anexoII = [3, 4, 5];
-$anexoIII = [1, 2];
-if (in_array($t, $anexoII)) { 
-  $title = 'ANEXO II';
-} else {
+$anexoIII = [3, 4, 5];
+$anexoIV = [1, 2];
+if (in_array($t, $anexoIII)) { 
   $title = 'ANEXO III';
+} else {
+  $title = 'ANEXO IV';
 }
 
 /*
@@ -252,7 +252,7 @@ c {
   $html .= '<p><strong>'. ++$count .'. Campus:</strong> '. $obProfessor->campus .'</p>';
   $html .= '<p><strong>'. ++$count .'. Tipo de proposta:</strong> </p>';
   $html .= $tpprop;
-  $html .= '<p><strong>'. ++$count .'.  A proposta está vinculada a alguma disciplina do curso de Graduação ou Pós?Graduação (ACEC II):</strong> </p>';
+  $html .= '<p><strong>'. ++$count .'.  A proposta está vinculada a alguma disciplina do curso de Graduação ou Pós?Graduação (ACEC III):</strong> </p>';
   $html .= $acec;
   $html .= '<p><strong>'. ++$count .'.  Vinculação à Programa de Extensão e Cultura:</strong> </p>';
   $html .= $vinculo;

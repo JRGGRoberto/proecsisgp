@@ -34,7 +34,7 @@ foreach ($avaliacoes as $ava) {
         <div class="p-1"></div>
         <div class="p-1"></div>
         <div class="p-1"><a href="./avaliar.php?id='.$ava->id.'&t='.$num.'" target=""><button class="btn btn-success btn-sm mb-2"> Visualizar/Avaliar relatorio</button></a></div>
-        <div class="p-1"><a href="../projetos/visualizar.php?id='.$ava->idproj.'&v='.$ava->ver.'&w=nw" target=""><button class="btn btn-success btn-sm mb-2"> Visualizar projeto</button></a></div>
+        <div class="p-1"><a href="../propostas/visualizar.php?id='.$ava->idproj.'&v='.$ava->ver.'&w=nw" target=""><button class="btn btn-success btn-sm mb-2"> Visualizar projeto</button></a></div>
       </div>
   </div>        
 </div>';

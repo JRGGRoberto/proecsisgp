@@ -125,7 +125,7 @@ $html = '<!DOCTYPE HTML PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3
     <div class="page-number"></div>
   </div>
 
-  <h3>ANEXO II</h3>
+  <h3>ANEXO III</h3>
   <h4>FORMULÁRIO PARA ELABORAÇÃO DE PROPOSTAS DE PROGRAMAS,
     PROJETOS OU PRESTAÇÃO DE SERVIÇO</h4>
   <h5>*O responsável pelo preenchimento e encaminhamento é o coordenador da Proposta de Extensão
@@ -142,7 +142,7 @@ $html = '<!DOCTYPE HTML PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3
   ( ) Programa<br>
   ( x ) Projeto<br>
   ( ) Prestação de Serviço<br>
-  <p><strong>7. A proposta está vinculada a alguma disciplina do curso de Graduação ou PósGraduação (ACEC II).</strong>
+  <p><strong>7. A proposta está vinculada a alguma disciplina do curso de Graduação ou PósGraduação (ACEC III).</strong>
   </p>
   ( ) Sim
   ( x ) Não

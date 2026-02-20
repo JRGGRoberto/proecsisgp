@@ -43,7 +43,7 @@ $pdf = new PDF('P', 'mm', 'A4');
 $pdf->AliasNbPages();
 $pdf->AddPage();
 $pdf->SetFont('Arial', 'B', 12);
-$pdf->Cell(0,10,'ANEXO II', 0, 2 , 'C');
+$pdf->Cell(0,10,'ANEXO III', 0, 2 , 'C');
 
 $pdf->SetFont('Arial', '', 11);
 $str = 'FORMULÁRIO PARA ELABORAÇÃO DE PROPOSTAS DE PROGRAMAS, 

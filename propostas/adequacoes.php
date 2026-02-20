@@ -112,8 +112,8 @@ foreach ($anexados as $att) {
 $anex .= '</ul>';
 
 $t = $obProjeto->tipo_exten;
-$anexoIII = [1, 2];
-$anexoII = [3, 4, 5];
+$anexoIV = [1, 2];
+$anexoIII = [3, 4, 5];
 
 switch ($t) {
     case 1:
@@ -175,7 +175,7 @@ if (isset($_POST['titulo'])) {
     }
     $obProjeto->regras = $regra;
 
-    if (in_array($t, $anexoII)) {
+    if (in_array($t, $anexoIII)) {
         $obProjeto->ch_semanal = $_POST['ch_semanal'];
 
         $obProjeto->referencia = $_POST['referencia'];
@@ -194,11 +194,11 @@ if (isset($_POST['titulo'])) {
         $obProjeto->referencia = $_POST['referencia'];
     }
 
-    if (in_array($t, $anexoIII)) {
+    if (in_array($t, $anexoIV)) {
         $obProjeto->ch_total = $_POST['ch_total'];
     }
 
-    /* não aceito no anexo III
+    /* não aceito no anexo IV
 
     $obProjeto->descricao    =  $_POST['descricao'];
     $obProjeto->prodserv_espe   =  $_POST['prodserv_espe'];
@@ -308,7 +308,7 @@ if ($user['id'] == $obProjeto->id_prof) {
     //   </div>
     // </div>';
     // } else {
-        if (in_array($t, $anexoII)) {
+        if (in_array($t, $anexoIII)) {
             $qryAEO = '';
             $scriptS = '';
             $qryAEO =
@@ -344,7 +344,7 @@ if ($user['id'] == $obProjeto->id_prof) {
             )
             ';
 
-            include __DIR__.'/includes/formAnexoII.php';
+            include __DIR__.'/includes/formAnexoIII.php';
             echo '<script src="cnpq.js"></script>';
 
             echo '<script>
@@ -361,8 +361,8 @@ if ($user['id'] == $obProjeto->id_prof) {
             .'      
         
       </script>';
-        } elseif (in_array($t, $anexoIII)) {
-            include __DIR__.'/includes/formAnexoIII.php';
+        } elseif (in_array($t, $anexoIV)) {
+            include __DIR__.'/includes/formAnexoIV.php';
         } else {
             header('location: index.php?status=error');
             exit;

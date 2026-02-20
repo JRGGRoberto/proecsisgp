@@ -23,7 +23,7 @@ $listaCampus = [
     'Apucarana',
     'Campo Mourão',
     'Curitiba I (EMBAP)',
-    'Curitiba II (FAP)',
+    'Curitiba III (FAP)',
     'Loanda',
     'Paranaguá',
     'Paranavaí',

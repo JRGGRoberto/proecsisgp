@@ -1145,9 +1145,9 @@ protected function _loadfont($font)
 	return get_defined_vars();
 }
 
-protected function _isascii($s)
+protected function _isascIII($s)
 {
-	// Test if string is ASCII
+	// Test if string is ASCIII
 	$nb = strlen($s);
 	for($i=0;$i<$nb;$i++)
 	{
@@ -1160,7 +1160,7 @@ protected function _isascii($s)
 protected function _httpencode($param, $value, $isUTF8)
 {
 	// Encode HTTP header field parameter
-	if($this->_isascii($value))
+	if($this->_isascIII($value))
 		return $param.'="'.$value.'"';
 	if(!$isUTF8)
 		$value = $this->_UTF8encode($value);
@@ -1236,7 +1236,7 @@ protected function _escape($s)
 protected function _textstring($s)
 {
 	// Format a text string
-	if(!$this->_isascii($s))
+	if(!$this->_isascIII($s))
 		$s = $this->_UTF8toUTF16($s);
 	return '('.$this->_escape($s).')';
 }

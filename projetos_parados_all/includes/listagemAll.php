@@ -107,7 +107,7 @@ foreach ($projetosParados as $proj) {
                 </tbody>
             </table>
             
-            <a href="../projetos/visualizar.php?id='.$proj->id.'&v='.$proj->ver.'&w=1" target="_blank">
+            <a href="../propostas/visualizar.php?id='.$proj->id.'&v='.$proj->ver.'&w=1" target="_blank">
               <button class="btn btn-success btn-sm mb-2">Projeto 📃</button>
             </a>
         ';
@@ -156,7 +156,7 @@ include '../includes/paginacao.php';
             <option value="AP" <?= (isset($_GET['campus']) && $_GET['campus'] == 'AP')? 'selected' : ''; ?>>Apucarana</option>
             <option value="CM" <?= (isset($_GET['campus']) && $_GET['campus'] == 'CM')? 'selected' : ''; ?> >Campo Mourão</option>
             <option value="CA" <?= (isset($_GET['campus']) && $_GET['campus'] == 'CA')? 'selected' : ''; ?>>Curitiba I (EMBAP)</option>
-            <option value="CB" <?= (isset($_GET['campus']) && $_GET['campus'] == 'CB')? 'selected' : ''; ?>>Curitiba II (FAP)</option>
+            <option value="CB" <?= (isset($_GET['campus']) && $_GET['campus'] == 'CB')? 'selected' : ''; ?>>Curitiba III (FAP)</option>
             <option value="PG" <?= (isset($_GET['campus']) && $_GET['campus'] == 'PG')? 'selected' : ''; ?>>Paranaguá</option>
             <option value="PV" <?= (isset($_GET['campus']) && $_GET['campus'] == 'PV')? 'selected' : ''; ?>>Paranavaí</option>
             <option value="UV" <?= (isset($_GET['campus']) && $_GET['campus'] == 'UV')? 'selected' : ''; ?>>União da Vitória</option>

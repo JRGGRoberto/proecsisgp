@@ -92,7 +92,7 @@
 !5B U+005B bracketleft
 !5C U+005C backslash
 !5D U+005D bracketright
-!5E U+005E asciicircum
+!5E U+005E ascIIIcircum
 !5F U+005F underscore
 !60 U+0060 grave
 !61 U+0061 a
@@ -124,7 +124,7 @@
 !7B U+007B braceleft
 !7C U+007C bar
 !7D U+007D braceright
-!7E U+007E asciitilde
+!7E U+007E ascIIItilde
 !7F U+007F .notdef
 !80 U+0080 .notdef
 !81 U+0081 .notdef
@@ -211,7 +211,7 @@
 !D2 U+0E32 saraaathai
 !D3 U+0E33 saraamthai
 !D4 U+0E34 saraithai
-!D5 U+0E35 saraiithai
+!D5 U+0E35 saraIIIthai
 !D6 U+0E36 sarauethai
 !D7 U+0E37 saraueethai
 !D8 U+0E38 sarauthai

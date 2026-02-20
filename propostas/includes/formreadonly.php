@@ -40,18 +40,18 @@ switch($t) {
     exit;
 }
 
-$anexoII = [3, 4, 5];
-$anexoIII = [1, 2];
-if (in_array($t, $anexoII)) { 
-  $title = 'ANEXO II';
-} else {
+$anexoIII = [3, 4, 5];
+$anexoIV = [1, 2];
+if (in_array($t, $anexoIII)) { 
   $title = 'ANEXO III';
+} else {
+  $title = 'ANEXO IV';
 }
 
 
 
-$anexoII = [3, 4, 5];
-$anexoIII = [1, 2];
+$anexoIII = [3, 4, 5];
+$anexoIV = [1, 2];
 $t = $obProjeto->tipo_exten;
 
 

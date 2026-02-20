@@ -1,8 +1,8 @@
 <main>
 
 <?php
-$anexoII  = [3, 4, 5]; // Programa / Projeto / Serviço
-$anexoIII = [1, 2];    // Curso / Evento
+$anexoIII  = [3, 4, 5]; // Programa / Projeto / Serviço
+$anexoIV = [1, 2];    // Curso / Evento
 $t = $obProjeto->tipo_exten;
 
 ?>
@@ -41,11 +41,11 @@ $t = $obProjeto->tipo_exten;
       </div>
     </div>
 <?php
-    if (in_array($t, $anexoII)) {
+    if (in_array($t, $anexoIII)) {
 ?>
     
       <div class="form-group">
-          <label><h5><?=++$n?>. A proposta está vinculada a alguma disciplina do curso de Graduação ou Pós-Graduação (ACEC II)</h5></label>
+          <label><h5><?=++$n?>. A proposta está vinculada a alguma disciplina do curso de Graduação ou Pós-Graduação (ACEC III)</h5></label>
             <select name="tide" class="form-control">
               <option value="s" <?= ($obProjeto->tide=='s')? 'selected': ' ' ?> >Sim</option> 
               <option value="n" <?= ($obProjeto->tide=='n')? 'selected': ' ' ?> >Não</option>
@@ -91,7 +91,7 @@ $t = $obProjeto->tipo_exten;
 <label><h5><?=++$n?>. Classificação do Projeto ou Programa</h5></label>
 
 <?php
-if (in_array($t, $anexoII)) {
+if (in_array($t, $anexoIII)) {
 ?>
 
     <div class="row">
@@ -169,7 +169,7 @@ if (in_array($t, $anexoII)) {
       </div>
      
 <?php
-  if (in_array($t, $anexoII)) {
+  if (in_array($t, $anexoIII)) {
 ?>
       <div class="col">
         <div class="form-group">
@@ -183,7 +183,7 @@ if (in_array($t, $anexoII)) {
 ?>
 
 <?php
-  if (in_array($t, $anexoIII)) {
+  if (in_array($t, $anexoIV)) {
 ?>
 
       <div class="col">
@@ -198,7 +198,7 @@ if (in_array($t, $anexoII)) {
 
 <?php
   }  
-  if (in_array($t, $anexoII)) {
+  if (in_array($t, $anexoIII)) {
 ?>
     <div class="col">
         <div class="form-group">

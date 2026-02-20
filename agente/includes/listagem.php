@@ -157,7 +157,7 @@
             <option value="Apucarana" <?= ($campus == "Apucarana")? "selected": "" ?>>Apucarana</option>
             <option value="Campo Mourão" <?= ($campus == "Campo Mourão")? "selected": "" ?>>Campo Mourão</option>
             <option value="Curitiba I (EMBAP)" <?= ($campus == "Curitiba I (EMBAP)")? "selected": "" ?>>Curitiba I (EMBAP)</option>
-            <option value="Curitiba II (FAP)" <?= ($campus == "Curitiba II (FAP)")? "selected": "" ?>>Curitiba II (FAP)</option>
+            <option value="Curitiba III (FAP)" <?= ($campus == "Curitiba III (FAP)")? "selected": "" ?>>Curitiba III (FAP)</option>
             <option value="Paranaguá" <?= ($campus == "Paranaguá")? "selected": "" ?>>Paranaguá</option>
             <option value="Paranavaí" <?= ($campus == "Paranavaí")? "selected": "" ?>>Paranavaí</option>
             <option value="União da Vitória" <?= ($campus == "União da Vitória")? "selected": "" ?>>União da Vitória</option>

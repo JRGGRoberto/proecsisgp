@@ -92,7 +92,7 @@
 !5B U+005B bracketleft
 !5C U+005C backslash
 !5D U+005D bracketright
-!5E U+005E asciicircum
+!5E U+005E ascIIIcircum
 !5F U+005F underscore
 !60 U+0060 grave
 !61 U+0061 a
@@ -124,7 +124,7 @@
 !7B U+007B braceleft
 !7C U+007C bar
 !7D U+007D braceright
-!7E U+007E asciitilde
+!7E U+007E ascIIItilde
 !7F U+007F .notdef
 !80 U+0080 .notdef
 !81 U+0081 .notdef
@@ -169,7 +169,7 @@
 !AB U+00AB guillemotleft
 !AC U+00AC logicalnot
 !AD U+00AD hyphen
-!AF U+2015 afii00208
+!AF U+2015 afIII00208
 !B0 U+00B0 degree
 !B1 U+00B1 plusminus
 !B2 U+00B2 twosuperior

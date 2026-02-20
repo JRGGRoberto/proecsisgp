@@ -392,8 +392,8 @@
 		if (typeof a === 'number' && typeof b === 'number') {
 			return a > b ? 1 : (a < b ? -1 : 0);
 		}
-		a = asciifold(String(a || ''));
-		b = asciifold(String(b || ''));
+		a = ascIIIfold(String(a || ''));
+		b = ascIIIfold(String(b || ''));
 		if (a > b) return 1;
 		if (b > a) return -1;
 		return 0;
@@ -449,7 +449,7 @@
 		'f': '[fƑƒḞḟ]',
 		'g': '[gɢ₲ǤǥĜĝĞğĢģƓɠĠġ]',
 		'h': '[hĤĥĦħḨḩẖẖḤḥḢḣɦʰǶƕ]',
-		'i': '[iÍíÌìĬĭÎîǏǐÏïḮḯĨĩĮįĪīỈỉȈȉȊȋỊịḬḭƗɨɨ̆ᵻᶖİiIıɪＩｉ]',
+		'i': '[iÍíÌìĬĭÎîǏǐÏïḮḯĨĩĮįĪīỈỉȈȉȊȋỊịḬḭƗɨɨ̆ᵻᶖİIIIıɪＩｉ]',
 		'j': '[jȷĴĵɈɉʝɟʲ]',
 		'k': '[kƘƙꝀꝁḰḱǨǩḲḳḴḵκϰ₭]',
 		'l': '[lŁłĽľĻļĹĺḶḷḸḹḼḽḺḻĿŀȽƚⱠⱡⱢɫɬᶅɭȴʟＬｌ]',
@@ -468,7 +468,7 @@
 		'z': '[zŹźẐẑŽžŻżẒẓẔẕƵƶ]'
 	};
 
-	var asciifold = (function() {
+	var ascIIIfold = (function() {
 		var i, n, k, chunk;
 		var foreignletters = '';
 		var lookup = {};

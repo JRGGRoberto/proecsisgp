@@ -91,13 +91,13 @@ switch($t) {
 
 
 
-$anexoII = [3, 4, 5];
-$anexoIII = [1, 2];
+$anexoIII = [3, 4, 5];
+$anexoIV = [1, 2];
 
-if (in_array($t, $anexoII)) { 
-  $title = 'ANEXO II';
-} else {
+if (in_array($t, $anexoIII)) { 
   $title = 'ANEXO III';
+} else {
+  $title = 'ANEXO IV';
 }
 
 /*
@@ -343,14 +343,14 @@ c {
   ;
 
 
-  if (in_array($t, $anexoII)) { 
+  if (in_array($t, $anexoIII)) { 
     $acec = ($obProjeto->acec == 'S'? 
     '( x ) Sim<br>( <span> </span><span> </span> ) Não<br>' : 
     '( <span> </span><span> </span> ) Sim<br>( x ) Não<br>');
 
     $html .= 
     '<table class="time">
-     <thead><tr><th class="th_cinza"><strong>'. ++$count .'. A proposta está vinculada a alguma disciplina do curso de Graduação ou Pós?Graduação (ACEC II)</strong></th></tr></thead>
+     <thead><tr><th class="th_cinza"><strong>'. ++$count .'. A proposta está vinculada a alguma disciplina do curso de Graduação ou Pós?Graduação (ACEC III)</strong></th></tr></thead>
     <tbody><tr><td>'. $acec . '</td></tr></tbody>
     </table>'
     ;
@@ -398,7 +398,7 @@ entre os tr de baixo
     $cnpq_sarea = $cnpq_sarea1->nome;
   }
 
-  if (in_array($t, $anexoII)) { 
+  if (in_array($t, $anexoIII)) { 
     $html .= 
     '<table class="time">
       <thead>
@@ -449,7 +449,7 @@ entre os tr de baixo
   </table>'
   ;
 
-  if (in_array($t, $anexoII)) {
+  if (in_array($t, $anexoIII)) {
     $tide = $obProjeto->tide == 'S'? '( x ) Sim <span> </span> <span> </span>( <span> </span><span> </span> ) Não' : '( <span> </span><span> </span> ) Sim <span> </span> <span> </span>( x ) Não';  
     $html .= 
     '<table class="time">
@@ -467,7 +467,7 @@ entre os tr de baixo
         </tr>
      </table>';
 
-  } elseif (in_array($t, $anexoIII)) {
+  } elseif (in_array($t, $anexoIV)) {
     $html .= 
     '<table class="time">
       <thead>
@@ -642,9 +642,9 @@ entre os tr de baixo
   
   $titulo = '';
 
-  if (in_array($t, $anexoII)) {
+  if (in_array($t, $anexoIII)) {
     $titulo ='.  Problema e justificativa da proposta';
-  } elseif (in_array($t, $anexoIII)) {
+  } elseif (in_array($t, $anexoIV)) {
     $titulo ='.  Justificativa da proposta';
   }
 
@@ -656,9 +656,9 @@ entre os tr de baixo
   ;
 
 
-  if (in_array($t, $anexoII)) {
+  if (in_array($t, $anexoIII)) {
     $titulo = '.  Objetivos – Geral e Específicos';
-  } elseif (in_array($t, $anexoIII)) {
+  } elseif (in_array($t, $anexoIV)) {
     $titulo = '.  Objetivos';
   }
   

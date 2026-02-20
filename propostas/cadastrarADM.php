@@ -14,8 +14,8 @@ if(!$user['adm'] == 1){
   exit;
 }
 
-$anexoIII  = [1, 2];
-$anexoII   = [3, 4, 5];
+$anexoIV  = [1, 2];
+$anexoIII   = [3, 4, 5];
 
 $t = $_GET['t'];
 
@@ -138,7 +138,7 @@ if(isset($_POST['titulo'])){
   $obProjeto->edt = 0;
   $obProjeto->para_avaliar = 0;
   
-  if (in_array($t, $anexoII)) {
+  if (in_array($t, $anexoIII)) {
     if($_POST['ch_semanal'] == null){
       $obProjeto->ch_semanal   =  0;  
     } else{
@@ -157,7 +157,7 @@ if(isset($_POST['titulo'])){
 
   $obProjeto->contribuicao  = $_POST['contribuicao'];
 
-  if (in_array($t, $anexoIII)) {
+  if (in_array($t, $anexoIV)) {
     if($_POST['ch_total'] == null ){
       $obProjeto->ch_total = 0;
     } else {
@@ -196,7 +196,7 @@ if(isset($_POST['titulo'])){
   $obProjeto->justificativa    =  $_POST['justificativa'];
   $obProjeto->cronograma       =  $_POST['cronograma'];
 
-  if (in_array($t, $anexoII)) {
+  if (in_array($t, $anexoIII)) {
     $obProjeto->referencia       =  $_POST['referencia'];
   }
 
@@ -314,8 +314,8 @@ function justName() {
 
 include '../includes/header.php';
 
-if(in_array($t, $anexoII)){
-  include __DIR__.'/includes/formAnexoIIADM.php';
+if(in_array($t, $anexoIII)){
+  include __DIR__.'/includes/formAnexoIIIADM.php';
 
   echo ('<script src="cnpq.js"></script>');
 
@@ -330,8 +330,8 @@ pegarGA();
 
 
 
-} elseif (in_array($t, $anexoIII)){
-  include __DIR__.'/includes/formAnexoIIIADM.php';
+} elseif (in_array($t, $anexoIV)){
+  include __DIR__.'/includes/formAnexoIVADM.php';
 } else {
   header('location: index.php?status=error');
   exit;

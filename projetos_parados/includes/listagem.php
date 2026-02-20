@@ -105,7 +105,7 @@ foreach ($projetosParados as $proj) {
                 </tbody>
             </table>
             
-            <a href="../projetos/visualizar.php?id='.$proj->id.'&v='.$proj->ver.'&w=1" target="_blank">
+            <a href="../propostas/visualizar.php?id='.$proj->id.'&v='.$proj->ver.'&w=1" target="_blank">
               <button class="btn btn-success btn-sm mb-2">Projeto 📃</button>
             </a>
         ';

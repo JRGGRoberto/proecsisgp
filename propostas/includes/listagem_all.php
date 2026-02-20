@@ -331,7 +331,7 @@ include '../includes/paginacao.php';
                 <option <?=$selectedOpt = $campus == "Apucarana"              ?  "selected" : ""; ?> value="Apucarana"          >Apucarana</option>
                 <option <?=$selectedOpt = $campus == "Campo Mourão"           ?  "selected" : ""; ?> value="Campo Mourão"       >Campo Mourão</option>
                 <option <?=$selectedOpt = $campus == "Curitiba I (EMBAP)"     ?  "selected" : ""; ?> value="Curitiba I (EMBAP)" >Curitiba I (EMBAP)</option>
-                <option <?=$selectedOpt = $campus == "Curitiba II (FAP)"      ?  "selected" : ""; ?> value="Curitiba II (FAP)"  >Curitiba II (FAP)</option>
+                <option <?=$selectedOpt = $campus == "Curitiba III (FAP)"      ?  "selected" : ""; ?> value="Curitiba III (FAP)"  >Curitiba III (FAP)</option>
                 <option <?=$selectedOpt = $campus == "Paranaguá"              ?  "selected" : ""; ?> value="Paranaguá"          >Paranaguá</option>
                 <option <?=$selectedOpt = $campus == "Paranavaí"              ?  "selected" : ""; ?> value="Paranavaí"          >Paranavaí</option>
                 <option <?=$selectedOpt = $campus == "União da Vitória"       ?  "selected" : ""; ?> value="União da Vitória"   >União da Vitória</option>
@@ -428,12 +428,12 @@ include '../includes/paginacao.php';
             Novo
           </button>
           <div class="dropdown-menu dropdown-menu-right">
-            <a class="dropdown-item btn-sm" href="../projetos/cadastrar.php?t=4">Novo Programa</a>
-            <a class="dropdown-item btn-sm" href="../projetos/cadastrar.php?t=5">Novo Projeto</a>
-            <a class="dropdown-item btn-sm" href="../projetos/cadastrar.php?t=3">Nova Prestação de Serviço</a>
+            <a class="dropdown-item btn-sm" href="../propostas/cadastrar.php?t=4">Novo Programa</a>
+            <a class="dropdown-item btn-sm" href="../propostas/cadastrar.php?t=5">Novo Projeto</a>
+            <a class="dropdown-item btn-sm" href="../propostas/cadastrar.php?t=3">Nova Prestação de Serviço</a>
             <div class="dropdown-divider"></div>
-            <a class="dropdown-item btn-sm" href="../projetos/cadastrar.php?t=1">Novo Curso</a>
-            <a class="dropdown-item btn-sm" href="../projetos/cadastrar.php?t=2">Novo Evento</a>
+            <a class="dropdown-item btn-sm" href="../propostas/cadastrar.php?t=1">Novo Curso</a>
+            <a class="dropdown-item btn-sm" href="../propostas/cadastrar.php?t=2">Novo Evento</a>
 
           </div>
         </div>

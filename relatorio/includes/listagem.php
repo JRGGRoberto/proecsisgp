@@ -103,7 +103,7 @@ foreach ($relatorios as $relf) {
           <div class="col-2">
             <div class="form-group">
                <label>Projeto</label><br>
-                <a href="../projetos/visualizar.php?id=<?php echo $obProjeto->id; ?>&amp;v=<?php echo $obProjeto->ver; ?>&amp;w=1" target="_blank">
+                <a href="../propostas/visualizar.php?id=<?php echo $obProjeto->id; ?>&amp;v=<?php echo $obProjeto->ver; ?>&amp;w=1" target="_blank">
                   <button class="btn btn-success btn-sm mb-2">Visualizar</button>
                 </a>
             </div>

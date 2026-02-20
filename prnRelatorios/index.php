@@ -55,23 +55,33 @@ function montaUrl($form)
 }
 
 $resultado = '';
-$textApagar = '<a href="../../projetos" class="btn btn-primary btn-sm mr-2">Voltar</a>';
+$textApagar = '<a href="../../propostas" class="btn btn-primary btn-sm mr-2">Voltar</a>';
 $textApagar2 = '&ensp;&ensp;<span id="xpto141617">&ensp;</span>&ensp;';
-foreach ($forms as $frm) {
-    $cor = $frm->res == 'a' ? 'success' : 'danger';
-    $txtAlterado = '
-   <span class="badge badge-primary">'.$frm->form.'</span>
-   <span class="badge badge-'.$cor.'"> Etapa ['.$frm->etapa.'] '.$frm->resultado.'</span>
-   <span class="badge badge-info">'.$frm->realizado.'</span>
-    ';
-    $resultado .=
-        str_replace(
-            $textApagar2, $txtAlterado,
+if (count($forms) == 0) {
+     
+    ob_start();
+    include '../includes/headers.php';
+    $resultado = ob_get_clean();
+    $resultado .= '<div class="alert alert-info">Nenhuma avaliação encontrada para este projeto.</div>';
+    $resultado .= file_get_contents('../includes/footer.php');
+    
+} else {
+    foreach ($forms as $frm) {
+        $cor = $frm->res == 'a' ? 'success' : 'danger';
+        $txtAlterado = '
+       <span class="badge badge-primary">'.$frm->form.'</span>
+       <span class="badge badge-'.$cor.'"> Etapa ['.$frm->etapa.'] '.$frm->resultado.'</span>
+       <span class="badge badge-info">'.$frm->realizado.'</span>
+        ';
+        $resultado .=
             str_replace(
-                $textApagar, '',
-                capturar_saida(montaUrl($frm->form), ['p' => $id_proj, 'v' => $frm->ver])
-            )
-        );
+                $textApagar2, $txtAlterado,
+                str_replace(
+                    $textApagar, '',
+                    capturar_saida(montaUrl($frm->form), ['p' => $id_proj, 'v' => $frm->ver])
+                )
+            );
+    }
 }
 
 echo $resultado;

@@ -265,12 +265,12 @@ include '../includes/paginacao.php';
             Novo
           </button>
           <div class="dropdown-menu dropdown-menu-right">
-            <a class="dropdown-item btn-sm" href="../projetos/cadastrar.php?t=4">Novo Programa</a>
-            <a class="dropdown-item btn-sm" href="../projetos/cadastrar.php?t=5">Novo Projeto</a>
-            <a class="dropdown-item btn-sm" href="../projetos/cadastrar.php?t=3">Nova Prestação de Serviço</a>
+            <a class="dropdown-item btn-sm" href="../propostas/cadastrar.php?t=4">Novo Programa</a>
+            <a class="dropdown-item btn-sm" href="../propostas/cadastrar.php?t=5">Novo Projeto</a>
+            <a class="dropdown-item btn-sm" href="../propostas/cadastrar.php?t=3">Nova Prestação de Serviço</a>
             <div class="dropdown-divider"></div>
-            <a class="dropdown-item btn-sm" href="../projetos/cadastrar.php?t=1">Novo Curso</a>
-            <a class="dropdown-item btn-sm" href="../projetos/cadastrar.php?t=2">Novo Evento</a>
+            <a class="dropdown-item btn-sm" href="../propostas/cadastrar.php?t=1">Novo Curso</a>
+            <a class="dropdown-item btn-sm" href="../propostas/cadastrar.php?t=2">Novo Evento</a>
           </div>
         </div>
 

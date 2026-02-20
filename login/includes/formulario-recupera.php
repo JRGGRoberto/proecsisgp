@@ -48,7 +48,7 @@
                                <option value="1832d052-39eb-11ed-9793-0266ad9885af">Apucarana</option>
                                <option value="1832e5f1-39eb-11ed-9793-0266ad9885af">Campo Mourão</option>
                                <option value="1832e881-39eb-11ed-9793-0266ad9885af">Curitiba I (EMBAP)</option>
-                               <option value="1832e953-39eb-11ed-9793-0266ad9885af">Curitiba II (FAP)</option>
+                               <option value="1832e953-39eb-11ed-9793-0266ad9885af">Curitiba III (FAP)</option>
                                <option value="1832e9c1-39eb-11ed-9793-0266ad9885af">Paranaguá</option>
                                <option value="1832ea24-39eb-11ed-9793-0266ad9885af">Paranavaí</option>
                                <option value="1832ea24-39eb-31ed-9793-0266ad8887af">Guanabara</option>

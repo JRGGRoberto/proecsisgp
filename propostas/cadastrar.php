@@ -9,8 +9,8 @@ use App\Session\Login;
 Login::requireLogin();
 $user = Login::getUsuarioLogado();
 
-$anexoIII = [1, 2];
-$anexoII = [3, 4, 5];
+$anexoIV = [1, 2];
+$anexoIII = [3, 4, 5];
 
 $t = $_GET['t'];
 
@@ -134,7 +134,7 @@ if (isset($_POST['titulo'])) {
     }
     $obProjeto->regras = $regra;
 
-    if (in_array($t, $anexoII)) {
+    if (in_array($t, $anexoIII)) {
         if ($_POST['ch_semanal'] == null) {
             $obProjeto->ch_semanal = 0;
         } else {
@@ -162,7 +162,7 @@ if (isset($_POST['titulo'])) {
 
     $obProjeto->contribuicao = $_POST['contribuicao'];
 
-    if (in_array($t, $anexoIII)) {
+    if (in_array($t, $anexoIV)) {
         if ($_POST['ch_total'] == null) {
             $obProjeto->ch_total = 0;
         } else {
@@ -200,7 +200,7 @@ if (isset($_POST['titulo'])) {
     $obProjeto->justificativa = $_POST['justificativa'];
     $obProjeto->cronograma = $_POST['cronograma'];
 
-    if (in_array($t, $anexoII)) {
+    if (in_array($t, $anexoIII)) {
         $obProjeto->referencia = $_POST['referencia'];
     }
 
@@ -289,8 +289,8 @@ campusNome = ".$user['ca_nome']."
 </script>";
 
 
-if (in_array($t, $anexoII)) {
-    include __DIR__.'/includes/formAnexoII.php';
+if (in_array($t, $anexoIII)) {
+    include __DIR__.'/includes/formAnexoIII.php';
 
     echo '<script src="cnpq.js"></script>';
 
@@ -302,8 +302,8 @@ var sa = document.querySelector("#cnpq_sarea");
 pegarGA();
   
 </script>';
-} elseif (in_array($t, $anexoIII)) {
-    include __DIR__.'/includes/formAnexoIII.php';
+} elseif (in_array($t, $anexoIV)) {
+    include __DIR__.'/includes/formAnexoIV.php';
 } else {
     header('location: index.php?status=error');
     exit;
