@@ -470,7 +470,7 @@ class Projeto
             $a = new Database();
             $a->execute($sql);
         }
-
+/// passar o email 
         return true;
         // ->fetchAll(PDO::FETCH_CLASS,self::class);
     }

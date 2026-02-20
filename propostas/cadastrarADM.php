@@ -14,7 +14,7 @@ if(!$user['adm'] == 1){
   exit;
 }
 
-$anexoIV  = [1, 2];
+$anexoIV    = [1, 2];
 $anexoIII   = [3, 4, 5];
 
 $t = $_GET['t'];
