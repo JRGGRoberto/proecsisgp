@@ -13,7 +13,7 @@
 
   <hr>
   <h4  style="text-align: center">ANEXO IV</h4>
-  <h3 class="mt-3" style="text-align: center"><?= TITLE ?></h3>
+  <h3 class="mt-3" style="text-align: center"><?php echo TITLE; ?></h3>
   
     <form name="formAnexo" id="formAnexo"  method="POST" enctype="multipart/form-data">
       
@@ -21,9 +21,9 @@
       <hr>
       <div class="form-group">
         <label>
-          <h5><?= $n = 1 ?>. Título da proposta</h5>
+          <h5><?php echo $n = 1; ?>. Título da proposta</h5>
         </label>
-        <input type="text" class="form-control" name="titulo" id="titulo" maxlength="265" value="<?= $obProjeto->titulo ?>" required>
+        <input type="text" class="form-control" name="titulo" id="titulo" maxlength="265" value="<?php echo $obProjeto->titulo; ?>" required>
       </div>
       <input type="hidden" name="tabela" value="projetos">
 
@@ -31,18 +31,18 @@
     
     <div class="form-group">
       <label>
-        <h5><?= ++$n ?>. Protocolo da proposta</h5>
+        <h5><?php echo ++$n; ?>. Protocolo da proposta</h5>
       </label>
-      <input type="text" class="form-control" name="protocolo" readonly value="<?= $obProjeto->protocolo ?>">
+      <input type="text" class="form-control" name="protocolo" readonly value="<?php echo $obProjeto->protocolo; ?>">
     </div>
 
     <hr>
 
       <div class="form-group">
         <label>
-          <h5><?= ++$n ?>. Coordenador(a)</h5>
+          <h5><?php echo ++$n; ?>. Coordenador(a)</h5>
         </label>
-        <?= $id_profLIsta ?>
+        <?php echo $id_profLIsta; ?>
         <input type="text" class="form-control" name="coordNome" id="coordNome" readonly value="">
 
       </div>
@@ -50,21 +50,21 @@
       <hr>
 
       <label>
-        <h5><?= ++$n ?>. Contato do Coordenador</h5>
+        <h5><?php echo ++$n; ?>. Contato do Coordenador</h5>
       </label>
       <div class="row">
         <div class="form-group col">
           <label>
-            <h6><?= $n ?>.1. Telefone</h6>
+            <h6><?php echo $n; ?>.1. Telefone</h6>
           </label>
-          <input type="text" class="form-control" name="tel" readonly value="<?= $telefone ?>">
+          <input type="text" class="form-control" name="tel" readonly value="<?php echo $telefone; ?>">
         </div>
 
         <div class="form-group col">
           <label>
-            <h6><?= $n ?>.2. Email</h6>
+            <h6><?php echo $n; ?>.2. Email</h6>
           </label>
-          <input type="text" class="form-control" name="email" readonly value="<?= $email ?>">
+          <input type="text" class="form-control" name="email" readonly value="<?php echo $email; ?>">
         </div>
       </div>
 
@@ -72,11 +72,11 @@
 
       <div class="form-group">
         <label>
-          <h5><?= ++$n ?>. A proposta está vinculada a alguma disciplina do curso de Graduação ou Pós-Graduação (ACEC III)</h5>
+          <h5><?php echo ++$n; ?>. A proposta está vinculada a alguma disciplina do curso de Graduação ou Pós-Graduação (ACEC III)</h5>
         </label>
         <select name="acec" class="form-control col-1">
-          <option value="N" <?= ($obProjeto->acec == 'N') ? 'selected' : ' ' ?>>Não</option>
-          <option value="S" <?= ($obProjeto->acec == 'S') ? 'selected' : ' ' ?>>Sim</option>
+          <option value="N" <?php echo ($obProjeto->acec == 'N') ? 'selected' : ' '; ?>>Não</option>
+          <option value="S" <?php echo ($obProjeto->acec == 'S') ? 'selected' : ' '; ?>>Sim</option>
         </select>
       </div>
 
@@ -84,7 +84,7 @@
 
       <div class="form-group">
         <label>
-          <h5><?= ++$n ?>. Vinculação à Programa de Extensão e Cultura</h5>
+          <h5><?php echo ++$n; ?>. Vinculação à Programa de Extensão e Cultura</h5>
         </label>
         <div class="row">
           <div class="col-2">
@@ -92,15 +92,15 @@
               <h6>É vinculado?</h6>
             </label>
             <select name="vinculo" id="vinculo" class="form-control col-8" onchange="showTitProg();">
-              <option value="S" <?= ($obProjeto->vinculo == 'S') ? 'selected' : ' ' ?>>Sim</option>
-              <option value="N" <?= ($obProjeto->vinculo == 'N') ? 'selected' : ' ' ?>>Não</option>
+              <option value="S" <?php echo ($obProjeto->vinculo == 'S') ? 'selected' : ' '; ?>>Sim</option>
+              <option value="N" <?php echo ($obProjeto->vinculo == 'N') ? 'selected' : ' '; ?>>Não</option>
             </select>
           </div>
           <div class="col-10" id="titProgDIV">
             <label>
               <h6>Título do Programa de vinculação</h6>
             </label>
-            <input type="text" class="form-control" name="tituloprogvinc" id="tituloprogvinc" value="<?= $obProjeto->tituloprogvinc ?>"  maxlength="200">
+            <input type="text" class="form-control" name="tituloprogvinc" id="tituloprogvinc" value="<?php echo $obProjeto->tituloprogvinc; ?>"  maxlength="200">
           </div>
 
           <script type="text/javascript">
@@ -123,27 +123,27 @@
         <hr>
 
         <label>
-          <h5><?= ++$n ?>. Período de vigência</h5>
+          <h5><?php echo ++$n; ?>. Período de vigência</h5>
         </label>
         <div class="row">
           <div class="col-3">
             <div class="form-group">
               <label>Início vigência</label>
-              <input type="date" name="vigen_ini" id="vigen_ini" class="form-control" value="<?= substr($obProjeto->vigen_ini, 0, 10) ?>" required>
+              <input type="date" name="vigen_ini" id="vigen_ini" class="form-control" value="<?php echo substr($obProjeto->vigen_ini, 0, 10); ?>" required>
             </div>
           </div>
           
           <div class="col-3">
             <div class="form-group">
               <label>Fim vigência</label>
-              <input type="date" name="vigen_fim" id="vigen_fim" class="form-control" value="<?= substr($obProjeto->vigen_fim, 0, 10) ?>" required>
+              <input type="date" name="vigen_fim" id="vigen_fim" class="form-control" value="<?php echo substr($obProjeto->vigen_fim, 0, 10); ?>" required>
             </div>
           </div>
  
           <div class="col-3">
             <div class="form-group">
               <label>Carga Horária total:</label>
-              <input type="number" min=0 max=44 class="form-control" name="ch_total" value="<?= $obProjeto->ch_total ?>">
+              <input type="number" min=0 max=44 class="form-control" name="ch_total" value="<?php echo $obProjeto->ch_total; ?>">
               
             </div>
           </div>
@@ -152,8 +152,8 @@
             <div class="form-group">
               <label for="tide">TIDE</label>
               <select name="tide" class="form-control">
-                <option value="S" <?= ($obProjeto->tide == 'S') ? 'selected' : ' ' ?>>Sim</option>
-                <option value="N" <?= ($obProjeto->tide == 'N') ? 'selected' : ' ' ?>>Não</option>
+                <option value="S" <?php echo ($obProjeto->tide == 'S') ? 'selected' : ' '; ?>>Sim</option>
+                <option value="N" <?php echo ($obProjeto->tide == 'N') ? 'selected' : ' '; ?>>Não</option>
               </select>
             </div>
           </div>
@@ -163,23 +163,23 @@
         <hr>
 
         <label>
-          <h5><?= ++$n ?>. Dimensão</h5>
+          <h5><?php echo ++$n; ?>. Dimensão</h5>
         </label>
        
         <div class="form-group">
           <label>Publico Alvo</label>
-          <input type="text" name="public_alvo" class="form-control" value="<?= $obProjeto->public_alvo ?>">
+          <input type="text" name="public_alvo" class="form-control" value="<?php echo $obProjeto->public_alvo; ?>">
         </div>
     
         <div class="form-group">
           <label for="municipios_abr">Abrangência (região e/ou municípios)</label>
-          <input type="text" name="municipios_abr" class="form-control" value="<?= $obProjeto->municipios_abr ?>">
+          <input type="text" name="municipios_abr" class="form-control" value="<?php echo $obProjeto->municipios_abr; ?>">
         </div>
        
         <hr>
 
         <label>
-          <h5><?= ++$n ?>. Previsão de Financiamento</h5>
+          <h5><?php echo ++$n; ?>. Previsão de Financiamento</h5>
         </label>
         <div class="row">
           <div class="col-2">
@@ -187,21 +187,21 @@
               <h6>Financiamento?</h6>
             </label>
             <select name="finac" id="finac" class="form-control" onchange="showFinac();">
-              <option value="S" <?= ($obProjeto->finac == 'S') ? 'selected' : ' ' ?>>Sim</option>
-              <option value="N" <?= ($obProjeto->finac == 'N') ? 'selected' : ' ' ?>>Não</option>
+              <option value="S" <?php echo ($obProjeto->finac == 'S') ? 'selected' : ' '; ?>>Sim</option>
+              <option value="N" <?php echo ($obProjeto->finac == 'N') ? 'selected' : ' '; ?>>Não</option>
             </select>
           </div>
           <div class="col-5" id="orgaoFinac">
             <label>
               <h6>Órgão de Financiamento</h6>
             </label>
-            <input type="text" class="form-control" id="orgao_finacInput" name="finacorgao" value="<?= $obProjeto->finacorgao ?>" maxlength="255">
+            <input type="text" class="form-control" id="orgao_finacInput" name="finacorgao" value="<?php echo $obProjeto->finacorgao; ?>" maxlength="255">
           </div>
           <div class="col-5" id="valorFinac">
             <label>
               <h6>Valor do Financiamento</h6>
             </label>
-            <input type="number" class="form-control" id="valor_finacInput" name="finacval" value="<?= $obProjeto->finacval?? 0 ?>" step=0.01>
+            <input type="number" class="form-control" id="valor_finacInput" name="finacval" value="<?php echo $obProjeto->finacval ?? 0; ?>" step=0.01>
           </div>
 
           <script type="text/javascript">
@@ -227,31 +227,31 @@
         <hr>
 
         <label>
-        <h5><?= ++$n ?>. Equipe da prosposta</h5>
+        <h5><?php echo ++$n; ?>. Equipe da prosposta</h5>
          </label>
          
       <?php
       include './includes/equipeProposta.php';
-      ?>
+  ?>
 
       <hr>
        
         <div class="form-group">
-          <label><h5><?= ++$n ?>. Resumo do Projeto e Palavras-chaves</h5></label>
+          <label><h5><?php echo ++$n; ?>. Resumo do Projeto e Palavras-chaves</h5></label>
           
         <label for="resumo">Resumo do Projeto</label>
-        <div id="sumnot_resumo"><?= $obProjeto->resumo ?></div>
+        <div id="sumnot_resumo"><?php echo $obProjeto->resumo; ?></div>
         <textarea id="resumo" name="resumo" rows="10" hidden ></textarea>
         <label for="palavras">Palavras-chave
           <div class="row"> 
             <div class="col-4">
-                <input type="text" class="form-control" name="palav1" id="palav1" value="<?= $palav1 ?>">
+                <input type="text" class="form-control" name="palav1" id="palav1" value="<?php echo $palav1; ?>">
             </div>
             <div class="col-4">
-                <input type="text" class="form-control" name="palav2" id="palav2" value="<?= $palav2 ?>">
+                <input type="text" class="form-control" name="palav2" id="palav2" value="<?php echo $palav2; ?>">
             </div>
             <div class="col-4">
-                <input type="text" class="form-control" name="palav3" id="palav3" value="<?= $palav3 ?>">
+                <input type="text" class="form-control" name="palav3" id="palav3" value="<?php echo $palav3; ?>">
             </div>
           </div>
             </label>
@@ -263,9 +263,9 @@
           <div class="col">
             <div class="form-group">
               <label for="justificativa">
-                <h5><?= ++$n ?>. Justificativa da proposta</h5>
+                <h5><?php echo ++$n; ?>. Justificativa da proposta</h5>
               </label>
-              <div id="sumnot_justificativa"><?= $obProjeto->justificativa ?></div>
+              <div id="sumnot_justificativa"><?php echo $obProjeto->justificativa; ?></div>
               <textarea id="justificativa" name="justificativa" rows="10" hidden ></textarea>
             </div>
           </div>
@@ -277,9 +277,9 @@
           <div class="col">
             <div class="form-group">
               <label>
-                <h5><?= ++$n ?>. Objetivo Geral e Objetivos Específicos</h5>
+                <h5><?php echo ++$n; ?>. Objetivo Geral e Objetivos Específicos</h5>
               </label>
-              <div id="sumnot_objetivos"><?= $obProjeto->objetivos ?></div>
+              <div id="sumnot_objetivos"><?php echo $obProjeto->objetivos; ?></div>
               <textarea id="objetivos" name="objetivos" rows="10" hidden ></textarea>
             </div>
           </div>
@@ -291,9 +291,9 @@
           <div class="col">
             <div class="form-group">
               <label for="metodologia">
-                <h5><?= ++$n ?>. Metodologia para Execução da Proposta</h5>
+                <h5><?php echo ++$n; ?>. Metodologia para Execução da Proposta</h5>
               </label>
-              <div id="sumnot_metodologia"><?= $obProjeto->metodologia ?></div>
+              <div id="sumnot_metodologia"><?php echo $obProjeto->metodologia; ?></div>
               <textarea id="metodologia" name="metodologia" rows="10" hidden ></textarea>
             </div>
           </div>
@@ -305,9 +305,9 @@
           <div class="col">
             <div class="form-group">
               <label for="contribuicao">
-                <h5><?= ++$n ?>. Contribuição Científica, Tecnológica e de Inovação</h5>
+                <h5><?php echo ++$n; ?>. Contribuição Científica, Tecnológica e de Inovação</h5>
               </label>
-              <div id="sumnot_contribuicao"><?= $obProjeto->contribuicao ?></div>
+              <div id="sumnot_contribuicao"><?php echo $obProjeto->contribuicao; ?></div>
               <textarea id="contribuicao" name="contribuicao" rows="10" hidden></textarea>
             </div>
           </div>
@@ -319,9 +319,9 @@
           <div class="col">
             <div class="form-group">
               <label for="cronograma">
-                <h5><?= ++$n ?>. Cronorama da proposta</h5>
+                <h5><?php echo ++$n; ?>. Cronorama da proposta</h5>
               </label>
-              <div id="sumnot_cronograma"><?= $obProjeto->cronograma ?></div>
+              <div id="sumnot_cronograma"><?php echo $obProjeto->cronograma; ?></div>
               <textarea id="cronograma" name="cronograma" rows="10" hidden></textarea>
             </div>
           </div>
@@ -329,10 +329,10 @@
 
         <hr>
         <div class="form-group">
-          <h5 id="attc"><?= ++$n ?>. Anexos</h5>
+          <h5 id="attc"><?php echo ++$n; ?>. Anexos</h5>
           <ul id="anexos"></ul>
           <iframe src="../upload/upload.php" frameborder="0" scrolling="no"></iframe>
-          <?= $anex ?>
+          <?php echo $anex; ?>
         </div>
 
         <hr>
@@ -340,13 +340,13 @@
           <div class="col-3">
             <div class="form-group">
               <label>Data</label>
-              <input type="date" name="data" class="form-control" id="dateAssing" value="<?= substr($obProjeto->data, 0, 10) ?>" requiredd>
+              <input type="date" name="data" class="form-control" id="dateAssing" value="<?php echo substr($obProjeto->data, 0, 10); ?>" requiredd>
             </div>
           </div>
         </div>
 
         <div class="form-group">
-          <a href="javascript: submitSalvar()" class="btn btn-primary  btn-sm">✔️ Salvar, para submeter depois</a>
+          <a href="javascript: submitSalvar()" class="btn btn-primary  btn-sm">✔️ Cadastrar</a>
           <a href="javascript: submitSumbeter()" class="btn btn-success btn-sm" hidden>↗️ Submeter agora</a>
           <button type="button" class="btn btn-warning btn-sm" onclick="history.back()">↩️ Voltar</button>
         </div>
@@ -365,11 +365,11 @@
 
     </form>
     
-    <?php 
+    <?php
 include './includes/modalMembro.php';
-   ?>
+  ?>
 
-<?=$scriptVars?>
+<?php echo $scriptVars; ?>
 
 
 

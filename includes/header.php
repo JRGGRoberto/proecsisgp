@@ -293,15 +293,32 @@ img.remover {
           <div class="dropdown-divider"></div>
           <a class="dropdown-item btn-sm" href="../propostas">Listar propostas</a>
           <?php
-           
-           if((in_array($obUsuario['config'], [1,2,3])) or $obUsuario['adm'] == 1){
-             echo '<div class="dropdown-divider"></div>';
-             echo '<a class="dropdown-item btn-sm" href="../projlist">Listar projetos para exportação</a>';
-             if($obUsuario['config'] == 3 or $obUsuario['adm'] == 1){
-              echo '<a class="dropdown-item btn-sm" href="../projetos_parados">Tramitação</a>';
+
+        if (in_array($obUsuario['config'], [1, 2, 3]) or $obUsuario['adm'] == 1) {
+            echo '<div class="dropdown-divider"></div>';
+            echo '<a class="dropdown-item btn-sm" href="../projlist">Listar projetos para exportação</a>';
+            if ($obUsuario['config'] == 3 or $obUsuario['adm'] == 1) {
+                echo '<a class="dropdown-item btn-sm" href="../projetos_parados">Tramitação</a>';
             }
-           }
-          ?>
+        }
+        if ($obUsuario['config'] == '3') {
+            echo "<a class='dropdown-item btn-sm' href='../projetos_parados_all'>Propostas paradas ADM</a>
+                        
+          <div class='dropdown-divider'></div>
+          <button class='btn btn-light dropdown-toggle' type='button' id='dropdownMenuButton' data-toggle='dropdown' aria-haspopup='true' aria-expanded='false'>
+                Cad. propostas (para  terceiros) [ADM]
+          </button>
+         
+          <div class='dropdown-menu dropdown-menu-right' aria-labelledby='dropdownMenuButton'>
+                <a class='dropdown-item btn-sm' href='../propostas/cadastrarADM.php?t=4'>Novo Programa ADM</a>
+                <a class='dropdown-item btn-sm' href='../propostas/cadastrarADM.php?t=5'>Novo Projeto ADM</a>
+                <a class='dropdown-item btn-sm' href='../propostas/cadastrarADM.php?t=3'>Nova Prestação de Serviço ADM</a>
+                <div class='dropdown-divider'></div>
+                <a class='dropdown-item btn-sm' href='../propostas/cadastrarADM.php?t=1'>Novo Curso ADM</a>
+                <a class='dropdown-item btn-sm' href='../propostas/cadastrarADM.php?t=2'>Novo Evento ADM</a>
+          </div>";
+        }
+        ?>
 
         </div>
       </div>

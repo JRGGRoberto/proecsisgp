@@ -9,10 +9,6 @@ $user = Login::getUsuarioLogado();
 $userId = $user['id'];
 use App\Entity\Campi;
 
-
-
-
-
 function dt($dt)
 {
     return substr($dt, 8, 2).'/'.substr($dt, 5, 2).'/'.substr($dt, 0, 4);
@@ -20,7 +16,14 @@ function dt($dt)
 
 function resumirTexto(string $texto, int $limite = 256): string
 {
+    $remStyle = '</style>';
+    $posStyle = strpos($texto, $remStyle);
+    if ($posStyle > 0) {
+        $texto = substr($texto, $posStyle);
+    }
+
     $textoLimpo = trim(strip_tags($texto));
+
     if (mb_strlen($textoLimpo) <= $limite) {
         return $textoLimpo;
     }
@@ -28,10 +31,9 @@ function resumirTexto(string $texto, int $limite = 256): string
     return substr($textoLimpo, 0, $limite).' <span class="badge badge-pill badge-success">(continua...)</span>';
 }
 
-//Monta tabela de avaliações dos projetos
+// Monta tabela de avaliações dos projetos
 function montarTblEProgress(array $ListaVerAnts, $projId, $msg1)
-{   
-    
+{
     $todasConcluidas = false;
     $LastV =
         '<table class="table table-bordered table-sm">
@@ -50,12 +52,11 @@ function montarTblEProgress(array $ListaVerAnts, $projId, $msg1)
     $etapas = 0;
     $btnStatus = [];
 
-    
     foreach ($ListaVerAnts as $la) {
         ++$a;
         $class = '';
         $td = '';
-        switch ($la->tp_instancia){
+        switch ($la->tp_instancia) {
             case 'ca':
                 $la->tp_instancia = 'Chefe de Divisão';
                 break;
@@ -71,10 +72,10 @@ function montarTblEProgress(array $ListaVerAnts, $projId, $msg1)
             case 'dc':
                 $la->tp_instancia = 'Dir. de Campus';
                 break;
-            default: 
+            default:
                 $la->tp_instancia = 'Cargo não definido';
                 break;
-        };
+        }
 
         switch ($la->resultado) {
             case 'a':
@@ -86,7 +87,7 @@ function montarTblEProgress(array $ListaVerAnts, $projId, $msg1)
 
                 array_push($btnStatus, new Blocos($la->fase_seq, 'success')); // 'primary')); //
                 break;
-                
+
             case 'r':
                 $la->resultado = 'Solicitação de alterações';
                 $badgeSituacao = 'danger';
@@ -119,12 +120,12 @@ function montarTblEProgress(array $ListaVerAnts, $projId, $msg1)
             </tr>';
 
         $etapas = $la->etapas;
-        
+
         if ($la->etapas == $la->fase_seq && $la->resultado == 'a') {
             $todasConcluidas = true;
         }
     }
-    
+
     $LastV .=
       '</tbody>
     </table>';
@@ -155,17 +156,15 @@ function montarTblEProgress(array $ListaVerAnts, $projId, $msg1)
     $btnAvaliacoes = '';
 
     if ($todasConcluidas) {
-        $btnAvaliacoes = 
+        $btnAvaliacoes =
             '<a href="../prnRelatorios/index.php?id='.$projId.'" target="_blank" 
                 class="btn btn-primary btn-sm mb-2" data-toggle="tooltip" data-placement="bottom" title="Visualizar todas as avaliações realizadas.">
                 🖨️ Avaliações
             </a>';
     }
 
-    
     return [$progresso, $LastV, $btnAvaliacoes];
 }
-
 
 function createBT($tipo, $id, $ver, $form = null, $tipo_exten = null, $titulo = null, $userId = null, $profId = null): string
 {
@@ -184,18 +183,18 @@ function createBT($tipo, $id, $ver, $form = null, $tipo_exten = null, $titulo = 
         case 'adequacoes':
             return '<a href="../forms/'.$form.'/vista.php?p='.$id.'&v='.($ver - 1).'"><button class="btn btn-danger btn-sm mb-2" >📑 Informações de adequações</button></a>';
         case 'relatorioParcial':
-            // if ($tipo_exten != 2) { 
+            // if ($tipo_exten != 2) {
             //   return  '
-            //     <a href="../relatorio/index.php?id='.$id.'"><button class="btn btn-success btn-sm mb-2">📊 Relatório Parcial</button></a> &nbsp; 
+            //     <a href="../relatorio/index.php?id='.$id.'"><button class="btn btn-success btn-sm mb-2">📊 Relatório Parcial</button></a> &nbsp;
             //   ';
             // }
             if ($userId == $profId) {
-                if ($tipo_exten != 2) { 
-                    return  '
+                if ($tipo_exten != 2) {
+                    return '
                         <a href="../relatorio/index.php?id='.$id.'"><button class="btn btn-success btn-sm mb-2">📝 Relatório Parcial</button></a> 
-                    ';     
-                } else { 
-                    //Evento: 
+                    ';
+                } else {
+                    // Evento:
                     return '
                         <a href="../relatorio/index.php?id='.$id.'">
                             <button 
@@ -207,17 +206,19 @@ function createBT($tipo, $id, $ver, $form = null, $tipo_exten = null, $titulo = 
                             </button>
                         </a>
                     ';
-                } 
-            }  else { 
+                }
+            } else {
                 return '';
             }
-        
+
+            // no break
         case 'relatorioFinal':
             if ($userId == $profId) {
-                return  '<a href="../relatorio/index.php?id='.$id.'"><button class="btn btn-success btn-sm mb-2">📝 Relatório Final</button></a>' ;
-            } else { 
+                return '<a href="../relatorio/index.php?id='.$id.'"><button class="btn btn-success btn-sm mb-2">📝 Relatório Final</button></a>';
+            } else {
                 return '';
             }
+            // no break
         default:
             return '';
     }
@@ -229,17 +230,16 @@ function naoSubmetido($p, $user): string
     $v = $p->ver;
     $userId = $user['id'];
     $profId = $p->id_prof;
-    //$userConfig = $user['config'];
-    if ($userId == $profId) {   
-        return 
+    // $userConfig = $user['config'];
+    if ($userId == $profId) {
+        return
         createBT('submeter', $i, $v).'  	&nbsp; '.
         createBT('editar', $i, $v).'  	&nbsp; '.
         createBT('visualizar', $i, $v).''.
         createBT('excluir', $i, $v)
         ;
-    } 
-    else {
-        return "";
+    } else {
+        return '';
     }
 }
 
@@ -253,23 +253,22 @@ function emAvaliacao($p, $user)
     $userId = $user['id'];
     $userConfig = $user['config'];
 
-    $osCabeca = [1,2,3,4]; //só a elite
-
+    $osCabeca = [1, 2, 3, 4]; // só a elite
 
     if ($userId == $profId) {
         if ($p->resultado == 'r') {
-            return 
+            return
                 createBT('editar', $i, $v).'  	&nbsp; '.
                 createBT('adequacoes', $i, $v, $form).'  	&nbsp; '.
                 createBT('visualizar', $i, $v).'  	&nbsp; '.
                 createBT('cancelar', $i, $v, null, null, $t);
         } elseif ($p->resultado == 'n') {
             if ($p->edt == 0) {
-                return 
-                createBT('visualizar', $i, $v). 
+                return
+                createBT('visualizar', $i, $v).
                 createBT('cancelar', $i, $v).'  	&nbsp; ';
             } else {
-                return 
+                return
                 createBT('editar', $i, $v).'  	&nbsp; '.
                 createBT('adequacoes', $i, $v, $form).'  	&nbsp; '.
                 createBT('submeterNovamente', $i, $v).'  	&nbsp; '.
@@ -277,15 +276,13 @@ function emAvaliacao($p, $user)
                 createBT('cancelar', $i, $v);
             }
         } elseif ($p->resultado == 'e') {
-            return 
-                createBT('visualizar', $i, $v). 
+            return
+                createBT('visualizar', $i, $v).
                 createBT('cancelar', $i, $v).'  	&nbsp; ';
         }
     } elseif (in_array($userConfig, $osCabeca)) {
-        return 
-            createBT('visualizar', $i, $v);    
-        } 
-    else {
+        return createBT('visualizar', $i, $v);
+    } else {
         return '';
     }
 }
@@ -297,14 +294,12 @@ function naoIniciado($p, $userId)
     $t = $p->titulo;
     $profId = $p->id_prof;
 
-
     if ($userId == $profId) {
-        return 
-            createBT('visualizar', $i, $v).' &nbsp; '. 
+        return
+            createBT('visualizar', $i, $v).' &nbsp; '.
             createBT('cancelar', $i, $v, null, null, $t);
     } else {
-        return 
-            createBT('visualizar', $i, $v);
+        return createBT('visualizar', $i, $v);
     }
 }
 
@@ -327,7 +322,7 @@ function emExecucao($p, $userId): string
             order by rp.created_at desc
         "
     );
-    if (isset($rel_par) ){
+    if (isset($rel_par)) {
         foreach ($rel_par as $rp) {
             $pub = '<span class="badge badge-light ">Em avaliação</span>';
             if ($rp->publicado == 1) {
@@ -335,15 +330,13 @@ function emExecucao($p, $userId): string
 
                 $rel_parInfos .= '
                     <a href="../relatorio/editarp.php?id='.$rp->id.'" target="_blank">
-                        <button class="btn btn-primary btn-sm mb-2">📊 Relatório Parcial '. $rp->dt_create.' </button>
+                        <button class="btn btn-primary btn-sm mb-2">📊 Relatório Parcial '.$rp->dt_create.' </button>
                     </a> &nbsp; ';
-
-                
-            }  else { 
+            } else {
                 if ($rp->last_result == 'r' && $profId == $userId) {
                     $pub = '<span class="badge badge-light">Solicitação de alterações</span>';
                     $linkFeito = '<a href="../relatorio/editarp.php?id='.$rp->id.'" target="_blank">';
-                    $rel_parInfos .=  $linkFeito .'<button class="btn btn-danger btn-sm mb-2"> 📊 Relatório Parcial &nbsp;' . $rp->dt_create. '&nbsp;' .$pub.'</button>'. '</a> &nbsp; ';
+                    $rel_parInfos .= $linkFeito.'<button class="btn btn-danger btn-sm mb-2"> 📊 Relatório Parcial &nbsp;'.$rp->dt_create.'&nbsp;'.$pub.'</button></a> &nbsp; ';
                 } else {
                     $rel_parInfos .= '
                     <button 
@@ -352,18 +345,19 @@ function emExecucao($p, $userId): string
                         data-toggle="tooltip" 
                         data-placement="top" 
                         title="Relatório em avaliação.">
-                            📊 Relatório Parcial '. $rp->dt_create. '&nbsp;' .$pub.' 
+                            📊 Relatório Parcial '.$rp->dt_create.'&nbsp;'.$pub.' 
                     </button> &nbsp; ';
-                }  
+                }
             }
         }
-    } 
-    return (
-        createBT('visualizar', $i, $v) . ' '. 
-        createBT('relatorioParcial', $i, $v, null, $tipo, null, $userId, $profId)   . ' &nbsp;'. 
+    }
+
+    return
+        createBT('visualizar', $i, $v).' '.
+        createBT('relatorioParcial', $i, $v, null, $tipo, null, $userId, $profId).' &nbsp;'.
         $rel_parInfos
         // createBT('cancelar', $i, $v).' &nbsp; '
-    );
+    ;
 }
 
 function finalizado($p, $userId): string
@@ -378,15 +372,14 @@ function finalizado($p, $userId): string
                             from 
                                 relatorios r 
                             where 
-                                r.idproj = '" . $i . "' 
+                                r.idproj = '".$i."' 
                             order by r.created_at desc
                         ");
-                                   
-                                
-    if (isset($rel_par) ){
+
+    if (isset($rel_par)) {
         $rel_Infos = '';
         foreach ($rel_par as $rp) {
-            $tipoRel ='';
+            $tipoRel = '';
             switch ($rp->tipo) {
                 case 'fi':
                     $tipoRel = '📊 Relatório Final ';
@@ -412,27 +405,25 @@ function finalizado($p, $userId): string
                 $pub = '';
 
                 $link = in_array($rp->tipo, ['fi', 're', 'pr']) ? 'f' : 'p';
-                $linkFeito = '<a href="../relatorio/editar'.$link .'.php?id='.$rp->id.'" target="_blank">';
+                $linkFeito = '<a href="../relatorio/editar'.$link.'.php?id='.$rp->id.'" target="_blank">';
 
-                if($rp->tipo == 'im'){
+                if ($rp->tipo == 'im') {
                     $tipoRel = '📊 Relatório Final (importado) ';
                     $linkFeito = '<a href="../upload/uploads/'.$rp->caminho.'" target="_blank">';
                 }
-        
-            
-                $rel_Infos .=  $linkFeito .'<button class="btn btn-primary btn-sm mb-2">'.$tipoRel. '&nbsp;' . $rp->created_at. '&nbsp;' .$pub.'</button>'. '</a> &nbsp; ';
-            } else { 
-                $rel_Infos .=  '<button class="btn btn-primary btn-sm mb-2 disabled">'.$tipoRel. '&nbsp;' . $rp->created_at. '&nbsp;' .$pub.'</button>'. ' &nbsp; ';
+
+                $rel_Infos .= $linkFeito.'<button class="btn btn-primary btn-sm mb-2">'.$tipoRel.'&nbsp;'.$rp->created_at.'&nbsp;'.$pub.'</button></a> &nbsp; ';
+            } else {
+                $rel_Infos .= '<button class="btn btn-primary btn-sm mb-2 disabled">'.$tipoRel.'&nbsp;'.$rp->created_at.'&nbsp;'.$pub.'</button> &nbsp; ';
             }
         }
-    } 
+    }
 
-    return 
+    return
       createBT('visualizar', $i, $v).''.
-      createBT('relatorioFinal', $i, $v, null, null, null, $userId, $profId) .''.
-      $rel_Infos;         
+      createBT('relatorioFinal', $i, $v, null, null, null, $userId, $profId).''.
+      $rel_Infos;
 }
-
 
 function aguardandoRelatorio($p, $userId)
 {
@@ -443,12 +434,11 @@ function aguardandoRelatorio($p, $userId)
 
     $ids_DirCampus = Campi::getRegistros();
     $usuariosEspecificos =
-      array_merge( [ 'bfd757a5-4f2d-4a10-87a8-a872ae69f1fd', // MATHEUS ESCOBOZO GUIZILINI
-                     'b8fa555f-cedb-47cf-91cc-7581736aac88'  // JOSé ROBERTO DE GÓES GOMES
-                   ],
-        array_column($ids_DirCampus, 'chef_div_id')
-      )  ;
-
+      array_merge(['bfd757a5-4f2d-4a10-87a8-a872ae69f1fd', // MATHEUS ESCOBOZO GUIZILINI
+          'b8fa555f-cedb-47cf-91cc-7581736aac88',  // JOSé ROBERTO DE GÓES GOMES
+      ],
+          array_column($ids_DirCampus, 'chef_div_id')
+      );
 
     $rel = Outros::qry(" 
         select 
@@ -456,14 +446,13 @@ function aguardandoRelatorio($p, $userId)
         from 
             relatorios r 
         where 
-            r.idproj = '" . $i . "' 
+            r.idproj = '".$i."' 
         order by r.created_at desc
     ");
-                                   
-                                
-    if (isset($rel) ){
+
+    if (isset($rel)) {
         foreach ($rel as $rp) {
-            $tipoRel ='';
+            $tipoRel = '';
             switch ($rp->tipo) {
                 case 'fi':
                     $tipoRel = '📊 Final';
@@ -485,62 +474,55 @@ function aguardandoRelatorio($p, $userId)
             $pub = '<span class="badge badge-light">Em avaliação</span>';
             if ($rp->publicado == 1) {
                 $pub = '';
-                $linkFeito = '<a href="../relatorio/editar'.$link .'.php?id='.$rp->id.'" target="_blank">';
-        
-            
-                $rel_Infos .=  $linkFeito .'<button class="btn btn-primary btn-sm mb-2">'.$tipoRel. '&nbsp;' . $rp->created_at. '&nbsp;' .$pub.'</button>'. '</a> &nbsp; ';
+                $linkFeito = '<a href="../relatorio/editar'.$link.'.php?id='.$rp->id.'" target="_blank">';
+
+                $rel_Infos .= $linkFeito.'<button class="btn btn-primary btn-sm mb-2">'.$tipoRel.'&nbsp;'.$rp->created_at.'&nbsp;'.$pub.'</button></a> &nbsp; ';
             } else {
                 if ($rp->last_result == 'r' && $profId == $userId) {
                     $pub = '<span class="badge badge-light">Solicitação de alterações</span>';
-                    $linkFeito = '<a href="../relatorio/editar'.$link .'.php?id='.$rp->id.'" target="_blank">';
-                    $rel_Infos .=  $linkFeito .'<button class="btn btn-danger btn-sm mb-2">'.$tipoRel. '&nbsp;' . $rp->created_at. '&nbsp;' .$pub.'</button>'. '</a> &nbsp; ';
-
-                } else if(in_array($userId, $usuariosEspecificos)) { 
-                    $linkFeito = '<a href="../relatorio/editar'.$link .'.php?id='.$rp->id.'" target="_blank">';
-                    $rel_Infos .=  $linkFeito.'<button 
+                    $linkFeito = '<a href="../relatorio/editar'.$link.'.php?id='.$rp->id.'" target="_blank">';
+                    $rel_Infos .= $linkFeito.'<button class="btn btn-danger btn-sm mb-2">'.$tipoRel.'&nbsp;'.$rp->created_at.'&nbsp;'.$pub.'</button></a> &nbsp; ';
+                } elseif (in_array($userId, $usuariosEspecificos)) {
+                    $linkFeito = '<a href="../relatorio/editar'.$link.'.php?id='.$rp->id.'" target="_blank">';
+                    $rel_Infos .= $linkFeito.'<button 
                             class="btn btn-primary btn-sm mb-2"  
                             data-toggle="tooltip" 
                             data-placement="top" 
                             title="Relatório em avaliação."
-                        >'.$tipoRel. '&nbsp;' . $rp->created_at. '&nbsp;' .$pub.'</button>'. '</a> &nbsp; ';
-                    
-                } else { 
-                    $rel_Infos .=  '
+                        >'.$tipoRel.'&nbsp;'.$rp->created_at.'&nbsp;'.$pub.'</button></a> &nbsp; ';
+                } else {
+                    $rel_Infos .= '
                         <button 
                             class="btn btn-primary btn-sm mb-2" 
                             disabled 
                             data-toggle="tooltip" 
                             data-placement="top" 
                             title="Relatório em avaliação."
-                        >'.$tipoRel. '&nbsp;' . $rp->created_at. '&nbsp;' .$pub.'</button>'. ' &nbsp; ';
+                        >'.$tipoRel.'&nbsp;'.$rp->created_at.'&nbsp;'.$pub.'</button> &nbsp; ';
                 }
             }
         }
-    } 
+    }
 
-    if ($userId == $profId ) {
-        return 
-            createBT('visualizar', $i, $v).''.
-            '<a href="../relatorio/index.php?id='.$i. '" class="btn btn-success btn-sm mb-2">📝 Relatório Final</a> &nbsp;'.
-            $rel_Infos;      
-    } elseif (in_array($userId, $usuariosEspecificos)) { 
-        return 
-            createBT('visualizar', $i, $v) . $rel_Infos;
-    } else { 
+    if ($userId == $profId) {
         return
-            createBT('visualizar', $i, $v);
+            createBT('visualizar', $i, $v).''.
+            '<a href="../relatorio/index.php?id='.$i.'" class="btn btn-success btn-sm mb-2">📝 Relatório Final</a> &nbsp;'.
+            $rel_Infos;
+    } elseif (in_array($userId, $usuariosEspecificos)) {
+        return createBT('visualizar', $i, $v).$rel_Infos;
+    } else {
+        return createBT('visualizar', $i, $v);
     }
 }
-
-
 
 function cancelado($p): string
 {
     $i = $p->id;
     $v = $p->ver;
+
     return createBT('visualizar', $i, $v);
 }
-
 
 ?>
 

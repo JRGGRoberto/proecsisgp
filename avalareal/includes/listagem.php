@@ -81,7 +81,7 @@ foreach ($avaliacoes as $ava) {
   <div class="card-header">
      <div class="row">
         <div class="col-sm-5"><a class="collapsed card-link" data-toggle="collapse" href="#p'.$ava->id_ava.'">📃 '.$ava->titulo.'</a></div>
-        <div class="col-sm-5">Submetido para o colegidado de <span class="badge badge-success">'.$ava->colegiado.'</span></div>
+        <div class="col-sm-5">Submetido para o colegiado de <span class="badge badge-success">'.$ava->colegiado.'</span></div>
         <div class="col-sm-1">
            '.
            $progresso
