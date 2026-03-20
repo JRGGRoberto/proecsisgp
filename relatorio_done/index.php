@@ -44,7 +44,7 @@ $filtroStatus = filter_input(INPUT_GET, 'filtroStatus', FILTER_SANITIZE_STRING);
 
 // Condições SQL
 $condicoes = [
-    strlen($busca) ? 'titulo LIKE "%'.str_replace(' ', '%', $busca).'%"' : null, /*,
+    strlen($busca) ? ' titulo LIKE "%'.str_replace(' ', '%', $busca).'%"' : null, /*,
   strlen($campus) ? "campus = '$campus'": null,
   strlen($colegiado) ? 'colegiado LIKE "%'.str_replace(' ','%',$colegiado).'%"': null,
   strlen($centro) ? 'centros LIKE "%'.str_replace(' ','%',$centro).'%"': null

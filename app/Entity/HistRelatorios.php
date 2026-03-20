@@ -87,7 +87,7 @@ class HistRelatorios
      */
     public static function getQntdRegistros($where = null)
     {
-        return (new Database('hist_relatorios'))->select($where, null, null, 'COUNT(*) as qtd')
+        return (new Database('hist_relatorios_v'))->select($where, null, null, 'COUNT(*) as qtd')
                                       ->fetchObject()
                                       ->qtd;
     }
@@ -101,7 +101,7 @@ class HistRelatorios
      */
     public static function getRegistro($id)
     {
-        return (new Database('hist_relatorios'))->select('id = "'.$id.'"')
+        return (new Database('hist_relatorios_v'))->select('id = "'.$id.'"')
                                   ->fetchObject(self::class);
     }
 

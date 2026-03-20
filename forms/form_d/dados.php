@@ -3,11 +3,13 @@
 require '../vendor/autoload.php';
 
 use \App\Entity\Avaliacoes;
+use App\Entity\EmailService;
 use \App\Entity\Projeto;
 use \App\Entity\Arquivo;
 use \App\Entity\Form_d;
 
 $form = Form_d::getRegistro($_GET['p'], $_GET['v']);
+$email = new EmailService();
 
 $anexados = Arquivo::getAnexados('forms', $id_ava);
 $anex = '<ul id="anexos_edt">';
@@ -70,12 +72,18 @@ if(isset($_POST['resultado'])){
         $proj = Projeto::getProjeto($id_proj, $ver_proj);
         $proj->nextLevel(); 
 
+        $email->avaliacaoProposta($proj, 'a');
+
+
         break;
       case 'r':
         $ava1->resultado = 'r';
         $ava1->atualizar();
         $proj = Projeto::getProjeto($id_proj, $ver_proj);
         $proj->novaVersao();
+
+        $email->avaliacaoProposta($proj, 'r');
+
         break;
       case 'e':
         echo "Salvo para futuro converencia";

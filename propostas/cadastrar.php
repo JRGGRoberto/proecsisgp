@@ -2,7 +2,14 @@
 
 require '../vendor/autoload.php';
 
+use App\Entity\Agente;
+use App\Entity\Arquivo;
+use App\Entity\EmailService;
+use App\Entity\Equipe;
 use App\Entity\Outros;
+use App\Entity\Palavras;
+use App\Entity\Professor;
+use App\Entity\Projeto;
 use App\Session\Login;
 
 // Obriga o usuário a estar logado
@@ -38,8 +45,6 @@ switch ($t) {
         header('location: index.php?status=error');
         exit;
 }
-
-use App\Entity\Projeto;
 
 $obProjeto = new Projeto();
 $obProjeto->id_prof = $user['id'];
@@ -96,25 +101,18 @@ foreach ($area_ext as $aext) {
 $telefone = '';
 $email = '';
 
-use App\Entity\Agente;
-use App\Entity\Professor;
-
 $regra = '';
 if ($user['tipo'] == 'professor') {
-    $dadosProf = (object)Professor::getDadosProf($obProjeto->id_prof);
+    $dadosProf = (object) Professor::getDadosProf($obProjeto->id_prof);
     $telefone = $dadosProf->telefone;
     $email = $dadosProf->email;
     $regra = '6204ba97-7f1a-499e-a17d-118d305bf7e4';
 } elseif ($user['tipo'] == 'agente') {
-    $dadosAgentes = (object)Agente::get($obProjeto->id_prof);
+    $dadosAgentes = (object) Agente::get($obProjeto->id_prof);
     $telefone = $dadosAgentes->telefone;
     $email = $dadosAgentes->email;
     $regra = 'a45daba2-12ec-11ef-b2c8-0266ad9885af';
 }
-
-use App\Entity\Arquivo;
-use App\Entity\Equipe;
-use App\Entity\Palavras;
 
 // VALIDAÇÃO DO POST
 if (isset($_POST['titulo'])) {
@@ -153,8 +151,6 @@ if (isset($_POST['titulo'])) {
 
         $obProjeto->cnpq_area = $_POST['cnpq_area'];
         $obProjeto->cnpq_sarea = $_POST['cnpq_sarea'];
-
-        
     }
 
     $obProjeto->area_extensao = $_POST['area_extensao'];
@@ -224,6 +220,17 @@ if (isset($_POST['titulo'])) {
 
     $idprjP = $obProjeto->cadastrar();
 
+    $emailService = new EmailService();
+    $emailService->cadastrarProposta(
+        $user['email'],
+        $user['nome'],
+        1,
+        $idprjP,
+        $t,
+        $obProjeto->titulo,
+        $user['id']
+    );
+
     if (strlen($palav1) > 0) {
         $ObjPalav1 = new Palavras();
         $ObjPalav1->incluir($idprjP, $palav1);
@@ -283,11 +290,10 @@ $scriptVars =
 
 include '../includes/header.php';
 
-echo "
+echo '
 <script>
-campusNome = ".$user['ca_nome']." 
-</script>";
-
+campusNome = '.$user['ca_nome'].' 
+</script>';
 
 if (in_array($t, $anexoIII)) {
     include __DIR__.'/includes/formAnexoIII.php';

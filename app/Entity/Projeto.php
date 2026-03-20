@@ -171,8 +171,6 @@ class Projeto
             'user' => $this->user,
         ]);
 
-        // EmailService::cadastrarProposta();
-
         // RETORNAR SUCESSO
         return $ida;
     }
@@ -313,6 +311,19 @@ class Projeto
      *
      * @return Projeto
      */
+    public static function getProjetoMaster($id, $ver)
+    {
+        return (new Database('projmaster'))->select('(id, ver) = ("'.$id.'", '.$ver.')')
+                                      ->fetchObject(self::class);
+    }
+
+    /**
+     * Método responsável por buscar uma Projeto com base em seu ID e Versão.
+     *
+     * @param int $id
+     *
+     * @return Projeto
+     */
     public static function getProjetoLast($id)
     {
         return (new Database('proj_last'))->select('id = "'.$id.'"')
@@ -350,51 +361,65 @@ class Projeto
      *
      * @return bool
      */
-    public function Submeter($para)
+    public function Submeter($para): array
     {
+        // Atualiza estado do projeto
         $this->para_avaliar = $para;
         $this->edt = 0;
         $this->atualizar();
 
-        /*
-        Quando o projeto é recusado, no professor parecerista escolhido, como é a instancia anterior que define o
-        id_instancia no SelecProf, temos estas 7 linhas a seguir, pois se não não fica definido o id_instancia
-        */
-        $inst = 'id_instancia';
-        $sqla = "select * from avalia_last al WHERE id_proj = '".$this->id."' limit 1";
-        $lastAvalia = (new Database())->selectJ($sqla)->fetchAll(\PDO::FETCH_CLASS);
-        $lastAvalia0 = !empty($lastAvalia) ? $lastAvalia[0] : null;
+        $primeiraSubmit = $this->primeiraSubmit();
+        $foiReprovado = $this->foiReprovado();
 
-        if (($lastAvalia0->resultado == 'r') and ($lastAvalia0->tp_instancia == 'pf')) {
-            $inst = "'".$lastAvalia0->id_instancia."'";
+        // Define a instância
+        $idInstancia = 'id_instancia';
+        if ($foiReprovado) {
+            $idInstancia = "'".$foiReprovado."'";
         }
 
+        // Insere nova avaliação
         $sql = "
-          insert into
-            avaliacoes 
-            ( id, id_proj, ver, regra_def, fase_seq, form, tp_instancia, id_instancia, resultado )
-          select 
-             id, id_proj, ver, regra_def, fase_seq, form, tp_avaliador, $inst , if(last_result='n', 'e', last_result)  
-          from to_avaliar 
-          where 
-            id_proj = '".$this->id."' and
-            fase_seq = (select IFNULL(max(fase_seq), 1)   from avaliacoes a where id_proj  = '".$this->id."')";
+            insert into avaliacoes 
+                (id, id_proj, ver, regra_def, fase_seq, form, tp_instancia, id_instancia, resultado)
+            select 
+                id,
+                id_proj,
+                ver,
+                regra_def,
+                fase_seq,
+                form,
+                tp_avaliador,
+                $idInstancia,
+                if(last_result = 'n', 'e', last_result)
+            from 
+                to_avaliar
+            where 
+                id_proj = '".$this->id."' and
+                fase_seq = (
+                        select 
+                            ifnull(max(fase_seq), 1)
+                        from 
+                            avaliacoes
+                        where 
+                            id_proj = '".$this->id."' 
+                        limit 1
+                      )
+                limit 1
+        ";
 
-        $a = new Database();
-        $a->execute($sql);
+        (new Database())->execute($sql);
 
-        // Quando o projeto é enviado ganha um número de protocolo
-
-        // $sql ="select COUNT(protocolo) from projetos p where id = '".$this->id."'";
-
-        if (!isset($this->protocolo)) {
-            $sql = "insert into numprotocolo (idproj)   values ('".$this->id."')";
-            $b = new Database();
-            $b->execute($sql);
+        // Gera protocolo SOMENTE na primeira submissão real
+        if ($primeiraSubmit && empty($this->protocolo)) {
+            (new Database())->execute(
+                "insert into numprotocolo (idproj) values ('".$this->id."')"
+            );
         }
 
-        return true;
-        // ->fetchAll(PDO::FETCH_CLASS,self::class);
+        return [
+            'primeira_submit' => $primeiraSubmit,
+            'foi_reprovado' => $foiReprovado,
+        ];
     }
 
     /**
@@ -470,7 +495,7 @@ class Projeto
             $a = new Database();
             $a->execute($sql);
         }
-/// passar o email 
+
         return true;
         // ->fetchAll(PDO::FETCH_CLASS,self::class);
     }
@@ -499,5 +524,41 @@ class Projeto
         }
 
         return $completou;
+    }
+
+    public function primeiraSubmit()
+    {
+        $sql = "
+            select count(1) qtd 
+            from avaliacoes 
+            where id_proj = '".$this->id."'
+        ";
+
+        $qtd = (new Database())->selectJ($sql)->fetchObject()->qtd;
+
+        // se $qtd == 0 -> true
+        return (int) $qtd === 0;
+    }
+
+    public function foiReprovado()
+    {
+        $sql = "
+            select resultado, tp_instancia, id_instancia
+            from avalia_last
+            where id_proj = '".$this->id."'
+        ";
+
+        $last = (new Database())->selectJ($sql)->fetchObject();
+
+        if (!$last) {
+            return null;
+        }
+
+        // vincula o id do último avaliador para ser o novo avaliador (pois reprovou)
+        if ($last->resultado == 'r') {
+            return $last->id_instancia;
+        }
+
+        return null;
     }
 }

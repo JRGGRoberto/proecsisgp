@@ -3,10 +3,9 @@
 namespace App\Entity;
 
 use App\Db\Database;
-use PDO;
 
-//id  ver	protocolo	regras	id_prof	tipo_exten	titulo	vigen_ini	vigen_fim	vigen_fim_orig	para_avaliar	estado	fase_seq	form	resultado	tp_instancia	id_instancia	qnt_fases
-class ProjMaster 
+// id  ver	protocolo	regras	id_prof	tipo_exten	titulo	vigen_ini	vigen_fim	vigen_fim_orig	para_avaliar	estado	fase_seq	form	resultado	tp_instancia	id_instancia	qnt_fases
+class ProjMaster
 {
     public $id;
     public $ver;
@@ -44,6 +43,10 @@ class ProjMaster
                                       ->fetchObject()
                                       ->qtd;
     }
-}
 
-?>
+    public static function getRegistro($id)
+    {
+        return (new Database('projmaster'))->select('id = "'.$id.'"', null, null)
+                                      ->fetchObject();
+    }
+}

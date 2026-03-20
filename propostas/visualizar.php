@@ -90,7 +90,6 @@ switch($t) {
 }
 
 
-
 $anexoIII = [3, 4, 5];
 $anexoIV = [1, 2];
 
@@ -99,6 +98,8 @@ if (in_array($t, $anexoIII)) {
 } else {
   $title = 'ANEXO IV';
 }
+
+
 
 /*
 if ($jan == 'nw') {
@@ -132,6 +133,7 @@ from
    proj_inf p
    left join ca_ce_co ccc on p.para_avaliar = ccc.co_id
 where (p.id, p.ver) = ('". $obProjeto->id ."', ". $obProjeto->ver ." ) ";
+
 
 
 $filename = Diversos::q($sql);
@@ -314,6 +316,7 @@ c {
 
 
 
+
   $html .= 
   '<table class="time">
     <thead>
@@ -399,36 +402,40 @@ entre os tr de baixo
     }
 
 
+
   $html .= '</table>';
  
 
- 
-  $cnpq_sarea = '';
-  $cnpq_sarea1 = CnpqSubA::getRegistro( $obProjeto->cnpq_sarea);
-  if($cnpq_sarea1 instanceof CnpqSubA){
-    $cnpq_sarea = $cnpq_sarea1->nome;
-  }
 
-  $cnpq_garea =  Area_Cnpq::getRegistro($obProjeto->cnpq_garea);
-  if($cnpq_garea instanceof Area_Cnpq){
-    $cnpq_garea = $cnpq_garea->nome;
-  } else {
-    $cnpq_garea = '';
-  }
-
-
-  $cnpq_gare =  CnpqArea::getRegistro($obProjeto->cnpq_area);
-  if($cnpq_gare instanceof CnpqArea){
-    $cnpq_gare = $cnpq_gare->nome;
-  } else {
-    $cnpq_gare = '';
-  }
 
 
   
   use \App\Entity\Area_temat;
 
   if (in_array($t, $anexoIII)) { 
+    
+      $cnpq_sarea = '';
+      $cnpq_sarea1 = CnpqSubA::getRegistro( $obProjeto->cnpq_sarea);
+      if($cnpq_sarea1 instanceof CnpqSubA){
+        $cnpq_sarea = $cnpq_sarea1->nome;
+      }
+    
+      $cnpq_garea =  Area_Cnpq::getRegistro($obProjeto->cnpq_garea);
+      if($cnpq_garea instanceof Area_Cnpq){
+        $cnpq_garea = $cnpq_garea->nome;
+      } else {
+        $cnpq_garea = '';
+      }
+    
+    
+      $cnpq_gare =  CnpqArea::getRegistro($obProjeto->cnpq_area);
+      if($cnpq_gare instanceof CnpqArea){
+        $cnpq_gare = $cnpq_gare->nome;
+      } else {
+        $cnpq_gare = '';
+      }
+    
+ 
     $html .= 
     '<table class="time">
       <thead>
@@ -464,6 +471,7 @@ entre os tr de baixo
     ;
 
   }
+  
   
 
   $dt1 = substr($obProjeto->vigen_ini, 0, 10);

@@ -5,24 +5,25 @@ require '../vendor/autoload.php';
 use App\Entity\Arquivo;
 use App\Entity\Campi;
 use App\Entity\Colegiado;
+use App\Entity\EmailService;
+use App\Entity\Outros;
 use App\Entity\Professor;
 use App\Entity\Projeto;
+use App\Entity\Relatorios;
 use App\Entity\RelParcial;
 use App\Session\Login;
-use App\Entity\Outros;
 
 // Obriga o usuário a estar logado
 Login::requireLogin();
 $user = Login::getUsuarioLogado();
 
-
-function getRegras($user) : array
-{ 
-     // Esses ids de regra estão na base de dados na tabela regras, definidas em 2025.
+function getRegras($user): array
+{
+    // Esses ids de regra estão na base de dados na tabela regras, definidas em 2025.
     // Caso crie outras regras que substituam estas, atualizar aqui e manter os que estão no banco para histórico.
-   $tpu = $user['tipo'][0];
+    $tpu = $user['tipo'][0];
 
-   $sql =  'select
+    $sql = 'select
               r.id, count(1) etapas
             from 
               regras r
@@ -33,7 +34,8 @@ function getRegras($user) : array
               r.tp_user = "'.$tpu.'"
             group by r.id
           ';
-    return (array)Outros::q($sql);
+
+    return (array) Outros::q($sql);
 }
 
 $t = $_GET['t'];
@@ -57,22 +59,21 @@ $cursosetor = '';
 if ($obProjeto->para_avaliar == -1) {
     $cursosetor = ''.$user['ca_nome'];
 } else {
-    $cursosetor = ''.  $user['tipo'] == 'prof' ?
+    $cursosetor = ''.$user['tipo'] == 'prof' ?
     Colegiado::getRegistro($obProjeto->para_avaliar)->nome :
     Campi::getRegistro($obProjeto->para_avaliar)->nome;
 }
 
 $regras = getRegras($user);
 
-
 $relatorio = new RelParcial();
 // VALIDAÇÃO DO POST
 if (isset($_POST['atvd_per'])) {
     $relatorio->idproj = $obProjeto->id;
 
-        $relatorio->regra = $regras['id'];
+    $relatorio->regra = $regras['id'];
 
-        $relatorio->caminho = $obProjeto->para_avaliar;
+    $relatorio->caminho = $obProjeto->para_avaliar;
 
     $relatorio->periodo_ini = $_POST['periodo_ini'];
     $relatorio->periodo_fim = $_POST['periodo_fim'];
@@ -83,13 +84,28 @@ if (isset($_POST['atvd_per'])) {
     $relatorio->user = $user['id'];
     $relatorio->tramitar = $_POST['tramitar'];
     $relatorio->visita_tec_qtd = $_POST['visita_tec_qtd'];
-    $idprjP = $relatorio->cadastrar();
+    $idRel = $relatorio->cadastrar();
+
+    $relatorioView = Relatorios::getRelatorio($idRel);
+
+    // buscar da VIEW relatorios
+    if ($relatorio->tramitar == 1) {
+        // echo "ENTROU NO IF<br>";
+
+        // echo "ANTES DO EMAIL<br>";
+        $email = new EmailService();
+
+        $email->submissaoRelatorio($relatorioView, $obProjeto);
+
+        // echo "DEPOIS DO EMAIL<br>";
+        // exit;
+    }
 
     $anexosJS = json_decode($_POST['anexosJS']);
     foreach ($anexosJS as &$anx) {
         $dados = Arquivo::getArquivo($anx);
         $dados->tabela = 'relatorios';
-        $dados->id_tab = $idprjP;
+        $dados->id_tab = $idRel;
         $dados->user = $obProjeto->user;
         $dados->atualizar();
     }
@@ -103,10 +119,7 @@ $relatorio->visita_tec_qtd = 0;
 
 include '../includes/header.php';
 
-
 // $reg = getRegras($tf, $user['tipo']) ;
- 
-
 
 $sql = '
 select 
@@ -179,7 +192,6 @@ echo '
         $("#modelEtapasAvala").modal("show");
     </script>
 ';
-
 
 include __DIR__.'/includes/formParcial.php';
 
