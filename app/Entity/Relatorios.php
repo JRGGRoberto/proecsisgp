@@ -3,13 +3,12 @@
 namespace App\Entity;
 
 use App\Db\Database;
-use PDO;
 
-//id  ver	protocolo	regras	id_prof	tipo_exten	titulo	vigen_ini	vigen_fim	vigen_fim_orig	para_avaliar	estado	fase_seq	form	resultado	tp_instancia	id_instancia	qnt_fases
-class Relatorios 
+// id  ver	protocolo	regras	id_prof	tipo_exten	titulo	vigen_ini	vigen_fim	vigen_fim_orig	para_avaliar	estado	fase_seq	form	resultado	tp_instancia	id_instancia	qnt_fases
+class Relatorios
 {
     public $id;
-    public $idproj; 
+    public $idproj;
     public $id_prof;
     public $ver;
     public $protocolo;
@@ -31,12 +30,11 @@ class Relatorios
     public $created_at;
     public $created_at_sf;
 
-
     public static function getRegistros($where = null, $order = null, $limit = null, $fields = '*')
-        {
-            return (new Database('relatorios'))->select($where, $order, $limit, $fields)
-                                    ->fetchAll(PDO::FETCH_CLASS, self::class);
-        }
+    {
+        return (new Database('relatorios'))->select($where, $order, $limit, $fields)
+                                ->fetchAll(\PDO::FETCH_CLASS, self::class);
+    }
 
     public static function getQntdRegistros($where = null)
     {
@@ -45,8 +43,9 @@ class Relatorios
                                       ->qtd;
     }
 
-
-
-
-
+    public static function getRelatorio($id)
+    {
+        return (new Database('relatorios'))->select('(id) = ("'.$id.'")')
+                                      ->fetchObject(self::class);
+    }
 }

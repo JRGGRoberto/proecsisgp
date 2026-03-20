@@ -9,9 +9,11 @@ error_reporting(E_ALL);
 use App\Entity\Arquivo;
 use App\Entity\Campi;
 use App\Entity\Colegiado;
+use App\Entity\EmailService;
 use App\Entity\HistRelatorios;
 use App\Entity\Professor;
 use App\Entity\Projeto;
+use App\Entity\Relatorios;
 use App\Entity\RelFinal;
 use App\Entity\RelParcial;
 use App\Session\Login;
@@ -36,6 +38,7 @@ if (isset($_POST['etapa'])) {
     $HistRelatorios->tp_relatorio = $_POST['tp_relatorio'];
     $HistRelatorios->user = $user['id'];
     $HistRelatorios->cadastrar();
+    $email = new EmailService();
 
     if (in_array($_POST['tp_relatorio'], ['fi', 're', 'pr'])) {
         $relFIM = (object) RelFinal::get($_POST['id_relatorio']);
@@ -61,6 +64,14 @@ if (isset($_POST['etapa'])) {
                     $obProjeto->renovacao($relatorio->periodo_renov_ini, $relatorio->periodo_renov_fim);
                 }
             }
+            // criando o objeto do projeto e referenciando or elatório para enviar o emial
+            $relFinalView = Relatorios::getRelatorio($_POST['id_relatorio']);
+
+            $obProjetoLast = Projeto::getProjetoLast($relFinalView->idproj);
+            $obProjeto = Projeto::getProjeto($obProjetoLast->id, $obProjetoLast->ver);
+
+            $email->avaliacaoRelatorio($relFinalView, $obProjeto, $_POST['resultado']);
+            $relFIM->atualizar();
         } elseif ($_POST['resultado'] == 'r') {
             $relFIM->tramitar = 0;
             $relFIM->last_result = 'r';
@@ -78,6 +89,11 @@ if (isset($_POST['etapa'])) {
             $relPARCIAL->tramitar = 0;
             $relPARCIAL->last_result = 'r';
         }
+        // criando o objeto do projeto e referenciando or elatório para enviar o emial
+        $relParcialView = Relatorios::getRelatorio($_POST['id_relatorio']);
+        $obProjetoLast = Projeto::getProjetoLast($relParcialView->idproj);
+        $obProjeto = Projeto::getProjeto($obProjetoLast->id, $obProjetoLast->ver);
+        $email->avaliacaoRelatorio($relParcialView, $obProjeto, $_POST['resultado']);
         $relPARCIAL->atualizar();
     }
 

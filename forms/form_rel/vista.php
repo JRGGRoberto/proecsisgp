@@ -6,12 +6,6 @@ use App\Entity\Arquivo;
 use App\Entity\Form_a;
 use App\Entity\Projeto;
 
-$dir = $_SERVER['REQUEST_URI'];
-$localDir = '';
-if (strpos($dir, 'forms/')) {
-    $localDir = '../';
-}
-
 $pGET = $pGET ?? $p ?? ($_GET['p'] ?? '');
 $vGET = $vGET ?? $v ?? ($_GET['v'] ?? '');
 
@@ -25,7 +19,7 @@ foreach ($anexados as $att) {
     ++$x;
     $anex .=
     ' <li>
-      <a href="'.$localDir.'../upload/uploads/'.$att->nome_rand.'" target="_blank">'.$att->nome_orig.'</a> 
+      <a href="../upload/uploads/'.$att->nome_rand.'" target="_blank">'.$att->nome_orig.'</a> 
     </li> ';
 }
 $anex .= '</ul>';

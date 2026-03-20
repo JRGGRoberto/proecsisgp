@@ -5,6 +5,12 @@ use App\Entity\Arquivo;
 use App\Entity\Form_Parecer;
 use App\Entity\Projeto;
 
+$dir = $_SERVER['REQUEST_URI'];
+$localDir = '';
+if (strpos($dir, 'forms/')) {
+    $localDir = '../';
+}
+
 $pGET = $pGET ?? $p ?? ($_GET['p'] ?? '');
 $vGET = $vGET ?? $v ?? ($_GET['v'] ?? '');
 
@@ -18,7 +24,7 @@ foreach ($anexados as $att) {
     ++$x;
     $anex .=
     ' <li>
-      <a href="../upload/uploads/'.$att->nome_rand.'" target="_blank">'.$att->nome_orig.'</a> 
+      <a href="'.$localDir.'../upload/uploads/'.$att->nome_rand.'" target="_blank">'.$att->nome_orig.'</a> 
     </li> ';
 }
 $anex .= '</ul>';
@@ -121,7 +127,7 @@ include __DIR__.'/../../includes/headers.php';
 
 </div>
 
-<a href="../../projetos" class="btn btn-primary btn-sm mr-2">Voltar</a>
+<a href="../../propostas" class="btn btn-primary btn-sm mr-2">Voltar</a>
 
 <?php
 

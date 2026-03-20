@@ -4,7 +4,6 @@ require '../vendor/autoload.php';
 
 use App\Db\Pagination;
 use App\Entity\Palavras;
-use App\Entity\Projeto;
 use App\Session\Login;
 
 // Obriga o usuário a estar logado
@@ -31,28 +30,32 @@ if (strlen($palavra)) {
     $palavra = '';
 }
 
-//Query pros colegiados
+/*
+
+1832e881-39eb-11ed-9793-0266ad9885af	Curitiba I (EMBAP)
+1832e953-39eb-11ed-9793-0266ad9885af	Curitiba II (FAP)
+*/
+$ca_ids = $user['ca_id'];
+$inValues = '("'.$ca_ids.'")';
+if (($ca_ids == '1832e881-39eb-11ed-9793-0266ad9885af') or ($ca_ids == '1832e953-39eb-11ed-9793-0266ad9885af')) {
+    $inValues = '("1832e881-39eb-11ed-9793-0266ad9885af", "1832e953-39eb-11ed-9793-0266ad9885af")';
+}
+
+// Query pros colegiados
 $qry = '';
 if (($user['tipo'] == 'professor') || $user['tipo'] == 'prof') {
     $qry = 'select 
             ccc.co_id as id, 
-            CONCAT("Colegiado de ", ccc.colegiado) as nome,
+            CONCAT("Colegiado de ", ccc.colegiado, "[", upper(ccc.codcam),"]") as nome,
             IFNULL(ccc.coord_id, "disabled") coord
-          from ca_ce_co ccc where ccc.ca_id  = "'.$user['ca_id'].'"';
+          from ca_ce_co ccc where ccc.ca_id in '.$inValues.' ';
 } elseif ($user['tipo'] == 'agente') {
     $qry = 'select 
             c.id as id,
             c.nome as nome,
             IFNULL(c.dir_campus_id, "disabled")  coord
           from campi c
-          where c.id  = "'.$user['ca_id'].'"';
-
-    /* $qry = 'select
-               c.id as id,
-               c.nome as nome,
-               IFNULL(c.dir_ca_id, "disabled")  coord
-             from centros c
-             where c.campus_id = "'. $user['ca_id'] .'"'; */
+          where c.id  in in '.$inValues.' ';
 }
 
 use App\Entity\Diversos;
@@ -103,21 +106,6 @@ $qntdProjetos = ProjMaster::getQntdRegistros($where1);
 $obPagination = new Pagination($qntdProjetos, $_GET['pagina'] ?? 1, 10);
 
 $projetos = ProjMaster::getRegistros($where1, null, $obPagination->getLimite());
-
-// echo '<pre>';
-// print_r($projetos);
-// echo '</pre>';
-
-
-
-/*
-use \App\Entity\Tipo_exten;
-$proposta = Tipo_exten::getRegistros();
-$propOptions = '';
-foreach($proposta as $prop){
-  $propOptions .= '<option value="'.$prop->nome.'"   >'.$prop->nome.'</option>';
-}
-*/
 
 include '../includes/header.php';
 include __DIR__.'/includes/listagem.php';

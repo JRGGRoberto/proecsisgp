@@ -7,6 +7,12 @@ use App\Entity\Arquivo;
 use App\Entity\Form_b;
 use App\Entity\Projeto;
 
+$dir = $_SERVER['REQUEST_URI'];
+$localDir = '';
+if (strpos($dir, 'forms/')) {
+    $localDir = '../';
+}
+
 $pGET = $pGET ?? $p ?? ($_GET['p'] ?? '');
 $vGET = $vGET ?? $v ?? ($_GET['v'] ?? '');
 
@@ -16,12 +22,12 @@ $form = Form_b::getRegistro($pGET, $vGET);
 $anexados = Arquivo::getAnexados('forms', $form->id_avaliacao);
 $x = 0;
 $anex = '<ul id="anexos_edt" >';
-$localFiles = __DIR__ . '/../upload/uploads/';
+$localFiles = $localDir.'../upload/uploads/';
 foreach ($anexados as $att) {
     ++$x;
     $anex .=
     ' <li>
-      <a href="'. $localFiles. '' .$att->nome_rand.'" target="_blank">'.$att->nome_orig.'</a> 
+      <a href="'.$localFiles.''.$att->nome_rand.'" target="_blank">'.$att->nome_orig.'</a> 
     </li> ';
 }
 $anex .= '</ul>';
@@ -36,6 +42,7 @@ include __DIR__.'/../../includes/headers.php';
 <div class="container mt-4">
   <h3>ANEXO B - FORMULÁRIO PARA AVALIAÇÃO DE AÇÃO EXTENSIONISTA</h3>
   <h5>(Parecer) Colegiado de Curso</h5>
+      
       
   <form name="myform" id="myform" method="post" enctype="multipart/form-data">
        <ol>
@@ -196,7 +203,7 @@ include __DIR__.'/../../includes/headers.php';
 
 </div>
 
-<a href="../../projetos" class="btn btn-primary btn-sm mr-2">Voltar</a>
+<a href="../../propostas" class="btn btn-primary btn-sm mr-2">Voltar</a>
 
 
 <?php

@@ -3,20 +3,20 @@
 require '../vendor/autoload.php';
 
 use \App\Entity\Avaliacoes;
-use App\Entity\EmailService;
 use \App\Entity\Projeto;
 use \App\Entity\Arquivo;
-use \App\Entity\Form_b;
+use \App\Entity\Form_a;
 
-$form = Form_b::getRegistro($_GET['p'], $_GET['v']);
-$email = new EmailService();
+$form = Form_a::getRegistro($_GET['p'], $_GET['v']);
 
 $anexados = Arquivo::getAnexados('forms', $id_ava);
 $anex = '<ul id="anexos_edt">';
+
+$localFiles = __DIR__ . '/../upload/uploads/';
 foreach($anexados as $att){
   $anex .= 
   '<li>
-      <a href="/home/sistemaproec/www/sistema/upload/uploads/'.$att->nome_rand.'" target="_blank">'.$att->nome_orig.'</a> 
+      <a href="'. $localFiles. '' .$att->nome_rand.'" target="_blank">'.$att->nome_orig.'</a> 
       <a href="../arquiv/index.php?tab='.$att->tabela. '&id='.$att->id_tab. '&arq='.$att->nome_rand.'" >  
         <span class="badge badge-danger">🗑️ Excluir</span>
       </a>
@@ -24,9 +24,10 @@ foreach($anexados as $att){
 }
 $anex .= '</ul>';
 
+
 $cad = false;
 if(!$form) {
-  $form = new Form_b();
+  $form = new Form_a();
   $cad = true;
 }
 
@@ -47,9 +48,12 @@ if(isset($_POST['resultado'])){
     $form->r3_5 = $_POST['r3_5'];
     $form->r3_6 = $_POST['r3_6'];
     $form->r3_7 = $_POST['r3_7'];
-    $form->r3_8 = $_POST['r3_8'];
-    $form->r3_9 = $_POST['r3_9'];
-    
+    $form->r4_1 = $_POST['r4_1'];
+    $form->r4_2 = $_POST['r4_2'];
+    $form->r4_3 = $_POST['r4_3'];
+    $form->r4_4 = $_POST['r4_4'];
+    $form->r4_5 = $_POST['r4_5'];
+    $form->solicitacoes = $_POST['solicitacoes'];
     $form->parecer = $_POST['parecer'];
     $form->cidade  = $_POST['cidade'];
     $form->whosigns = $_POST['whosigns'];
@@ -77,10 +81,7 @@ if(isset($_POST['resultado'])){
         $ava1->resultado = 'a';
         $ava1->atualizar();
         $proj = Projeto::getProjeto($id_proj, $ver_proj);
-        $proj->nextLevel();
-
-        $email->avaliacaoProposta($proj, 'a');
-
+        $proj->nextLevel(); 
 
         break;
       case 'r':
@@ -88,9 +89,6 @@ if(isset($_POST['resultado'])){
         $ava1->atualizar();
         $proj = Projeto::getProjeto($id_proj, $ver_proj);
         $proj->novaVersao();
-
-        $email->avaliacaoProposta($proj, 'r');
-
         break;
       case 'e':
         echo "Salvo para futuro converencia";

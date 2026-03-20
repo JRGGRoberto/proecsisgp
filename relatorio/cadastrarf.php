@@ -3,26 +3,27 @@
 require '../vendor/autoload.php';
 
 use App\Entity\Arquivo;
-use App\Entity\Colegiado;
 use App\Entity\Campi;
+use App\Entity\Colegiado;
+use App\Entity\EmailService;
+use App\Entity\Outros;
 use App\Entity\Professor;
 use App\Entity\Projeto;
+use App\Entity\Relatorios;
 use App\Entity\RelFinal;
 use App\Session\Login;
-use App\Entity\Outros;
 
 // Obriga o usuário a estar logado
 Login::requireLogin();
 $user = Login::getUsuarioLogado();
 
-
-function getRegras($tp_regra, $AGorPROF) : array
-{ 
-     // Esses ids de regra estão na base de dados na tabela regras, definidas em 2025.
+function getRegras($tp_regra, $AGorPROF): array
+{
+    // Esses ids de regra estão na base de dados na tabela regras, definidas em 2025.
     // Caso crie outras regras que substituam estas, atualizar aqui e manter os que estão no banco para histórico.
-   $tpu = $AGorPROF[0];
+    $tpu = $AGorPROF[0];
 
-   $sql ='select 
+    $sql = 'select 
             r.id, count(1) etapas
           from 
             regras r
@@ -34,9 +35,8 @@ function getRegras($tp_regra, $AGorPROF) : array
           group by r.id
           ';
 
-    return (array)Outros::q($sql);
+    return (array) Outros::q($sql);
 }
-
 
 $t = $_GET['t'];
 $id = $_GET['i'];
@@ -46,8 +46,6 @@ if ($t != 2) {
     header('location: index.php?status=error');
     exit;
 }
-
-
 
 $obProjeto = Projeto::getProjetoLast($id);
 
@@ -59,31 +57,26 @@ if ($obProjeto->id_prof != $user['id']) {
     exit;
 }
 
-
 $cursosetor = '';
 if ($obProjeto->para_avaliar == -1) {
     $cursosetor = ''.$user['ca_nome'];
 } else {
-    $cursosetor = ''.  $user['tipo'] == 'prof' ?
+    $cursosetor = ''.$user['tipo'] == 'prof' ?
     Colegiado::getRegistro($obProjeto->para_avaliar)->nome :
     Campi::getRegistro($obProjeto->para_avaliar)->nome;
 }
 
 $relatorio = new RelFinal();
 
-
 $regra = getRegras($tf, $user['tipo']);
-
-
 
 // VALIDAÇÃO DO POST
 if (isset($_POST['valida'])) {
     $relatorio->idproj = $obProjeto->id;
     $relatorio->tipo = $tf;
 
-
-    $relatorio->regra = $regra['id']; ;
-    $relatorio->etapas = $regra['etapas']; ;
+    $relatorio->regra = $regra['id'];
+    $relatorio->etapas = $regra['etapas'];
 
     $relatorio->caminho = $obProjeto->para_avaliar;
 
@@ -111,6 +104,21 @@ if (isset($_POST['valida'])) {
 
     $idprjP = $relatorio->cadastrar();
 
+    $relatorioView = Relatorios::getRelatorio($idprjP);
+
+    // buscar da VIEW relatorios
+    if ($relatorio->tramitar == 1) {
+        // echo "ENTROU NO IF<br>";
+
+        // echo "ANTES DO EMAIL<br>";
+        $email = new EmailService();
+
+        $email->submissaoRelatorio($relatorioView, $obProjeto);
+
+        // echo "DEPOIS DO EMAIL<br>";
+        // exit;
+    }
+
     $anexosJS = json_decode($_POST['anexosJS']);
 
     foreach ($anexosJS as &$anx) {
@@ -137,9 +145,7 @@ $relatorio->dim_agent_estag = 0;
 
 include '../includes/header.php';
 
-
-$reg = getRegras($tf, $user['tipo'])['id'] ;
-
+$reg = getRegras($tf, $user['tipo'])['id'];
 
 $sql = '
 select 
@@ -156,7 +162,7 @@ from
   	inner join regras_defin rd on rd.id_reg  = r.id 
 where 
   	r.tp_regra = "relatorios" and
-    r.id = "'. $reg  .'"
+    r.id = "'.$reg.'"
 order by
   	r.aprov_auto, r.nome,  rd.sequencia ;
 ';

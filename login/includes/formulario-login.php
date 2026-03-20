@@ -12,9 +12,9 @@ $alertaLogin = strlen($alertaLogin) ? '<div class="alert alert-danger">'.$alerta
         <h2>UNESPAR</h2>
         <img src="../imgs/logo_unespar.png" width="150" height="160">
         <hr>
-        <h3>PLANO DE ATIVIDADES DOCENTES</h3>
-        <h4><span class="badge badge-warning">ePAD</span></h4>  
-        <span><span style="color: #002661;">PRO</span><span style="color: #007F3D;">GRAD</span></span>
+        <h3>Sistema para Gerir Projetos </h3>
+        <h4><span style="color: #002661;">PRO</span><span style="color: #007F3D;">EC</span></h4>  
+        <span><span style="color: #002661;">Sis</span><span style="color: #007F3D;">PROEC</span></span>
 
     </div>
 
@@ -48,9 +48,7 @@ $alertaLogin = strlen($alertaLogin) ? '<div class="alert alert-danger">'.$alerta
       </form>
       <a href="https://senha.unespar.edu.br/" class="btn btn-primary btn-sm float-right">📑 Recuperar senha</a>
 <!-- name="acao" value="logar"
-      
       <br>
-      
       <a href="../projetostb/" class="btn btn-success" id="projEfet">📑 Propostas efetivadas</a>
       <label for="projEfet">Acessar projetos que já passaram por todos os crivos estabelecidos</label>
 -->
