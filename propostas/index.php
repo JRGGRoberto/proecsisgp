@@ -55,7 +55,7 @@ if (($user['tipo'] == 'professor') || $user['tipo'] == 'prof') {
             c.nome as nome,
             IFNULL(c.dir_campus_id, "disabled")  coord
           from campi c
-          where c.id  in in '.$inValues.' ';
+          where c.id  in '.$inValues.' ';
 }
 
 use App\Entity\Diversos;
