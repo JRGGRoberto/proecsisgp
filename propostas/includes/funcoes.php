@@ -211,7 +211,7 @@ function createBT($tipo, $id, $ver, $form = null, $tipo_exten = null, $titulo = 
                 return '';
             }
 
-            // no break
+            // no break 
         case 'relatorioFinal':
             if ($userId == $profId) {
                 return '<a href="../relatorio/index.php?id='.$id.'"><button class="btn btn-success btn-sm mb-2">📝 Relatório Final</button></a>';
@@ -256,13 +256,7 @@ function emAvaliacao($p, $user)
     $osCabeca = [1, 2, 3, 4]; // só a elite
 
     if ($userId == $profId) {
-        if ($p->resultado == 'r') {
-            return
-                createBT('editar', $i, $v).'  	&nbsp; '.
-                createBT('adequacoes', $i, $v, $form).'  	&nbsp; '.
-                createBT('visualizar', $i, $v).'  	&nbsp; '.
-                createBT('cancelar', $i, $v, null, null, $t);
-        } elseif ($p->resultado == 'n') {
+        if ($p->resultado == 'n') {
             if ($p->edt == 0) {
                 return
                 createBT('visualizar', $i, $v).
@@ -360,69 +354,61 @@ function emExecucao($p, $userId): string
     ;
 }
 
-function finalizado($p, $userId): string
-{
+
+function adequacoes($p, $user) {
     $i = $p->id;
     $v = $p->ver;
+    $t = $p->titulo;
+    $form = $p->form;
     $profId = $p->id_prof;
-    $rel_Infos = '';
+    $userId = $user['id'];
+    $userConfig = $user['config'];
 
-    $rel_par = Outros::qry(" Select 
-                                r.id, r.tipo, r.publicado, r.created_at, r.caminho
-                            from 
-                                relatorios r 
-                            where 
-                                r.idproj = '".$i."' 
-                            order by r.created_at desc
-                        ");
+    $osCabeca = [1, 2, 3, 4]; // só a elite
 
-    if (isset($rel_par)) {
-        $rel_Infos = '';
-        foreach ($rel_par as $rp) {
-            $tipoRel = '';
-            switch ($rp->tipo) {
-                case 'fi':
-                    $tipoRel = '📊 Relatório Final ';
-                    break;
-                case 're':
-                    $tipoRel = '📊 Relatório Final com renovação ';
-                    break;
-                case 'pr':
-                    $tipoRel = '📊 Relatório Final com prorrogação ';
-                    break;
-                case 'pa':
-                    $tipoRel = '📊 Relatório Parcial ';
-                    break;
-                case 'im':
-                    $tipoRel = '📊 Final importado ';
-                    break;
-                default:
-                    $tipoRel = 'ERROR';
-            }
-
-            $pub = '<span class="badge badge-light">Em avaliação</span>';
-            if ($rp->publicado == 1) {
-                $pub = '';
-
-                $link = in_array($rp->tipo, ['fi', 're', 'pr']) ? 'f' : 'p';
-                $linkFeito = '<a href="../relatorio/editar'.$link.'.php?id='.$rp->id.'" target="_blank">';
-
-                if ($rp->tipo == 'im') {
-                    $tipoRel = '📊 Relatório Final (importado) ';
-                    $linkFeito = '<a href="../upload/uploads/'.$rp->caminho.'" target="_blank">';
-                }
-
-                $rel_Infos .= $linkFeito.'<button class="btn btn-primary btn-sm mb-2">'.$tipoRel.'&nbsp;'.$rp->created_at.'&nbsp;'.$pub.'</button></a> &nbsp; ';
+    if ($userId == $profId) {
+        if ($p->resultado == 'r') {
+            return
+                createBT('editar', $i, $v).'  	&nbsp; '.
+                createBT('adequacoes', $i, $v, $form).'  	&nbsp; '.
+                createBT('visualizar', $i, $v).'  	&nbsp; '.
+                createBT('cancelar', $i, $v, null, null, $t);
+        } elseif ($p->resultado == 'n') {
+            if ($p->edt == 0) {
+                return
+                createBT('visualizar', $i, $v).
+                createBT('cancelar', $i, $v).'  	&nbsp; ';
             } else {
-                $rel_Infos .= '<button class="btn btn-primary btn-sm mb-2 disabled">'.$tipoRel.'&nbsp;'.$rp->created_at.'&nbsp;'.$pub.'</button> &nbsp; ';
+                return
+                createBT('editar', $i, $v).'  	&nbsp; '.
+                createBT('adequacoes', $i, $v, $form).'  	&nbsp; '.
+                createBT('submeterNovamente', $i, $v).'  	&nbsp; '.
+                createBT('visualizar', $i, $v).'  	&nbsp; '.
+                createBT('cancelar', $i, $v);
             }
-        }
+        } 
+    } elseif (in_array($userConfig, $osCabeca)) {
+        return createBT('visualizar', $i, $v);
+    } else {
+        return '';
     }
+}
+
+function ressubmit($p, $user) {
+    $i = $p->id;
+    $v = $p->ver;
+    $t = $p->titulo;
+    $form = $p->form;
+    $profId = $p->id_prof;
+    $userId = $user['id'];
+    $userConfig = $user['config'];
 
     return
-      createBT('visualizar', $i, $v).''.
-      createBT('relatorioFinal', $i, $v, null, null, null, $userId, $profId).''.
-      $rel_Infos;
+    createBT('editar', $i, $v).'  	&nbsp; '.
+    createBT('adequacoes', $i, $v, $form).'  	&nbsp; '.
+    createBT('submeterNovamente', $i, $v).'  	&nbsp; '.
+    createBT('visualizar', $i, $v).'  	&nbsp; '.
+    createBT('cancelar', $i, $v); 
 }
 
 function aguardandoRelatorio($p, $userId)
@@ -515,6 +501,73 @@ function aguardandoRelatorio($p, $userId)
         return createBT('visualizar', $i, $v);
     }
 }
+
+function finalizado($p, $userId): string
+{
+    $i = $p->id;
+    $v = $p->ver;
+    $profId = $p->id_prof;
+    $rel_Infos = '';
+
+    $rel_par = Outros::qry(" Select 
+                                r.id, r.tipo, r.publicado, r.created_at, r.caminho
+                            from 
+                                relatorios r 
+                            where 
+                                r.idproj = '".$i."' 
+                            order by r.created_at desc
+                        ");
+
+    if (isset($rel_par)) {
+        $rel_Infos = '';
+        foreach ($rel_par as $rp) {
+            $tipoRel = '';
+            switch ($rp->tipo) {
+                case 'fi':
+                    $tipoRel = '📊 Relatório Final ';
+                    break;
+                case 're':
+                    $tipoRel = '📊 Relatório Final com renovação ';
+                    break;
+                case 'pr':
+                    $tipoRel = '📊 Relatório Final com prorrogação ';
+                    break;
+                case 'pa':
+                    $tipoRel = '📊 Relatório Parcial ';
+                    break;
+                case 'im':
+                    $tipoRel = '📊 Final importado ';
+                    break;
+                default:
+                    $tipoRel = 'ERROR';
+            }
+
+            $pub = '<span class="badge badge-light">Em avaliação</span>';
+            if ($rp->publicado == 1) {
+                $pub = '';
+
+                $link = in_array($rp->tipo, ['fi', 're', 'pr']) ? 'f' : 'p';
+                $linkFeito = '<a href="../relatorio/editar'.$link.'.php?id='.$rp->id.'" target="_blank">';
+
+                if ($rp->tipo == 'im') {
+                    $tipoRel = '📊 Relatório Final (importado) ';
+                    $linkFeito = '<a href="../upload/uploads/'.$rp->caminho.'" target="_blank">';
+                }
+
+                $rel_Infos .= $linkFeito.'<button class="btn btn-primary btn-sm mb-2">'.$tipoRel.'&nbsp;'.$rp->created_at.'&nbsp;'.$pub.'</button></a> &nbsp; ';
+            } else {
+                $rel_Infos .= '<button class="btn btn-primary btn-sm mb-2 disabled">'.$tipoRel.'&nbsp;'.$rp->created_at.'&nbsp;'.$pub.'</button> &nbsp; ';
+            }
+        }
+    }
+
+    return
+      createBT('visualizar', $i, $v).''.
+      createBT('relatorioFinal', $i, $v, null, null, null, $userId, $profId).''.
+      $rel_Infos;
+}
+
+
 
 function cancelado($p): string
 {

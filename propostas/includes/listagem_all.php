@@ -134,6 +134,20 @@ foreach ($projetos as $proj) {
         $nomeEstado = 'Finalizado';
         $btn = finalizado($proj, $user);
         break;
+        
+    //adequações
+    case 6: 
+        $proj->estado = '<span class="badge badge-warning ">Em avaliação</span> ';
+        $nomeEstado = 'Em avaliação';
+        $btn = emAvaliacao($proj, $user);
+        break;
+    //ressubmeter
+    case 7:
+        $proj->estado = '<span class="badge badge-warning ">Em avaliação</span> ';
+        $nomeEstado = 'Em avaliação';
+        $btn = emAvaliacao($proj, $user);
+        break;
+      
     case 51: // Finalizado e entregue o relatório final/renovação
         $proj->estado = '<span class="badge badge-success ">Finalizado</span> ';
         $nomeEstado = 'Finalizado';

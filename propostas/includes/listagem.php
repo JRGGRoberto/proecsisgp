@@ -63,23 +63,33 @@ foreach ($projetos as $proj) {
             break;
         case 4: // Finalizada a vigência
             $progresso = '<span class="badge badge-success ">Aguarde Relatório Final</span> ';
-            // $nomeEstado = 'Aguarde Relatório Final';
+            $nomeEstado = 'Aguarde Relatório Final';
             $btn = aguardandoRelatorio($proj, $userId);
             break;
         case 5: // Finalizado e entregue o relatório final/renovação
             $progresso = '<span class="badge badge-success ">Finalizado</span> ';
-            // $nomeEstado = 'Finalizado';
+            $nomeEstado = 'Finalizado';
             $btn = finalizado($proj, $user);
+            break;
+        case 6:
+            $progresso = '<span class="badge badge-danger ">Necessário adequações</span> ';
+            $nomeEstado = 'Adequacoes';
+            $btn = adequacoes($proj, $user);
+            break;
+        case 7:
+            $progresso = '<span class="badge badge-info ">Necessário ressubmeter</span> ';
+            $nomeEstado = 'Necessário Ressubmeter';
+            $btn = ressubmit($proj, $user);
             break;
         case 51: // Finalizado e entregue o relatório final/renovação
             $proj->estado = '<span class="badge badge-success ">Finalizado</span> ';
             $nomeEstado = 'Finalizado';
             $btn = finalizado($proj, $user);
             break;
-        case 9: // Cancelado
-            $progresso = '<span class="badge badge-danger ">Cancelado</span> ';
-            $btn = cancelado($proj);
-            break;
+            // case 9: // Cancelado
+            //     $progresso = '<span class="badge badge-danger ">Cancelado</span> ';
+            //     $btn = cancelado($proj);
+            //     break;
         default:
             $progresso = '<span class="badge badge-danger">Erro estado</span>';
             break;
@@ -125,7 +135,7 @@ foreach ($projetos as $proj) {
       <div class="card mt-2">
         <div class="card-header">
             <div class="row">
-              <div class="col-sm-6"><a class="collapsed card-link" data-toggle="collapse" href="#p'.$proj->id.'">📃 '.$proj->titulo.'</a></div>';
+              <div class="col-sm-6"><a class="collapsed card-link" data-toggle="collapse" href="#p'.$proj->id.'">📃 '.$proj->titulo.' <span class="badge badge-primary ">Ver detalhes  🔽</span></a></div>';
     switch ($proj->tipo_exten) {
         case 1:
             $proj->tipo_exten = 'Curso';
