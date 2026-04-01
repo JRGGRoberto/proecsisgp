@@ -36,20 +36,24 @@ foreach ($relatorios as $relf) {
         if ($relf->publicado == 1) {
             $msgPublicadoFinal = ' <span class="badge badge-success">Publicado</span>';
         } else {
-            $msgPublicadoFinal = '<span class="badge badge-warning">Aguardando análise(s) - ('.$relf->etapa.'/'.$relf->etapas.')</span>';
+            $msgPublicadoFinal = '<span class="badge badge-warning">Aguardando análise(s) - ('.$relf->fase_atual.'/'.$relf->fases.')</span>';
             // if($relf->last_result = 'n'){}
         }
     } else {
         $btns = '<a href="editar'.$tipo[1].'.php?id='.$relf->id.'" class="card-link">Editar</a> ';
-        $btns .= '<a href="#" onclick="printDel(\''.$relf->id.$tipo[1].'\')" class="card-link">Excluir</a> ';
+        $btns .= '<a href="#" onclick="showModalSubmit(\''.$relf->id.'\')" class="card-link">Submeter</a> ';
+        if (in_array($relf->fase_atual, [null, 0])) {
+            $btns .= '<a href="#" onclick="printDel(\''.$relf->id.'\')" class="card-link">Excluir</a> ';
+        }
+
         chEstado('fi', $opcoes);
 
         if ($relf->last_result == 'n') {
-            $msgPublicadoFinal = '<span class="badge badge-secondary">Não submetido - ('.$relf->etapa.'/'.$relf->etapas.')</span>';
+            $msgPublicadoFinal = '<span class="badge badge-secondary">Não submetido - ('.$relf->fase_atual.'/'.$relf->fases.')</span>';
         } elseif ($relf->last_result == 'r') {
-            $msgPublicadoFinal = '<span class="badge badge-danger">Adequações solicitadas - ('.$relf->etapa.'/'.$relf->etapas.')</span>';
+            $msgPublicadoFinal = '<span class="badge badge-danger">Adequações solicitadas - ('.$relf->fase_atual.'/'.$relf->fases.')</span>';
         } else {
-            $msgPublicadoFinal = '<span class="badge badge-info">?? etapas('.$relf->etapa.'/'.$relf->etapas.') tramitar('.$relf->tramitar.') result('.$relf->last_result.')</span>';
+            $msgPublicadoFinal = '<span class="badge badge-info">?? etapas('.$relf->fase_atual.'/'.$relf->fases.') tramitar('.$relf->tramitar.') result('.$relf->last_result.')</span>';
         }
     }
 
@@ -183,12 +187,51 @@ echo $novoBTNs;
   </div>
   <!-- The Modal -->
 
+
+<!-- The Modal -->
+<div class="modal fade" id="modelSubmit">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <!-- Modal Header -->
+      <div class="modal-header">
+        <h4 class="modal-title">Submissão de relatório</h4>
+        <button type="button" class="close" data-dismiss="modal">&times;</button>
+      </div>
+        
+      <!-- Modal body -->
+      <div class="modal-body">
+        *O responsável pelo preenchimento e encaminhamento é o coordenador da Proposta de Extensão
+        <table class="table table-bordered">
+  <thead class="thead-light">
+    <tr>
+      <th>Etapa</th>
+      <th>Quem avalia</th>
+    </tr>
+    
+  </thead>
+  <tbody>
+
+  </tbody>
+</table>
+      </div>
+      <!-- Modal footer -->
+      <div class="modal-footer">
+        <form method="post" action="submeter.php?">
+          <input type="text" name="idRel" id="idRel">
+           <button type="submit" class="btn btn-primary btn-sm mb-2" >Submeter</button>
+           <button type="button" class="btn btn-danger  btn-sm mb-2" data-dismiss="modal">Fechar</button>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
+
+
 <script>
 
 function printDel(id){
 //    event.preventDefault(); 
     console.log(id);
-    // excluir1.php
    modalTitle.innerText = 'Confirmação de exclusão';
     modalBody.innerHTML =  
     `<h4>Tem certeza que deseja apagar o registro de relatório?</h4>
@@ -200,8 +243,19 @@ function printDel(id){
     $('#modalSub').modal('show');
   }
 
+function showModalSubmit(id){
+  $("#modelSubmit").modal("show");
+  document.getElementById("idRel").value = id;
+}
+
 
 </script>
+
+
+
+
+
+
 
 
 

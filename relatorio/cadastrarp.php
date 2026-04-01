@@ -5,12 +5,10 @@ require '../vendor/autoload.php';
 use App\Entity\Arquivo;
 use App\Entity\Campi;
 use App\Entity\Colegiado;
-use App\Entity\EmailService;
 use App\Entity\Outros;
 use App\Entity\Professor;
 use App\Entity\Projeto;
-use App\Entity\Relatorios;
-use App\Entity\RelParcial;
+use App\Entity\Relatorio;
 use App\Session\Login;
 
 // Obriga o usuário a estar logado
@@ -66,40 +64,21 @@ if ($obProjeto->para_avaliar == -1) {
 
 $regras = getRegras($user);
 
-$relatorio = new RelParcial();
+$relatorio = new Relatorio();
 // VALIDAÇÃO DO POST
 if (isset($_POST['atvd_per'])) {
     $relatorio->idproj = $obProjeto->id;
-
     $relatorio->regra = $regras['id'];
-
-    $relatorio->caminho = $obProjeto->para_avaliar;
-
+    $relatorio->para_avaliar = $obProjeto->para_avaliar;
     $relatorio->periodo_ini = $_POST['periodo_ini'];
     $relatorio->periodo_fim = $_POST['periodo_fim'];
     $relatorio->atvd_per = $_POST['atvd_per'];
     $relatorio->alteracoes = $_POST['alteracoes'];
     $relatorio->atvd_prox_per = $_POST['atvd_prox_per'];
-    $relatorio->etapas = $regras['etapas'];
     $relatorio->user = $user['id'];
     $relatorio->tramitar = $_POST['tramitar'];
     $relatorio->visita_tec_qtd = $_POST['visita_tec_qtd'];
     $idRel = $relatorio->cadastrar();
-
-    $relatorioView = Relatorios::getRelatorio($idRel);
-
-    // buscar da VIEW relatorios
-    if ($relatorio->tramitar == 1) {
-        // echo "ENTROU NO IF<br>";
-
-        // echo "ANTES DO EMAIL<br>";
-        $email = new EmailService();
-
-        $email->submissaoRelatorio($relatorioView, $obProjeto);
-
-        // echo "DEPOIS DO EMAIL<br>";
-        // exit;
-    }
 
     $anexosJS = json_decode($_POST['anexosJS']);
     foreach ($anexosJS as &$anx) {

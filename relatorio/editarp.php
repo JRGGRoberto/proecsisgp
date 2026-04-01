@@ -9,11 +9,9 @@ error_reporting(E_ALL);
 use App\Entity\Arquivo;
 use App\Entity\Campi;
 use App\Entity\Colegiado;
-use App\Entity\EmailService;
 use App\Entity\Professor;
 use App\Entity\Projeto;
-use App\Entity\Relatorios;
-use App\Entity\RelParcial;
+use App\Entity\Relatorio;
 use App\Session\Login;
 
 // Obriga o usuário a estar logado
@@ -22,8 +20,8 @@ $user = Login::getUsuarioLogado();
 
 $id = $_GET['id'];
 
-$relatorio = new RelParcial();
-$relatorio = (object) RelParcial::get($id);
+$relatorio = new Relatorio();
+$relatorio = $relatorio->getId($id);
 
 $editar = '';
 $scriptDisble = '';
@@ -107,20 +105,6 @@ if (isset($_POST['atvd_per'])) {
     $relatorio->user = $user['id'];
     $relatorio->tramitar = $_POST['tramitar'];
     $relatorio->visita_tec_qtd = $_POST['visita_tec_qtd'];
-    if ($_POST['tramitar'] == 1) {
-        $relatorio->last_result = 'n';
-        $relatorioView = Relatorios::getRelatorio($relatorio->id);
-
-        // buscar da VIEW relatorios
-        if ($relatorio->tramitar == 1) {
-            // echo "ENTROU NO IF<br>";
-            // echo "ANTES DO EMAIL<br>";
-            $email = new EmailService();
-            $email->submissaoRelatorio($relatorioView, $obProjeto);
-            // echo "DEPOIS DO EMAIL<br>";
-            // exit;
-        }
-    }
     $relatorio->atualizar();
 
     $anexosJS = json_decode($_POST['anexosJS']);

@@ -13,19 +13,19 @@ $user = Login::getUsuarioLogado();
 $voltarUrl = $_SERVER['HTTP_REFERER'];
 echo $voltarUrl;
 
-$id = $_GET['id'];
+$id = $_POST['idRel'];
 
-$objRelToDEL = new Relatorio();
-$objRelToDEL->getId($id);
+$objRelToSubmit = new Relatorio();
+$objRelToSubmit->getId($id);
 
-if ($objRelToDEL->fase_atual > 0) {
-    echo 'não pode excluir! ';
+if ($objRelToSubmit->fase_atual < 0) {
+    echo 'não pode submeter! ';
 } else {
     $objProj = new Projeto();
-    $objProj = $objProj->getProjetoLast($objRelToDEL->idproj);
+    $objProj = $objProj->getProjetoLast($objRelToSubmit->idproj);
 
     if ($objProj->id_prof == $user['id']) {
-        $objRelToDEL->excluir();
-        header('location: index.php?id='.$objProj->id.'&msg=Ok');
+        $objRelToSubmit->submeter();
+        header('location: index.php?id='.$objProj->id.'&msg=Oksubmit');
     }
 }

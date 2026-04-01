@@ -372,20 +372,7 @@ if ($tf == 'pr') {
         <?php echo $anex; ?>
       </div>
       <hr>
-      <?php
-              if ($relatorio->tramitar == 0) {
-                  if ($obProjeto->id_prof != $user['id']) {
-                      echo '';
-                  } else {
-                      ?>
-      <div class="form-group">
-        <h5 id="">Pronto para tramitação</h5>
-        <label for="tramitar">Ao marcar esta <input type="checkbox" id="tramitar" name="tramitar" value="1"> opção, depois de salvo, este relatório ficará visível para aprovação e perderá o modo de edição.</label>
-           
-      </div>
-      <hr>
-      <?php }
-                  }  ?>
+
 
       <div class="row" >
 

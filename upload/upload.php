@@ -16,7 +16,7 @@ $erro = null;
 if (isset($_FILES['arquivo'])) {
     // Configurações
     $extensoes = ['.doc', '.txt', '.pdf', '.docx', '.jpg', '.png', '.xlsx', '.xls', '.pptx', '.ppt'];
-    $caminho = __DIR__ . '/uploads/';
+    $caminho = __DIR__.'/uploads/';
 
     // Recuperando informações do arquivo
     $nome = $_FILES['arquivo']['name'];

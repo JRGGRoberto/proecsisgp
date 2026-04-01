@@ -9,11 +9,9 @@ error_reporting(E_ALL);
 use App\Entity\Arquivo;
 use App\Entity\Campi;
 use App\Entity\Colegiado;
-use App\Entity\EmailService;
 use App\Entity\Professor;
 use App\Entity\Projeto;
-use App\Entity\Relatorios;
-use App\Entity\RelFinal;
+use App\Entity\Relatorio;
 use App\Session\Login;
 
 // Obriga o usuário a estar logado
@@ -21,7 +19,9 @@ Login::requireLogin();
 $user = Login::getUsuarioLogado();
 
 $id = $_GET['id'];
-$relatorio = (object) RelFinal::get($id);
+$relatorio = new Relatorio();
+$relatorio = $relatorio->getId($id);
+
 $tf = $relatorio->tipo;
 
 $obProjeto = Projeto::getProjetoLast($relatorio->idproj);
@@ -95,14 +95,13 @@ if (isset($_POST['acao']) == 'removeAnexo') {
 // VALIDAÇÃO DO POST
 if (isset($_POST['valida'])) {
     $relatorio->idproj = $obProjeto->id;
-    $relatorio->tipo = $tf;
 
-    if ($tf == 're') {
+    if ($relatorio->tipo == 're') {
         $relatorio->periodo_renov_fim = $_POST['periodo_renov_fim'];
         $relatorio->periodo_renov_ini = $_POST['periodo_renov_ini'];
     }
 
-    if ($tf == 'pr') {
+    if ($relatorio->tipo == 'pr') {
         $relatorio->periodo_prorroga_fim = $_POST['periodo_prorroga_fim'];
         $relatorio->atvd_prox_per = $_POST['atvd_prox_per'];
     }
@@ -118,20 +117,7 @@ if (isset($_POST['valida'])) {
     $relatorio->divulgacao = $_POST['divulgacao'];
     $relatorio->tramitar = $_POST['tramitar'];
     $relatorio->visita_tec_qtd = $_POST['visita_tec_qtd'];
-    if ($_POST['tramitar'] == 1) {
-        $relatorio->last_result = 'n';
-        $relatorioView = Relatorios::getRelatorio($relatorio->id);
 
-        // buscar da VIEW relatorios
-        if ($relatorio->tramitar == 1) {
-            // echo "ENTROU NO IF<br>";
-            // echo "ANTES DO EMAIL<br>";
-            $email = new EmailService();
-            $email->submissaoRelatorio($relatorioView, $obProjeto);
-            // echo "DEPOIS DO EMAIL<br>";
-            // exit;
-        }
-    }
     $relatorio->atualizar();
 
     $anexosJS = json_decode($_POST['anexosJS']);

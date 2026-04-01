@@ -5,8 +5,9 @@ ini_set('display_errors', 1);
 ini_set('display_startup_errors', 1);
 error_reporting(E_ALL);
 
-use App\Entity\Outros;
+// use App\Entity\Outros;
 use App\Entity\Projeto;
+use App\Entity\Relatorio;
 use App\Session\Login;
 
 $user = Login::getUsuarioLogado();
@@ -70,7 +71,8 @@ function chEstado($op, &$opcoes)
     return null;
 }
 
-$relatorios = Outros::qry('SELECT * FROM relatorios WHERE idproj = "'.$id.'"');
+// $relatorios = Outros::qry('SELECT * FROM relatorios WHERE idproj = "'.$id.'"');
+$relatorios = Relatorio::getAll('idproj = "'.$obProjeto->id.'"');
 
 // remoção das oções de criar relatórios
 foreach ($relatorios as $rel) {

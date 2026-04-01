@@ -5,12 +5,10 @@ require '../vendor/autoload.php';
 use App\Entity\Arquivo;
 use App\Entity\Campi;
 use App\Entity\Colegiado;
-use App\Entity\EmailService;
 use App\Entity\Outros;
 use App\Entity\Professor;
 use App\Entity\Projeto;
-use App\Entity\Relatorios;
-use App\Entity\RelFinal;
+use App\Entity\Relatorio;
 use App\Session\Login;
 
 // Obriga o usuário a estar logado
@@ -66,7 +64,7 @@ if ($obProjeto->para_avaliar == -1) {
     Campi::getRegistro($obProjeto->para_avaliar)->nome;
 }
 
-$relatorio = new RelFinal();
+$relatorio = new Relatorio();
 
 $regra = getRegras($tf, $user['tipo']);
 
@@ -76,9 +74,9 @@ if (isset($_POST['valida'])) {
     $relatorio->tipo = $tf;
 
     $relatorio->regra = $regra['id'];
-    $relatorio->etapas = $regra['etapas'];
+    $relatorio->fases = $regra['etapas'];
 
-    $relatorio->caminho = $obProjeto->para_avaliar;
+    $relatorio->para_avaliar = $obProjeto->para_avaliar;
 
     if ($tf == 're') {
         $relatorio->periodo_renov_ini = $_POST['periodo_renov_ini'];
@@ -103,21 +101,6 @@ if (isset($_POST['valida'])) {
     $relatorio->visita_tec_qtd = $_POST['visita_tec_qtd'];
 
     $idprjP = $relatorio->cadastrar();
-
-    $relatorioView = Relatorios::getRelatorio($idprjP);
-
-    // buscar da VIEW relatorios
-    if ($relatorio->tramitar == 1) {
-        // echo "ENTROU NO IF<br>";
-
-        // echo "ANTES DO EMAIL<br>";
-        $email = new EmailService();
-
-        $email->submissaoRelatorio($relatorioView, $obProjeto);
-
-        // echo "DEPOIS DO EMAIL<br>";
-        // exit;
-    }
 
     $anexosJS = json_decode($_POST['anexosJS']);
 
@@ -156,6 +139,8 @@ select
         when "ce" then "Diretor(ª) de Centro de Área"
         when "co" then "Coordenador(ª) de colegiado"
         when "dc" then "Diretor(ª) de campus"
+        when "pf" then "Professor(ª) parecerista"
+        
     end as avaliador
 from 
   	regras r
@@ -168,10 +153,6 @@ order by
 ';
 
 $modalRelatorio = Outros::qry($sql);
-
-// echo '<pre>';
-// print_r($modalRelatorio);
-// echo '</pre>';
 
 $resultModal = '';
 
