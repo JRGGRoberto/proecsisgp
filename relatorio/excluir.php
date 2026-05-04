@@ -11,21 +11,22 @@ Login::requireLogin();
 $user = Login::getUsuarioLogado();
 
 $voltarUrl = $_SERVER['HTTP_REFERER'];
-echo $voltarUrl;
 
 $id = $_GET['id'];
-
 $objRelToDEL = new Relatorio();
-$objRelToDEL->getId($id);
+$objRelToDEL = $objRelToDEL->getById($id);
 
 if ($objRelToDEL->fase_atual > 0) {
     echo 'não pode excluir! ';
+    header('location: index.php?id='.$objProj->id.'&status=error');
 } else {
     $objProj = new Projeto();
     $objProj = $objProj->getProjetoLast($objRelToDEL->idproj);
 
     if ($objProj->id_prof == $user['id']) {
         $objRelToDEL->excluir();
-        header('location: index.php?id='.$objProj->id.'&msg=Ok');
+        header('location: index.php?id='.$objProj->id.'&status=success');
+    } else {
+        header('location: index.php?id='.$objProj->id.'&status=error');
     }
 }

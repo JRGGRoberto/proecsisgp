@@ -2,100 +2,82 @@
 
 require '../vendor/autoload.php';
 
-use \App\Entity\Avaliacoes;
-use \App\Entity\Projeto;
-use \App\Entity\Arquivo;
-use \App\Entity\Form_a;
+use App\Entity\Arquivo;
+use App\Entity\Form_Rel;
+use App\Entity\Professor;
+use App\Entity\Projeto;
+use App\Entity\Relatorio;
 
-$form = Form_a::getRegistro($_GET['p'], $_GET['v']);
+$relatorio = new Relatorio();
+$relatorio = Relatorio::getById($avaliacaoRelatorio->id_rel);
+$obProjeto = Projeto::getProjetoLast($relatorio->idproj);
+$obProjeto = Projeto::getProjeto($obProjeto->id, $obProjeto->ver);
+$obProfessor = new Professor();
+$obProfessor = $obProfessor->getProfessor($obProjeto->id_prof);
 
-$anexados = Arquivo::getAnexados('forms', $id_ava);
+// Tenta recuperar os dados do formulário, se não achar cria um novo.
+$form = Form_Rel::getRegistro($avaliacaoRelatorio->id);
+$cad = false;
+if (!$form) {
+    $form = new Form_Rel();
+    $cad = true;
+}
+
+$prjS = Projeto::getRegistros("(id, ver)= ('".$_GET['p']."', ".$_GET['v'].')');
+$prj = $prjS[0];
+
+// Para mostar os anexos do Relatório
+$anexados = Arquivo::getAnexados('relatorios', $relatorio->id);
+
 $anex = '<ul id="anexos_edt">';
-
-$localFiles = __DIR__ . '/../upload/uploads/';
-foreach($anexados as $att){
-  $anex .= 
-  '<li>
-      <a href="'. $localFiles. '' .$att->nome_rand.'" target="_blank">'.$att->nome_orig.'</a> 
-      <a href="../arquiv/index.php?tab='.$att->tabela. '&id='.$att->id_tab. '&arq='.$att->nome_rand.'" >  
-        <span class="badge badge-danger">🗑️ Excluir</span>
-      </a>
-  </li> ';
+foreach ($anexados as $att) {
+    $anex .=
+    '<li>
+      <a href="../upload/uploads/'.$att->nome_rand.'" target="_blank">'.$att->nome_orig.'</a> 
+    </li> ';
 }
 $anex .= '</ul>';
 
-
-$cad = false;
-if(!$form) {
-  $form = new Form_a();
-  $cad = true;
+$tf = $relatorio->tipo; // para deixar comum para formParcial/formFinal
+ob_start();
+if ($relatorio->tipo == 'pa') {
+    require '../relatorio/includes/formParcial.php';
+} else {
+    require '../relatorio/includes/formFinal.php';
 }
+$dataRelatorio = ob_get_clean();
 
-//VALIDAÇÃO DO POST
-if(isset($_POST['resultado'])){
+// VALIDAÇÃO DO POST
+if (isset($_POST['resultado'])) {
+    if ($relatorio->idproj == $id_proj) {
+        $form->id = $avaliacaoRelatorio->id;
+        $form->id_avaliador = $user['id'];
+        $form->solicitacoes = $_POST['solicitacoes'];
+        $form->cidade = $_POST['cidade'];
+        $form->whosigns = $_POST['whosigns'];
+        $form->dateAssing = $_POST['dateAssing'];
+        $form->resultado = $_POST['resultado'];
+        $form->user = $user['id'];
 
-  $ava1 = Avaliacoes::getRegistro($_GET['i']);
+        if ($cad) {
+            $form->cadastrar();
+        } else {
+            $form->atualizar();
+        }
+        // put $anexosJS = json_decode($_POST['anexosJS']); !!!!!!!!!!!!
 
-  if(($ava1->id_proj == $id_proj) and ($ava1->ver == $ver_proj)) {
-    $form->id_proj = $id_proj;
-    $form->ver_proj = $ver_proj;
-    $form->id_avaliacao = $id_ava;
-    $form->id_avaliador = $_POST['a'];
-    $form->r3_1 = $_POST['r3_1']; 
-    $form->r3_2 = $_POST['r3_2'];
-    $form->r3_3 = $_POST['r3_3'];
-    $form->r3_4 = $_POST['r3_4'];
-    $form->r3_5 = $_POST['r3_5'];
-    $form->r3_6 = $_POST['r3_6'];
-    $form->r3_7 = $_POST['r3_7'];
-    $form->r4_1 = $_POST['r4_1'];
-    $form->r4_2 = $_POST['r4_2'];
-    $form->r4_3 = $_POST['r4_3'];
-    $form->r4_4 = $_POST['r4_4'];
-    $form->r4_5 = $_POST['r4_5'];
-    $form->solicitacoes = $_POST['solicitacoes'];
-    $form->parecer = $_POST['parecer'];
-    $form->cidade  = $_POST['cidade'];
-    $form->whosigns = $_POST['whosigns'];
-    $form->dateAssing = $_POST['dateAssing'];
-    $form->resultado  = $_POST['resultado'];
-    //$form->$user  = $_POST['a'];
-
-    if($cad){
-      $form->cadastrar();
-    } else {
-      $form->atualizar();
+        switch ($form->resultado) {
+            case 'a':
+                $avaliacaoRelatorio->novaEtapaAvaliacao();
+                break;
+            case 'r':
+                $avaliacaoRelatorio->solicitarAlteracoes();
+                break;
+            case 'e':
+                echo 'Salvo para futuro converencia';
+                break;
+        }
+        header('location: ../avaliacoes/index.php?tpAva=r2&status=success');
+        exit;
     }
-
-    $anexosJS = json_decode($_POST['anexosJS']);
-    foreach ($anexosJS as &$anx) {
-      $dados = Arquivo::getArquivo($anx);
-      $dados->tabela = 'forms';
-      $dados->id_tab = $ava1->id;
-      $dados->user = $obProjeto->user;
-      $dados->atualizar();
-    }
-    
-    switch($form->resultado) {
-      case 'a':
-        $ava1->resultado = 'a';
-        $ava1->atualizar();
-        $proj = Projeto::getProjeto($id_proj, $ver_proj);
-        $proj->nextLevel(); 
-
-        break;
-      case 'r':
-        $ava1->resultado = 'r';
-        $ava1->atualizar();
-        $proj = Projeto::getProjeto($id_proj, $ver_proj);
-        $proj->novaVersao();
-        break;
-      case 'e':
-        echo "Salvo para futuro converencia";
-        break;
-    }
-
-    header('location: ../avalareal/index.php?status=success');
-    exit; 
-  }
 }

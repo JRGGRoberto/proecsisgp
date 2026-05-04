@@ -27,6 +27,7 @@ $resultados = '';
 
 foreach ($relatorios as $relf) {
     $tipo = tipo($relf->tipo);
+
     $msgPublicadoFinal = '';
     $btns = '';
 
@@ -74,6 +75,7 @@ foreach ($relatorios as $relf) {
 <main>
   <h2 class="mt-0">Relatórios</h2>
   <hr>
+  <?php echo $msgAlert; ?> 
   
   <div class="form-group">
     <div>
@@ -118,7 +120,7 @@ foreach ($relatorios as $relf) {
          
   </div>
   
-  <?php echo $msgAlert; ?> 
+
 
   <section>
     
@@ -140,7 +142,7 @@ if (sizeof($opcoes) > 0) {
                   </button>
                   <div class="dropdown-menu dropdown-menu-right">';
 
-    foreach ($opcoes as $key => $value) {
+    foreach ((object) $opcoes as $key => $value) {
         $novoBTNs .= $value;
     }
 
@@ -250,16 +252,4 @@ function showModalSubmit(id){
 
 
 </script>
-
-
-
-
-
-
-
-
-
-
-
-
 

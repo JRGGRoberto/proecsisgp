@@ -7,18 +7,25 @@ use App\Entity\Inscricao;
 $options = '';
 $idCand = '';
 
+// Preicso pegar o cpf e senha pra logar (já funcionanod)
 $cpf = $_POST['cpf'];
-$cand = Candidato::getCPF($cpf);
-$msg = '';
+// $senha = $_POST['senha'];
 
-if (!$cand) {
-    $cand = new Candidato();
-    $idCand = null;
-    $evento = 'cadastrar';
+$cand = Candidato::getCpf($cpf);
+
+// echo '<pre>';
+// print_r($cand);
+// echo '</pre>';
+$msg = '';
+$alertaLogin = '';
+
+// if ($cand && password_verify($senha, $cand->senha)) {
+if ($cand) {
+    // $evento = 'editar';
+    $cand = (object) Candidato::getCpf($_POST['cpf']);
+    $idCand = $cand->id;
 } else {
-    $evento = 'editar';
-    $cand2 = (object) Candidato::getCPF($_POST['cpf']);
-    $idCand = $cand2->id;
+    header('location: index.php?erro=1');
 }
 
 $ip = 'ααα.ABC.XYZ.ΩΩΩ';
@@ -46,23 +53,18 @@ if (isset($_POST['nome'])) {
     $cand->email = $_POST['email'];
     $cand->curso = $_POST['curso'];
     $cand->serie = $_POST['serie'];
+    if (strlen($_POST['senha']) > 0) {
+        $cand->senha = password_hash($_POST['senha'], PASSWORD_DEFAULT);
+    }
+
     $cand->ip_address = $ip;
 
-    if ($evento == 'cadastrar') {
-        $idCand = $cand->cadastrar();
-        $msg = '
-        <div class="alert alert-success alert-dismissible">
-          <button type="button" class="close" data-dismiss="alert">&times;</button>
-          <strong>Success!</strong> Cadastro de usuário realizado
-        </div>';
-    } else {
-        $cand->atualizar();
-        $msg = '
-        <div class="alert alert-success alert-dismissible">
-          <button type="button" class="close" data-dismiss="alert">&times;</button>
-          <strong>Success!</strong> Dados de usuário atualizado
-        </div>';
-    }
+    $cand->atualizar();
+    $msg = '
+    <div class="alert alert-success alert-dismissible">
+        <button type="button" class="close" data-dismiss="alert">&times;</button>
+        <strong>Success!</strong> Dados de usuário atualizado
+    </div>';
 
     if ($_POST['inscricao'] != -1) {
         $inscricao = new Inscricao();
@@ -107,5 +109,6 @@ echo '
 <script>
    cand_id = "'.$idCand.'";
 </script>';
+
 include __DIR__.'/includes/formulario.php';
 include '../includes/footer.php';

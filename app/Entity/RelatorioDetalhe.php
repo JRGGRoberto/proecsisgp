@@ -8,32 +8,28 @@ abstract class RelatorioDetalhe
 {
     public $id;
     public $ver;
-    public $visita_tec_qtd;
-    public $created_at;
-    public $updated_at;
     public $user;
+    public $visita_tec_qtd;
+    public $atvd_prox_per;
 
     protected $table;
 
-    abstract protected function validar(): void;
+    abstract protected function toArray(): array;
 
     public function salvar()
     {
-        $this->validar();
+        $dados = $this->toArray();
 
-        $db = new Database($this->table);
+        (new Database($this->table))->insert($dados);
+    }
 
-        $this->updated_at = date('Y-m-d H:i:s');
+    public function atualizar()
+    {
+        $dados = $this->toArray();
 
-        $dados = get_object_vars($this);
-
-        $existe = $db->select('id="'.$this->id.'"')->fetchObject();
-
-        if ($existe) {
-            $db->update('id="'.$this->id.'"', $dados);
-        } else {
-            $this->created_at = date('Y-m-d H:i:s');
-            $db->insert($dados);
-        }
+        (new Database($this->table))->update(
+            '(id, ver) = ("'.$this->id.'", '.$this->ver.')',
+            $dados
+        );
     }
 }

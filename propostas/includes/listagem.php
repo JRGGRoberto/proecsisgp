@@ -42,6 +42,11 @@ foreach ($projetos as $proj) {
     $progresso = '';
     $showRelatorios = false;
 
+    // echo '<pre>';
+    //   print_r($proj);
+    // echo '</pre>';
+    // break;
+
     // echo ($proj->estado);
 
     switch ($proj->estado) {
@@ -135,7 +140,7 @@ foreach ($projetos as $proj) {
       <div class="card mt-2">
         <div class="card-header">
             <div class="row">
-              <div class="col-sm-6"><a class="collapsed card-link" data-toggle="collapse" href="#p'.$proj->id.'">📃 '.$proj->titulo.' <span class="badge badge-primary ">Ver detalhes  🔽</span></a></div>';
+              <div class="col-sm-6"><a class="collapsed card-link" data-toggle="collapse" href="#p'.$proj->id.'">📃 '.$proj->titulo.'</a></div>';
     switch ($proj->tipo_exten) {
         case 1:
             $proj->tipo_exten = 'Curso';
@@ -255,8 +260,6 @@ include '../includes/paginacao.php';
 
     </form>
 
-
-    
   </section>
 
   <section>
@@ -290,48 +293,88 @@ include '../includes/paginacao.php';
 
 </main>
 
-
-
-
-
-
 <!-- The Modal -->
-  <div class="modal fade" id="modalSub">
-    <div class="modal-dialog modal-dialog-scrollable">
-      <div class="modal-content">
+<div class="modal fade" id="modalSub">
+  <div class="modal-dialog modal-dialog-scrollable">
+    <div class="modal-content">
+    
+      <!-- Modal Header -->
+      <div class="modal-header">
+        <h4 class="modal-title" id="modalTitle">Título</h4>
+        <button type="button" class="close" data-dismiss="modal">×</button>
+      </div>
       
-        <!-- Modal Header -->
+      <!-- Modal body -->
+      <div class="modal-body" id="modalBody">
+        
+
+      </div>
+      
+      <!-- Modal footer -->
+      <div class="modal-footer" id="modalFooter">
+        
+      </div>
+      
+    </div>
+  </div>
+</div>
+<!-- The Modal -->
+
+<!-- Modal para solicitação para DEC -->
+<form id="formDEC">
+  <div class="modal fade" id="DEC">
+    <div class="modal-dialog modal-dialog-scrollable modal-dialog-centered" style="max-width: 600px;">
+      <div class="modal-content">
+        
         <div class="modal-header">
-          <h4 class="modal-title" id="modalTitle">Título</h4>
+          <h4 class="modal-title">Solicitar alteração</h4>
           <button type="button" class="close" data-dismiss="modal">×</button>
         </div>
         
-        <!-- Modal body -->
-        <div class="modal-body" id="modalBody">
-          
+        <div class="modal-body">
+          <div class="container-fluid">
+            <div class="row">
 
+              <div class="col-12">
+                <div id="msgObservacao" class="alert alert-info py-2">
+                  A alterações selecionadas serão enviadas para a DEC para aprovação.<br> 
+                  A aprovação será efetuada de acordo com o regulamento XPTO.<br> 
+                  Selecione uma opção abaixo:
+                </div>
+
+                <select id="selecDEC" class="form-control form-control-sm"></select>
+              </div>
+
+              <div class="col-12">
+                <div class="form-group" id="conteudoDEC"></div>
+              </div>
+
+            </div>
+          </div>
         </div>
-        
-        <!-- Modal footer -->
-        <div class="modal-footer" id="modalFooter">
-          
+
+        <div class="modal-footer" id="footerDEC" style="display: none;">
+          <div class="d-flex rounded bg-warning text-black">
+            <span class="mr-2 ml-2" id="mensagemFooter"></span>
+          </div>
+          <button type="submit" class="btn btn-primary btn-sm">
+            Enviar alterações
+          </button>
         </div>
-        
+
       </div>
     </div>
   </div>
-  <!-- The Modal -->
+</form>
+<!-- Modal para solicitação para DEC -->
 
-  <?php
-   echo '<script>';
+<?php
+  echo '<script>';
 echo 'const optspara = `';
 echo $coolSelectSend;
 echo '`;';
 echo '</script>';
-
 ?>
-
-
 
 <script>
 
@@ -376,20 +419,19 @@ echo '</script>';
     }
   }
 
-
   function printDel(data){
     modalTitle.innerText = 'Confirmação de exclusão';
     modalBody.innerHTML =  `<h4>Tem certeza que deseja apagar o registro abaixo?</h4><p class="justify-content-center"> ${data.titulo}</p><span class="badge badge-warning float-right" ><span class="badge badge-light">⚠️</span>Atenção! O processo não pode ser revertido</span>`;
     modalFooter.innerHTML = `
-            <a href="excluir.php?id=${data.id}&v=${data.created_at}" 
-              class="btn btn-danger    btn-sm mb-2">🗑  Excluir</a>
-            <button type="button" class="btn btn-secondary btn-sm mb-2" data-dismiss="modal">Fechar</button>
+      <a href="excluir.php?id=${data.id}&v=${data.created_at}" 
+        class="btn btn-danger    btn-sm mb-2">🗑  Excluir</a>
+      <button type="button" class="btn btn-secondary btn-sm mb-2" data-dismiss="modal">Fechar</button>
     `;
     $('#modalSub').modal('show');
   }
 
   function printSubAlt(data){
-    console.table(data);
+    // console.table(data);
     let nomeLocal = '';
     modalTitle.innerText = 'Reenvio do projeto à PROEC';
     if(data.colegiado === null){
@@ -463,12 +505,12 @@ echo '</script>';
 
   const getProjDados = async(id) => {
     const oper = id.substr(0,3);
+    // idp = id.substr(4,36);
+
     const data = await fetch(`../api/proj.php?prj=${id}`)
       .then(resp => resp.json()).catch(error => false);
   
     if(!data) return;
-    
-    printDel(data);
   
     if(oper == 'del'){
       printDel(data);
@@ -476,17 +518,325 @@ echo '</script>';
       printSub(data);
     } else if(oper == 'Alt'){
       printSubAlt(data);
+    } else if(oper == 'DEC'){
+      printSubDEC(data);
     } else {
       return;
     }
   }
-  
+
+  // ---------------------------------------------
+  // COISAS NOVAS FEITAS NO SISTEMA
+  // ---------------------------------------------
+
+  // GERAR CAMPO DINÂMICO
+  function gerarCampo(tipo) {
+    let inputHTML = '';
+    let labelNovo = tipo === 'data' ? 'Nova data' : 'Novo valor';
+    let labelAtual = tipo === 'data' ? 'Data atual' : 'Valor atual';
+    let labelSolicitacao = 'Mensagem de solicitação';
+
+    switch (tipo) {
+      case 'texto':
+        inputHTML = `
+          <textarea 
+            name="CampoDEC" 
+            class="form-control form-control-sm auto-resize" 
+            rows="1"
+            style="resize: none; overflow: hidden;" 
+            required
+          ></textarea>`;
+        break;
+
+      case 'data':
+        inputHTML = `<input type="date" name="CampoDEC" class="form-control form-control-sm" required>`;
+        break;
+
+      case 'selectYN':
+        inputHTML = `
+          <select name="CampoDEC" class="form-control form-control-sm" required>
+            <option value="">Selecione...</option>
+            <option value="S">Sim</option>
+            <option value="N">Não</option>
+          </select>`;
+        break;
+    }
+
+    return `
+      <div class="row mt-3 align-items-stretch">
+
+        <!-- ESQUERDA -->
+        <div class="col-md-6 d-flex">
+          <div class="form-group p-3 border rounded bg-light w-100 h-100 d-flex flex-column justify-content-center">
+
+            <!-- NOVO CAMPO DE SOLICITAÇÃO -->
+            <label class="font-weight-bold mb-2">${labelSolicitacao}</label>
+            <textarea 
+              name="mensagemSolicitacao"
+              class="form-control form-control-sm"
+              maxlength="250"
+              rows="3"
+              placeholder="Digite sua solicitação (máx. 250 caracteres)"
+              required
+            ></textarea>
+            
+            <label class="font-weight-bold mt-3 mb-2">${labelNovo}</label>
+            ${inputHTML}
+
+            <label class="font-weight-bold mt-4 mb-2">${labelAtual}</label>
+            <div class="valor-original"></div>
+
+          </div>
+        </div>
+
+        <!-- DIREITA -->
+        <div class="col-md-6 d-flex">
+          <div class="w-100 h-100 d-flex flex-column p-3 rounded bg-danger text-white">
+            
+          <div class="text-center flex-grow-1 d-flex flex-column align-items-center justify-content-center">
+            <label class="font-weight-bold">
+              Atenção!
+            </label>
+            <div class="mensagem"></div>
+          </div>
+
+          </div>
+        </div>
+
+      </div>
+    `;
+  }
+
+  // FORMATAR VALORES
+  function formatarValor(campo, valor) {
+    if (!valor) return '';
+      
+    if (campo === 'tide') {
+      return valor === 'S' ? 'Sim' : valor === 'N' ? 'Não' : valor;
+    }
+
+    if ((campo === 'vigen_ini' || campo === 'vigen_fim') && valor) {
+      const data = valor.split(' ')[0];
+      const [ano, mes, dia] = data.split('-') || [];
+
+      if (ano && mes && dia) {
+        return `${dia}/${mes}/${ano}`;
+      }
+    }
+
+    return valor;
+  }
+
+  // AUTO RESIZE
+  function ativarAutoResize() {
+    document.querySelectorAll('.auto-resize').forEach(textarea => {
+      const resize = () => {
+        textarea.style.height = 'auto';
+        textarea.style.height = textarea.scrollHeight + 'px';
+      };
+
+      textarea.addEventListener('input', resize);
+      resize();
+    });
+  }
+
+  // VALIDAÇÃO PARA EXIBIR O BOTÃO DE ENVIAR
+  function validarAlteracao() {
+    const campo = document.querySelector('[name="CampoDEC"]');
+    const footer = document.getElementById('footerDEC');
+    const mensagemBox = document.getElementById('mensagemFooter');
+    const botao = footer.querySelector('button');
+
+    if (!campo) return;
+
+    let valorNovo = campo.value?.trim();
+    let valorAtual = document.querySelector('.valor-original').textContent.trim();
+
+    // Não mostra nada
+    if (!valorNovo) {
+      footer.style.display = 'none';
+      mensagemBox.textContent = '';
+      return;
+    }
+
+    const campoSelec = campo.dataset.campo;
+    valorNovo = formatarValor(campoSelec, valorNovo)?.trim();
+    valorAtual = valorAtual?.trim();
+
+    footer.style.display = 'flex';
+
+    // Mostra mensagem e esconde botão
+    if (valorNovo === valorAtual) {
+      mensagemBox.textContent = 'Este valor é igual ao anterior!';
+      botao.style.display = 'none';
+    } 
+    // Mostra botão e limpa mensagem
+    else {
+      mensagemBox.textContent = '';
+      botao.style.display = 'inline-block';
+    }
+  }
+
+
+  // EVENTO DO SELECT
+  document.getElementById('selecDEC').addEventListener("change", function () {
+
+    const campoContainer = document.getElementById('conteudoDEC');
+    const msgObs = document.getElementById('msgObservacao');
+
+    if (!this.value) {
+      msgObs.style.display = 'block';
+      campoContainer.innerHTML = '';
+      return;
+    }
+
+    msgObs.style.display = 'none';
+
+    const selected = this.options[this.selectedIndex];
+    const valorBruto = selected.getAttribute('data-valor') || '';
+    const mensagem = selected.getAttribute('mensagem') || '';
+
+    let campoSelec = selected.value;
+
+    const valorFormatado = formatarValor(this.value, valorBruto);
+
+    let tipo = '';
+
+    if (this.value === 'titulo') tipo = 'texto';
+    else if (this.value === 'tide') tipo = 'selectYN';
+    else if (['vigen_ini', 'vigen_fim'].includes(this.value)) tipo = 'data';
+
+    if (!tipo) {
+      campoContainer.innerHTML = '';
+      return;
+    }
+
+    campoContainer.innerHTML = gerarCampo(tipo);
+
+    const footer = document.getElementById('footerDEC');
+    const mensagemBox = document.getElementById('mensagemFooter');
+    const botao = footer.querySelector('button');
+
+    footer.style.display = 'none';
+    mensagemBox.textContent = '';
+    botao.style.display = 'inline-block';
+
+    const campo = campoContainer.querySelector('[name="CampoDEC"]');
+
+    if (campo) {
+      campo.dataset.campo = campoSelec;
+
+      if (campo.tagName === 'SELECT' || campo.type === 'date') {
+        campo.addEventListener('change', validarAlteracao);
+      } else {
+        campo.addEventListener('input', validarAlteracao);
+      }
+    }
+
+    campoContainer.querySelector('.valor-original').textContent = valorFormatado;
+    campoContainer.querySelector('.mensagem').textContent = mensagem;
+
+    if (tipo === 'texto') ativarAutoResize();
+
+  });
+
+  // PREENCHER SELECT
+  function preencheOptionSol(data) {
+    const select = document.getElementById('selecDEC');
+
+    select.innerHTML = '';
+
+    const optionDefault = new Option("Selecione...", "", true, true);
+    optionDefault.disabled = true;
+    select.appendChild(optionDefault);
+
+    data.forEach(item => {
+      const option = new Option(item.nomeExibicao, item.campoAlterado);
+      option.setAttribute('data-valor', item.valor_campo);
+      option.setAttribute('mensagem', item.mensagemAltera);
+      select.appendChild(option);
+    });
+
+    document.getElementById('conteudoDEC').innerHTML = '';
+  }
+
+  // ABRIR MODAL + FETCH 
+  idProjeto = null;
+  async function printSubDEC(id) {
+    idProjeto = id.id;
+    const idp = id.id;
+    const resp = await fetch(`../api/solicitaAlteracao.php?idproj=${idp}`);   
+    const data = await resp.json();
+
+    console.table(data);
+
+    document.getElementById('msgObservacao').style.display = 'block';
+    preencheOptionSol(data);
+
+    document.getElementById('footerDEC').style.display = 'none';
+
+    $('#DEC').modal('show');
+  }
+
+  // PEGAR OS VALORES DO FORMULÁRIO
+  document.getElementById('formDEC').addEventListener('submit', function (e) {
+    e.preventDefault();
+
+    const campo = document.querySelector('[name="CampoDEC"]');
+    const mensagemSolicita = document.querySelector('[name="mensagemSolicitacao"]').value;
+
+    if (!campo) {
+      alert('Nenhum campo foi gerado.');
+      return;
+    }
+
+    const valor = campo.value;
+    const tipoCampo = document.getElementById('selecDEC').value;
+    const valorOriginal = document.querySelector('.valor-original').textContent;
+
+    // console.log('valor: '+valor);
+    // console.log('tipoCampo: '+tipoCampo);
+    // console.log('valorOriginal: '+valorOriginal);
+    // console.log('idProjeto: '+idProjeto);
+    // console.log('mensagemSolicita: '+mensagemSolicita);
+
+    fetch(`../api/enviaAlteracao.php`, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify({
+        campo: tipoCampo,
+        valorNovo: valor,
+        valorAtual: valorOriginal,
+        idProj: idProjeto,
+        msgSolicita: mensagemSolicita,
+      })
+    })
+    .then(res => res.json())
+    .then(data => {
+      // console.log('Resposta:', data);
+      if (data.status === 'ok') {
+        $('#DEC').modal('hide');
+        console.log("Solicitação de alteração enviada com sucesso")
+      } else {
+        console.log("Erro ao solicitar alteração, tente novamente")
+      }
+    })
+    .catch(() => {
+      console.log('Erro na comunicação com o servidor.');
+    });
+
+  });
+
+  // --------------------------------------------- 
+  // FINAL DAS COISAS NOVAS
+  // ---------------------------------------------
+
   function writeNumber(elementId) {
     var outputValueTo =   elementId.id;
+    console.log('WriteNumber: ' . outputValueTo);
     getProjDados(outputValueTo);
-    
-
-  
   }
 
   $(function () {
@@ -496,7 +846,6 @@ echo '</script>';
   const btnOpen = document.getElementById("excluir1");
   const modal = document.querySelector("dialog");
   
-
   btnOpen.onclick = function(){
     modal.showModa();
   }

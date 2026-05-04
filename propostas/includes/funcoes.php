@@ -166,22 +166,24 @@ function montarTblEProgress(array $ListaVerAnts, $projId, $msg1)
     return [$progresso, $LastV, $btnAvaliacoes];
 }
 
-function createBT($tipo, $id, $ver, $form = null, $tipo_exten = null, $titulo = null, $userId = null, $profId = null): string
+function createBT($tipo, $id, $ver = null, $form = null, $tipo_exten = null, $titulo = null, $userId = null, $profId = null): string
 {
     switch ($tipo) {
         case 'submeter':
-            return '<button id="sub'.$id.'v'.$ver.'" class="btn btn-primary btn-sm mb-2" onclick="writeNumber(this)">📤 Submeter</button>';
+            return '<a><button id="sub'.$id.'v'.$ver.'" class="btn btn-primary btn-sm mb-2" onclick="writeNumber(this)"> 📤 Submeter </button></a>';
         case 'submeterNovamente':
-            return '<button id="Alt'.$id.'v'.$ver.'" class="btn btn-primary btn-sm mb-2" onclick="writeNumber(this)">📤 Submeter novamente</button>';
+            return '<a><button id="Alt'.$id.'v'.$ver.'" class="btn btn-primary btn-sm mb-2" onclick="writeNumber(this)"> 📤 Submeter novamente </button></a>';
         case 'editar':
-            return '<a href="editar.php?id='.$id.'&v='.$ver.'"><button class="btn btn-success btn-sm mb-2">📝 Editar</button></a>';
+            return '<a href="editar.php?id='.$id.'&v='.$ver.'"><button class="btn btn-success btn-sm mb-2"> 📝 Editar </button></a>';
         case 'excluir':
-            return '<button id="del'.$id.'v'.$ver.'" class="btn btn-danger  btn-sm mb-2" onclick="writeNumber(this)">🗑 Excluir</button>';
+            return '<a><button id="del'.$id.'v'.$ver.'" class="btn btn-danger  btn-sm mb-2" onclick="writeNumber(this)"> 🗑 Excluir </button></a>';
         case 'visualizar':
-            return '<a href="visualizar.php?id='.$id.'&v='.$ver.'&w=1" target="_blank"><button class="btn btn-success btn-sm mb-2"> 📄 Projeto</button></a><br>';
+            return '<a href="visualizar.php?id='.$id.'&v='.$ver.'&w=1" target="_blank"><button class="btn btn-success btn-sm mb-2"> 📄 Projeto </button></a>';
             // <a href="cancelar.php?id='.$id.'&v='.$ver.'&w=1" target="_blank"></a>
         case 'adequacoes':
-            return '<a href="../forms/'.$form.'/vista.php?p='.$id.'&v='.($ver - 1).'"><button class="btn btn-danger btn-sm mb-2" >📑 Informações de adequações</button></a>';
+            return '<a href="../forms/'.$form.'/vista.php?p='.$id.'&v='.($ver - 1).'"><button class="btn btn-danger btn-sm mb-2" > 📑 Informações de adequações </button></a>';
+        case 'alteraDEC':
+            return '<a><button id="DEC'.$id.'v'.$ver.'" class="btn btn-warning btn-sm mb-2" onclick="writeNumber(this)"> 🔄 Solicitar alteração </button></a>';
         case 'relatorioParcial':
             // if ($tipo_exten != 2) {
             //   return  '
@@ -191,7 +193,7 @@ function createBT($tipo, $id, $ver, $form = null, $tipo_exten = null, $titulo = 
             if ($userId == $profId) {
                 if ($tipo_exten != 2) {
                     return '
-                        <a href="../relatorio/index.php?id='.$id.'"><button class="btn btn-success btn-sm mb-2">📝 Relatório Parcial</button></a> 
+                        <a href="../relatorio/index.php?id='.$id.'"><button class="btn btn-success btn-sm mb-2"> 📝 Relatório Parcial </button></a> 
                     ';
                 } else {
                     // Evento:
@@ -210,11 +212,10 @@ function createBT($tipo, $id, $ver, $form = null, $tipo_exten = null, $titulo = 
             } else {
                 return '';
             }
-
-            // no break 
+            // no break
         case 'relatorioFinal':
             if ($userId == $profId) {
-                return '<a href="../relatorio/index.php?id='.$id.'"><button class="btn btn-success btn-sm mb-2">📝 Relatório Final</button></a>';
+                return '<a href="../relatorio/index.php?id='.$id.'"><button class="btn btn-success btn-sm mb-2"> 📝 Relatório Final </button></a>';
             } else {
                 return '';
             }
@@ -233,11 +234,10 @@ function naoSubmetido($p, $user): string
     // $userConfig = $user['config'];
     if ($userId == $profId) {
         return
-        createBT('submeter', $i, $v).'  	&nbsp; '.
-        createBT('editar', $i, $v).'  	&nbsp; '.
-        createBT('visualizar', $i, $v).''.
-        createBT('excluir', $i, $v)
-        ;
+        createBT('submeter', $i, $v).' &nbsp; '.
+        createBT('editar', $i, $v).' &nbsp; '.
+        createBT('visualizar', $i, $v).' &nbsp; '.
+        createBT('excluir', $i, $v);
     } else {
         return '';
     }
@@ -259,20 +259,22 @@ function emAvaliacao($p, $user)
         if ($p->resultado == 'n') {
             if ($p->edt == 0) {
                 return
-                createBT('visualizar', $i, $v).
-                createBT('cancelar', $i, $v).'  	&nbsp; ';
+                createBT('visualizar', $i, $v).'  	&nbsp; '.
+                createBT('alteraDEC', $i, $v).'  	&nbsp; ';
+            // createBT('cancelar', $i, $v).'  	&nbsp; ';
             } else {
                 return
                 createBT('editar', $i, $v).'  	&nbsp; '.
                 createBT('adequacoes', $i, $v, $form).'  	&nbsp; '.
                 createBT('submeterNovamente', $i, $v).'  	&nbsp; '.
-                createBT('visualizar', $i, $v).'  	&nbsp; '.
-                createBT('cancelar', $i, $v);
+                createBT('visualizar', $i, $v).'  	&nbsp; ';
+                // createBT('cancelar', $i, $v);
             }
         } elseif ($p->resultado == 'e') {
             return
-                createBT('visualizar', $i, $v).
-                createBT('cancelar', $i, $v).'  	&nbsp; ';
+                createBT('visualizar', $i, $v).'  	&nbsp; '.
+                createBT('alteraDEC', $i, $v).'  	&nbsp; ';
+            // createBT('cancelar', $i, $v).'  	&nbsp; ';
         }
     } elseif (in_array($userConfig, $osCabeca)) {
         return createBT('visualizar', $i, $v);
@@ -291,6 +293,7 @@ function naoIniciado($p, $userId)
     if ($userId == $profId) {
         return
             createBT('visualizar', $i, $v).' &nbsp; '.
+            createBT('alteraDEC', $i, $v).' &nbsp; '.
             createBT('cancelar', $i, $v, null, null, $t);
     } else {
         return createBT('visualizar', $i, $v);
@@ -347,15 +350,16 @@ function emExecucao($p, $userId): string
     }
 
     return
-        createBT('visualizar', $i, $v).' '.
+        createBT('visualizar', $i, $v).'  	&nbsp; '.
         createBT('relatorioParcial', $i, $v, null, $tipo, null, $userId, $profId).' &nbsp;'.
+        createBT('alteraDEC', $i, $v).'  	&nbsp; '.
         $rel_parInfos
         // createBT('cancelar', $i, $v).' &nbsp; '
     ;
 }
 
-
-function adequacoes($p, $user) {
+function adequacoes($p, $user)
+{
     $i = $p->id;
     $v = $p->ver;
     $t = $p->titulo;
@@ -386,7 +390,7 @@ function adequacoes($p, $user) {
                 createBT('visualizar', $i, $v).'  	&nbsp; '.
                 createBT('cancelar', $i, $v);
             }
-        } 
+        }
     } elseif (in_array($userConfig, $osCabeca)) {
         return createBT('visualizar', $i, $v);
     } else {
@@ -394,7 +398,8 @@ function adequacoes($p, $user) {
     }
 }
 
-function ressubmit($p, $user) {
+function ressubmit($p, $user)
+{
     $i = $p->id;
     $v = $p->ver;
     $t = $p->titulo;
@@ -408,7 +413,7 @@ function ressubmit($p, $user) {
     createBT('adequacoes', $i, $v, $form).'  	&nbsp; '.
     createBT('submeterNovamente', $i, $v).'  	&nbsp; '.
     createBT('visualizar', $i, $v).'  	&nbsp; '.
-    createBT('cancelar', $i, $v); 
+    createBT('cancelar', $i, $v);
 }
 
 function aguardandoRelatorio($p, $userId)
@@ -496,9 +501,11 @@ function aguardandoRelatorio($p, $userId)
             '<a href="../relatorio/index.php?id='.$i.'" class="btn btn-success btn-sm mb-2">📝 Relatório Final</a> &nbsp;'.
             $rel_Infos;
     } elseif (in_array($userId, $usuariosEspecificos)) {
-        return createBT('visualizar', $i, $v).$rel_Infos;
+        return createBT('visualizar', $i, $v).$rel_Infos.
+               createBT('alteraDEC', $i, $v).' &nbsp; ';
     } else {
-        return createBT('visualizar', $i, $v);
+        return createBT('visualizar', $i, $v).
+               createBT('alteraDEC', $i, $v).' &nbsp; ';
     }
 }
 
@@ -554,7 +561,7 @@ function finalizado($p, $userId): string
                     $linkFeito = '<a href="../upload/uploads/'.$rp->caminho.'" target="_blank">';
                 }
 
-                $rel_Infos .= $linkFeito.'<button class="btn btn-primary btn-sm mb-2">'.$tipoRel.'&nbsp;'.$rp->created_at.'&nbsp;'.$pub.'</button></a> &nbsp; ';
+                $rel_Infos .= $linkFeito.'<button class="btn btn-primary btn-sm mb-2">'.$tipoRel.'&nbsp;'.$rp->created_at.'&nbsp;'.$pub.'</button> &nbsp; ';
             } else {
                 $rel_Infos .= '<button class="btn btn-primary btn-sm mb-2 disabled">'.$tipoRel.'&nbsp;'.$rp->created_at.'&nbsp;'.$pub.'</button> &nbsp; ';
             }
@@ -562,12 +569,10 @@ function finalizado($p, $userId): string
     }
 
     return
-      createBT('visualizar', $i, $v).''.
+      createBT('visualizar', $i, $v).' &nbsp; '.
       createBT('relatorioFinal', $i, $v, null, null, null, $userId, $profId).''.
       $rel_Infos;
 }
-
-
 
 function cancelado($p): string
 {

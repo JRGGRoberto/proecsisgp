@@ -13,9 +13,10 @@ header('location: ../projetos/index.php');
   exit;
 */
 
- $btnDashboard= '';
-if($user['config'] == 3 or $user['adm'] == 1)
-    $btnDashboard ='<p><a href="../dashboard" class="btn btn-primary btn-sm">Dashboard [TESTES]</a></p>';
+$btnDashboard = '';
+if ($user['config'] == 3 or $user['adm'] == 1) {
+    $btnDashboard = '<p><a href="../dashboard" class="btn btn-primary btn-sm">Dashboard [TESTES]</a></p>';
+}
 
 include '../includes/header.php';
 

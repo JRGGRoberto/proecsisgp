@@ -14,7 +14,7 @@
   <h4 style="text-align: center">ANEXO III</h4>
   <h3 class="mt-3" style="text-align: center"><?php echo TITLE; ?></h3>
 
-  <form name="formAnexo" id="formAnexo" method="POST" enctype="multipart/form-data">
+  <form name="formAnexo" id="formAnexo" method="POST" enctype="multipart/form-data" autocomplete="off">
     <input type="hidden" name="id_prof" value="<?php echo $obProjeto->id_prof; ?>">
     <input type="hidden" name="tabela" value="projetos">
     <hr>
@@ -22,7 +22,7 @@
       <label>
         <h5><?php echo $n = 1; ?>. Título da proposta</h5>
       </label>
-      <input type="text" class="form-control" name="titulo" id="titulo"  maxlength="265" value="<?php echo $obProjeto->titulo; ?>" required>
+      <input type="text" class="form-control" name="titulo" id="titulo"  maxlength="265" value="<?php echo $obProjeto->titulo; ?>" required >
     </div>
     <input type="hidden" name="tabela" value="projetos">
 

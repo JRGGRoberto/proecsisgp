@@ -13,6 +13,8 @@ use \App\Entity\Area_Cnpq;
 use \App\Entity\CnpqArea;
 use \App\Entity\CnpqSubA;
 use \App\Entity\Area_Extensao;
+use \App\Entity\Solicitacao_adendos;
+use \App\Entity\Outros;
 
 use \App\Entity\Diversos;
 use Dompdf\Dompdf;
@@ -769,6 +771,8 @@ https://sistemaproec.unespar.edu.br/sistema/upload/uploads/
   
  */
 
+
+
 $html .= 
 '<table class="time">
  <thead><tr><th class="th_cinza"><strong>'. ++$count .'. Anexos</strong></th></tr></thead>
@@ -777,7 +781,112 @@ $html .=
 ;
 
 
+// Parte dos Adendos
+$cargosA= [
+'ca' => 'Chefe de Divisão',
+'ce' => 'Diretor de Centro de Área',
+'co' => 'Coordenador de colegiado',
+'pf' => 'Professor',
+'dc' => 'Diretor de Campus'
+];
 
+$adendos = Solicitacao_adendos::getRegistros('idproj = "'.$id . '" and resultado = "a" ');
+
+$msg = null;
+if ($adendos == null){
+  $msg = 'Não há adendos!';
+}
+
+$html .= 
+  '<table class="time">
+   <thead><tr><th class="th_cinza"><strong>'. ++$count .'. Adendos</strong></th></tr></thead>
+  <tbody>';
+    if ($msg != null){
+      $html .= 
+      '<tr>
+        <td>
+          <strong>'.$msg.'</strong>
+        </td>
+      </tr>';
+    }
+
+$qntAden = 0;
+$resultAdend = '';
+
+foreach(array_reverse($adendos) as $ad){
+
+  if (isset($cargosA[$ad->tipo_validador])) {
+    $cargo = $cargosA[$ad->tipo_validador];
+  } else {
+    $cargo = "Cargo não encontrado";
+  }
+
+  // Pega o campo da tabela que será alterado
+  $qryCampo = Outros::q('select campoAlterado from campos_editaveis_projetos where id = "'.$ad->id_alteracao.'"');
+  $ad->campo_alterado = $qryCampo->campoAlterado;
+
+  // Formatar TIDE como 'sim' ou 'não'
+  if ($ad->campo_alterado === 'tide'){
+      if ($ad->dado_novo === 'N'){
+          $ad->dado_novo = 'Não';
+      }
+      elseif ($ad->dado_novo === 'S'){
+          $ad->dado_novo = 'Sim';
+      }
+  }   
+  // Formatar data como dd/mm/aaaa
+  elseif ($ad->campo_alterado === 'vigen_ini' || $ad->campo_alterado === 'vigen_fim'){
+      $ad->dado_novo = date("d/m/Y", strtotime($ad->dado_novo));
+  }
+
+  $ad->data_resultado = date("d/m/Y", strtotime($ad->data_resultado));
+
+  // Formatar campo 'vigen_ini' e 'vigen_fim'
+  if ($qryCampo->campoAlterado === 'vigen_ini'){
+      $campo = 'inicío da vigência';
+  }
+  elseif ($qryCampo->campoAlterado === 'vigen_fim'){
+      $campo = 'fim da vigência';
+  }
+  elseif ($qryCampo->campoAlterado === 'titulo') {
+    $campo = 'título';
+  }
+  else {
+      $campo = $ad->campo_alterado;    
+  }
+  $ad->campo_alterado = $campo;
+
+  // Formatar data da solicitação em dd/mm/aaaa
+  $ad->data_solicitacao = date("d/m/Y", strtotime($ad->data_solicitacao));
+
+  $qntAden++;
+
+  $resultAdend  .= '
+    <tr>
+      <td style="padding:10px; font-family:Arial;">
+        <strong>'.$qntAden.'.</strong>
+        Modificação autorizada por:
+        <strong>
+          '.$ad->validador_nome.'
+          - '.$cargo.' 
+        </strong>
+        , no dia 
+        <strong>
+          '.$ad->data_resultado.'
+        </strong>
+        <hr style="margin:8px 0;">
+        <div><b>Campo:</b> '.$ad->campo_alterado.'</div>
+        <div><b>Valor anterior:</b> <span>'.$ad->dado_orig.'</span></div>
+        <div><b>Novo valor:</b> <span>'.$ad->dado_novo.'</span></div>
+      </td>
+    </tr>';    
+}
+if ($qntAden > 0){
+  $html .= $resultAdend ;
+}
+
+$html .= '</tbody></table>';
+// Fim de adendos
 
 
  $html .= '</body>

@@ -2,52 +2,20 @@
 
 require '../vendor/autoload.php';
 
-use \App\Session\Login;
-use \App\Entity\Projeto;
+use App\Session\Login;
+
 Login::requireLogin();
 $user = Login::getUsuarioLogado();
-use \App\Entity\Avaliacoes;
 
+$tipoAvalicao = [
+    'p' => 'idxProj.php',
+    'r' => 'idxRelat.php',
+];
 
-//VALIDAÇÃO DO ID
-if(!isset($_GET['i'], $_GET['p'], $_GET['v'])){
-  header('location: ../avalareal/index.php?status=error');
-  exit;
-}
-
-$id_ava  = $_GET['i'];
-$id_proj = $_GET['p'];
-$ver_proj = $_GET['v'];
-
-
-$avaliacao = Avaliacoes::getRegistroView($id_ava);
-
-if ($avaliacao->id_user != $user['id']){
-  header('location: ../avalareal/index.php?status=error');
-  exit;
-}
-
-if ($avaliacao->id_proj != $id_proj){
-    header('location: ../avalareal/index.php?status=error');
+if (!isset($_GET['tp'])) {
+    header('location: ../index.php?status=error');
     exit;
 }
+$toWhere = $_GET['tp'];
 
-
-if ($avaliacao->ver != $ver_proj){
-    header('location: ../avalareal/index.php?status=error');
-    exit;
-}
-
-$prj = Projeto::getProjetoView($avaliacao->id_proj, $avaliacao->ver);
-
-$cima = '<hr>
-Etapa '. $avaliacao->fase_seq. ' de '. $avaliacao->etapas. '
-<a href="../propostas/visualizar.php?id='. $avaliacao->id_proj . '&v='. $avaliacao->ver . '&w=nw" target="_blank"><button class="btn btn-success btn-sm mb-2 float-right" > Visualizar</button></a>';
-
-include './'. $avaliacao->form .'/dados.php';
-
-include '../includes/header.php';
-echo $cima; 
-include './'. $avaliacao->form .'/form.php';
-
-include '../includes/footer.php';
+include './'.$tipoAvalicao[$toWhere];

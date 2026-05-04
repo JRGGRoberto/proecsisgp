@@ -10,10 +10,6 @@ use App\Entity\Outros;
 use App\Entity\Professor;
 use App\Entity\Projeto;
 
-
-
-$form = Form_Selecprof::getRegistro($_GET['p'], $_GET['v']);
-
 $email = new EmailService();
 
 $anexados = Arquivo::getAnexados('forms', $id_ava);
@@ -29,6 +25,7 @@ foreach ($anexados as $att) {
 }
 $anex .= '</ul>';
 
+$form = Form_Selecprof::getRegistro($_GET['p'], $_GET['v']);
 $cad = false;
 if (!$form) {
     $form = new Form_Selecprof();
@@ -103,7 +100,7 @@ if (isset($_POST['resultado'])) {
                 $proj = Projeto::getProjeto($id_proj, $ver_proj);
                 $proj->nextLevel($_POST['id_parecerista']);
 
-                //envio de email -> aprovação
+                // envio de email -> aprovação
                 $email->avaliacaoProposta($proj, 'a');
                 break;
             case 'r':
@@ -112,7 +109,7 @@ if (isset($_POST['resultado'])) {
                 $proj = Projeto::getProjeto($id_proj, $ver_proj);
                 $proj->novaVersao();
 
-                //envio de email email -> reajuste
+                // envio de email email -> reajuste
                 $email->avaliacaoProposta($proj, 'r');
                 break;
             case 'e':

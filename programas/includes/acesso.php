@@ -1,96 +1,77 @@
+<?php
+$alertaLogin = strlen($alertaLogin ?? '') ? '<div class="alert alert-danger">'.$alertaLogin.'</div>' : '';
+?>
+
 <p></p>
 <div class="jumbotron text-dark">
 
   <div class="row">
 
-    <div class="col-6">
+    <!-- LADO ESQUERDO -->
+    <div class="col text-center">
 
-        <h2 class="text-center"><img src="https://sistemaproec.unespar.edu.br/sistema/imgs/logo_unespar.png" class="d-inline-block align-top" alt="" loading="lazy" width="64" height="68">UNESPAR</h2>
-        
+        <h2>UNESPAR</h2>
+        <img src="https://sistemaproec.unespar.edu.br/sistema/imgs/logo_unespar.png" width="150" height="160">
         <hr>
-        <h4>Programas</h4>
-        <?php echo $txt; ?>
-
-
-        
+        <h3>Sistema de ???</h3>
 
     </div>
 
     <div class="col">
 
-      <form method="post" enctype="multipart/form-data"  action="./valida.php">
+      <form method="post" action="./valida.php">
 
-        <h2>Cadastrar / Acessar</h2>
-        <!-- ?php echo $alertaLogin; ? -->
+        <h2>Acessar</h2>
+        <?php echo $alertaLogin; ?>
 
         <div class="form-group">
-            <label>CPF <sub> [Digite apenas os números]</sub></label>
-            <div class="row">
-              <div class="col-4">
-                <input id="cpf" type="text" class="form-control " name="cpf" minlength="14"  maxlength="14" inputmode="numeric" autocomplete="off" placeholder="000.000.000-00" required  />
-              </div>
-              <div class="col">
-                <button type="submit" id="btnOk"  class="btn btn-primary" disabled>🔑 Entrar</button>
-              </div>
-            </div>
+          <label>CPF</label>
+          <input id="cpf" type="text" name="cpf" class="form-control"
+            placeholder="000.000.000-00" maxlength="14"
+            inputmode="numeric" autocomplete="off" required>
         </div>
-        <div class="alert alert-info col-6">IP de acesso: <?php echo $ip; ?></div>
+
+        <div class="form-group">
+          <label>Senha</label>
+          <input id="senha" type="password" name="senha" class="form-control" placeholder="Digite sua senha" required>
+        </div>
+
+        <div class="form-group ">
+          <button type="submit" id="btnOk" class="btn btn-primary ">
+            🔑 Entrar
+          </button>
+          <div>&nbsp;</div>
+          <div class="alert alert-info col">
+            Se não tiver cadastro ou esqueceu a senha:
+          </div>
+        </div>
+
       </form>
+      <div class="d-flex justify-content-between">
+        <a href="./cadastrar.php" class="btn btn-primary btn-sm float-right">
+          ✏️ Cadastro 
+        </a>
+        <a href="./recuperar.php" class="btn btn-primary btn-sm float-right">
+          📑 Recuperar senha
+        </a>
+      </div>
     </div>
   </div>
 </div>
 
 <script>
-
 const cpfInput = document.getElementById('cpf');
-const btnOk = document.getElementById('btnOk');
 
-    // Bloqueia teclas que não são dígitos (permite controles: backspace, setas, ctrl/cmd, delete, tab)
-    cpfInput.addEventListener('keydown', (e) => {
-      const allowedControls = [
-        'Backspace','Tab','ArrowLeft','ArrowRight','Delete','Home','End'
-      ];
-      if (allowedControls.includes(e.key) || e.ctrlKey || e.metaKey) return;
-      // se não for dígito, previne
-      if (!/^[0-9]$/.test(e.key)) e.preventDefault();
-    });
+// máscara CPF
+cpfInput.addEventListener('input', () => {
+  const onlyDigits = cpfInput.value.replace(/\D/g, '').slice(0, 11);
+  cpfInput.value = formatCPF(onlyDigits);
+});
 
-    // Formata no evento input (inclui digitação e remoção)
-    cpfInput.addEventListener('input', onInput);
-
-    // Trata colar (paste) para aceitar só dígitos
-    cpfInput.addEventListener('paste', (e) => {
-      e.preventDefault();
-      const pasted = (e.clipboardData || window.clipboardData).getData('text');
-      const digits = pasted.replace(/\D/g, '').slice(0, 11);
-      cpfInput.value = formatCPF(digits);
-    });
-
-    function onInput() {
-      // Remove qualquer caractere não-dígito e limita a 11 dígitos
-      const onlyDigits = cpfInput.value.replace(/\D/g, '').slice(0, 11);
-      cpfInput.value = formatCPF(onlyDigits);
-      // colocar o cursor no fim (simples e robusto)
-      cpfInput.setSelectionRange(cpfInput.value.length, cpfInput.value.length);
-      if(cpfInput.value.length == 14)  {
-        btnOk.disabled = false;
-      } else {
-        cpfInput.autofocus ;
-        btnOk.disabled = true;
-      }
-    }
-
-    function formatCPF(digits) {
-      if (!digits) return '';
-      if (digits.length <= 3) return digits;
-      if (digits.length <= 6) return digits.slice(0,3) + '.' + digits.slice(3);
-      if (digits.length <= 9) return digits.slice(0,3) + '.' + digits.slice(3,6) + '.' + digits.slice(6);
-      return digits.slice(0,3) + '.' + digits.slice(3,6) + '.' + digits.slice(6,9) + '-' + digits.slice(9,11);
-    }
-
-    /*cpfInput.addEventListener('onfocusout', (digits) => {
-
-
-    });*/
-
-</script>
+function formatCPF(digits) {
+  if (digits.length <= 3) return digits;
+  if (digits.length <= 6) return digits.slice(0,3) + '.' + digits.slice(3);
+  if (digits.length <= 9) return digits.slice(0,3) + '.' + digits.slice(3,6) + '.' + digits.slice(6);
+  return digits.slice(0,3) + '.' + digits.slice(3,6) + '.' + digits.slice(6,9) + '-' + digits.slice(9,11);
+}
+</script> 

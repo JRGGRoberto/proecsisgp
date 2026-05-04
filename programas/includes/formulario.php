@@ -1,6 +1,12 @@
-<main>
+<?php 
+// echo '<pre>';
+// print_r($cand);
+// echo '</pre>';
+// exit;
 
-  
+// $modo = isset($cand->id) ? 'editar' : 'cadastrar';
+?>
+<main>
   <h2 class="mt-3">Dados </h2>
   <div class="row">
     <div class="col-9"> <hr>
@@ -16,7 +22,7 @@
   </div>
   
   <form method="post" id="formprof">
-    
+    <!-- coluna do nome -->
     <div class="row">
                           
       <div class="col-6">
@@ -40,6 +46,7 @@
         </div>
       </div>
 
+
       <div class="col">
         <div class="form-group">
           <label>Data de nascimento</label>
@@ -49,6 +56,7 @@
 
     </div>
 
+    <!-- coluna do endereco -->
     <div class="row">
                           
       <div class="col-4">
@@ -89,6 +97,7 @@
 
     </div>
 
+    <!-- coluna do telefone -->
     <div class="row">
                           
       <div class="col">
@@ -114,6 +123,7 @@
 
     </div>
 
+    <!-- coluna do curso -->
     <div class="row">
                           
       <div class="col">
@@ -129,7 +139,17 @@
           <input type="text" class="form-control" name="serie" maxlength="1"  value="<?php echo $cand->serie; ?>" required>
         </div>
       </div>
+    </div>
 
+
+    <div class="row">
+      <div class="col-4">
+        <div class="form-group">
+          <label>Senha</label>
+          <span class="badge badge-warning">Não mexa para não alterá-la</span>
+          <input type="password" class="form-control" name="senha" maxlength="20" required placeholder="">
+        </div>
+      </div>
     </div>
     <hr>
     
@@ -153,6 +173,7 @@
         </div>
       </div>
     </div>
+    
 
     <div class="form-group">
       <button type="submit" class="btn btn-success">Enviar</button>
@@ -193,6 +214,4 @@
     </div>
   </div>
 </div>
-
-
 <script src="dados.js"></script>

@@ -16,7 +16,7 @@ $user = Login::getUsuarioLogado();
 
   <h2 class="mt-3"><?php echo TITLE; ?></h2>
 
-  <form method="post" id="formprof">
+  <form method="post" id="formprof" autocomplete="off">
     
     <div class="row">
                           
@@ -25,7 +25,7 @@ $user = Login::getUsuarioLogado();
       <div class="col-8">
         <div class="form-group">
           <label>Nome</label>
-          <input type="text" class="form-control" name="nome" maxlength="60"  value="<?php echo $obProfessor->nome; ?>" required>
+          <input type="text" class="form-control" name="nome" maxlength="60"  value="<?php echo $obProfessor->nome; ?>" required autocomplete="off">
         </div>
       </div>
 

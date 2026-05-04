@@ -21,7 +21,7 @@ $user = Login::getUsuarioLogado();
 $id = $_GET['id'];
 
 $relatorio = new Relatorio();
-$relatorio = $relatorio->getId($id);
+$relatorio = $relatorio->getById($id);
 
 $editar = '';
 $scriptDisble = '';
@@ -37,7 +37,6 @@ if (($relatorio->tramitar == 1) or ($obProjeto->id_prof != $user['id'])) {
     $scriptDisble = "<script>
                         $('#sumnot_atvd_per').summernote('disable');
                         $('#sumnot_alteracoes').summernote('disable');
-                        $('#sumnot_atvd_prox_per').summernote('disable');
                         $('#sumnot_atvd_prox_per').summernote('disable');
                         btnArquivo =  document.getElementById('arquivo');
                         btnArquivo.hidden = true;

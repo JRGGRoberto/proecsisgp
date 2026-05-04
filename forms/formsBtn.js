@@ -34,13 +34,19 @@ function submitSave() {
 }
 
 function submitAprova() {
-
   if(!(typeof  esseFormSelecProf === 'undefined' )){
     const selecao = document.getElementById('id_parecerista');
-    if(selecao.value == -1){
-      alert('Selecione um professor');
-      return;
+
+    if (selecao) {
+      if(selecao.value == -1){
+        alert('Selecione um professor');
+        return;
+      }
+    } else {
+      console.error("Elemento 'selecao' não encontrado!");
     }
+
+    
   }
   const name = document.getElementById('resultado');
   name.value = 'a';

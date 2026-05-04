@@ -110,10 +110,13 @@ error_reporting(E_ALL);
           <option>Selecione</option>
           <option value="TIDE" <?php echo $vinculo->rt == 'TIDE' ? 'selected' : ''; ?> >TIDE</option>
           <option value="40"   <?php echo $vinculo->rt == 40 ? 'selected' : ''; ?> >40</option>
+          <option value="34"   <?php echo $vinculo->rt == 34 ? 'selected' : ''; ?> >34</option>
+          <option value="28"   <?php echo $vinculo->rt == 28 ? 'selected' : ''; ?> >28</option>
           <option value="24"   <?php echo $vinculo->rt == 24 ? 'selected' : ''; ?> >24</option>
           <option value="20"   <?php echo $vinculo->rt == 20 ? 'selected' : ''; ?> >20</option>
           <option value="12"   <?php echo $vinculo->rt == 12 ? 'selected' : ''; ?> >12</option>
           <option value="10"   <?php echo $vinculo->rt == 10 ? 'selected' : ''; ?> >10</option>
+          <option value= "9"   <?php echo $vinculo->rt == 9 ? 'selected' : ''; ?>  >9</option>
           <option value= "8"   <?php echo $vinculo->rt == 8 ? 'selected' : ''; ?>   >8</option>
         </select>
     </div>

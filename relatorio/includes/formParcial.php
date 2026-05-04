@@ -1,6 +1,19 @@
+<?php
+
+if (isset($editar)) {
+    if (is_null($editar) || $editar == 'readonly') {
+        $editar = ' readonly ';
+    } else {
+        $editar = '';
+    }
+} else {
+    $editar = ' readonly ';
+}
+
+?>
 <main>
   
-  <section>
+  <section  id="SectionVoltar">
     
       <button class="btn btn-success btn-sm float-right" id="backBtn">Voltar</button>
     
@@ -74,14 +87,14 @@
 
   <?php
   $ini = null;
-    if (!is_null($relatorio->periodo_ini)) {
-        $ini = substr($relatorio->periodo_ini, 0, 10);
-    }
-    $fim = null;
-    if (!is_null($relatorio->periodo_fim)) {
-        $fim = substr($relatorio->periodo_fim, 0, 10);
-    }
-    ?>
+if (!is_null($relatorio->periodo_ini)) {
+    $ini = substr($relatorio->periodo_ini, 0, 10);
+}
+$fim = null;
+if (!is_null($relatorio->periodo_fim)) {
+    $fim = substr($relatorio->periodo_fim, 0, 10);
+}
+?>
     <div class="form-group">
       <label>
         <h5><?php echo ++$n; ?>. Período que se refere o Relatório</h5>
@@ -165,7 +178,7 @@
       <div class="form-group">
         <h5 id="attc"><?php echo ++$n; ?>. Anexos</h5>
         <ul id="anexos"></ul>
-        <?php if ($editar != 'readonly') { ?>
+        <?php if ($editar != ' readonly ') { ?>
             <iframe src="../upload/upload.php" frameborder="0" scrolling="no"></iframe>
         <?php } ?>
         <?php echo $anex; ?>
@@ -186,10 +199,10 @@
         </div>
       </div>
 
-      <div class="form-group">
+      <div class="form-group" id="menuAvaliarVoltar">
       <?php
-                if ($editar == '') {
-                    ?>
+            if ($editar == '') {
+                ?>
           <a href="javascript: submitSumbeter()" class="btn btn-success btn-sm" >↗️ Salvar </a>
       <?php } ?>
          <a href="javascript: history.go(-1)" class="btn btn-warning btn-sm" >↗️ Voltar </a>
@@ -209,4 +222,11 @@
   </form>
 
 </main>
-<script src="forms.js"></script>
+<?php
+$path = explode('/', $_SERVER['REQUEST_URI']);
+$base = $_SERVER['REQUEST_SCHEME'].'://'.$_SERVER['HTTP_HOST'];
+$caminhoFormJS = $base.'/'.$path[1].'/relatorio/forms.js';
+$caminhoFormJS = '<script src="'.$caminhoFormJS.'"></script>';
+
+echo $caminhoFormJS;
+?>

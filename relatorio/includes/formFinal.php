@@ -14,11 +14,20 @@ switch ($tf) {
         $tituloHeader = 'não definido';
         break;
 }
+if (isset($editar)) {
+    if (is_null($editar) || $editar == 'readonly') {
+        $editar = ' readonly ';
+    } else {
+        $editar = '';
+    }
+} else {
+    $editar = ' readonly ';
+}
 
 ?>
 <main>
   
-  <section>
+  <section  id="SectionVoltar">
     
       <button class="btn btn-success btn-sm float-right" id="backBtn">Voltar</button>
     
@@ -26,30 +35,6 @@ switch ($tf) {
   <hr>
   <h4 style="text-align: center">ANEXO V</h4>
   <h3 class="mt-3" style="text-align: center"><?php echo $tituloHeader; ?></h3>
-
-  <?php
-
-    /* if(!(
-        ( ($relatorio->tramitar == 0)     or is_null($relatorio->tramitar)     or ($relatorio->tramitar == ''))      and
-        ( ($relatorio->ava_publicar == 0) or is_null($relatorio->ava_publicar) or ($relatorio->ava_publicar == ''))  and
-        (strlen($relatorio->ava_comentario) == 0)
-       )
-    ){
-      echo '
-      <div class="form-group">
-      <label>
-        <h5> Solicitação de ajustes do relatório parcial </h5>
-      </label>
-        <textarea rows="4" cols="50" readonly class="form-control">
-        c:' . $relatorio->ava_comentario . '|t:'. $relatorio->tramitar.'|p:'. $relatorio->ava_publicar.'|
-        </textarea>
-      </div>
-
-      ';
-    //}
-*/
-?>
-
 
   <form name="formAnexo" id="formAnexo" method="POST" enctype="multipart/form-data">
     <input type="hidden" name="id_prof" value="<?php echo $obProjeto->id_prof; ?>">
@@ -65,7 +50,11 @@ switch ($tf) {
     
     
     <hr>
-    <?php echo $msgSolicitacoAlteracao; ?>
+    <?php
+        if ($editar != ' readonly ') {
+            echo $msgSolicitacoAlteracao;
+        }
+?>
 
     <div class="form-group">
       <label>
@@ -366,7 +355,7 @@ if ($tf == 'pr') {
       <div class="form-group">
         <h5 id="attc"><?php echo ++$n; ?>. Anexos</h5>
         <ul id="anexos"></ul>
-          <?php if ($editar != 'readonly') { ?>
+          <?php if ($editar != ' readonly ') { ?>
             <iframe src="../upload/upload.php" frameborder="0" scrolling="no"></iframe>
           <?php } ?>
         <?php echo $anex; ?>
@@ -386,15 +375,16 @@ if ($tf == 'pr') {
 
       
 
-      <div class="form-group">
-      <?php
-                  if ($editar == '') {
-                      ?>
-          <a href="javascript: submitSumbeter()" class="btn btn-success btn-sm" >↗️ Salvar </a>
-      <?php } ?>
+      <div class="form-group" id="menuAvaliarVoltar">
+        <?php
+            if ($editar == '') {
+                ?>
+            <a href="javascript: submitSumbeter()" class="btn btn-success btn-sm" >↗️ Salvar </a>
+        <?php } ?>
          <a href="javascript: history.go(-1)" class="btn btn-warning btn-sm" >↗️ Voltar </a>
       </div>
 
+      <!--
       <div class="row">
         <div class="col">
           <div class="form-group">
@@ -402,7 +392,7 @@ if ($tf == 'pr') {
           </div>
         </div>
       </div>
-
+            -->
       <?php
 /*
 echo date("l \\t\h\e jS");
@@ -415,13 +405,20 @@ echo '<br>';
 $periodo_fim1 = substr($obProjeto->vigen_ini, 0, 10);
 $periodo_fim1 = substr($obProjeto->vigen_fim, 0, 10); */
 
+$path = explode('/', $_SERVER['REQUEST_URI']);
+$base = $_SERVER['REQUEST_SCHEME'].'://'.$_SERVER['HTTP_HOST'];
+$caminhoFormJS = $base.'/'.$path[1].'/relatorio/forms.js';
+$caminhoFormJS = '<script src="'.$caminhoFormJS.'"></script>';
 ?>
        
       <input type="hidden" name="tabela" value="relatorios">
       <input id="anexosJS" name="anexosJS" type="text" hidden>
-
-
   </form>
 
 </main>
-<script src="forms.js"></script>
+<script>
+
+  
+  
+</script>
+<?php echo $caminhoFormJS; ?>

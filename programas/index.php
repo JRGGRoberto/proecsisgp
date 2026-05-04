@@ -37,6 +37,13 @@ if (!empty($_SERVER['HTTP_CLIENT_IP'])) {
     $ip = $_SERVER['REMOTE_ADDR'];
 }
 
+
+$alertaLogin = '';
+
+if (isset($_GET['erro'])) {
+    $alertaLogin = 'CPF ou senha inválidos.';
+}
+
 include '../includes/headersCl.php';
 include __DIR__.'/includes/acesso.php';
 include '../includes/footer.php';

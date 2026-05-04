@@ -20,7 +20,7 @@ $user = Login::getUsuarioLogado();
 
 $id = $_GET['id'];
 $relatorio = new Relatorio();
-$relatorio = $relatorio->getId($id);
+$relatorio = $relatorio->getById($id);
 
 $tf = $relatorio->tipo;
 

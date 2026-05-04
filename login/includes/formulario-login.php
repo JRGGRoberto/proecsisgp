@@ -1,4 +1,4 @@
-<?php
+ <?php
 $alertaLogin = strlen($alertaLogin) ? '<div class="alert alert-danger">'.$alertaLogin.'</div>' : '';
 
 ?>
@@ -46,7 +46,7 @@ $alertaLogin = strlen($alertaLogin) ? '<div class="alert alert-danger">'.$alerta
         </div> 
       
       </form>
-      <a href="https://senha.unespar.edu.br/" class="btn btn-primary btn-sm float-right">📑 Recuperar senha</a>
+      <a href="./recuperar.php" class="btn btn-primary btn-sm float-right">📑 Recuperar senha</a>
 <!-- name="acao" value="logar"
       <br>
       <a href="../projetostb/" class="btn btn-success" id="projEfet">📑 Propostas efetivadas</a>

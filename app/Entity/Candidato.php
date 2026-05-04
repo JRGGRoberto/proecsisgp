@@ -9,6 +9,7 @@ class Candidato
     public $id;
     public $nome;
     public $rg;
+    public $senha;
     public $cpf;
     public $dt_nasc;
     public $ender;
@@ -40,6 +41,7 @@ class Candidato
             'nome' => $this->nome,
             'rg' => $this->rg,
             'cpf' => $this->cpf,
+            'senha' => $this->senha,
             'dt_nasc' => $this->dt_nasc,
             'ender' => $this->ender,
             'bairro' => $this->bairro,
@@ -71,6 +73,7 @@ class Candidato
             'nome' => $this->nome,
             'rg' => $this->rg,
             'cpf' => $this->cpf,
+            'senha' => $this->senha,
             'dt_nasc' => $this->dt_nasc,
             'ender' => $this->ender,
             'bairro' => $this->bairro,
@@ -148,5 +151,13 @@ class Candidato
         return (new Database('candidatos'))->select($where, null, null, 'COUNT(*) as qtd')
                                       ->fetchObject()
                                       ->qtd;
+    }
+
+    public static function getRecuperacao($email, $data)
+    {
+        $where = ' email = "'.$email.'" AND dt_nasc = "'.$data.'" ';
+
+        return (new Database('candidatos'))->select($where)
+                                        ->fetchObject(self::class);
     }
 }

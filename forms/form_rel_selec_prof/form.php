@@ -1,61 +1,28 @@
 
 <div class="container mt-4">
-   <h3>SELEÇÃO DE PROFESSOR PARA REALIZAR O PARECER</h3>
+   <h3>Aceite de relatório: SELEÇÃO DE PROFESSOR PARA REALIZAR O PARECER</h3>
    <h4>Divisão de Extensão e Cultura dos Campi</h4>
       
-  <form name="myform" id="myform" method="post" enctype="multipart/form-data">
-       <ol>
-        <li class="mb-4">
-          <h5>Tipo de Proposta</h5>
+  
+            <div class="border border-secondary p-3">
+              <hr>
+              <h2>Relatório</h2>
+              
+              <?php
 
-            <div class="form-group">
-                <input type="text" class="form-control" name="tp_proposta"  value="<?=$prj->tipo_exten?>" readonly>
-            </div>
-            
-        </li>
+              echo $dataRelatorio;
 
-        <li class="mb-4">
-          <h5>Identificação da Proposta</h5>
-            
-            <div class="form-group">
-              <label>Título</label>
-              <input type="text" class="form-control" name="titulo" value="<?=$prj->titulo?>" readonly>
-            </div>
-            
-            <div class="form-group">
-              <label>Proponente</label>
-              <input type="text" class="form-control" name="coordNome" value="<?=$prj->nome_prof?>" readonly>
-            </div>
-            
-            <div class="form-group">
-              <label>Colegiado de Curso</label>
-              <input type="text" class="form-control" name="colegiado" value="<?=$prj->colegiado?>" readonly>
-            </div>
-            
-            <div class="row">
-            
-              <div class="col">
-                <div class="form-group">
-                  <label for="area_extensao">Área de extensão</label>
-                  <input type="text" class="form-control"  name="area_exten" value="<?=$prj->area_extensao?>" readonly>
-                </div>
-              </div>
-            
-              <div class="col">
-                <div class="form-group">
-                  <label for="linh_ext">Linha de  extensão</label>
-                  <input type="text" class="form-control"  value="<?=$prj->linh_ext?>" readonly>
-                </div>
-              </div>
-
+              ?>
+              <hr>
             </div>
         </li>
-
+        <hr>
+<form name="myform" id="myform" method="post" enctype="multipart/form-data">
         <li class="mb-4">
           <h5>Selecione um professor para realizar o parecer</h5>
           <select name="id_parecerista" id="id_parecerista" class="form-control" onchange="ativaBTN();">
               <option value="-1" selected="" >Selecione um professor</option>
-               <?=$opc?>
+               <?php echo $opc; ?>
             </select>
         </li>
 
@@ -65,7 +32,7 @@
             <div class="col">
               <div class="form-group">
                 <textarea class="form-control" name="solicitacoes" rows="10" 
-                placeholder="(Descrever quais adequações devem ser realizadas para que o projeto ultrapasse esta etapa) 10 linhas máximo"><?=$form->solicitacoes?></textarea>
+                placeholder="(Descrever quais adequações devem ser realizadas para que o projeto ultrapasse esta etapa) 10 linhas máximo"><?php echo $form->solicitacoes; ?></textarea>
                 (O prazo para devolução da proposta com adequações segue o previsto no Regulamento de Extensão – Resolução 042/2022 – CEPE/UNESPAR)
               </div>
             </div>
@@ -80,7 +47,7 @@
               <div class="form-group">
                 <ul id="anexos"></ul>
                 <iframe src="../upload/upload.php" frameborder="0" scrolling="no"></iframe>
-                <?= $anex ?>                
+                <?php echo $anex; ?>                
               </div>
             </div>
           </div>
@@ -90,14 +57,14 @@
 
     <div class="form-group">
       <div class="row">
-        <div class="col-3"><input type="text" class="form-control" name="cidade"  value="<?=$user['ca_nome']?>"></div>
-        <div class="col-2"> <input type="date" class="form-control" name="dateAssing" id="dateAssing" readonly> </div>
+        <div class="col-3"><input type="text" class="form-control" name="cidade"  value="<?php echo $user['ca_nome']; ?>"></div>
+        <div class="col-2"> <input type="date" class="form-control" name="dateAssing" id="dateAssing" readonly value="<?php echo date('Y-m-d'); ?>"> </div>
       </div>
     </div>
     
     <div class="form-group">
-      <? $cargo = ['Prof/AG','Coordenador',  'Centro de Área', 'Chefe de Divisão', 'Diretor de campus']; ?>
-      <input type="text" class="form-control" name="whosigns"  value="<?=$user['nome']?> - <?= $cargo[ $user['config'] ]?>" readonly>
+      <?php $cargo = ['Prof/AG', 'Coordenador',  'Centro de Área', 'Chefe de Divisão', 'Diretor de campus']; ?>
+      <input type="text" class="form-control" name="whosigns"  value="<?php echo $user['nome']; ?> - <?php echo $cargo[$user['config']]; ?>" readonly>
     </div>
       <p> </p><hr><p> </p>
     <div class="form-group form-group d-flex justify-content-around">
@@ -119,8 +86,6 @@
       
     </div>
     <input type="hidden" id="resultado" name="resultado">
-    <input type="hidden" name="a" value="<?=$user['id']?>">
-    <input type="hidden" name="u" value="<?=$user['id']?>">
     <input id="anexosJS" name="anexosJS" type="text" hidden>
   </form>
 
@@ -142,6 +107,12 @@ function ativaBTN() {
     }
   }
 
+
+menuAvaliarVoltar = document.getElementById("menuAvaliarVoltar");
+SectionVoltar = document.getElementById("SectionVoltar");
+menuAvaliarVoltar.remove();
+SectionVoltar.remove();
 </script>
 <script src="formsBtn.js"></script>
+
 

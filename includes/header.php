@@ -165,8 +165,9 @@ $nome = $nome[0]; // will print Test
   <script src="../includes/bootstrap-4.6.2-dist/js/bootstrap.bundle.min.js"></script>
 -->
 
-  <link href="../includes/summernote-bs4.min.css" rel="stylesheet">
-  <script src="../includes/summernote-bs4.min.js"></script>
+
+
+
   <!-- para a inserção de leitor de xlsx -->
   <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
   
@@ -178,7 +179,9 @@ $nome = $nome[0]; // will print Test
   <link href="https://sistemaproec.unespar.edu.br/sistema/includes/summernote-bs4.min.css" rel="stylesheet">
   <script src="https://sistemaproec.unespar.edu.br/sistema/includes/summernote-bs4.min.js"></script>
 
-  
+  <link href="../includes/summernote-bs4.min.css" rel="stylesheet">
+  <script src="../includes/summernote-bs4.min.js"></script>
+
     <!--multiselect CSS-->
     <link rel="stylesheet" type="text/css" href="../includes/select2.min.css" />
     <link rel="stylesheet" type="text/css" href="../includes/multi-select.css" /> 
@@ -322,7 +325,7 @@ img.remover {
 
         </div>
       </div>
-
+<!--
 
       <div class="btn-group btn-group-sm">
         <button type="button" class="btn btn-primary dropdown-toggle" data-toggle="dropdown">
@@ -333,53 +336,46 @@ img.remover {
           <a class="dropdown-item btn-sm" href="../avalfeitas">Realizadas [Histórico]</a>
         </div>
       </div>
-
-<?php
-/*
-$sql = "select
-  coalesce(ca.id, co.id) id_link,
-  CASE
-    WHEN ca.id IS NOT NULL THEN 'ca'
-    WHEN co.id IS NOT NULL THEN 'co'
-    ELSE null
-  END AS id_orig,
-  CASE
-    WHEN ca.id IS NOT NULL THEN ca.nome
-    WHEN co.id IS NOT NULL THEN co.nome
-    ELSE null
-  END AS n_orig
-FROM
-  usuarios u
-  left join colegiados co on co.coord_id  = u.id
-  left join campi ca      on ca.chef_div_id  = u.id and co.id is null
-WHERE
-  ( co.id IS NOT NULL OR ca.id IS NOT NULL ) and
-   u.id = '" . $obUsuario['id'] . "'";
-$obQAvalioRel = Outros::qry($sql);
-*/
-
-if (in_array($obUsuario['config'], [1, 3, 4])) {
-    ?>
+-->
       <div class="btn-group btn-group-sm">
     <!--    <button type="button" class="btn btn-primary dropdown-toggle" data-toggle="dropdown">Manutenção temporária</button>-->
         <button type="button" class="btn btn-primary dropdown-toggle" data-toggle="dropdown">
-        Relatórios
+        Avaliações
         </button>
         <div class="dropdown-menu">
-          <a class="dropdown-item btn-sm" href="../relatorio_todo">A realizar</a>
-          <a class="dropdown-item btn-sm" href="../relatorio_done">Realizadas [Histórico]</a>
+          <a class="dropdown-item btn-sm" href="../avaliacoes/index.php?tpAva=p1">Propostas a realizar</a>
+          <a class="dropdown-item btn-sm" href="../avaliacoes/index.php?tpAva=p2">Propostas avaliadas <span class="badge badge-info">histórico</span></a>
+          <div class="dropdown-divider"></div>
+          <a class="dropdown-item btn-sm" href="../avaliacoes/index.php?tpAva=r1">Relatórios a realizar </a>
+          <a class="dropdown-item btn-sm" href="../avaliacoes/index.php?tpAva=r2">Relatórios realizados <span class="badge badge-info">histórico</span></a>
+
+
+<?php
+  $idCampus = $obUsuario['ca_id'];
+        if (in_array($obUsuario['config'], [3])) {
+            ?>
+        <div class="dropdown-divider"></div>
+        <div class="dropdown-divider"></div>
+        <button class="btn btn-light dropdown-toggle" type="button" id="dropdownMenuButtonA" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                Solicitações DEC [Alterações de propostas]
+        </button>
+
+        <div class="dropdown-menu dropdown-menu-right" aria-labelledby="dropdownMenuButtonA">
+          <a class="dropdown-item btn-sm" href="../solicitaAlteracao/atualiza_proj.php?tipo=atualizar&idLocal=<?php echo $idCampus; ?>">A realizar</a>
+          <a class="dropdown-item btn-sm" href="../solicitaAlteracao/atualiza_proj.php?tipo=atualizados&idLocal=<?php echo $idCampus; ?>">Realizadas [Histórico]</a>
         </div>
-      </div>
+      
 
 <?php } ?> 
 
-   
+        </div>
+      </div>
       
 <!--      <button type="button" class="btn btn-primary">Projetos</button>
     -->     
       <?php echo $menuAcompa; ?>
       <?php // echo $menuPibis;?>
-      <?php echo $menuMicro; ?>
+      <?php echo ''; // $menuMicro;?>
       <?php echo $adminOpts; ?>
 
       <div clastoasts="btn-group btn-group-sm">
@@ -388,7 +384,7 @@ if (in_array($obUsuario['config'], [1, 3, 4])) {
         </button>
         <div class="dropdown-menu dropdown-menu-right">
           <?php
-                $tipoUser = $obUsuario['tipo'] == 'agente' ? 'agente' : 'professor';
+                        $tipoUser = $obUsuario['tipo'] == 'agente' ? 'agente' : 'professor';
         ?>
           
         

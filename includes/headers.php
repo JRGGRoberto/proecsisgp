@@ -25,9 +25,16 @@ $horas >= 12 ? (int) ($horas -= 12) : (int) ($horas -= 0);
   <script src="../includes/popper.min.js"></script>
   <script src="../includes/bootstrap-4.6.2-dist/js/bootstrap.bundle.min.js"></script>
 -->
+  <!--
 
   <link href="../includes/summernote-bs4.min.css" rel="stylesheet">
   <script src="../includes/summernote-bs4.min.js"></script>
+
+-->
+
+  <link href="../includes/summernote-0.9.0-dist/summernote-bs4.min.css" rel="stylesheet">
+  <script src="../includes/summernote-0.9.0-dist/summernote-bs4.min.js"></script>
+  
 
     <!--multiselect CSS-->
     <link rel="stylesheet" type="text/css" href="../includes/select2.min.css">
