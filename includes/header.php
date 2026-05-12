@@ -5,6 +5,7 @@ require '../vendor/autoload.php';
 use App\Session\Login;
 
 $obUsuario = Login::getUsuarioLogado();
+
 use App\Entity\CompararAlunos;
 use App\Entity\MicroCred_avaliadores;
 // use App\Entity\Pibis_pibex_avaliadores;
@@ -353,8 +354,8 @@ $idCampus = $obUsuario['ca_id'];
         if (in_array($obUsuario['config'], [3])) {
             ?>
      <div class="dropdown-divider"></div>
-          <a class="dropdown-item btn-sm" href="../dec/index.php?tipo=atualizar&solicita=DEC&idLocal=<?php echo $idCampus; ?>">A realizar alteração DEC</a>
-          <a class="dropdown-item btn-sm" href="../dec/index.php?tipo=atualizados&solicita=DEC&idLocal=<?php echo $idCampus; ?>">Realizadas alt DEC[Histórico]</a>
+          <a class="dropdown-item btn-sm" href="../dec/index.php?tipo=atualizar&solicita=DEC&idLocal=<?php echo $idCampus; ?>">Alterações de projetos DEC <span class="badge badge-success">Novo!</span> </a>
+          <a class="dropdown-item btn-sm" href="../dec/index.php?tipo=atualizados&solicita=DEC&idLocal=<?php echo $idCampus; ?>">Projetos alterados DEC [Histórico] <span class="badge badge-success">Novo!</span></a>
  
 <?php } ?> 
 
@@ -381,12 +382,27 @@ $idCampus = $obUsuario['ca_id'];
           <a class="dropdown-item btn-sm" href="../<?php echo $tipoUser; ?>/editar.php?id=<?php echo $obUsuario['id']; ?>">Perfil</a>
     <!--      <a class="dropdown-item btn-sm" href="../config/">Configuração</a>  --> 
           <div class="dropdown-divider"></div>
-<!-- se a pessoa for permitida, ela entrará aqui para colocar as tabelas e ver se há alunos repetidos em bolsas -->
-          <!-- As pessoas permitidas estão em CompararAlunos.php -->
-          <?php if (isset($obUsuario['id']) && in_array($obUsuario['id'], $idPermitido, true)) { ?>
-            <a class="dropdown-item btn-sm" href="../verificar_bolsistas/index.php">Verificar alunos bolsistas</a>
-            <div class="dropdown-divider"></div>
-          <?php } ?>
+
+          
+          <?php
+            if ($obUsuario['CargoEspecial'] != '0'){
+              require_once '../includes/funcoes/func_verificaCargosEspeciais.php';
+              $cargosEspeciais = dadosCargosEspeciais($obUsuario['CargoEspecial']);
+            }
+
+            if (!empty($cargosEspeciais)){
+              $nome = $cargosEspeciais[0]->siglaReitoria;
+              $rota = strtolower($nome);
+              $hidden = '';
+            } else {
+              $hidden = 'hidden';
+            }
+          ?>
+          <!-- Utilizar o nome do cargo especial para pasta para identificar corretamente a rota -->
+          <a <?= $hidden ?> class="dropdown-item btn-sm" href='../<?= $rota ?>'><?= $nome ?> <span class="badge badge-success">Novo!</span> </a>
+          <div <?= $hidden ?> class="dropdown-divider"></div>
+
+
 
           <a class="dropdown-item btn-sm" href="../login/logout.php">Sair</a>
         </div>

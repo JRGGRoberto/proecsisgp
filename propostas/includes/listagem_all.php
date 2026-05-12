@@ -60,19 +60,19 @@ $resultados = '<div id="accordion">';
 foreach ($projetos as $proj) {
     switch ($proj->tipo_exten) {
         case 1:
-            $proj->tipo_exten = 'Curso';
+            $nomeExten = 'Curso';
             break;
         case 2:
-            $proj->tipo_exten = 'Evento';
+            $nomeExten = 'Evento';
             break;
         case 3:
-            $proj->tipo_exten = 'Prestação de Serviço';
+            $nomeExten = 'Prestação de Serviço';
             break;
         case 4:
-            $proj->tipo_exten = 'Programa';
+            $nomeExten = 'Programa';
             break;
         case 5:
-            $proj->tipo_exten = 'Projeto';
+            $nomeExten = 'Projeto';
             break;
     }
     ++$qnt1;
@@ -188,7 +188,7 @@ foreach ($projetos as $proj) {
       </div>
 
       <div class="row">
-        <div class="col"><strong>Tipo de Proposta:</strong> '.$proj->tipo_exten.'</div>
+        <div class="col"><strong>Tipo de Proposta:</strong> '.$nomeExten.'</div>
       </div>
     </div>
 
