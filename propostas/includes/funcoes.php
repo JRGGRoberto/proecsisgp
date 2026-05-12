@@ -194,7 +194,7 @@ function createBT($tipo, $id, $ver = null, $form = null, $tipo_exten = null, $ti
         case 'adequacoes':
             return '<a href="../forms/'.$form.'/vista.php?p='.$id.'&v='.($ver - 1).'"><button class="btn btn-danger btn-sm mb-2" > 📑 Informações de adequações </button></a>';
         case 'alteraSAP':
-            return '<a><button id="SAP'.$id.'v'.$ver.'" class="btn btn-warning btn-sm mb-2" '.$hidden.' onclick="writeNumber(this)"> 🔄 Solicitar alteração </button></a>';
+            return '<a><button id="SAP'.$id.'v'.$ver.'" class="btn btn-warning btn-sm mb-2 ml-1" '.$hidden.' onclick="writeNumber(this)"> 🔄 Solicitar alteração </button></a>';
         case 'relatorioParcial':
             // if ($tipo_exten != 2) {
             //   return  '
@@ -213,6 +213,7 @@ function createBT($tipo, $id, $ver = null, $form = null, $tipo_exten = null, $ti
                             <button 
                                 class="btn btn-success btn-sm mb-2" 
                                 data-toggle="tooltip"
+                                Title="Relatório parcial não é aplicado para eventos."
                                 data-placement="bottom" 
                                 disabled>
                                 📝 Relatório Parcial
@@ -226,7 +227,7 @@ function createBT($tipo, $id, $ver = null, $form = null, $tipo_exten = null, $ti
             // no break
         case 'relatorioFinal':
             if ($userId == $profId) {
-                return '<a href="../relatorio/index.php?id='.$id.'"><button class="btn btn-success btn-sm mb-2"> 📝 Relatório Final </button></a>';
+                return '<a href="../relatorio/index.php?id='.$id.'"><button class="btn btn-success btn-sm mb-2 ml-2"> 📝 Relatório Final </button></a>';
             } else {
                 return '';
             }
@@ -514,7 +515,7 @@ function aguardandoRelatorio($p, $userId)
     if ($userId == $profId) {
         return
             createBT('visualizar', $i, $v).''.
-            '<a href="../relatorio/index.php?id='.$i.'" class="btn btn-success btn-sm mb-2">📝 Relatório Final</a> &nbsp;'.
+            '<a href="../relatorio/index.php?id='.$i.'" class="btn btn-success btn-sm mb-2 ml-2">📝 Relatório Final</a> &nbsp;'.
             $rel_Infos;
     } elseif (in_array($userId, $usuariosEspecificos)) {
         return createBT('visualizar', $i, $v).$rel_Infos;
