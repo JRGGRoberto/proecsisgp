@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <script defer src="http://localhost:3000/app/embed.js"></script>
+<script>
+function defineMetabaseConfig(config) {
+  window.metabaseConfig = config;
+}
+</script>
+
+<script defer src="http://localhost:3000/app/embed.js"></script>
+<script>
+function defineMetabaseConfig(config) {
+  window.metabaseConfig = config;
+}
+</script>
+
+<script>
+  defineMetabaseConfig({
+    "theme": {
+      "preset": "light"
+    },
+    "isGuest": true,
+    "instanceUrl": "http://localhost:3000"
+  });
+</script>
+
+<!--
+THIS IS THE EXAMPLE!
+NEVER HARDCODE THIS JWT TOKEN DIRECTLY IN YOUR HTML!
+
+Fetch the JWT token from your backend and programmatically pass it to the 'metabase-dashboard'.
+-->
+<metabase-dashboard token="eyJhbGciOiJIUzI1NiJ9.eyJyZXNvdXJjZSI6eyJkYXNoYm9hcmQiOjJ9LCJwYXJhbXMiOnt9LCJpYXQiOjE3NzMyNDY1MzYsImV4cCI6MTc3MzI0NzEzNiwiX2VtYmVkZGluZ19wYXJhbXMiOnsiZGF0YSI6ImVuYWJsZWQifX0.TFDRQqJ2f_JSLJMrQUpm4jQyuFoIlzrxXd_AeAMoixs" with-title="true" with-downloads="true"></metabase-dashboard>
+</body>
+</html>

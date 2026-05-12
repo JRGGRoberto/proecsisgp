@@ -1,0 +1,506 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="robots" content="noindex">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.1/dist/css/bootstrap.min.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.1/dist/umd/popper.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.1/dist/js/bootstrap.bundle.min.js"></script>
+    <style>
+        .alert {
+            transition: transform 0.4s ease, opacity 0.4s ease;
+        }
+        .moving {
+            z-index: 1;
+        }
+        /* Animação ao excluir */
+        .fade-out {
+               opacity: 0;
+               transform: scale(0.95);
+        }
+    
+        .fade {
+            opacity: 0;
+            visibility: hidden;
+            transition: opacity 0.4s ease, visibility 0.4s ease;
+        }
+        
+        .fade.show {
+            opacity: 1;
+            visibility: visible;
+        }
+    
+        .btn-container {
+            display: flex;
+            
+        }
+        .hidden-div {
+            display: none;
+        }
+
+    </style>
+    <title>Document</title>
+</head>
+<body><div class="container">
+    <main>
+       <h2 class="mt-0">Lista de candidatos </h2>
+  
+       <form method="post" name="formSalvaDados" id="formSalvaDados" >
+           <input type="hidden" name="altDados" id="altDados">
+       </form>
+       <button id="btnSalvar" class="btn btn-success btn-sm float-right show" hidden onclick="salvaInfos()" si>Salvar classificação</button>
+       <hr>
+
+      <section>
+        Lista Ranqueada
+        <div class="form-group" id="listaRanc">
+          <!-- Lista será carregada dinamicamente -->
+        </div>
+    
+        Lista de desclassificados ou não ranqueados
+        <div class="form-group" id="listaInscricoes">
+          <!-- Lista será carregada dinamicamente -->
+        </div>
+        
+      </section>
+    </main>
+</div>
+    <!-- The Modal -->
+    <div class="modal" id="modalConfirmDesc">
+        <div class="modal-dialog">
+          <div class="modal-content">
+      
+            <!-- Modal Header -->
+            <div class="modal-header">
+              <h4 class="modal-title">Desclassificar candidato</h4>
+              <button type="button" class="close" data-dismiss="modal">&times;</button>
+            </div>
+      
+            <!-- Modal body -->
+            <div class="modal-body">
+              <p>Para realizar a desclassificação, é obrigatório informar uma justificativa no campo abaixo</p>
+              <textarea name="obs" id="obs" rows="5" class="form-control"></textarea>
+            </div>
+      
+            <!-- Modal footer -->
+            <div class="modal-footer">
+              <button type="button" id="btnConfirmar" class="btn btn-danger" disabled>Confirmar cancelamento</button>
+              <button type="button" id="btnCancelar" class="btn btn-secondary" data-dismiss="modal">Não alterar</button>
+            </div>
+            <div id='tp'class="hidden-div"></div>
+            <div id='idx'class="hidden-div"></div>
+          </div>
+        </div>
+    </div>
+
+</body>
+
+<script>
+    var dados = 
+[
+  {
+    "idprof": "81506c70-becd-11ee-801b-0266ad9885af",
+    "prog": "FORMULA-1",
+    "nome": "MAX VERSTAPPEN",
+    "cidade": "Apucarana",
+    "curso": "Ci\u00eancias econ\u00f4micas",
+    "uf": "PR",
+    "tel1": "(43)999999999",
+    "email": "email@domain.com",
+    "dt_insc": "12/08/2025 14:54",
+    "dtava": "19/08/2025 16:47",
+    "id_prog": "b806d792-76b8-11f0-953e-3a9832f2c2cb",
+    "id_can": "5807be05-cbc0-4ddd-8f49-94e1feb5ad1c",
+    "classif": null,
+    "cancelado": "0",
+    "obs": null
+  },
+  {
+    "idprof": "81506c70-becd-11ee-801b-0266ad9885af",
+    "prog": "FORMULA-1",
+    "nome": "LANDO NORRIS",
+    "cidade": "Apucarana",
+    "curso": "Pedagogia ",
+    "uf": "RP",
+    "tel1": "(43)999999999",
+    "email": "email@domain.com",
+    "dt_insc": "12/08/2025 16:44",
+    "dtava": "19/08/2025 16:47",
+    "id_prog": "b806d792-76b8-11f0-953e-3a9832f2c2cb",
+    "id_can": "8ec878e6-c48a-4f7a-864b-ee06c412cbda",
+    "classif": null,
+    "cancelado": "0",
+    "obs": null
+  },
+  {
+    "idprof": "81506c70-becd-11ee-801b-0266ad9885af",
+    "prog": "FORMULA-1",
+    "nome": "GABRIEL BORTOLETO",
+    "cidade": "Apucarana",
+    "curso": "Ci\u00eancias Cont\u00e1beis ",
+    "uf": "PR",
+    "tel1": "(43)999999999",
+    "email": "email@domain.com",
+    "dt_insc": "13/08/2025 13:00",
+    "dtava": "19/08/2025 16:47",
+    "id_prog": "b806d792-76b8-11f0-953e-3a9832f2c2cb",
+    "id_can": "fe829b16-40fc-44c2-aafb-476396b49508",
+    "classif": null,
+    "cancelado": "0",
+    "obs": null
+  },
+  {
+    "idprof": "81506c70-becd-11ee-801b-0266ad9885af",
+    "prog": "FORMULA-1",
+    "nome": "ISACK HADJAR",
+    "cidade": "Apucarana",
+    "curso": "Licenciatura em Letras Espanhol ",
+    "uf": "PR",
+    "tel1": "(43)999999999",
+    "email": "email@domain.com",
+    "dt_insc": "13/08/2025 13:56",
+    "dtava": "19/08/2025 16:47",
+    "id_prog": "b806d792-76b8-11f0-953e-3a9832f2c2cb",
+    "id_can": "bae8236a-a953-4d7e-8b5f-51d557c556cc",
+    "classif": null,
+    "cancelado": "0",
+    "obs": null
+  },
+  {
+    "idprof": "81506c70-becd-11ee-801b-0266ad9885af",
+    "prog": "FORMULA-1",
+    "nome": "FERNANDO ALONSO",
+    "cidade": "Cambira",
+    "curso": "Letras Portugu\u00eas ",
+    "uf": "PR",
+    "tel1": "(43)999999999",
+    "email": "email@domain.com",
+    "dt_insc": "13/08/2025 20:43",
+    "dtava": "19/08/2025 16:47",
+    "id_prog": "b806d792-76b8-11f0-953e-3a9832f2c2cb",
+    "id_can": "f5a2d581-2659-426b-b8ae-b10c5ecc955c",
+    "classif": null,
+    "cancelado": "0",
+    "obs": null
+  },
+  {
+    "idprof": "81506c70-becd-11ee-801b-0266ad9885af",
+    "prog": "FORMULA-1",
+    "nome": "YUKI TOSUNODA",
+    "cidade": "Apucarana",
+    "curso": "Letras Espanhol",
+    "uf": "PR",
+    "tel1": "(43)999999999",
+    "email": "email@domain.com",
+    "dt_insc": "14/08/2025 19:52",
+    "dtava": "19/08/2025 16:47",
+    "id_prog": "b806d792-76b8-11f0-953e-3a9832f2c2cb",
+    "id_can": "0e0573f8-8d64-4c12-98b5-40508a9d6032",
+    "classif": null,
+    "cancelado": "0",
+    "obs": null
+  }
+];
+
+
+document.addEventListener("DOMContentLoaded", () => {
+  const lista   = document.getElementById("listaRanc");
+  const listaI  = document.getElementById("listaInscricoes");
+  const form    = document.getElementById("formSalvaDados");
+  const alt     = document.getElementById("altDados");
+  const btnSave = document.getElementById("btnSalvar");
+  const obsEl   = document.getElementById("obs");
+  const btnConf = document.getElementById("btnConfirmar");
+
+  // Normaliza cancelado para número
+  dados.forEach(d => d.cancelado = Number(d.cancelado || 0));
+
+  const state = {
+    ranked: [],
+    pool:   [],
+    modal:  { type: null, index: null },
+    obs:    ''
+  };
+
+  // Particiona
+  dados.forEach(d => {
+    if (d.cancelado === 1 || d.classif == null) state.pool.push(d);
+    else state.ranked.push(d);
+  });
+
+  // Util
+  function mostrarBtnSalvar() {
+    btnSave.classList.remove("d-none");
+  }
+
+  // --- RENDERIZAÇÃO DAS LISTAS ---
+  function render() {
+    lista.innerHTML = "";
+    listaI.innerHTML = "";
+
+    // ranked
+    state.ranked.forEach((item, index) => {
+      item.classif = index + 1;
+
+      const div = document.createElement("div");
+      div.className = "alert mb-2 d-flex justify-content-between align-items-center " + 
+                      (index === 0 ? "alert-success" : "alert-primary");
+
+      const row = document.createElement("div");
+      row.className = "row w-100";
+      row.style.textAlign = "left";
+
+      const c1 = document.createElement("div");
+      c1.className = "col-7";
+      c1.innerHTML = `<span class="badge badge-primary">#${item.classif}</span> <strong></strong>`;
+      c1.querySelector("strong").textContent = item.nome;
+
+      const c2 = document.createElement("div");
+      c2.className = "col";
+      c2.innerHTML = `<span class="badge badge-light"></span>`;
+      c2.querySelector(".badge").textContent = `${item.curso} ${item.cidade}/${item.uf}`;
+
+      const c3 = document.createElement("div");
+      c3.className = "col";
+      c3.innerHTML = `
+        <span class="badge badge-light">
+          ✉️ <a></a> | ☎️ <a></a>
+        </span>`;
+      const [mail, tel] = c3.querySelectorAll("a");
+      mail.href = `mailto:${item.email}`;
+      mail.textContent = item.email;
+      tel.href = `tel:${item.tel1}`;
+      tel.textContent = item.tel1;
+
+      row.append(c1, c2, c3);
+
+      const btns = document.createElement("div");
+      btns.className = "btn-container";
+
+      const bDel = document.createElement("button");
+      bDel.className = "btn btn-sm btn-outline-light mr-2";
+      bDel.textContent = "❌";
+      bDel.addEventListener("click", () => openModal('d', index));
+      btns.appendChild(bDel);
+
+      if (index < state.ranked.length - 1) {
+        const bDown = document.createElement("button");
+        bDown.className = "btn btn-sm btn-outline-light";
+        bDown.textContent = "⬇️";
+        bDown.addEventListener("click", () => mover(index, index + 1));
+        btns.appendChild(bDown);
+      }
+      if (index > 0) {
+        const bUp = document.createElement("button");
+        bUp.className = "btn btn-sm btn-outline-light mr-1";
+        bUp.textContent = "⬆️";
+        bUp.addEventListener("click", () => mover(index, index - 1));
+        btns.appendChild(bUp);
+      }
+
+      div.append(row, btns);
+      lista.appendChild(div);
+
+      // animação de entrada
+      div.classList.add("fade-in");
+      requestAnimationFrame(() => {
+        div.classList.add("show");
+        div.addEventListener("transitionend", () => {
+          div.classList.remove("fade-in", "show");
+        }, { once: true });
+      });
+    });
+
+    // pool
+    state.pool.forEach((item, index) => {
+      const div = document.createElement("div");
+      const cancelado = item.cancelado === 1;
+      const cor  = cancelado ? "dark" : "secondary";
+      const icon = cancelado ? "⛔" : "⏳";
+
+      div.className = `alert alert-${cor} mb-2 d-flex justify-content-between align-items-center`;
+
+      const row = document.createElement("div");
+      row.className = "row w-100";
+      row.style.textAlign = "left";
+
+      const c1 = document.createElement("div");
+      c1.className = "col-7";
+      c1.innerHTML = `${icon} <strong></strong>`;
+      c1.querySelector("strong").textContent = item.nome;
+
+      const c2 = document.createElement("div");
+      c2.className = "col";
+      c2.innerHTML = `<span class="badge badge-light"></span>`;
+      c2.querySelector(".badge").textContent = `${item.curso} ${item.cidade}/${item.uf}`;
+
+      const c3 = document.createElement("div");
+      c3.className = "col";
+      c3.innerHTML = `
+        <span class="badge badge-light">
+          ✉️ <a></a> | ☎️ <a></a>
+        </span>`;
+      const [mail, tel] = c3.querySelectorAll("a");
+      mail.href = `mailto:${item.email}`;
+      mail.textContent = item.email;
+      tel.href = `tel:${item.tel1}`;
+      tel.textContent = item.tel1;
+
+      if (cancelado && item.obs) {
+        const msg = document.createElement("div");
+        msg.className = "mt-2";
+        msg.innerHTML = `<button type="button" class="btn btn-outline-light text-left text-dark w-100 disabled"><strong>[${item.dtava}] </strong></button>`;
+        msg.querySelector("strong").append(document.createTextNode(" " + item.obs));
+        c3.appendChild(msg);
+      }
+
+      row.append(c1, c2, c3);
+
+      const btns = document.createElement("div");
+      btns.className = "btn-container";
+
+      if (!cancelado) {
+        const bDesc = document.createElement("button");
+        bDesc.className = "btn btn-sm btn-outline-light mr-1";
+        bDesc.textContent = "⛔";
+        bDesc.addEventListener("click", () => openModal('f', index));
+        btns.appendChild(bDesc);
+      }
+
+      const bToRank = document.createElement("button");
+      bToRank.className = "btn btn-sm btn-outline-light mr-2";
+      bToRank.textContent = "🆗";
+      bToRank.addEventListener("click", () => toRank(index));
+      btns.appendChild(bToRank);
+
+      div.append(row, btns);
+      listaI.appendChild(div);
+
+      // animação de entrada
+      div.classList.add("fade-in");
+      requestAnimationFrame(() => {
+        div.classList.add("show");
+        div.addEventListener("transitionend", () => {
+          div.classList.remove("fade-in", "show");
+        }, { once: true });
+      }); 
+    });
+  }
+
+  // --- ANIMAÇÕES ---
+  function mover(orig, dest) {
+    const els = lista.children;
+    const origEl = els[orig];
+    const destEl = els[dest];
+
+    const origTop = origEl.offsetTop;
+    const destTop = destEl.offsetTop;
+
+    [state.ranked[orig], state.ranked[dest]] = [state.ranked[dest], state.ranked[orig]];
+    render();
+
+    const newOrigEl = lista.children[dest];
+    const newDestEl = lista.children[orig];
+
+    const diffOrig = origTop - newOrigEl.offsetTop;
+    const diffDest = destTop - newDestEl.offsetTop;
+
+    newOrigEl.style.transition = "none";
+    newOrigEl.style.transform = `translateY(${diffOrig}px)`;
+    newDestEl.style.transition = "none";
+    newDestEl.style.transform = `translateY(${diffDest}px)`;
+
+    newOrigEl.offsetHeight; // força repaint
+
+    newOrigEl.style.transition = "transform 0.5s ease";
+    newOrigEl.style.transform = "";
+    newDestEl.style.transition = "transform 0.5s ease";
+    newDestEl.style.transform = "";
+
+    mostrarBtnSalvar();
+  }
+
+  function toRank(index) {
+    const el = listaI.children[index];
+    el.style.transition = "transform 0.5s ease, opacity 0.5s ease";
+    el.style.transform = "translateX(100%)";
+    el.style.opacity = "0";
+
+    el.addEventListener("transitionend", () => {
+      const item = state.pool[index];
+      item.cancelado = 0;
+      state.ranked.push(item);
+      state.pool.splice(index, 1);
+      mostrarBtnSalvar();
+      render();
+    }, { once: true });
+  }
+
+  function desclassificar(index) {
+    const el = lista.children[index];
+    el.style.transition = "transform 0.5s ease, opacity 0.5s ease";
+    el.style.transform = "translateX(-100%)";
+    el.style.opacity = "0";
+
+    el.addEventListener("transitionend", () => {
+      const item = state.ranked[index];
+      item.cancelado = 1;
+      item.obs = state.obs;
+      state.pool.push(item);
+      state.ranked.splice(index, 1);
+      mostrarBtnSalvar();
+      render();
+    }, { once: true });
+  }
+
+  function faltou(index) {
+    const el = listaI.children[index];
+    el.style.transition = "transform 0.5s ease, opacity 0.5s ease";
+    el.style.transform = "translateX(-100%)";
+    el.style.opacity = "0";
+
+    el.addEventListener("transitionend", () => {
+      const item = state.pool[index];
+      item.cancelado = 1;
+      item.obs = state.obs;
+      mostrarBtnSalvar();
+      render();
+    }, { once: true });
+  }
+
+  // --- Modal ---
+  function openModal(type, index) {
+    state.modal.type = type;
+    state.modal.index = index;
+    obsEl.value = "";
+    btnConf.disabled = true;
+    $('#modalConfirmDesc').modal({backdrop:'static', keyboard:false}).modal('show');
+  }
+
+  obsEl.addEventListener('input', () => {
+    btnConf.disabled = obsEl.value.trim().length < 5;
+  });
+
+  btnConf.addEventListener('click', () => {
+    state.obs = obsEl.value.trim();
+    if (state.modal.type === 'd') desclassificar(state.modal.index);
+    if (state.modal.type === 'f') faltou(state.modal.index);
+    $('#modalConfirmDesc').modal('hide');
+  });
+
+  // salvar
+  window.salvaInfos = function() {
+    alt.value = JSON.stringify(dados);
+    form.submit();
+  };
+
+  render();
+});
+
+
+</script>
+
+</html>
+
