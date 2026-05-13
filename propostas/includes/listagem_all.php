@@ -403,14 +403,6 @@ include '../includes/paginacao.php';
             </div>
           </div>
 
-
-          <div class="col-1 d-flex align-items-end mb-2">
-            <button type="submit" class="btn btn-primary btn-sm mr-2 " id="filtroBtn">Filtrar</button>
-            <a href="<?php echo $currentUrl; ?>" id="limpar">
-              <span class="badge badge-primary">X</span>
-            </a>
-          </div>
-
           <div class="col-4 my-2 row-2">
             <label>Acec</label>
             <div class=" d-flex flex-column flex-wrap gap-3 p-2 form-control form-control-sm" style="min-height:105px;">
@@ -423,6 +415,12 @@ include '../includes/paginacao.php';
             </div>
           </div>
 
+          <div class="col-1 d-flex align-items-end mb-2">
+            <button type="submit" class="btn btn-primary btn-sm mr-2 " id="filtroBtn">Filtrar</button>
+            <a href="<?php echo $currentUrl; ?>" id="limpar">
+              <span class="badge badge-primary">X</span>
+            </a>
+          </div>
 
         </div>
     </form>
