@@ -415,9 +415,9 @@ include '../includes/paginacao.php';
             <label>Acec</label>
             <div class=" d-flex flex-column flex-wrap gap-3 p-2 form-control form-control-sm" style="min-height:105px;">
                 <select id="acecOp" name="acecOp" role="button" class="form-control form-control-sm">
-                <option value="">Todos</option>
-                <option value="S">Com ACEC</option>
-                <option value="N">Sem ACEC</option>
+                <option <?php echo (($acecOp == '') or ($acecOp == null)) ? ' selected ' : ''; ?> value="">Todos</option>
+                <option <?php echo ($acecOp == 'S') ? ' selected ' : ''; ?>  value="S">Com ACEC</option>
+                <option <?php echo ($acecOp == 'N') ? ' selected ' : ''; ?>  value="N">Sem ACEC</option>
 
               </select>            
             </div>
