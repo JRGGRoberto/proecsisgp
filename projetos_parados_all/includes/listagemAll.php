@@ -12,9 +12,6 @@ $qnt1 = 0;
 
 $resultados = '<div id="accordion">';
 
-
-
-
 foreach ($projetosParados as $proj) {
     ++$qnt1;
 
@@ -22,7 +19,6 @@ foreach ($projetosParados as $proj) {
     // $relatorios = Outros::qry($query);
 
     $collapseId = 'p'.$proj->protocolo.$proj->fase_seq;
-
 
     $resultados .= '
     <div class="card mt-2">
@@ -50,7 +46,7 @@ foreach ($projetosParados as $proj) {
         <div class="card-body">
     ';
 
-    if($proj->fase_seq > 1 ) {
+    if ($proj->fase_seq > 1) {
         $resultados .= '';
     } else {
         $resultados .= '
@@ -68,29 +64,36 @@ foreach ($projetosParados as $proj) {
                 </thead>
                 <tbody>';
 
-            foreach ($fasesDoProjeto as $fases) {
-                $instancia = '';
-                switch ($fases->tp_instancia) {
-                    case 'ca': $instancia = 'Chefe de Divisão'; break;
-                    case 'ce': $instancia = 'Diretor de Centro de Área'; break;
-                    case 'co': $instancia = 'Coordenador de colegiado'; break;
-                    case 'pf': $instancia = 'Professor'; break;
-                    case 'dc': $instancia = 'Diretor de Campus'; break;
-                }
+        foreach ($fasesDoProjeto as $fases) {
+            $instancia = '';
+            switch ($fases->tp_instancia) {
+                case 'ca': $instancia = 'Chefe de Divisão';
+                    break;
+                case 'ce': $instancia = 'Diretor de Centro de Área';
+                    break;
+                case 'co': $instancia = 'Coordenador de colegiado';
+                    break;
+                case 'pf': $instancia = 'Professor';
+                    break;
+                case 'dc': $instancia = 'Diretor de Campus';
+                    break;
+            }
 
-                // echo '<pre>';
-                // print_r($fases);
-                // echo '</pre>';
-                $resultadoAvaliacao = '';
-                switch ($fases->resultado) {
-                  
-                  case 'a': $resultadoAvaliacao = 'Aprovado'; break;
-                  case 'r': $resultadoAvaliacao = 'Solicitação de alterações'; break;
-                  case 'e': $resultadoAvaliacao = 'Em análise'; break;
-                }
+            // echo '<pre>';
+            // print_r($fases);
+            // echo '</pre>';
+            $resultadoAvaliacao = '';
+            switch ($fases->resultado) {
+                case 'a': $resultadoAvaliacao = 'Aprovado';
+                    break;
+                case 'r': $resultadoAvaliacao = 'Solicitação de alterações';
+                    break;
+                case 'e': $resultadoAvaliacao = 'Em análise';
+                    break;
+            }
 
-                if ($fases->id == $proj->id) {
-                    $resultados .= '
+            if ($fases->id == $proj->id) {
+                $resultados .= '
                     <tr>
                         <td class="text-center">'.$fases->fase_seq.'</td>
                         <td>'.$instancia.'</td>
@@ -100,10 +103,10 @@ foreach ($projetosParados as $proj) {
                         <td>'.$fases->chegada.'</td>
                         <td>'.$fases->saida.'</td>
                     </tr>';
-                }
             }
+        }
 
-            $resultados .= '
+        $resultados .= '
                 </tbody>
             </table>
             
@@ -119,9 +122,7 @@ foreach ($projetosParados as $proj) {
     </div> <!-- card -->
     ';
 }
-$resultados .= '</div>'; 
-
-
+$resultados .= '</div>';
 
 $qnt1 > 0 ? $resultados : $resultados = 'Nenhum registro encontrado.';
 
@@ -132,7 +133,7 @@ include '../includes/paginacao.php';
 <main>
   <h2 class="mt-0">Projetos parados</h2>
   
-  <?= $msgAlert; ?> 
+  <?php echo $msgAlert; ?> 
   <section>
 
     <form method="get">
@@ -141,26 +142,26 @@ include '../includes/paginacao.php';
 
         <div class="col-4">
           <label>Titulo</label> 
-          <input type="text" name="titulo" class="form-control form-control-sm" value="<?= $titulo; ?>"  id="titulo"   onchange="showLimpar();">
+          <input type="text" name="titulo" class="form-control form-control-sm" value="<?php echo $titulo; ?>"  id="titulo"   onchange="showLimpar();">
         </div>
 
         <div class="col-4">
           <label>Coordenador</label> 
-          <input type="text" name="nome_prof" class="form-control form-control-sm" value="<?= $nome_prof; ?>"  id="nome_prof"   onchange="showLimpar();">
+          <input type="text" name="nome_prof" class="form-control form-control-sm" value="<?php echo $nome_prof; ?>"  id="nome_prof"   onchange="showLimpar();">
         </div>
 
         <div class="col-4">
         <label for="campus">Campus:</label>
           <select name="campus" id="campus" class="form-control form-control-sm" onchange="showLimpar()">
             <option value="">Todos</option>
-            <option value="AP" <?= (isset($_GET['campus']) && $_GET['campus'] == 'AP')? 'selected' : ''; ?>>Apucarana</option>
-            <option value="CM" <?= (isset($_GET['campus']) && $_GET['campus'] == 'CM')? 'selected' : ''; ?> >Campo Mourão</option>
-            <option value="CA" <?= (isset($_GET['campus']) && $_GET['campus'] == 'CA')? 'selected' : ''; ?>>Curitiba I (EMBAP)</option>
-            <option value="CB" <?= (isset($_GET['campus']) && $_GET['campus'] == 'CB')? 'selected' : ''; ?>>Curitiba III (FAP)</option>
-            <option value="PG" <?= (isset($_GET['campus']) && $_GET['campus'] == 'PG')? 'selected' : ''; ?>>Paranaguá</option>
-            <option value="PV" <?= (isset($_GET['campus']) && $_GET['campus'] == 'PV')? 'selected' : ''; ?>>Paranavaí</option>
-            <option value="UV" <?= (isset($_GET['campus']) && $_GET['campus'] == 'UV')? 'selected' : ''; ?>>União da Vitória</option>
-            <option value="LO" <?= (isset($_GET['campus']) && $_GET['campus'] == 'LO')? 'selected' : ''; ?>>Loanda</option>
+            <option value="AP" <?php echo (isset($_GET['campus']) && $_GET['campus'] == 'AP') ? 'selected' : ''; ?>>Apucarana</option>
+            <option value="CM" <?php echo (isset($_GET['campus']) && $_GET['campus'] == 'CM') ? 'selected' : ''; ?> >Campo Mourão</option>
+            <option value="CA" <?php echo (isset($_GET['campus']) && $_GET['campus'] == 'CA') ? 'selected' : ''; ?>>Curitiba I (EMBAP)</option>
+            <option value="CB" <?php echo (isset($_GET['campus']) && $_GET['campus'] == 'CB') ? 'selected' : ''; ?>>Curitiba II (FAP)</option>
+            <option value="PG" <?php echo (isset($_GET['campus']) && $_GET['campus'] == 'PG') ? 'selected' : ''; ?>>Paranaguá</option>
+            <option value="PV" <?php echo (isset($_GET['campus']) && $_GET['campus'] == 'PV') ? 'selected' : ''; ?>>Paranavaí</option>
+            <option value="UV" <?php echo (isset($_GET['campus']) && $_GET['campus'] == 'UV') ? 'selected' : ''; ?>>União da Vitória</option>
+            <option value="LO" <?php echo (isset($_GET['campus']) && $_GET['campus'] == 'LO') ? 'selected' : ''; ?>>Loanda</option>
           </select>
         </div>
         
@@ -168,11 +169,11 @@ include '../includes/paginacao.php';
           <label>Fase</label>
           <select name="fase_seq" class="form-control form-control-sm" onchange="showLimpar();">
             <option value="0">Todas</option>
-            <option value="1" <?= (isset($_GET['fase_seq']) && $_GET['fase_seq']=='1')?'selected':''; ?>>Fase 1</option>
-            <option value="2" <?= (isset($_GET['fase_seq']) && $_GET['fase_seq']=='2')?'selected':''; ?>>Fase 2</option>
-            <option value="3" <?= (isset($_GET['fase_seq']) && $_GET['fase_seq']=='3')?'selected':''; ?>>Fase 3</option>
-            <option value="4" <?= (isset($_GET['fase_seq']) && $_GET['fase_seq']=='4')?'selected':''; ?>>Fase 4</option>
-            <option value="5" <?= (isset($_GET['fase_seq']) && $_GET['fase_seq']=='5')?'selected':''; ?>>Fase 5</option>
+            <option value="1" <?php echo (isset($_GET['fase_seq']) && $_GET['fase_seq'] == '1') ? 'selected' : ''; ?>>Fase 1</option>
+            <option value="2" <?php echo (isset($_GET['fase_seq']) && $_GET['fase_seq'] == '2') ? 'selected' : ''; ?>>Fase 2</option>
+            <option value="3" <?php echo (isset($_GET['fase_seq']) && $_GET['fase_seq'] == '3') ? 'selected' : ''; ?>>Fase 3</option>
+            <option value="4" <?php echo (isset($_GET['fase_seq']) && $_GET['fase_seq'] == '4') ? 'selected' : ''; ?>>Fase 4</option>
+            <option value="5" <?php echo (isset($_GET['fase_seq']) && $_GET['fase_seq'] == '5') ? 'selected' : ''; ?>>Fase 5</option>
           </select>
         </div>
 
@@ -180,7 +181,7 @@ include '../includes/paginacao.php';
         <div class="col-4 d-flex align-items-center mt-4">
           <div class="form-check">
             <input class="form-check-input" type="checkbox" name="diasParados7" id="diasParados7" value="7" style="height: 20px;"
-              <?= isset($_GET['diasParados7']) ? 'checked' : ''; ?>>
+              <?php echo isset($_GET['diasParados7']) ? 'checked' : ''; ?>>
             <label class="form-check-label" for="filtroMais7dias">
               Projetos parados mais do que 7 dias
             </label>
@@ -190,7 +191,7 @@ include '../includes/paginacao.php';
         <div class="col-4 d-flex align-items-center mt-4">
           <div class="form-check">
             <input class="form-check-input" type="checkbox" name="diasParados30" id="diasParados30" value="30" 
-              <?= isset($_GET['diasParados30']) ? 'checked' : ''; ?>>
+              <?php echo isset($_GET['diasParados30']) ? 'checked' : ''; ?>>
             <label class="form-check-label" for="filtroMais30dias">
               Projetos parados mais do que 30 dias
             </label>
@@ -201,7 +202,7 @@ include '../includes/paginacao.php';
         <!-- 
           <div class="col-3">
             <label>Palavra chave</label> 
-            <input type="text" name="palavra" class="form-control form-control-sm" value="<?= $palavra; ?>"  id="palavra"   onchange="showLimpar();">
+            <input type="text" name="palavra" class="form-control form-control-sm" value="<?php echo $palavra; ?>"  id="palavra"   onchange="showLimpar();">
           </div>
          -->
 
@@ -215,13 +216,13 @@ include '../includes/paginacao.php';
   </section>
 
   <section>
-    <?= $resultados; ?>
+    <?php echo $resultados; ?>
   </section>
 
   <section>
     <div class="row mt-2 align-bottom">
       <div class="col">
-         <?= $paginacao; ?>
+         <?php echo $paginacao; ?>
       </div>
     </div>
   </section>

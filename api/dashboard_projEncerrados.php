@@ -1,8 +1,9 @@
 <?php
+
 require '../vendor/autoload.php';
 
-use App\Session\Login;
 use App\Entity\ProjMaster;
+use App\Session\Login;
 
 Login::requireLogin();
 
@@ -10,11 +11,11 @@ $listaCampus = [
     'Apucarana',
     'Campo Mourão',
     'Curitiba I (EMBAP)',
-    'Curitiba III (FAP)',
+    'Curitiba II (FAP)',
     'Loanda',
     'Paranaguá',
     'Paranavaí',
-    'União da Vitória'
+    'União da Vitória',
 ];
 
 function defTipoExten($tipoExten)
@@ -30,9 +31,8 @@ function defTipoExten($tipoExten)
     return $tipo[$tipoExten];
 }
 
-
-$dadosProjetos = []; 
-$ano = $_GET['ano'] ?? null;   
+$dadosProjetos = [];
+$ano = $_GET['ano'] ?? null;
 $whereAno = null;
 
 if (!empty($ano)) {
@@ -42,26 +42,25 @@ if (!empty($ano)) {
     ";
 }
 
-
 $qtdPorCampus = [];
 
-//Percorre cada campus com um where diferente
+// Percorre cada campus com um where diferente
 foreach ($listaCampus as $campusNome) {
     $condicoes = [];
 
-    //Se tem algum ano no filtro 
+    // Se tem algum ano no filtro
     if ($whereAno) {
         $condicoes[] = $whereAno;
     }
 
     $condicoes[] = "campus = '{$campusNome}'";
-    //Separa os wheres com 'and'
+    // Separa os wheres com 'and'
     $whereFinal = implode(' AND ', $condicoes);
 
-    //Cria um array associativo para cada campus correspodenndo com a sua quantidade de propostas
+    // Cria um array associativo para cada campus correspodenndo com a sua quantidade de propostas
     $qtdPorCampus[] = [
         'campus' => $campusNome,
-        'total'  => (int) ProjMaster::getQntdRegistros($whereFinal)
+        'total' => (int) ProjMaster::getQntdRegistros($whereFinal),
     ];
 }
 
@@ -75,15 +74,14 @@ foreach ($projetos as $p) {
         'campus' => $p->campus,
         'estado' => $p->estado,
         'tipo_exten' => defTipoExten($p->tipo_exten),
-        'created_at' => $p->created_at
+        'created_at' => $p->created_at,
     ];
 }
 
 echo json_encode([
-    'ano'           => $ano ?: 'todos',
-    'qtdProjetos'   => $qtdProjetos,
-    'qtdPorCampus'  => $qtdPorCampus,
-    'dadosProjetos' => $dadosProjetos
+    'ano' => $ano ?: 'todos',
+    'qtdProjetos' => $qtdProjetos,
+    'qtdPorCampus' => $qtdPorCampus,
+    'dadosProjetos' => $dadosProjetos,
 ]);
 exit;
-

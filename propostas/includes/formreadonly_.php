@@ -13,8 +13,8 @@ if ($jan != 0) { ?>
 <?php
 } 
 
-$anexoIII = [3, 4, 5];
-$anexoIV = [1, 2];
+$anexoII = [3, 4, 5];
+$anexoIII = [1, 2];
 $t = $obProjeto->tipo_exten;
 
 switch($t) {

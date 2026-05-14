@@ -338,7 +338,7 @@ include '../includes/paginacao.php';
                 <option <?php echo $selectedOpt = $campus == 'Apucarana' ? 'selected' : ''; ?> value="Apucarana"          >Apucarana</option>
                 <option <?php echo $selectedOpt = $campus == 'Campo Mourão' ? 'selected' : ''; ?> value="Campo Mourão"       >Campo Mourão</option>
                 <option <?php echo $selectedOpt = $campus == 'Curitiba I (EMBAP)' ? 'selected' : ''; ?> value="Curitiba I (EMBAP)" >Curitiba I (EMBAP)</option>
-                <option <?php echo $selectedOpt = $campus == 'Curitiba III (FAP)' ? 'selected' : ''; ?> value="Curitiba III (FAP)"  >Curitiba III (FAP)</option>
+                <option <?php echo $selectedOpt = $campus == 'Curitiba II (FAP)' ? 'selected' : ''; ?> value="Curitiba II (FAP)"  >Curitiba II (FAP)</option>
                 <option <?php echo $selectedOpt = $campus == 'Paranaguá' ? 'selected' : ''; ?> value="Paranaguá"          >Paranaguá</option>
                 <option <?php echo $selectedOpt = $campus == 'Paranavaí' ? 'selected' : ''; ?> value="Paranavaí"          >Paranavaí</option>
                 <option <?php echo $selectedOpt = $campus == 'União da Vitória' ? 'selected' : ''; ?> value="União da Vitória"   >União da Vitória</option>
