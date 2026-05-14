@@ -55,9 +55,12 @@ $email_ca = $user['email'];
 $mensagem_validador = $_POST['mensagem'] ?? '';
 $resultado = $_POST['resultado'] ?? '';
 
+require_once '../includes/funcoes/func_mudaAbreviacao.php';
+$hora = mudaAbreviacaoHoraEstatica('ultimaHora');
+
 // Formata para não acabar no dia as 00h00 e sim as 23h59
 if ($campoAlterado === 'vigen_fim' || $campoAlterado === 'vige_ini') {
-    $dado_novo = $dado_novo.' 23:59:00.000';
+    $dado_novo = $dado_novo.$hora;
 }
 
 // Atualiza a tabela solicitacao_adendos
@@ -83,23 +86,21 @@ if ($resultado === 'a'){
     $projetos = new Projeto();
     $projetos = Projeto::getProjeto($idproj, $verProj);
     $projetos->$campoAlterado = $dado_novo;
-    
-    if ($campoAlterado == 'id_prof'){
-        $projetos->nome_prof = $nome;
-    }
 
     if ($projetos->atualizar() == 1){
         updateAdendos($validador_id, $validador_nome, $validador_cargo, $email_ca, $mensagem_validador, $resultado);
         // Envio de email de confirmação
-        $email->analiseAlteracaoPropostas(
+        $enviado = $email->analiseAlteracaoPropostas(
             $_GET['idAdendos'],
             $resultado,
             $user['nome'],
             $user['email']
         );
-        if (!$enviado) {
-            $_SESSION['msg'] = "Erro ao enviar e-mail de confirmação";
+
+        if ($enviado == 'avaliador' || $enviado == 'autor' || $enviado == 'novo autor') {
+            $_SESSION['msg'] = "Erro ao enviar e-mail de confirmação para o ".$enviado." da proposta";
         }
+
         $_SESSION['msg'] = 'Avaliação realizada com sucesso!';
     } else {
         $_SESSION['msg'] = 'Erro ao realizar avaliação';

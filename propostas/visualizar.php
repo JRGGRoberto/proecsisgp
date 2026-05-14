@@ -844,7 +844,7 @@ foreach(array_reverse($adendos) as $ad){
 
 
   require_once '../includes/funcoes/func_mudaAbreviacao.php';
-  $campo = mudaAbreviacao($qryCampo->campoAlterado);
+  $campo = mudaAbreviacaoCampoAlterado($qryCampo->campoAlterado);
   $ad->campo_alterado = $campo;
 
   // Formatar data da solicitação em dd/mm/aaaa

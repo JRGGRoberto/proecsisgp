@@ -36,7 +36,7 @@ if ($candidato) {
     $candidato->atualizar();
 
     $email = new EmailService();
-    $email->recuperarSenha($candidato->email, $candidato->nome, $novaSenha);
+    $email->recuperarSenha($candidato->email, $candidato->nome, $candidato->id, $novaSenha);
     header('location: recuperar.php?sucesso=1');
 } else { 
     header('location: recuperar.php?erro=1');
