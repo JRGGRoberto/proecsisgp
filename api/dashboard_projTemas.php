@@ -1,14 +1,13 @@
 <?php
+
 require '../vendor/autoload.php';
 
-use App\Entity\Diversos;
 use App\Entity\Outros;
 use App\Session\Login;
-use App\Entity\ProjMaster;
 
 Login::requireLogin();
-$ano = $_GET['ano'] ?? null;   
-$campus = $_GET['campus'] ?? null;   
+$ano = $_GET['ano'] ?? null;
+$campus = $_GET['campus'] ?? null;
 
 $whereAno = null;
 
@@ -23,11 +22,11 @@ $listaCampus = [
     'Apucarana',
     'Campo Mourão',
     'Curitiba I (EMBAP)',
-    'Curitiba III (FAP)',
+    'Curitiba II (FAP)',
     'Loanda',
     'Paranaguá',
     'Paranavaí',
-    'União da Vitória'
+    'União da Vitória',
 ];
 
 $sql = '
@@ -52,7 +51,6 @@ $sqlQtdCampus = '
 ';
 $qtdPorCampus = Outros::qry($sqlQtdCampus);
 
-
 $sqlQtdTotal = '
     select 
         count(distinct p.id) as total
@@ -62,7 +60,6 @@ $sqlQtdTotal = '
         on lower(p.titulo) like concat("%", t.titulo, "%");
 ';
 $qtdTotal = Outros::qry($sqlQtdTotal);
-
 
 function defTipoExten($tipoExten)
 {
@@ -77,15 +74,10 @@ function defTipoExten($tipoExten)
     return $tipo[$tipoExten];
 }
 
-
-
-
-
 echo json_encode([
-    'ano'            => $ano ?: 'todos',
-    'projetos'       => $projetos,
-    'qtdPorCampus'   => $qtdPorCampus,
-    'qtdTotal'       => $qtdTotal
-    ]);
+    'ano' => $ano ?: 'todos',
+    'projetos' => $projetos,
+    'qtdPorCampus' => $qtdPorCampus,
+    'qtdTotal' => $qtdTotal,
+]);
 exit;
-

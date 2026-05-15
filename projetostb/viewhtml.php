@@ -96,12 +96,12 @@ switch($t) {
     exit;
 }
 
-$anexoIII = [3, 4, 5];
-$anexoIV = [1, 2];
-if (in_array($t, $anexoIII)) { 
-  $title = 'ANEXO III';
+$anexoII = [3, 4, 5];
+$anexoIII = [1, 2];
+if (in_array($t, $anexoII)) { 
+  $title = 'ANEXO II';
 } else {
-  $title = 'ANEXO IV';
+  $title = 'ANEXO III';
 }
 
 /*

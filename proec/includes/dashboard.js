@@ -18,7 +18,7 @@ const labelsCampus = [
     'Apucarana',
     'Campo Mourão',
     'Curitiba I (EMBAP)',
-    'Curitiba III (FAP)',
+    'Curitiba II (FAP)',
     'Loanda',
     'Paranaguá',
     'Paranavaí',
