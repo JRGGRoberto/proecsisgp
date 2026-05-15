@@ -220,15 +220,18 @@ if (isset($_POST['titulo'])) {
 
     $idprjP = $obProjeto->cadastrar();
 
+    // $user['email'],
+    // $user['nome'],
+    // 1,
+    // $idprjP,
+    // $t,
+    // $obProjeto->titulo,
+    // $user['id']
+    
     $emailService = new EmailService();
     $emailService->cadastrarProposta(
-        $user['email'],
-        $user['nome'],
-        1,
-        $idprjP,
-        $t,
-        $obProjeto->titulo,
-        $user['id']
+        $obProjeto,
+        $user,
     );
 
     if (strlen($palav1) > 0) {

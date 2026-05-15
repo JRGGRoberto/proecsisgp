@@ -978,12 +978,11 @@ echo '</script>';
       try {
         data = await res.json();
       } catch {
-        // console.error("Resposta inválida:", text);
-        // throw new Error("Servidor retornou algo inválido");
+        // console.error("Resposta inválida:", text); // 
+        // throw new Error("Servidor retornou algo inválido"); //
         throw new Error("Ocorreu um erro interno ao processar o envio.");
       }
-
-      if (data.status === 'ok') {
+      if (data.status == 'ok') {
         $('#SAP').modal('hide');
         mostrarAlert('success', 'Solicitação enviada com sucesso!');
       } else {

@@ -72,7 +72,7 @@ foreach ($result as $item) {
 
     
     require_once '../includes/funcoes/func_mudaAbreviacao.php';
-    $campo = mudaAbreviacao($item->campoAlterado);
+    $campo = mudaAbreviacaoCampoAlterado($item->campoAlterado);
     $item->campoAlterado = $campo;
 
     // Formatar data da solicitação em dd/mm/aaaa

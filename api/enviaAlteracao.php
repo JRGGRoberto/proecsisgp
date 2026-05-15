@@ -18,7 +18,7 @@ header('Content-Type: application/json');
 //     // "campo" => null,
 //     "valorNovo" => "Novo título do projeto",
 //     "valorAtual" => "Título antigo",
-//     "idProj" => "3dbee76d-f26a-448e-9826-ceda2b41251e",
+//     "idProj" => "184d06d4-acb1-4ed3-89c2-0237a0457f3e",
 //     "msgSolicita" => "Gostaria de atualizar o título para refletir melhor o objetivo"
 // ];
 
@@ -26,9 +26,11 @@ header('Content-Type: application/json');
 // $input = [
 //     "para_avaliar" => "c3bc22e0-3b64-11ed-9793-0266ad9885af",
 //     "campo" => "id_prof",
-//     "valorNovo" => "bfd757a5-4f2d-4a10-87a8-a872ae69f1fd",
-//     "valorAtual" => "ARTHUR GUIRRO",
-//     "idProj" => "94b174fd-c57f-4703-bb77-77801c3dc942",
+//     "valorNovo" => "28577ac6-cc50-4ca3-82d5-2496f6bf0e2c", //ARTHUR GUIRRO
+//     // "valorNovo" => "bfd757a5-4f2d-4a10-87a8-a872ae69f1fd", //MATHEUS ESCOBOZO GUIZILINI
+//     // "valorAtual" => "ARTHUR GUIRRO",
+//     "valorAtual" => "MATHEUS ESCOBOZO GUIZILINI",
+//     "idProj" => "184d06d4-acb1-4ed3-89c2-0237a0457f3e",
 //     "msgSolicita" => "Gostaria de atualizar o coordenador"
 // ];
 
@@ -43,7 +45,7 @@ try {
         throw new Exception("Um ou mais campos obrigatórios estão nulos ou não foram informados!");
     }
     if (!$input) {
-        // throw new Exception("JSON inválido");
+        // throw new Exception("JSON inválido"); // 
         throw new Exception("Dados inválidos ou inexistentes!");
     }
 
@@ -57,14 +59,20 @@ try {
         $user['nome']
     );
 
-    if (!$enviado) {
-        throw new Exception("Erro ao enviar e-mail de confirmação");
+    if ($enviado == 'novoAutor'){
+        $enviado == 'novo autor';
     }
 
-    echo json_encode([
-        "status" => "ok",
-        // "debug_input" => $input
-    ]);
+    if ($enviado == 'avaliador' || $enviado == 'autor' || $enviado == 'novo autor') {
+        throw new Exception("Erro ao enviar e-mail de confirmação para o ".$enviado." da proposta");
+    }
+    elseif ($enviado == 'passou'){
+        echo json_encode([
+            "status" => "ok",
+            // "envia" => $enviado, // 
+            // "debug_input" => $input //
+        ]);
+    }
 
 } catch (Exception $e) {
     http_response_code(500);
@@ -72,7 +80,8 @@ try {
     echo json_encode([
         "status" => "erro",
         "msg" => $e->getMessage(),
-        // "trace" => $e->getTraceAsString() //Debug
+        // "envia" => 'erro envia', // 
+        // "text" => $e->getTraceAsString() //
     ]);
     exit;
 }

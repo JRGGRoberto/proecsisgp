@@ -47,14 +47,14 @@ if ($usuarioCadastrado) {
         $prof[0]->senha = password_hash($novaSenha, PASSWORD_DEFAULT);
         // echo 'Senha hasheada: '.password_hash($novaSenha, PASSWORD_DEFAULT).'';
         $prof[0]->atualizar();
-        $email->recuperarSenha($prof[0]->email, $prof[0]->nome, $novaSenha);
+        $email->recuperarSenha($prof[0]->email, $prof[0]->nome, $prof[0]->id, $novaSenha);
     } elseif ($tipo == 'agente') {
         $obAgente = new Agente();
         $agente = $obAgente->gets($where);
 
         $agente[0]->senha = password_hash($novaSenha, PASSWORD_DEFAULT);
         $agente[0]->atualizar();
-        $email->recuperarSenha($agente[0]->email, $agente[0]->nome, $novaSenha);
+        $email->recuperarSenha($agente[0]->email, $agente[0]->nome, $agente[0]->id, $novaSenha);
     }
 
     header('location: recuperar.php?sucesso=1');
