@@ -1,4 +1,5 @@
 <?php
+
 ini_set('display_errors', 1);
 ini_set('display_startup_errors', 1);
 error_reporting(E_ALL);
@@ -125,7 +126,7 @@ $html = '<!DOCTYPE HTML PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3
     <div class="page-number"></div>
   </div>
 
-  <h3>ANEXO II</h3>
+  <h3>ANEXO III</h3>
   <h4>FORMULÁRIO PARA ELABORAÇÃO DE PROPOSTAS DE PROGRAMAS,
     PROJETOS OU PRESTAÇÃO DE SERVIÇO</h4>
   <h5>*O responsável pelo preenchimento e encaminhamento é o coordenador da Proposta de Extensão
@@ -142,7 +143,7 @@ $html = '<!DOCTYPE HTML PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3
   ( ) Programa<br>
   ( x ) Projeto<br>
   ( ) Prestação de Serviço<br>
-  <p><strong>7. A proposta está vinculada a alguma disciplina do curso de Graduação ou PósGraduação (ACEC III).</strong>
+  <p><strong>7. A proposta está vinculada a alguma disciplina do curso de Graduação ou Pós-Graduação (ACEC III).</strong>
   </p>
   ( ) Sim
   ( x ) Não
@@ -311,17 +312,11 @@ $html = '<!DOCTYPE HTML PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3
 
 </html>';
 
-
-
-    
 use Dompdf\Dompdf;
+
 $dompdf = new Dompdf(['enable_remote' => true]);
 
 $dompdf->loadHtml($html);
 $dompdf->setPaper('A4', 'portrait');
 $dompdf->render();
-$dompdf->stream("AE1.pdf");
-
-
-
-
+$dompdf->stream('AE1.pdf');

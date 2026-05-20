@@ -19,7 +19,6 @@ use App\Entity\Projeto;
 
 $user = Login::getUsuarioLogado();
 
-
 $mensagem = '';
 
 if (isset($_GET['status'])) {
@@ -89,11 +88,11 @@ use App\Entity\Agente;
 use App\Entity\Professor;
 
 if (($user['tipo'] == 'professor') || $user['tipo'] == 'prof') {
-    $dadosProf = (object)Professor::getDadosProf($obProjeto->id_prof);
-    $telefone =  $dadosProf->telefone;
+    $dadosProf = (object) Professor::getDadosProf($obProjeto->id_prof);
+    $telefone = $dadosProf->telefone;
     $email = $dadosProf->email;
 } elseif ($user['tipo'] == 'agente') {
-    $dadosAgentes = (object)Agente::get($obProjeto->id_prof);
+    $dadosAgentes = (object) Agente::get($obProjeto->id_prof);
     $telefone = $dadosAgentes->telefone;
     $email = $dadosAgentes->email;
 }
@@ -112,8 +111,8 @@ foreach ($anexados as $att) {
 $anex .= '</ul>';
 
 $t = $obProjeto->tipo_exten;
-$anexoIII = [1, 2];
-$anexoII = [3, 4, 5];
+$anexoIV = [1, 2];
+$anexoIII = [3, 4, 5];
 
 switch ($t) {
     case 1:
@@ -175,7 +174,7 @@ if (isset($_POST['titulo'])) {
     }
     $obProjeto->regras = $regra;
 
-    if (in_array($t, $anexoII)) {
+    if (in_array($t, $anexoIII)) {
         $obProjeto->ch_semanal = $_POST['ch_semanal'];
 
         $obProjeto->referencia = $_POST['referencia'];
@@ -194,11 +193,11 @@ if (isset($_POST['titulo'])) {
         $obProjeto->referencia = $_POST['referencia'];
     }
 
-    if (in_array($t, $anexoIII)) {
+    if (in_array($t, $anexoIV)) {
         $obProjeto->ch_total = $_POST['ch_total'];
     }
 
-    /* não aceito no ANEXO III
+    /* não aceito no ANEXO IV
 
     $obProjeto->descricao    =  $_POST['descricao'];
     $obProjeto->prodserv_espe   =  $_POST['prodserv_espe'];
@@ -287,11 +286,10 @@ if (isset($_POST['titulo'])) {
 
 include '../includes/header.php';
 
-echo "
+echo '
 <script>
-campusNome = ".$user['ca_nome']." 
-</script>";
-
+campusNome = '.$user['ca_nome'].' 
+</script>';
 
 // verifica se o usuário é dono do projeto
 if ($user['id'] == $obProjeto->id_prof) {
@@ -300,27 +298,26 @@ if ($user['id'] == $obProjeto->id_prof) {
     // <hr>
     // <div class="container p-3 my-3 bg-danger text-white rounded p-5">
     //     <h1><span class="badge badge-light"> 🚧 </span> Atenção! </h1>
-  
-        
+
     //     <hr>
     //     <p><span class="badge badge-light"> 🚨 </span> Edição não permitida.</p>
 
     //   </div>
     // </div>';
     // } else {
-        if (in_array($t, $anexoII)) {
-            $qryAEO = '';
-            $scriptS = '';
-            $qryAEO =
-                    'SELECT cnpq_garea, cnpq_area, cnpq_sarea  
+    if (in_array($t, $anexoIII)) {
+        $qryAEO = '';
+        $scriptS = '';
+        $qryAEO =
+                'SELECT cnpq_garea, cnpq_area, cnpq_sarea  
                 FROM projetos
                 WHERE  
                    id  = "'.$obProjeto->id.'" 
                    and ver = (select max(ver) from projetos where  id  = "'.$obProjeto->id.'" )';
 
-            $Caeo = Diversos::q($qryAEO);
+        $Caeo = Diversos::q($qryAEO);
 
-            $scriptS .= '
+        $scriptS .= '
             pegarGA().then( 
                 (onResolved) => {
                     selectOpt("cnpq_garea","'.$Caeo->cnpq_garea.'")
@@ -344,10 +341,10 @@ if ($user['id'] == $obProjeto->id_prof) {
             )
             ';
 
-            include __DIR__.'/includes/formAnexoII.php';
-            echo '<script src="cnpq.js"></script>';
+        include __DIR__.'/includes/formAnexoII.php';
+        echo '<script src="cnpq.js"></script>';
 
-            echo '<script>
+        echo '<script>
 
       var ga = document.querySelector("#cnpq_garea");
       var ar = document.querySelector("#cnpq_area");
@@ -357,18 +354,17 @@ if ($user['id'] == $obProjeto->id_prof) {
 
 
       '.
-            $scriptS
-            .'      
+        $scriptS
+        .'      
         
       </script>';
-        } elseif (in_array($t, $anexoIII)) {
-            include __DIR__.'/includes/formAnexoIII.php';
-        } else {
-            header('location: index.php?status=error');
-            exit;
-        }
+    } elseif (in_array($t, $anexoIV)) {
+        include __DIR__.'/includes/formanexoIV.php';
+    } else {
+        header('location: index.php?status=error');
+        exit;
     }
- else {
+} else {
     echo '<div class="container">
           <hr>
           <div class="container p-3 my-3 bg-danger text-white rounded p-5">
