@@ -2,6 +2,10 @@
 
 require '../vendor/autoload.php';
 
+ini_set('display_errors', 1);
+ini_set('display_startup_errors', 1);
+error_reporting(E_ALL);
+
 use App\Entity\Arquivo;
 use App\Entity\Campi;
 use App\Entity\Colegiado;
@@ -67,35 +71,29 @@ $regras = getRegras($user);
 $relatorio = new Relatorio();
 // VALIDAÇÃO DO POST
 if (isset($_POST['atvd_per'])) {
-    echo '<pre>';
-    print_r($_POST);
-    echo '</pre>';
     $int = 0;
-    echo ++$int.'<br>';
+    $periodo_ini = $_POST['periodo_ini'];
+    $periodo_fim = $_POST['periodo_fim'];
+    if ($periodo_ini == null) {
+        $periodo_ini = date('Y-m-d H:i:s');
+    }
+
+    if ($periodo_fim == null) {
+        $periodo_fim = date('Y-m-d H:i:s');
+    }
+
     $relatorio->idproj = $obProjeto->id;
-    echo ++$int.'<br>';
     $relatorio->regra = $regras['id'];
-    echo ++$int.'<br>';
     $relatorio->para_avaliar = $obProjeto->para_avaliar;
-    echo ++$int.'<br>';
-    $relatorio->periodo_ini = $_POST['periodo_ini'];
-    echo ++$int.'<br>';
-    $relatorio->periodo_fim = $_POST['periodo_fim'];
-    echo ++$int.'<br>';
+    $relatorio->periodo_ini = $periodo_ini;
+    $relatorio->periodo_fim = $periodo_fim;
     $relatorio->atvd_per = $_POST['atvd_per'];
-    echo ++$int.'<br>';
     $relatorio->alteracoes = $_POST['alteracoes'];
-    echo ++$int.'<br>';
     $relatorio->atvd_prox_per = $_POST['atvd_prox_per'];
-    echo ++$int.'<br>';
     $relatorio->user = $user['id'];
-    echo ++$int.'<br>';
     $relatorio->tramitar = $_POST['tramitar'];
-    echo ++$int.'<br>';
     $relatorio->visita_tec_qtd = $_POST['visita_tec_qtd'];
-    echo ++$int.'<br>';
     $idRel = $relatorio->cadastrar();
-    echo ++$int.'<br>';
 
     $anexosJS = json_decode($_POST['anexosJS']);
     foreach ($anexosJS as &$anx) {

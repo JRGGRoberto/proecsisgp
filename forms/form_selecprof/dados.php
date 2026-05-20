@@ -117,7 +117,7 @@ if (isset($_POST['resultado'])) {
                 break;
         }
 
-        header('location: ../avalareal/index.php?status=success');
+        header('location: ../avaliacoes/index.php?tpAva=p2&status=success');
         exit;
     }
 }
