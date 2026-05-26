@@ -5,15 +5,18 @@
 require '../vendor/autoload.php';
 
 // A variavel $value recebe 'yyyy-mm-dd hh:mm:ss' e separa em $dados [[0],[1]]
-function separarDataHora($value){
+function separarDataHora($value)
+{
     $dados = explode(' ', $value);
     return $dados;
 }
 
 // A variavel $value recebe 'yyyy-mm-dd hh:mm:ss' ou 'yyyy-mm-dd'
-function formatarData($value){
+
+function formatarData($value)
+{
     $data = separarDataHora($value);
-    if (isset($data[1])){
+    if (isset($data[1])) {
         $value = $data[0];
     }
     [$y, $m, $d] = explode('-', $value);

@@ -7,7 +7,7 @@
     </a>
   </section>
   <hr>
-  <h4 style="text-align: center">ANEXO III</h4>
+  <h4 style="text-align: center">ANEXO V</h4>
   <h3 class="mt-3" style="text-align: center">RELATÓRIO PARCIAL</h3>
 
    <input type="hidden" name="id_prof" value="<?php echo $obProjeto->id_prof; ?>">
@@ -48,14 +48,14 @@
         <label>
           <h6><?php echo $n; ?>.1. Telefone</h6>
         </label>
-        <input type="text" class="form-control" name="tel" readonly value="<?= $obProfessor->telefone; ?>">
+        <input type="text" class="form-control" name="tel" readonly value="<?php echo $obProfessor->telefone; ?>">
       </div>
 
       <div class="form-group col">
         <label>
           <h6><?php echo $n; ?>.2. Email</h6>
         </label>
-        <input type="text" class="form-control" name="email" readonly value="<?= $obProfessor->email; ?>">
+        <input type="text" class="form-control" name="email" readonly value="<?php echo $obProfessor->email; ?>">
       </div>
     </div>
 
@@ -70,16 +70,16 @@
 
     <hr>
 
-  <?php 
+  <?php
   $ini = null;
-  if(!is_null($relatorio->periodo_ini)){
+if (!is_null($relatorio->periodo_ini)) {
     $ini = substr($relatorio->periodo_ini, 0, 10);
-  } 
-  $fim = null;
-  if(!is_null($relatorio->periodo_fim)){
+}
+$fim = null;
+if (!is_null($relatorio->periodo_fim)) {
     $fim = substr($relatorio->periodo_fim, 0, 10);
-  }
-  ?>
+}
+?>
     <div class="form-group">
       <label>
         <h5><?php echo ++$n; ?>. Período que se refere o Relatório</h5>
@@ -88,14 +88,14 @@
         <div class="col-3">
           <div class="form-group">
             <label>Início</label>
-            <input type="date" name="periodo_ini" id="periodo_ini" class="form-control" value="<?= $ini;?>" required readonly >
+            <input type="date" name="periodo_ini" id="periodo_ini" class="form-control" value="<?php echo $ini; ?>" required readonly >
           </div>
         </div>
 
         <div class="col-3">
           <div class="form-group">
             <label>Fim</label>
-            <input type="date" name="periodo_fim" id="periodo_fim" class="form-control" value="<?= $fim; ?>" required readonly >
+            <input type="date" name="periodo_fim" id="periodo_fim" class="form-control" value="<?php echo $fim; ?>" required readonly >
           </div>
         </div>
 
@@ -145,12 +145,12 @@
 
       <hr>
 
-      <?php 
-          if($relatorio->tramitar == 0) {
-            if($obProjeto->id_prof != $user['id']) {
-              echo '';
+      <?php
+        if ($relatorio->tramitar == 0) {
+            if ($obProjeto->id_prof != $user['id']) {
+                echo '';
             } else {
-      ?>
+                ?>
       <div class="form-group">
                  
         <h5 id="">Pronto ser enviado</h5>
@@ -159,7 +159,7 @@
       </div>
       <hr>
       <?php }
-      }  ?>
+            }  ?>
 
       <div class="form-group">
         <h5 id="attc"><?php echo ++$n; ?>. Anexos</h5>
