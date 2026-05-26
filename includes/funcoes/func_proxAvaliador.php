@@ -9,6 +9,7 @@ function getProximoAvaliador($idProjeto){
         select 
             a.fase_seq,
             a.tp_instancia,
+            COALESCE(uca.id,  uco.id,   pf.id,  uce.id,  udc.id  ) as id,
             COALESCE(uca.nome,  uco.nome,   pf.nome,  uce.nome,  udc.nome  ) as nome,                
             COALESCE(uca.email, uco.email,  pf.email, uce.email, udc.email ) as email, 
             COALESCE(ca.nome, ce.nome, co.nome, 'Parecerista') as local,

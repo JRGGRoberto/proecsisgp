@@ -3,6 +3,7 @@
 require '../vendor/autoload.php';
 
 use App\Entity\EmailService;
+use App\Entity\Pendencias;
 use App\Entity\Projeto;
 use App\Entity\ProjMaster;
 use App\Session\Login;
@@ -74,11 +75,19 @@ $resultado = $obProjeto->Submeter($_POST['selecOpt']);
 
 $projMast = ProjMaster::getRegistro($obProjeto->id);
 
+require_once '../includes/funcoes/func_pendencia.php';
+
 if ($resultado['primeira_submit']) {
+    criarPendencia($obProjeto->id, 'n', 'prop');  
     $mail->avaliacaoProposta($projMast, 'n');
 }
 
 if ($resultado['foi_reprovado']) {
+    criarPendencia($obProjeto->id, 'n', 'prop');
+    $where = 'id_ref = "'.$obProjeto->id.'" AND tipo_pendencia = "prop"';
+    $pendecia = Pendencias::getRegistros($where);
+    $id_ref = $pendecia[0]->id_ref;
+    excluirPendencia($id_ref, 'prop');
     $mail->avaliacaoProposta($projMast, 'n');
 }
 

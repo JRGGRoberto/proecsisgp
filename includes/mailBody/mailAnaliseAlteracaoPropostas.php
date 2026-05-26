@@ -18,7 +18,7 @@ function mailAnaliseAlteracaoPropostas($idSolicitacao, $resultado, $userNome, $u
     $nomeDonoProj = $ObjSolicitacao[0]->solicitante_nome;
     $emailDonoProj = $ObjSolicitacao[0]->solicitante_email;
 
-    include '../funcoes/func_mudaAbreviacao.php';
+    require_once '../includes/funcoes/func_mudaAbreviacao.php';
     $campoAlterado = mudaAbreviacaoCampoAlterado($ObjSolicitacao[0]->campoAlterado);
     $resultadoAvalia = mudaAbreviacaoAprovacao($resultado);
 
