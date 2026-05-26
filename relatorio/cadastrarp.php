@@ -67,9 +67,9 @@ $regras = getRegras($user);
 $relatorio = new Relatorio();
 // VALIDAÇÃO DO POST
 if (isset($_POST['atvd_per'])) {
-    echo '<pre>';
-    print_r($_POST);
-    echo '</pre>';
+    // echo '<pre>';
+    // print_r($_POST);
+    // echo '</pre>';
     $int = 0;
     echo ++$int.'<br>';
     $relatorio->idproj = $obProjeto->id;

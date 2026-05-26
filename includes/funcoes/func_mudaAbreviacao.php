@@ -25,7 +25,9 @@ function mudaAbreviacaoCampoAlterado($abreviacao){
 function mudaAbreviacaoAprovacao($abreviacao){
   $abrevia = [
     'r' => 'Reprovado',
-    'a' => 'Aprovado'
+    'a' => 'Aprovado',
+    'n' => 'Novo',
+    'e' => 'Em espera'
   ];
   return $abrevia[$abreviacao];
 }
@@ -41,6 +43,29 @@ function mudaAbreviacaoTipoPropostas($abreviacao){
   return $abrevia[$abreviacao];
 }
 
+function tipoRelatorio($abreviacao){
+  $abrevia = [
+    'pa' => 'Relatório Parcial',
+    'fi' => 'Relatório Final',
+    're' => 'Relatório Final com Renovação',
+    'pr' => 'Relatório Final com Prorrogação'
+  ];
+  return $abrevia[$abreviacao];
+}
+
+function tipoCargos($abreviacao){
+  $abrevia = [
+    'pf' => 'Professor',
+    'ag' => 'Agente',
+    'ca' => 'Chefe de Divisão',
+    'ce' => 'Diretor(a) de Centro',
+    'co' => 'Coordenador(a)',
+    'dc' => 'Diretor(a) de Campus',
+    'ca' => 'Chefe de Divisão'
+  ];
+  return $abrevia[$abreviacao];
+}
+
 function mudaAbreviacaoHoraEstatica($abreviacao){
   $abrevia = [
     'ultimaHora' => ' 23:59:59.000',
@@ -49,66 +74,20 @@ function mudaAbreviacaoHoraEstatica($abreviacao){
   return $abrevia[$abreviacao];
 }
 
+function mudaAbreviacaoPendencias($abreviacao){
+  $abrevia = [
+    // Tipos de pendências
+    'av' => 'Avaliação',
+    'aj' => 'Ajuste',
+    'ntf' => 'Notificação',
+    // Recebedores de pendências
+    'proec' => 'PROEC',
+    'dec' => 'DEC',
+    'prop' => 'Proposta',
+    'rp' => 'Relatório Parcial',
+    'rf' => 'Relatório Final'
+  ];
+  return $abrevia[$abreviacao];
+}
 
-// function getAvaliadorRelatorio($relatorio)
-// {
-//     switch ($relatorio->tp_avaliador) {
-//         case 'ca':
-//             return [
-//                 'email' => $relatorio->chef_mail,
-//                 'nome' => 'Chefe de Divisão',
-//             ];
 
-//         case 'ce':
-//             return [
-//                 'email' => $relatorio->ce_mail,
-//                 'nome' => 'Diretor(a) de Centro',
-//             ];
-
-//         case 'co':
-//             return [
-//                 'email' => $relatorio->co_mail,
-//                 'nome' => 'Coordenador(a)',
-//             ];
-
-//         case 'dc':
-//             return [
-//                 'email' => $relatorio->dc_mail,
-//                 'nome' => 'Diretor(a) de Campus',
-//             ];
-
-//         default:
-//             return null;
-//     }
-// }
-
-//     public function getTipoRel($relatorio)
-//     {
-//         switch ($relatorio->tipo ?? $relatorio->tp_relatorio) {
-//             case 'pa':
-//                 return [
-//                     'tipoNome' => 'Relatório Parcial',
-//                     'tipoAbr' => 'p',
-//                 ];
-//             case 'fi':
-//                 return [
-//                     'tipoNome' => 'Relatório Final',
-//                     'tipoAbr' => 'f',
-//                 ];
-//             case 're':
-//                 return [
-//                     'tipoNome' => 'Relatório Final com Renovação',
-//                     'tipoAbr' => 'f',
-//                 ];
-//             case 'pr':
-//                 return [
-//                     'tipoNome' => 'Relatório Final com Prorrogação',
-//                     'tipoAbr' => 'f',
-//                 ];
-//             default:
-//                 return [
-//                     'tipoNome' => 'erro',
-//                     'tipoAbr' => 'erro',
-//                 ];
-//         }
-//     }

@@ -100,5 +100,8 @@ function enviaAlteracao($input, $user){
         throw new Exception("Erro ao finalizar solicitação, tente novamente.");
     }
 
+    require_once '../includes/funcoes/func_pendencia.php';
+    criarPendencia($newId, 'n', 'alt'); // Cria a pendência para o avaliador sendo PROEC ou DEC;
+
     return $ObjSolicitacao;
 }

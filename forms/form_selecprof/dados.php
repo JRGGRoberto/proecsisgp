@@ -93,12 +93,27 @@ if (isset($_POST['resultado'])) {
             $dados->atualizar();
         }
 
+        require_once '../includes/funcoes/func_verificarAvaliacoes.php';
+        require_once '../includes/funcoes/func_pendencia.php';
+        require_once '../includes/funcoes/func_proxAvaliador.php';
+
         switch ($form->resultado) {
             case 'a':
                 $ava1->resultado = 'a';
                 $ava1->atualizar();
                 $proj = Projeto::getProjeto($id_proj, $ver_proj);
                 $proj->nextLevel($_POST['id_parecerista']);
+
+                // Pega o próximo avaliador
+                $proxAvaliador = getProximoAvaliador($id_proj);
+                if (empty($proxAvaliador)){
+                    $fase_anterior = ultimaAvaliacao($id_proj);
+                    excluirPendencia($fase_anterior->id_ava, 'prop');
+                } else {
+                    criarPendencia($id_proj, 'a', 'prop');
+                    $fase_anterior = penultimaAvaliacao($id_proj);
+                    excluirPendencia($fase_anterior->id_ava, 'prop');
+                }
 
                 // envio de email -> aprovação
                 $email->avaliacaoProposta($proj, 'a');
@@ -109,6 +124,10 @@ if (isset($_POST['resultado'])) {
                 $proj = Projeto::getProjeto($id_proj, $ver_proj);
                 $proj->novaVersao();
 
+                criarPendencia($id_proj, 'r', 'prop');
+                $fase_anterior = ultimaAvaliacao($id_proj);
+                excluirPendencia($fase_anterior->id_ava, 'prop');
+
                 // envio de email email -> reajuste
                 $email->avaliacaoProposta($proj, 'r');
                 break;
@@ -117,7 +136,7 @@ if (isset($_POST['resultado'])) {
                 break;
         }
 
-        header('location: ../avalareal/index.php?status=success');
+        header('location: ../avaliacoes/index.php?tpAva=p2&status=success');
         exit;
     }
 }

@@ -78,6 +78,10 @@ function updateAdendos($validador_id, $validador_nome, $validador_cargo, $email_
     $adendo->resultado = $resultado;
     $adendo->data_resultado = $data->format('Y-m-d H:i:s.v');
     $adendo->atualizar();
+
+    
+    require_once '../includes/funcoes/func_pendencia.php';
+    excluirPendencia($_GET['idAdendos'], 'alt');
 }
 
 $email = new EmailService();
@@ -100,7 +104,6 @@ if ($resultado === 'a'){
         if ($enviado == 'avaliador' || $enviado == 'autor' || $enviado == 'novo autor') {
             $_SESSION['msg'] = "Erro ao enviar e-mail de confirmação para o ".$enviado." da proposta";
         }
-
         $_SESSION['msg'] = 'Avaliação realizada com sucesso!';
     } else {
         $_SESSION['msg'] = 'Erro ao realizar avaliação';
