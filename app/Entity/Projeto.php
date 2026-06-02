@@ -549,6 +549,18 @@ class Projeto
         return $completou;
     }
 
+    public function dadosAvaliacaoAtual($idProj){
+        $sql = '
+            SELECT 
+                pa.id_ava, pa.form, pa.fase_seq, pa.etapas, pa.tp_instancia, pa.id_instancia, pa.resultado, pa.para_avaliar, pa.colegiado
+            FROM proj_avaliar pa 
+            INNER JOIN avalia_last al 
+            ON al.id_proj = pa.id_proj AND al.fase_seq = pa.fase_seq 
+            WHERE pa.id_proj ="'.$idProj.'" AND pa.resultado <> "r"';
+        $result = (new Database())->selectJ($sql)->fetchObject(self::class);
+        return $result;
+    }
+
     public function primeiraSubmit()
     {
         $sql = "

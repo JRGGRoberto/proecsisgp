@@ -1,10 +1,12 @@
 <?php
 
+use App\Entity\Pendencias;
 use App\Entity\Professor;
+use App\Entity\Projeto;
 
 require '../vendor/autoload.php';
 
-require '../includes/funcoes/func_proxAvaliador.php';
+require_once '../includes/funcoes/func_proxAvaliador.php';
 
 function autorProj($id_prof){
     $where = 'id = "'.$id_prof.'"';
@@ -24,7 +26,7 @@ function autorProj($id_prof){
 
 function publicacao($projeto){
 
-    $autor = autorProj($projeto);
+    $autor = autorProj($projeto->prof_id);
     $tipo = 6;
     $idref = $projeto->id;
     
@@ -37,7 +39,7 @@ function publicacao($projeto){
         <p>Sua proposta concluiu todas as etapas de avaliação.</p>
         <p>Título: <strong>'.$projeto->titulo.'</strong></p>
         <p>Este '.mudaAbreviacaoTipoPropostas($projeto->tipo_exten).' deve ser executado dentro da vigência informada</p>
-        <p>Vigência informada: <strong>'.formatData($projeto->vigen_ini).'<strong> - </strong>'.formatData($projeto->vigen_fim).'</strong></p>
+        <p>Vigência informada: <strong>'.formatarData($projeto->vigen_ini).'<strong> - </strong>'.formatarData($projeto->vigen_fim).'</strong></p>
         <p>Dentro deste período podem ser inseridos <strong>relatórios parciais</strong></p>
         <p>Ao seu término, <strong>relatórios finais</strong>.</p>
 
@@ -243,18 +245,16 @@ function reprovacao($projeto){
 }
 
 function mailAvaliacaoProposta($projeto, $resultado){
-    if ($resultado == 'a') {
-        $dados = aprovacao($projeto);
-        return $dados;
-    }
-    elseif ($resultado == 'n') {
+    
+    if ($resultado == 'n') {
         $dados = submissao($projeto);
-        return $dados;
     }
-    elseif ($resultado == 'r') {
+    elseif ($resultado == 'a') {
+        $dados = aprovacao($projeto);
+    }
+    elseif ($resultado == 'r' || $resultado == 'e') {
         $dados = reprovacao($projeto);
-        return $dados;
     }
+
+    return $dados;
 }
-
-
