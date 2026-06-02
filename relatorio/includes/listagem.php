@@ -203,23 +203,35 @@ echo $novoBTNs;
       <!-- Modal body -->
       <div class="modal-body">
         *O responsável pelo preenchimento e encaminhamento é o coordenador da Proposta de Extensão
-        <table class="table table-bordered">
-  <thead class="thead-light">
-    <tr>
-      <th>Etapa</th>
-      <th>Quem avalia</th>
-    </tr>
-    
-  </thead>
-  <tbody>
-
-  </tbody>
-</table>
+        <table class="table table-bordered" id="tbl_who_evaluetes">
+          <thead class="thead-light">
+            <tr>
+              <td colspan="2">
+                <label>Pertencendo a:
+                <select name="para_ava2" id="para_ava2">
+                  
+                </select>
+                </label>
+              </td>
+            </tr>
+          </thread>
+          <tr><td colspan="2"></td></tr>
+          <thead class="thead-light">
+            <tr>
+              <th>Etapa</th>
+              <th>Quem avalia</th>
+            </tr>
+            
+          </thead>
+          <tbody>
+        
+          </tbody>
+        </table>
       </div>
       <!-- Modal footer -->
       <div class="modal-footer">
         <form method="post" action="submeter.php?">
-          <input type="text" name="idRel" id="idRel">
+          <input type="hidden" name="idRel" id="idRel">
            <button type="submit" class="btn btn-primary btn-sm mb-2" >Submeter</button>
            <button type="button" class="btn btn-danger  btn-sm mb-2" data-dismiss="modal">Fechar</button>
         </form>
@@ -245,9 +257,78 @@ function printDel(id){
     $('#modalSub').modal('show');
   }
 
-function showModalSubmit(id){
+
+async function pegarRelatorio(idR) {
+  return data = await fetch(`../api/toAvaliarRel.php?r=${idR}`)
+      .then(resp => resp.json()).catch(error => false);
+}
+
+async function getCaminho(regra) {
+  return data = await fetch (`../api/etapasAvaliacao.php?r=${regra}`)
+      .then(resp => resp.json()).catch(error => false);
+}
+ 
+
+async function getSelectOpt(regra) {
+   return data = await fetch (`../api/toAvaliarSelectOpt.php`)
+      .then(resp => resp.json()).catch(error => false); 
+}
+
+function nomeElementoTbl(celA, celB){
+  const table = document.getElementById('tbl_who_evaluetes');
+  const newRow = table.insertRow(-1);
+  const newCell = newRow.insertCell(0);
+  const newCel2 = newRow.insertCell(1);
+  newCell.textContent = celA;
+  newCel2.textContent = celB;
+}
+
+function novoElementoOpt(id, nome, select){
+   const selectElement = document.getElementById('para_ava2');
+   const newOption = document.createElement('option');
+   newOption.value = id;
+   newOption.text = nome;
+   newOption.selected = select == 1 ? true: false;
+   selectElement.add(newOption); 
+}
+
+async function showModalSubmit(id){
+  let dataRelatorio =  await  pegarRelatorio(id);
   $("#modelSubmit").modal("show");
   document.getElementById("idRel").value = id;
+
+  const selectE = document.getElementById('para_ava2');
+  selectE.options.length = 0;
+
+  if( dataRelatorio.para_avaliar == -1){
+    let SelectOpt = await getSelectOpt(dataRelatorio.regra);
+    SelectOpt.forEach(e => {
+      novoElementoOpt(e.id, e.nome, e.selected)
+    });
+
+  } else {
+    elemento2 = await fetch (`../api/getLocal.php?id=${dataRelatorio.para_avaliar}`)
+      .then(resp => resp.json()).catch(error => false); 
+
+    novoElementoOpt(dataRelatorio.para_avaliar, elemento2.nome, '1');
+  }
+///see it
+  const table = document.getElementById('tbl_who_evaluetes');
+  while(table.rows.length > 3){
+    table.deleteRow(4);
+  }
+  
+  let etapas = await getCaminho(dataRelatorio.regra);
+  etapas.forEach(etp => {
+    nomeElementoTbl(etp.nome, etp.avaliador)
+  });
+  
+  
+
+
+
+
+
 }
 
 

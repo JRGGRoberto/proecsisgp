@@ -132,6 +132,12 @@ class Relatorio
         return true;
     }
 
+    public static function getByIdBasic($id)
+    {
+        return (new Database('relats'))->select('id = "'.$id.'"')
+                                  ->fetchObject(self::class);
+    }
+
     public static function getById($id)
     {
         return RelatorioMapper::carregar($id);

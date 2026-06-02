@@ -49,7 +49,11 @@ foreach ($avaliacoes as $ava) {
 
             <div class="d-flex flex-row-reverse ">
               <div class="p-1"></div>
-              <a href="../forms/index.php?tp=r&i='.$ava->id.'&p='.$ava->idproj.'&v='.$ava->pver.'"><button class="btn btn-primary btn-sm mb-2"> ⚖️ Avaliar/Visualizar relatório</button></a>
+                <a href="../forms/index.php?tp=r&i='.$ava->id.'&p='.$ava->idproj.'&v='.$ava->pver.'"><button class="btn btn-primary btn-sm mb-2"> ⚖️ Avaliar relatório</button></a>
+              <div class="p-1"></div>
+
+              <div class="p-1"></div>
+                <a href="../relatorio/editarp.php?id='.$ava->id_rel.'"><button class="btn btn-success btn-sm mb-2"> Visualizar relatório</button></a>
               <div class="p-1"></div>
               
               <a href="../propostas/visualizar.php?id='.$ava->idproj.'&v='.$ava->pver.'&w=nw" target="_blank"><button class="btn btn-success btn-sm mb-2"> Visualizar projeto</button></a>

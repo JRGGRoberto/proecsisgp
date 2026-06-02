@@ -10,6 +10,7 @@ $user = Login::getUsuarioLogado();
 $tipoAvalicao = [
     'p' => 'idxProj.php',
     'r' => 'idxRelat.php',
+    'rv' => 'idxRelatView.php',
 ];
 
 if (!isset($_GET['tp'])) {

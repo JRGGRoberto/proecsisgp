@@ -27,7 +27,7 @@ if (isset($_GET['status'])) {
 
 // VALIDAÇÃO DO ID
 if (!isset($_GET['id'])) {
-    header('location: index.php?status=error');
+    header('location: ../index.php?status=error');
     exit;
 }
 $id = $_GET['id'];
@@ -35,6 +35,13 @@ $id = $_GET['id'];
 // CONSULTA AO PROJETO
 $obProjeto = new Projeto();
 $obProjeto1 = Projeto::getProjetoLast($id);
+
+// Listar relatórios apena do dono do projeto
+if ($obProjeto1->id_prof != $user['id']) {
+    header('location: ../index.php?status=error');
+    exit;
+}
+
 $obProjeto = Projeto::getProjeto($id, $obProjeto1->ver);
 
 $novoBTNs = '';

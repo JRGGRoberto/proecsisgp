@@ -8,6 +8,7 @@ use App\Entity\Professor;
 use App\Entity\Projeto;
 use App\Entity\Relatorio;
 
+$form = Form_Rel::getRegistro($_GET['i']);
 $relatorio = new Relatorio();
 $relatorio = Relatorio::getById($avaliacaoRelatorio->id_rel);
 $obProjeto = Projeto::getProjetoLast($relatorio->idproj);
@@ -15,39 +16,24 @@ $obProjeto = Projeto::getProjeto($obProjeto->id, $obProjeto->ver);
 $obProfessor = new Professor();
 $obProfessor = $obProfessor->getProfessor($obProjeto->id_prof);
 
-// Tenta recuperar os dados do formulário, se não achar cria um novo.
-$form = Form_Rel::getRegistro($avaliacaoRelatorio->id);
+$anexados = Arquivo::getAnexados('forms', $form->id);
+$anex = '<ul id="anexos_edt">';
+foreach ($anexados as $att) {
+    $anex .=
+    '<li>
+      <a href="/home/sistemaproec/www/sistema/upload/uploads/'.$att->nome_rand.'" target="_blank">'.$att->nome_orig.'</a> 
+      <a href="../arquiv/index.php?tab='.$att->tabela.'&id='.$att->id_tab.'&arq='.$att->nome_rand.'" >  
+        <span class="badge badge-danger">🗑️ Excluir</span>
+      </a>
+  </li> ';
+}
+$anex .= '</ul>';
+
 $cad = false;
 if (!$form) {
     $form = new Form_Rel();
     $cad = true;
 }
-
-$prjS = Projeto::getRegistros("(id, ver)= ('".$_GET['p']."', ".$_GET['v'].')');
-$prj = $prjS[0];
-
-// Para mostar os anexos do Relatório
-$anexadosForm = Arquivo::getAnexados('relatorios', $relatorio->id);
-
-$anexForm = '<ul id="anexos_edt">';
-foreach ($anexados as $att) {
-    $anexForm .=
-    '<li>
-      <a href="../upload/uploads/'.$att->nome_rand.'" target="_blank">'.$att->nome_orig.'</a> 
-    </li> ';
-}
-$anexForm .= '</ul>';
-
-$tf = $relatorio->tipo; // para deixar comum para formParcial/formFinal
-ob_start();
-if ($relatorio->tipo == 'pa') {
-    require '../relatorio/includes/formParcial.php';
-} else {
-    require '../relatorio/includes/formFinal.php';
-}
-
-$dataRelatorio = ob_get_clean();
-
 // VALIDAÇÃO DO POST
 if (isset($_POST['resultado'])) {
     if ($relatorio->idproj == $id_proj) {
@@ -65,7 +51,15 @@ if (isset($_POST['resultado'])) {
         } else {
             $form->atualizar();
         }
-        // put $anexosJS = json_decode($_POST['anexosJS']); !!!!!!!!!!!!
+
+        $anexosJS = json_decode($_POST['anexosJS']);
+        foreach ($anexosJS as &$anx) {
+            $dados = Arquivo::getArquivo($anx);
+            $dados->tabela = 'forms';
+            $dados->id_tab = $form->id;
+            $dados->user = $obProjeto->user;
+            $dados->atualizar();
+        }
 
         switch ($form->resultado) {
             case 'a':

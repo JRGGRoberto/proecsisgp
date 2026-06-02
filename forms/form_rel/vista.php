@@ -34,70 +34,21 @@ include __DIR__.'/../../includes/headers.php';
 
 ?>
 
+
 <div class="container mt-4">
-   <h3>Aceite de Relatório: SELEÇÃO DE PROFESSOR PARA REALIZAR O PARECER</h3>
+   <h3>Aceite de relatório</h3>
    <h4>Divisão de Extensão e Cultura dos Campi</h4>
       
-  <form name="myform" id="myform" method="post" enctype="multipart/form-data">
-       <ol>
-        <li class="mb-4">
-          <h5>Tipo de Proposta</h5>
+  
+ <form name="myform" id="myform" method="post" enctype="multipart/form-data">
 
-            <div class="form-group">
-                <input type="text" class="form-control" name="tp_proposta"  value="<?php echo $prj->tipo_exten; ?>" readonly>
-            </div>
-            
-        </li>
 
         <li class="mb-4">
-          <h5>Identificação da Proposta</h5>
-            
-            <div class="form-group">
-              <label>Título</label>
-              <input type="text" class="form-control" name="titulo" value="<?php echo $prj->titulo; ?>" readonly>
-            </div>
-            
-            <div class="form-group">
-              <label>Proponente</label>
-              <input type="text" class="form-control" name="coordNome" value="<?php echo $prj->nome_prof; ?>" readonly>
-            </div>
-            
-            <div class="form-group">
-              <label>Colegiado de Curso</label>
-              <input type="text" class="form-control" name="colegiado" value="<?php echo $prj->colegiado; ?>" readonly>
-            </div>
-            
-            <div class="row">
-            
-              <div class="col">
-                <div class="form-group">
-                  <label for="area_extensao">Área de extensão</label>
-                  <input type="text" class="form-control"  name="area_exten" value="<?php echo $prj->area_extensao; ?>" readonly>
-                </div>
-              </div>
-            
-              <div class="col">
-                <div class="form-group">
-                  <label for="linh_ext">Linha de  extensão</label>
-                  <input type="text" class="form-control"  value="<?php echo $prj->linh_ext; ?>" readonly>
-                </div>
-              </div>
-
-            </div>
-        </li>
-         
-        <li class="mb-4">
-          <h5>O professor selecionado como parecerista</h5>
-              <h4><span class="badge badge-secondary"><?php echo $nomeProf->nome; ?></span></h4>
-        </li>
-
- 
-        <li class="mb-4">
-          <h5>Solicitação de Adequações (Indicar qual item necessita de adequação e justificar)</h5>
+          <h5>Observações</h5>
           <div class="row">
             <div class="col">
               <div class="form-group">
-                <textarea class="form-control" name="solicitacoes" rows="10" readonly
+                <textarea class="form-control" name="solicitacoes" rows="10" 
                 placeholder="(Descrever quais adequações devem ser realizadas para que o projeto ultrapasse esta etapa) 10 linhas máximo"><?php echo $form->solicitacoes; ?></textarea>
                 (O prazo para devolução da proposta com adequações segue o previsto no Regulamento de Extensão – Resolução 042/2022 – CEPE/UNESPAR)
               </div>
@@ -105,33 +56,83 @@ include __DIR__.'/../../includes/headers.php';
           </div>
         </li>
 
+
         <li class="mb-4">
-          <h5>Anexos</h5>
+          <h5 id="attc">Anexos</h5>
           <div class="row">
             <div class="col">
               <div class="form-group">
                 <ul id="anexos"></ul>
-                <?php echo $anex; ?>
+                <iframe src="../upload/upload.php" frameborder="0" scrolling="no"></iframe>
+                <?php echo $anex; ?>                
               </div>
             </div>
           </div>
         </li>
-
+        
     </ol>
 
     <div class="form-group">
       <div class="row">
-        <div class="col-3"><input type="text" class="form-control" name="cidade"  value="<?php echo $form->cidade; ?>" readonly></div>
-        <div class="col-2"> <input type="date" class="form-control" name="dateAssing" id="dateAssing" readonly value="<?php echo substr($form->dateAssing, 0, 10); ?>"> </div>
+        <div class="col-3"><input type="text" class="form-control" name="cidade"  value="<?php echo $user['ca_nome']; ?>"></div>
+        <div class="col-2"> <input type="date" class="form-control" name="dateAssing" id="dateAssing" readonly value="<?php echo date('Y-m-d'); ?>"> </div>
       </div>
     </div>
+    
     <div class="form-group">
-      <input type="text" class="form-control" name="whosigns"  value="<?php echo $form->whosigns; ?>" readonly>
+      <?php $cargo = ['Prof/AG', 'Coordenador',  'Centro de Área', 'Chefe de Divisão', 'Diretor de campus']; ?>
+      <input type="text" class="form-control" name="whosigns"  value="<?php echo $user['nome']; ?> - <?php echo $cargo[$user['config']]; ?>" readonly>
     </div>
+      <p> </p><hr><p> </p>
+    <div class="form-group form-group d-flex justify-content-around">
+      <a href="javascript: submitSolicAlterac()" class="btn btn-warning" >Solicitar alterações ↩️</a>
+      <a href="javascript: submitSave()" class="btn btn-secondary" >Avaliar mais tarde ⌛</a>
+      <a href="javascript: submitAprova()" class="btn btn-success" id="btnSubmit">✔️ Enviar para próxima instância</a>
+    </div>
+
+    <div class="form-group form-group d-flex justify-content-around">
+      <div class="col-4">
+        <p><span class="badge badge-warning">↩️</span><small> Ao Solicitar alterações, esta avalização fica anexa a esta versão e uma nova versão do projeto é disponibilizada ao proponente, para que este realiza as alterações necessárias e volte a submeter a uma nova avaliação.</small></p>
+      </div>
+      <div class="col-4">
+        <p><span class="badge badge-secondary">⌛</span><small> Os dados da avalização ficam salvos para outros acesso e alterações até que se chegue há um veredito.</small></p>
+      </div>
+      <div class="col-4">
+        <p><span class="badge badge-success">✔️</span><small> O projeto não necessita de alterações, esta completamente atentendo os requisitos e será avaliado para a próxima instância ou registro/publicação.</small></p>
+      </div>
+      
+    </div>
+    <input type="hidden" id="resultado" name="resultado">
+    <input id="anexosJS" name="anexosJS" type="text" hidden>
+  </form>
 
 </div>
 
-<a href="../../propostas" class="btn btn-primary btn-sm mr-2">Voltar</a>
+<script>
+const esseFormSelecProf = true;
+
+const opt = document.getElementById('id_parecerista');
+const btn = document.getElementById('btnSubmit');
+           
+function ativaBTN() {
+        
+    if((opt.value != -1 ) ){
+      btn.disabled=false;
+      
+    } else {
+      btn.disabled=true;
+    }
+  }
+
+
+menuAvaliarVoltar = document.getElementById("menuAvaliarVoltar");
+SectionVoltar = document.getElementById("SectionVoltar");
+menuAvaliarVoltar.remove();
+SectionVoltar.remove();
+</script>
+<script src="formsBtn.js"></script>
+
+
 <?php
 
 include __DIR__.'/../../includes/footer.php';
