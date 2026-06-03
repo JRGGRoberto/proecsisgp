@@ -4,9 +4,9 @@ require '../vendor/autoload.php';
 use App\Session\Login;
 $obUsuario = Login::getUsuarioLogado();
 
-use App\Entity\CompararAlunos;
-$idPermitido = CompararAlunos::getIdPermitidos();
-$id_enviar = CompararAlunos::id_enviar();
+include_once '../includes/funcoes/func_permissoes.php';
+$idPermitido = permissoesEnviarBolsistas();
+$id_enviar = permissoesVerificarBolsistas();
 
 use App\Entity\Outros;
 

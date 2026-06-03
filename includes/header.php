@@ -3,15 +3,13 @@
 require '../vendor/autoload.php';
 
 use App\Session\Login;
-
 $obUsuario = Login::getUsuarioLogado();
 
-use App\Entity\CompararAlunos;
 use App\Entity\MicroCred_avaliadores;
 // use App\Entity\Pibis_pibex_avaliadores;
 use App\Entity\Outros;
 
-$idPermitido = CompararAlunos::getIdPermitidos();
+require_once '../includes/funcoes/func_permissoes.php';
 
 $clock = [
     '🕛', '🕐', '🕑', '🕒', '🕓', '🕔', '🕕', '🕖', '🕗', '🕘', '🕙', '🕚',
@@ -21,12 +19,7 @@ $horas = date('H');
 $horas >= 12 ? (int) ($horas -= 12) : (int) ($horas -= 0);
 
 $all = '';
-$autorizados = [
-    '91ad9f28-8819-42c9-b6a9-18f284ee7453', // [MARILDA DE LARA SANTOS] Agente Sol Ângela Deeke Curitiba I 11/06/2025
-    '3d1be647-d7e3-4d00-a642-75ea14059b5b', // [IRENE OLIVEIRA        ] Agente Sol Ângela Deeke Curitiba I 11/07/2025
-    'c492dd7e-ac95-4d9f-b1c0-c7fc63340dd6', // [PAULO SERGIO SANTOS] Estágiário - Sérgio Dantas 21/07/2025
-    'a68f28dd-2b1b-49ec-8ef8-b6ed28ab3376', // [SUWELLY GONÇALVES SUASSUI PICH] Solicitação  Daniela Machado 31/07/2025
-];
+$autorizados = permissoesAvaliadorPibis();
 
 /*
 $menuPibis = '';
@@ -103,12 +96,9 @@ if ($obUsuario['config'] == 3) {
 
 $adminOpts = '';
 if ($obUsuario['adm'] == 1) {
-    $permssao = [
-        '2bebba9e-226a-11ef-b2c8-0266ad9885af',
-        'b8fa555f-cedb-47cf-91cc-7581736aac88',
-        'bfd757a5-4f2d-4a10-87a8-a872ae69f1fd'];
+    $permissoesADM = permissoesADM();
     $qryAdm5 = '';
-    if (in_array($obUsuario['id'], $permssao)) {
+    if (in_array($obUsuario['id'], $permissoesADM)) {
         $qryAdm5 = "<a class='dropdown-item btn-sm' href='../qryADM'>ConsultADM</a>";
     }
 
@@ -164,9 +154,6 @@ $nome = $nome[0]; // will print Test
   <script src="../includes/popper.min.js"></script>
   <script src="../includes/bootstrap-4.6.2-dist/js/bootstrap.bundle.min.js"></script>
 -->
-
-
-
 
   <!-- para a inserção de leitor de xlsx -->
   <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
@@ -385,24 +372,60 @@ $idCampus = $obUsuario['ca_id'];
 
           
           <?php
+            
             if ($obUsuario['CargoEspecial'] != '0'){
               require_once '../includes/funcoes/func_verificaCargosEspeciais.php';
               $cargosEspeciais = dadosCargosEspeciais($obUsuario['CargoEspecial']);
+            } else {
+              $cargosEspeciais = null;
             }
-
+            // Deixar o botão visivel somente para os cargos especiais
             if (!empty($cargosEspeciais)){
               $nome = $cargosEspeciais[0]->siglaReitoria;
               $rota = strtolower($nome);
-              $hidden = '';
+              $hiddenCargosEspeciais = '';
             } else {
-              $hidden = 'hidden';
+              $hiddenCargosEspeciais = 'hidden';
             }
+
+            if ($obUsuario['adm'] == 1) {
+              require_once '../includes/funcoes/func_permissoes.php';
+              $permissoesADM = permissoesADM();
+            } else {
+              $permissoesADM = null;
+            }
+            // Deixar o botão visivel para a aprovação de cadastro de novos pf ou ag
+            if ((!empty($permissoesADM) && in_array($obUsuario['id'], $permissoesADM)) || (!empty($cargosEspeciais))){
+              $hiddenAprovacaoCadastro = '';
+            } else {
+              $hiddenAprovacaoCadastro = 'hidden';
+            }
+
+            // Deixar o botão visivel para a aprovação de cadastro de novos pf ou ag
+            if ($obUsuario['config'] == '1'){
+              $hiddenSolicitacaoCadastro = '';
+              $cargoCadastro = 'Professor';
+              $uri = 'pf';
+            } elseif ($obUsuario['config'] == '3'){
+              $hiddenSolicitacaoCadastro = '';
+              $cargoCadastro = 'Agente';
+              $uri = 'ag';
+            } else {
+              $hiddenSolicitacaoCadastro = 'hidden';
+            }
+            
           ?>
           <!-- Utilizar o nome do cargo especial para pasta para identificar corretamente a rota -->
-          <a <?= $hidden ?> class="dropdown-item btn-sm" href='../<?= $rota ?>'><?= $nome ?> <span class="badge badge-success">Novo!</span> </a>
-          <div <?= $hidden ?> class="dropdown-divider"></div>
+          <a <?= $hiddenCargosEspeciais ?> class="dropdown-item btn-sm" href='../<?= $rota ?>'><?= $nome ?> <span class="badge badge-success">Novo!</span> </a>
+          <div <?= $hiddenCargosEspeciais ?> class="dropdown-divider"></div>
+          
+          <!-- Cadastrar novo pf ou ag -->
+          <a <?= $hiddenSolicitacaoCadastro ?> class="dropdown-item btn-sm" href='../cadastroPessoas/index.php?cargo=<?=$uri?>&valida'>Cadastrar novo <?=$cargoCadastro?> <span class="badge badge-success">Novo!</span> </a>
+          <div <?= $hiddenSolicitacaoCadastro ?> class="dropdown-divider"></div>
 
-
+          <!-- Somente ADM e o Dir de Extensão e Cultura -->
+          <a <?= $hiddenAprovacaoCadastro ?> class="dropdown-item btn-sm" href='../cadastroPessoas/index.php?solicitacao=avalia'>Cadastro de pessoas <span class="badge badge-success">Novo!</span> </a>
+          <div <?= $hiddenAprovacaoCadastro ?> class="dropdown-divider"></div>
 
           <a class="dropdown-item btn-sm" href="../login/logout.php">Sair</a>
         </div>
