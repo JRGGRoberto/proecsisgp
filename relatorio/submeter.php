@@ -10,9 +10,9 @@ use App\Session\Login;
 Login::requireLogin();
 $user = Login::getUsuarioLogado();
 
-echo '<pre>';
-print_r($user);
-echo '</pre>';
+// echo '<pre>';
+// print_r($user);
+// echo '</pre>';
 
 $voltarUrl = $_SERVER['HTTP_REFERER'];
 echo $voltarUrl;

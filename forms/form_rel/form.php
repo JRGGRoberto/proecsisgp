@@ -1,23 +1,10 @@
 
 <div class="container mt-4">
-   <h3>Aceite de relatório: SELEÇÃO DE PROFESSOR PARA REALIZAR O PARECER</h3>
+   <h3>Aceite de relatório</h3>
    <h4>Divisão de Extensão e Cultura dos Campi</h4>
       
   
-            <div class="border border-secondary p-3">
-              <hr>
-              <h2>Relatório</h2>
-              
-              <?php
-
-              echo $dataRelatorio;
-
-              ?>
-              <hr>
-            </div>
-        </li>
-        <hr>
-<form name="myform" id="myform" method="post" enctype="multipart/form-data">
+ <form name="myform" id="myform" method="post" enctype="multipart/form-data">
 
 
         <li class="mb-4">
