@@ -1,5 +1,7 @@
 <?php
 
+use App\Entity\AvaliaRelatorios;
+
 require '../includes/msgAlert.php';
 
 function tipo($tipo)
@@ -25,6 +27,8 @@ function tipo($tipo)
 
 $resultados = '';
 
+$AvaliaRelatorios = new AvaliaRelatorios();
+
 foreach ($relatorios as $relf) {
     $tipo = tipo($relf->tipo);
 
@@ -38,7 +42,6 @@ foreach ($relatorios as $relf) {
             $msgPublicadoFinal = ' <span class="badge badge-success">Publicado</span>';
         } else {
             $msgPublicadoFinal = '<span class="badge badge-warning">Aguardando análise(s) - ('.$relf->fase_atual.'/'.$relf->fases.')</span>';
-            // if($relf->last_result = 'n'){}
         }
     } else {
         $btns = '<a href="editar'.$tipo[1].'.php?id='.$relf->id.'" class="card-link">Editar</a> ';
@@ -52,7 +55,10 @@ foreach ($relatorios as $relf) {
         if ($relf->last_result == 'n') {
             $msgPublicadoFinal = '<span class="badge badge-secondary">Não submetido - ('.$relf->fase_atual.'/'.$relf->fases.')</span>';
         } elseif ($relf->last_result == 'r') {
+            $AvaliaRelatorios = $AvaliaRelatorios->getByWhere('  id_rel = "'.$relf->id.'" ', 'created_at desc', '1');
+
             $msgPublicadoFinal = '<span class="badge badge-danger">Adequações solicitadas - ('.$relf->fase_atual.'/'.$relf->fases.')</span>';
+            $btns .= '<a href="../forms/index.php?tp=r&i='.$AvaliaRelatorios->id.'&p='.$AvaliaRelatorios->idproj.'&v='.$AvaliaRelatorios->ver.'" class="card-link"><span class="badge badge-danger"> Visualizar adequações </span></a> ';
         } else {
             $msgPublicadoFinal = '<span class="badge badge-info">?? etapas('.$relf->fase_atual.'/'.$relf->fases.') tramitar('.$relf->tramitar.') result('.$relf->last_result.')</span>';
         }

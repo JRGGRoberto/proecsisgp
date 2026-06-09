@@ -1,9 +1,7 @@
-
 <div class="container mt-4">
    <h3>Aceite de relatório</h3>
    <h4>Divisão de Extensão e Cultura dos Campi</h4>
-      
-  
+ 
  <form name="myform" id="myform" method="post" enctype="multipart/form-data">
 
 
@@ -13,7 +11,11 @@
             <div class="col">
               <div class="form-group">
                 <textarea class="form-control" name="solicitacoes" rows="10" 
-                placeholder="(Descrever quais adequações devem ser realizadas para que o projeto ultrapasse esta etapa) 10 linhas máximo"><?php echo $form->solicitacoes; ?></textarea>
+                <?php echo $form->solicitacoes;
+                if ($somenteLeitura) {
+                    echo ' readonly ';
+                }
+                ?>placeholder="(Descrever quais adequações devem ser realizadas para que o projeto ultrapasse esta etapa) 10 linhas máximo"><?php echo $form->solicitacoes; ?></textarea>
                 (O prazo para devolução da proposta com adequações segue o previsto no Regulamento de Extensão – Resolução 042/2022 – CEPE/UNESPAR)
               </div>
             </div>
@@ -27,7 +29,12 @@
             <div class="col">
               <div class="form-group">
                 <ul id="anexos"></ul>
-                <iframe src="../upload/upload.php" frameborder="0" scrolling="no"></iframe>
+<?php echo $form->solicitacoes;
+                if (!$somenteLeitura) {
+                    echo ' <iframe src="../upload/upload.php" frameborder="0" scrolling="no"></iframe> ';
+                }
+                ?>
+                
                 <?php echo $anex; ?>                
               </div>
             </div>
@@ -38,17 +45,35 @@
 
     <div class="form-group">
       <div class="row">
-        <div class="col-3"><input type="text" class="form-control" name="cidade"  value="<?php echo $user['ca_nome']; ?>"></div>
+        <div class="col-3"><input type="text" class="form-control" name="cidade"  value="<?php
+                        if (!$somenteLeitura) {
+                            echo $user['ca_nome'];
+                        } else {
+                            echo $form->cidade;
+                        }
+
+                ?>" readonly></div>
         <div class="col-2"> <input type="date" class="form-control" name="dateAssing" id="dateAssing" readonly value="<?php echo date('Y-m-d'); ?>"> </div>
       </div>
     </div>
     
     <div class="form-group">
       <?php $cargo = ['Prof/AG', 'Coordenador',  'Centro de Área', 'Chefe de Divisão', 'Diretor de campus']; ?>
-      <input type="text" class="form-control" name="whosigns"  value="<?php echo $user['nome']; ?> - <?php echo $cargo[$user['config']]; ?>" readonly>
+      <input type="text" class="form-control" name="whosigns"  value="<?php
+                          if (!$somenteLeitura) {
+                              echo $user['nome']; ?> - <?php echo $cargo[$user['config']];
+                          } else {
+                              echo $form->whosigns;
+                          }
+
+                ?>" readonly>
     </div>
       <p> </p><hr><p> </p>
-    <div class="form-group form-group d-flex justify-content-around">
+
+<?php
+if (!$somenteLeitura) {
+    ?>
+  <div class="form-group form-group d-flex justify-content-around">
       <a href="javascript: submitSolicAlterac()" class="btn btn-warning" >Solicitar alterações ↩️</a>
       <a href="javascript: submitSave()" class="btn btn-secondary" >Avaliar mais tarde ⌛</a>
       <a href="javascript: submitAprova()" class="btn btn-success" id="btnSubmit">✔️ Enviar para próxima instância</a>
@@ -68,6 +93,13 @@
     </div>
     <input type="hidden" id="resultado" name="resultado">
     <input id="anexosJS" name="anexosJS" type="text" hidden>
+<?php
+} else {
+    echo '<a href="#" class="btn btn-primary btn-sm mr-2" onclick="history.back()">Voltar</a>';
+}
+                ?>
+      
+    
   </form>
 
 </div>

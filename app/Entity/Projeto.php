@@ -469,7 +469,7 @@ class Projeto
     {
         $this->last_result = 'a';
         $this->edt = 0;
-        $this->titulo = $this->titulo.' RENOVACAO['.$this->protocolo.']';
+        $this->titulo = $this->titulo.' RENOVACAO['.$this->protocolo.'] ';
         $this->protocolo = $this->protocolo.'R1';
         $this->id = null;
         $this->ver = 0;
@@ -549,7 +549,8 @@ class Projeto
         return $completou;
     }
 
-    public function dadosAvaliacaoAtual($idProj){
+    public function dadosAvaliacaoAtual($idProj)
+    {
         $sql = '
             SELECT 
                 pa.id_ava, pa.form, pa.fase_seq, pa.etapas, pa.tp_instancia, pa.id_instancia, pa.resultado, pa.para_avaliar, pa.colegiado
@@ -558,6 +559,7 @@ class Projeto
             ON al.id_proj = pa.id_proj AND al.fase_seq = pa.fase_seq 
             WHERE pa.id_proj ="'.$idProj.'" AND pa.resultado <> "r"';
         $result = (new Database())->selectJ($sql)->fetchObject(self::class);
+
         return $result;
     }
 

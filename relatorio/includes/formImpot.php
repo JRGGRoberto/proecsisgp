@@ -65,7 +65,7 @@ switch ($tf) {
     
     
     <hr>
-    <?php echo $msgSolicitacoAlteracao; ?>
+
 
     <div class="form-group">
       <label>
