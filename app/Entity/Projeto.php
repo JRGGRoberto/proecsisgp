@@ -482,6 +482,13 @@ class Projeto
         return true;
     }
 
+    public function prorrogacao($dateAte)
+    {
+        $this->vigen_fim_orig = $this->$this->vigen_fim;
+        $this->vigen_fim = $dateAte;
+        $this->atualizar();
+    }
+
     /**
      * Método responsável por cadastrar um novo Registro no banco.
      *

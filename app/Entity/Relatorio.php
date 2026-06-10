@@ -10,12 +10,13 @@ class Relatorio
     public $ver;
     public $idproj;
     public $regra;
-    public $tipo;
+    public $tipo;  // ['pa','fi','re','pr']
     public $fase_atual;
     public $fases;
     public $para_avaliar;
     public $tramitar;
     public $last_result;
+    public $publicado;   // ReadOnly
     public $created_at;
     public $updated_at;
     public $user;
@@ -173,6 +174,7 @@ class Relatorio
     public function aprovar()
     {
         $paraFase = $this->fase_atual;
+
         $resultado = 'n';
 
         if ($this->fase_atual < $this->fases) {
@@ -191,6 +193,24 @@ class Relatorio
                 'user' => $this->user,
             ]
         );
+
+        if (
+            ($this->fase_atual > 0)
+            and ($this->fase_atual == $this->fases)
+            and ($this->tramitar == 1)
+            and ($this->last_result = 'a')
+        ) { // Publicado!!!
+            if (in_array($this->tipo, ['re', 'pr'])) {
+                $Projeto = new Projeto();
+                $Projeto = $Projeto->getProjetoLast($this->idproj);
+
+                if ($this->tipo == 're') { // fazer renovação
+                    $Projeto->renovacao($this->periodo_renov_ini, $this->periodo_renov_fim);
+                } elseif ($this->tipo == 'pr') { // / prorrogar
+                    $Projeto->prorrogacao($this->periodo_prorroga_fim);
+                }
+            }
+        }
     }
 
     public function submeter()
