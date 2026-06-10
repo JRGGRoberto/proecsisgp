@@ -44,10 +44,6 @@ if (!empty($_SERVER['HTTP_CLIENT_IP'])) {
     $ip = $_SERVER['REMOTE_ADDR'];
 }
 
-// echo '<pre>';
-// print_r($user);
-// echo '</pre>';
-// exit;
 
 if (isset($_POST['nome'])) {
     $cand->nome = strtoupper($_POST['nome']);

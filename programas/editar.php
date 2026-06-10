@@ -10,9 +10,9 @@ $idCand = '';
 
 
 $user = LoginCandidato::getUsuarioLogado();
-echo '<pre>';
-print_r($user);
-echo '</pre>';
+// echo '<pre>';
+// print_r($user);
+// echo '</pre>';
 // exit;
 $cpf = $user['cpf'];
 
@@ -123,7 +123,7 @@ if (isset($_POST['nome'])) {
 //     $cpf = $cand->cpf;
 // }
 
-include '../includes/headerProgramas.php';
+include '../includes/headerCand.php';
 echo $msg;
 // echo '
 // <script>
