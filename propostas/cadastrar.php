@@ -139,8 +139,6 @@ if (isset($_POST['titulo'])) {
             $obProjeto->ch_semanal = $_POST['ch_semanal'];
         }
 
-        $obProjeto->referencia = $_POST['referencia'];
-
         $cnpq_garea = 0;
         try {
             $cnpq_garea = intval($_POST['cnpq_garea']);
@@ -196,10 +194,7 @@ if (isset($_POST['titulo'])) {
     $obProjeto->justificativa = $_POST['justificativa'];
     $obProjeto->cronograma = $_POST['cronograma'];
 
-    if (in_array($t, $anexoIII)) {
-        $obProjeto->referencia = $_POST['referencia'];
-    }
-
+    $obProjeto->referencia = $_POST['referencia'];
     /*
     $obProjeto->parceria       =  $_POST['parceria'];
     if($obProjeto->parceria == 'S'){

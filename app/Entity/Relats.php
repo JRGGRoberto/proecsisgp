@@ -153,7 +153,6 @@ class Relats
         $this->atualizar();
     }
 
-
     /**
      * Método responsável por obter as registro do banco de dados.
      *
@@ -162,6 +161,14 @@ class Relats
     public static function getRegistroIdProj($idproj)
     {
         $where = ' idproj = "'.$idproj.'" ';
+
+        return (new Database('relats'))->select($where)
+                                         ->fetchObject(self::class);
+    }
+
+    public static function getRegistroByProj($id_proj)
+    {
+        $where = ' idproj = "'.$id_proj.'" ';
 
         return (new Database('relats'))->select($where)
                                          ->fetchObject(self::class);
