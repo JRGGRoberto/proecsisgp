@@ -124,7 +124,7 @@ if ($obUsuario['adm'] == 1) {
           <div class='dropdown-divider'></div>
           <a class='dropdown-item btn-sm' href='../hierarquia/index.php?hi=cnf'>Configurar hierarquia</a>
           <div class='dropdown-divider'></div>
-          <a class='dropdown-item btn-sm' href='../projetos/indexAll.php'>Todos os Projetos</a>
+          <a class='dropdown-item btn-sm' href='../propostas/indexAll.php'>Todos os Projetos</a>
           <div class='dropdown-divider'></div>";
 
     $adminOpts .= $qryAdm5;
@@ -268,7 +268,7 @@ img.remover {
             <div class="col">
                   
                   <div>
-                      <span class="badge badge-success">SisGP <?php echo $clock[$horas]; ?> </span>
+                      <span class="badge badge-success">SisGP <?php echo $clock[$horas]; ?></span> <a href="../home"><span class="badge badge-warning">Sistema em manutenção</span></a>
                   </div>
                   <div>
                     Sistema para Gerir Projetos
@@ -385,22 +385,22 @@ $idCampus = $obUsuario['ca_id'];
 
           
           <?php
-            if ($obUsuario['CargoEspecial'] != '0'){
-              require_once '../includes/funcoes/func_verificaCargosEspeciais.php';
-              $cargosEspeciais = dadosCargosEspeciais($obUsuario['CargoEspecial']);
+            if ($obUsuario['CargoEspecial'] != '0') {
+                require_once '../includes/funcoes/func_verificaCargosEspeciais.php';
+                $cargosEspeciais = dadosCargosEspeciais($obUsuario['CargoEspecial']);
             }
 
-            if (!empty($cargosEspeciais)){
-              $nome = $cargosEspeciais[0]->siglaReitoria;
-              $rota = strtolower($nome);
-              $hidden = '';
-            } else {
-              $hidden = 'hidden';
-            }
-          ?>
+        if (!empty($cargosEspeciais)) {
+            $nome = $cargosEspeciais[0]->siglaReitoria;
+            $rota = strtolower($nome);
+            $hidden = '';
+        } else {
+            $hidden = 'hidden';
+        }
+        ?>
           <!-- Utilizar o nome do cargo especial para pasta para identificar corretamente a rota -->
-          <a <?= $hidden ?> class="dropdown-item btn-sm" href='../<?= $rota ?>'><?= $nome ?> <span class="badge badge-success">Novo!</span> </a>
-          <div <?= $hidden ?> class="dropdown-divider"></div>
+          <a <?php echo $hidden; ?> class="dropdown-item btn-sm" href='../<?php echo $rota; ?>'><?php echo $nome; ?> <span class="badge badge-success">Novo!</span> </a>
+          <div <?php echo $hidden; ?> class="dropdown-divider"></div>
 
 
 

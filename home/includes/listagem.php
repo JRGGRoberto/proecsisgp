@@ -52,7 +52,14 @@ if ($conta[1] == 'unespar.edu.br') {
        
       </div>
       <div class="col">
-        <?php echo $infoMail; ?>
+        <?php // echo $infoMail;
+        ?>
+
+        <div class="alert alert-info col">
+        <p>⚠️ Os <strong>módulos de relatórios</strong> encontram-se em manutenção.</p>
+        
+        <a href="#" class="btn btn-warning  btn-sm float-right">Atenção</a>
+    </div>
 
       </div>
     </div>

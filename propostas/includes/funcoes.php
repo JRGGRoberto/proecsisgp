@@ -3,6 +3,7 @@
 use App\Entity\Outros;
 use App\Session\Login;
 
+// include '../../includes/funcoes/func_mudaAbreviacao.php';
 Login::requireLogin();
 $user = Login::getUsuarioLogado();
 
@@ -56,24 +57,26 @@ function montarTblEProgress(array $ListaVerAnts, $projId, $msg1)
         ++$a;
         $class = '';
         $td = '';
+        $instancia = '';
+        // $instancia = mudaAbreviacaoInstancias($la->tp_instancia);
         switch ($la->tp_instancia) {
             case 'ca':
-                $la->tp_instancia = 'Chefe de Divisão';
+                $instancia = 'Chefe de Divisão';
                 break;
             case 'ce':
-                $la->tp_instancia = 'Dir. de Centro de Área';
+                $instancia = 'Dir. de Centro de Área';
                 break;
             case 'co':
-                $la->tp_instancia = 'Coord. de Colegiado';
+                $instancia = 'Coord. de Colegiado';
                 break;
             case 'pf':
-                $la->tp_instancia = 'Professor Parecerista';
+                $instancia = 'Professor Parecerista';
                 break;
             case 'dc':
-                $la->tp_instancia = 'Dir. de Campus';
+                $instancia = 'Dir. de Campus';
                 break;
             default:
-                $la->tp_instancia = 'Cargo não definido';
+                $instancia = 'Cargo não definido';
                 break;
         }
 
@@ -83,7 +86,7 @@ function montarTblEProgress(array $ListaVerAnts, $projId, $msg1)
                 $badgeSituacao = 'success';
 
                 $class = 'table-success';
-                $td = '<td class="text-nowrap"><a href="../forms/'.$la->form.'/vista.php?p='.$projId.'&v='.$la->ver.'" target="_blank">📄</a> '.$la->tp_instancia.'</td>';
+                $td = '<td class="text-nowrap"><a href="../forms/'.$la->form.'/vista.php?p='.$projId.'&v='.$la->ver.'" target="_blank">📄</a> '.$instancia.'</td>';
 
                 array_push($btnStatus, new Blocos($la->fase_seq, 'success')); // 'primary')); //
                 break;
@@ -93,7 +96,7 @@ function montarTblEProgress(array $ListaVerAnts, $projId, $msg1)
                 $badgeSituacao = 'danger';
 
                 $class = 'table-danger';
-                $td = '<td class="text-nowrap"><a href="../forms/'.$la->form.'/vista.php?p='.$projId.'&v='.$la->ver.'" target="_blank">📄</a> '.$la->tp_instancia.'</td>';
+                $td = '<td class="text-nowrap"><a href="../forms/'.$la->form.'/vista.php?p='.$projId.'&v='.$la->ver.'" target="_blank">📄</a> '.$instancia.'</td>';
 
                 array_push($btnStatus, new Blocos($la->fase_seq, 'danger'));
                 break;
@@ -101,7 +104,7 @@ function montarTblEProgress(array $ListaVerAnts, $projId, $msg1)
                 $la->resultado = 'Em análise';
                 $badgeSituacao = 'warning';
                 $class = 'table-warning';
-                $td = '<td class="text-nowrap"><span class="badge badge-light">Espera de parecer... ['.$la->tp_instancia.'] '.dt($la->created_at).'</span></td>';
+                $td = '<td class="text-nowrap"><span class="badge badge-light">Espera de parecer... ['.$instancia.'] '.dt($la->created_at).'</span></td>';
 
                 array_push($btnStatus, new Blocos($la->fase_seq, 'warning'));
         }
@@ -115,8 +118,6 @@ function montarTblEProgress(array $ListaVerAnts, $projId, $msg1)
           .$td.
                 '<td><span class="align-middle badge badge-'.$badgeSituacao.'">'.$la->resultado.'</span></td>'.
                 '<td>'.$la->fase_seq.'/'.$la->etapas.'</td>
-
-
             </tr>';
 
         $etapas = $la->etapas;
@@ -201,10 +202,12 @@ function createBT($tipo, $id, $ver = null, $form = null, $tipo_exten = null, $ti
             //     <a href="../relatorio/index.php?id='.$id.'"><button class="btn btn-success btn-sm mb-2">📊 Relatório Parcial</button></a> &nbsp;
             //   ';
             // }
+
+            // tirar o d-none - para criar relatório
             if ($userId == $profId) {
                 if ($tipo_exten != 2) {
                     return '
-                        <a href="../relatorio/index.php?id='.$id.'"><button class="btn btn-success btn-sm mb-2"> 📝 Relatório Parcial </button></a> 
+                        <a href="../relatorio/index.php?id='.$id.'"><button class="btn btn-success btn-sm mb-2 "> 📝 Relatório Parcial </button></a> 
                     ';
                 } else {
                     // Evento:
@@ -227,7 +230,8 @@ function createBT($tipo, $id, $ver = null, $form = null, $tipo_exten = null, $ti
             // no break
         case 'relatorioFinal':
             if ($userId == $profId) {
-                return '<a href="../relatorio/index.php?id='.$id.'"><button class="btn btn-success btn-sm mb-2 ml-2"> 📝 Relatório Final </button></a>';
+                // tirar o d-none
+                return '<a href="../relatorio/index.php?id='.$id.'"><button class="btn btn-success btn-sm mb-2 ml-2 "> 📝 Relatório Final </button></a>';
             } else {
                 return '';
             }
@@ -452,7 +456,7 @@ function aguardandoRelatorio($p, $userId)
         select 
             r.id, r.tipo, r.publicado, r.created_at, r.last_result 
         from 
-            relatorios r 
+            relats r 
         where 
             r.idproj = '".$i."' 
         order by r.created_at desc
@@ -514,8 +518,9 @@ function aguardandoRelatorio($p, $userId)
 
     if ($userId == $profId) {
         return
+            // tirar o d-none
             createBT('visualizar', $i, $v).''.
-            '<a href="../relatorio/index.php?id='.$i.'" class="btn btn-success btn-sm mb-2 ml-2">📝 Relatório Final</a> &nbsp;'.
+            '<a href="../relatorio/index.php?id='.$i.'" class="btn btn-success btn-sm mb-2 ml-2 ">📝 Relatório Final</a> &nbsp;'.
             $rel_Infos;
     } elseif (in_array($userId, $usuariosEspecificos)) {
         return createBT('visualizar', $i, $v).$rel_Infos;
@@ -534,9 +539,9 @@ function finalizado($p, $userId): string
     $rel_Infos = '';
 
     $rel_par = Outros::qry(" Select 
-                                r.id, r.tipo, r.publicado, r.created_at, r.caminho
+                                r.id, r.tipo, r.publicado, r.created_at
                             from 
-                                relatorios r 
+                                relats r 
                             where 
                                 r.idproj = '".$i."' 
                             order by r.created_at desc
@@ -604,6 +609,6 @@ function cancelado($p): string
 
 <script>
     $(function () {
-        $('[data-toggle="tooltip"]').tooltip()
+        $('[data-toggle="tooltip"]').tooltip(
     });
 </script>
