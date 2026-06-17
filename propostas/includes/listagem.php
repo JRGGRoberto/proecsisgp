@@ -2,6 +2,7 @@
 
 require '../vendor/autoload.php';
 use App\Entity\Avaliacoes;
+use App\Entity\Diversos;
 use App\Session\Login;
 
 // Obriga o usuário a estar logado
@@ -36,6 +37,37 @@ include './includes/funcoes.php';
 $resultados =
 '<div id="accordion">';
 
+// echo '<pre>';
+// print_r($user);
+// echo '</pre>';
+
+$consultaObj = new Diversos();
+$relParcialInadimplente = $consultaObj->qry('
+  select 
+    p.*
+  from 
+    projmaster p
+  where 
+    current_timestamp() between p.vigen_ini and p.vigen_fim
+    and timestampdiff(month, p.vigen_ini, p.vigen_fim) > 12
+    -- and p.created_at >= "2025-03-01"
+    and p.id_prof = "'.$user['id'].'"
+    and not exists (
+      select 
+        1
+      from 
+        relats r
+      where 
+        r.idproj = p.id
+        and r.tipo = "pa"
+        and r.publicado = 1
+    )
+');
+
+// echo '<pre>';
+// print_r($relParcialInadimplente);
+// echo '</pre>';
+
 foreach ($projetos as $proj) {
     ++$qnt1;
     // $showRelatorios = false;
@@ -67,6 +99,10 @@ foreach ($projetos as $proj) {
             $progresso = '<span class="badge badge-primary ">Em execução</span> ';
             $btn = emExecucao($proj, $userId);
             break;
+            // case 31: // Em execução com relatório parcial publicado
+            //     $progresso = '<span class="badge badge-primary ">Em execução - Parcial publicado</span> ';
+            //     $btn = emExecucao($proj, $userId);
+            //     break;
         case 4: // Finalizada a vigência
             $progresso = '<span class="badge badge-success ">Aguarde Relatório Final</span> ';
             $nomeEstado = 'Aguarde Relatório Final';

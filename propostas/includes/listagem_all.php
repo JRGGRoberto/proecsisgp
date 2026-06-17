@@ -6,6 +6,7 @@ include './includes/funcoes.php';
 
 use App\Entity\Avaliacoes;
 use App\Entity\Outros;
+use App\Entity\Relatorio;
 use App\Session\Login;
 
 // Obriga o usuário a estar logado
@@ -58,23 +59,8 @@ $qnt1 = 0;
 
 $resultados = '<div id="accordion">';
 foreach ($projetos as $proj) {
-    switch ($proj->tipo_exten) {
-        case 1:
-            $nomeExten = 'Curso';
-            break;
-        case 2:
-            $nomeExten = 'Evento';
-            break;
-        case 3:
-            $nomeExten = 'Prestação de Serviço';
-            break;
-        case 4:
-            $nomeExten = 'Programa';
-            break;
-        case 5:
-            $nomeExten = 'Projeto';
-            break;
-    }
+    $nomeExten = mudaAbreviacaoTipoPropostas($proj->tipo_exten);
+
     ++$qnt1;
 
     is_null($proj->submetido_para) ? $col = 'A definir' : $col = $proj->submetido_para;
@@ -93,9 +79,9 @@ foreach ($projetos as $proj) {
                   substr($proj->vigen_ini, 0, 4);
     }
 
-    $query = "select * from relatorios r where  r.idproj = '".$proj->id."'";
-    $relatorios = Outros::qry($query);
+    $relatorios = Relatorio::getAll();
     $qtdRelatorios = count($relatorios);
+
     /*
       $query = "select * from relatorios r where r.publicado <> 1 and r.idproj = '".$proj->id."'";
       $relatoriosNaoPublicados = Outros::qry($query);
@@ -132,7 +118,6 @@ foreach ($projetos as $proj) {
             $nomeEstado = 'Finalizado';
             $btn = finalizado($proj, $user);
             break;
-
             // adequações
         case 6:
             $proj->estado = '<span class="badge badge-warning ">Em avaliação</span> ';

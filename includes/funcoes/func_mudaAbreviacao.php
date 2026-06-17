@@ -149,3 +149,16 @@ function mudaAbreviacaoTipoRel($abreviacao)
 
     return $abrevia[$abreviacao];
 }
+
+function tipoRelatorioIcon($abreviacao)
+{
+    $abrevia = [
+        'fi' => '📊 Relatório Final ',
+        're' => '📊 Relatório Final com renovação ',
+        'pr' => '📊 Relatório Final com prorrogação',
+        'pa' => '📊 Relatório Parcial ',
+        'im' => '📊 Final importado ',
+    ];
+
+    return $abrevia[$abreviacao];
+}

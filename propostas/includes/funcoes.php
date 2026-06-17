@@ -3,7 +3,8 @@
 use App\Entity\Outros;
 use App\Session\Login;
 
-// include '../../includes/funcoes/func_mudaAbreviacao.php';
+include __DIR__.'/../../includes/funcoes/func_formatDateHour.php';
+include __DIR__.'/../../includes/funcoes/func_mudaAbreviacao.php';
 Login::requireLogin();
 $user = Login::getUsuarioLogado();
 
@@ -58,27 +59,7 @@ function montarTblEProgress(array $ListaVerAnts, $projId, $msg1)
         $class = '';
         $td = '';
         $instancia = '';
-        // $instancia = mudaAbreviacaoInstancias($la->tp_instancia);
-        switch ($la->tp_instancia) {
-            case 'ca':
-                $instancia = 'Chefe de Divisão';
-                break;
-            case 'ce':
-                $instancia = 'Dir. de Centro de Área';
-                break;
-            case 'co':
-                $instancia = 'Coord. de Colegiado';
-                break;
-            case 'pf':
-                $instancia = 'Professor Parecerista';
-                break;
-            case 'dc':
-                $instancia = 'Dir. de Campus';
-                break;
-            default:
-                $instancia = 'Cargo não definido';
-                break;
-        }
+        $instancia = mudaAbreviacaoInstancias($la->tp_instancia);
 
         switch ($la->resultado) {
             case 'a':
@@ -104,7 +85,7 @@ function montarTblEProgress(array $ListaVerAnts, $projId, $msg1)
                 $la->resultado = 'Em análise';
                 $badgeSituacao = 'warning';
                 $class = 'table-warning';
-                $td = '<td class="text-nowrap"><span class="badge badge-light">Espera de parecer... ['.$instancia.'] '.dt($la->created_at).'</span></td>';
+                $td = '<td class="text-nowrap"><span class="badge badge-light">Espera de parecer... ['.$instancia.'] '.formatarData($la->created_at).'</span></td>';
 
                 array_push($btnStatus, new Blocos($la->fase_seq, 'warning'));
         }
@@ -191,20 +172,20 @@ function createBT($tipo, $id, $ver = null, $form = null, $tipo_exten = null, $ti
             return '<a><button id="del'.$id.'v'.$ver.'" class="btn btn-danger  btn-sm mb-2" onclick="writeNumber(this)"> 🗑 Excluir </button></a>';
         case 'visualizar':
             return '<a href="visualizar.php?id='.$id.'&v='.$ver.'&w=1" target="_blank"><button class="btn btn-success btn-sm mb-2"> 📄 Projeto </button></a>';
-            // <a href="cancelar.php?id='.$id.'&v='.$ver.'&w=1" target="_blank"></a>
         case 'adequacoes':
             return '<a href="../forms/'.$form.'/vista.php?p='.$id.'&v='.($ver - 1).'"><button class="btn btn-danger btn-sm mb-2" > 📑 Informações de adequações </button></a>';
         case 'alteraSAP':
-            return '<a><button id="SAP'.$id.'v'.$ver.'" class="btn btn-warning btn-sm mb-2 ml-1" '.$hidden.' onclick="writeNumber(this)"> 🔄 Solicitar alteração </button></a>';
-        case 'relatorioParcial':
-            // if ($tipo_exten != 2) {
-            //   return  '
-            //     <a href="../relatorio/index.php?id='.$id.'"><button class="btn btn-success btn-sm mb-2">📊 Relatório Parcial</button></a> &nbsp;
-            //   ';
-            // }
-
-            // tirar o d-none - para criar relatório
             if ($userId == $profId) {
+                return '<a><button id="SAP'.$id.'v'.$ver.'" class="btn btn-warning btn-sm mb-2 ml-1" '.$hidden.' onclick="writeNumber(this)"> 🔄 Solicitar alteração </button></a>';
+            } else {
+                return '';
+            }
+
+            // no break
+        case 'relatorioParcial':
+            // tirar o
+            if ($userId == $profId) {
+                // Se não for evento
                 if ($tipo_exten != 2) {
                     return '
                         <a href="../relatorio/index.php?id='.$id.'"><button class="btn btn-success btn-sm mb-2 "> 📝 Relatório Parcial </button></a> 
@@ -230,8 +211,15 @@ function createBT($tipo, $id, $ver = null, $form = null, $tipo_exten = null, $ti
             // no break
         case 'relatorioFinal':
             if ($userId == $profId) {
-                // tirar o d-none
-                return '<a href="../relatorio/index.php?id='.$id.'"><button class="btn btn-success btn-sm mb-2 ml-2 "> 📝 Relatório Final </button></a>';
+                // tirar o
+                return '<a href="../relatorio/index.php?id='.$id.'"><button class="btn btn-success btn-sm mb-2 ml-4"> 📝 Relatório Final </button></a>';
+            } else {
+                return '';
+            }
+            // no break
+        case 'declaracao' :
+            if ($userId == $profId) {
+                return '<a href="./declaracao.php?id='.$id.'"><button class="btn btn-info btn-sm mb-2 ml-2 ">📃 Declaração </button></a>';
             } else {
                 return '';
             }
@@ -321,62 +309,68 @@ function emExecucao($p, $userId): string
     $i = $p->id;
     $v = $p->ver;
     $tipo = $p->tipo_exten;
+
     $profId = $p->id_prof;
-    $rel_parInfos = '';
+    $relParcialInfo = '';
 
     $rel_par = Outros::qry("
         select 
             rp.id, 
             rp.last_result,
-            if(rp.tramitar = 1 and rp.last_result = 'a' and rp.etapa = rp.etapas and rp.tramitar = 1, 1, 0 ) publicado, 
-            DATE_FORMAT(rp.created_at , '%d/%m/%Y') dt_create
-        from rel_parcial rp
-        where rp.idproj = '".$i."'
-            order by rp.created_at desc
+            rp.publicado,
+            rp.created_at
+        from 
+            relats rp
+        where 
+            rp.idproj = '".$i."'
+            order by 
+                rp.created_at desc
         "
     );
-    if (isset($rel_par)) {
+
+    // echo '<pre>';
+    // print_r($rel_par);
+    // echo '</pre>';
+    // exit;
+
+    if ($rel_par) {
         foreach ($rel_par as $rp) {
             $pub = '<span class="badge badge-light ">Em avaliação</span>';
+
             if ($rp->publicado == 1) {
                 $pub = '';
 
-                $rel_parInfos .= '
+                $relParcialInfo .= '
                     <a href="../relatorio/editarp.php?id='.$rp->id.'" target="_blank">
-                        <button class="btn btn-primary btn-sm mb-2">📊 Relatório Parcial '.$rp->dt_create.' </button>
+                        <button class="btn btn-primary btn-sm mb-2">📊 Relatório Parcial '.formatarData($rp->created_at).' </button>
                     </a> &nbsp; ';
             } else {
                 if ($rp->last_result == 'r' && $profId == $userId) {
                     $pub = '<span class="badge badge-light">Solicitação de alterações</span>';
                     $linkFeito = '<a href="../relatorio/editarp.php?id='.$rp->id.'" target="_blank">';
-                    $rel_parInfos .= $linkFeito.'<button class="btn btn-danger btn-sm mb-2"> 📊 Relatório Parcial &nbsp;'.$rp->dt_create.'&nbsp;'.$pub.'</button></a> &nbsp; ';
+                    $relParcialInfo .= $linkFeito.'<button class="btn btn-danger btn-sm mb-2 "> 📊 Relatório Parcial &nbsp;'.formatarData($rp->created_at).'&nbsp;'.$pub.'</button></a> &nbsp; ';
                 } else {
-                    $rel_parInfos .= '
+                    $relParcialInfo .= '
                     <button 
                         class="btn btn-primary btn-sm mb-2" 
                         disabled 
                         data-toggle="tooltip" 
                         data-placement="top" 
                         title="Relatório em avaliação.">
-                            📊 Relatório Parcial '.$rp->dt_create.'&nbsp;'.$pub.' 
+                            📊 Relatório Parcial '.formatarData($rp->created_at).'&nbsp;'.$pub.' 
                     </button> &nbsp; ';
                 }
             }
         }
     }
 
-    $seeBtn = null;
-    if ($userId == $profId) {
-        $seeBtn = createBT('alteraSAP', $i, $v).'  	&nbsp; ';
-    }
+    $btns = '';
+    $btns = createBT('visualizar', $i, $v).' &nbsp; '.
+    createBT('relatorioParcial', $i, $v, null, $tipo, null, $userId, $profId).' &nbsp;'.
+    $relParcialInfo.
+    createBT('declaracao', $i, $v, null, null, null, $userId, $profId);
 
-    return
-        createBT('visualizar', $i, $v).'  	&nbsp; '.
-        createBT('relatorioParcial', $i, $v, null, $tipo, null, $userId, $profId).' &nbsp;'.
-        $seeBtn.
-        $rel_parInfos
-        // createBT('cancelar', $i, $v).' &nbsp; '
-    ;
+    return $btns;
 }
 
 function adequacoes($p, $user)
@@ -423,11 +417,11 @@ function ressubmit($p, $user)
 {
     $i = $p->id;
     $v = $p->ver;
-    $t = $p->titulo;
+    // $t = $p->titulo;
     $form = $p->form;
-    $profId = $p->id_prof;
-    $userId = $user['id'];
-    $userConfig = $user['config'];
+    // $profId = $p->id_prof;
+    // $userId = $user['id'];
+    // $userConfig = $user['config'];
 
     return
     createBT('editar', $i, $v).'  	&nbsp; '.
@@ -445,12 +439,13 @@ function aguardandoRelatorio($p, $userId)
     $rel_Infos = '';
 
     $ids_DirCampus = Campi::getRegistros();
-    $usuariosEspecificos =
-      array_merge(['bfd757a5-4f2d-4a10-87a8-a872ae69f1fd', // MATHEUS ESCOBOZO GUIZILINI
-          'b8fa555f-cedb-47cf-91cc-7581736aac88',  // JOSé ROBERTO DE GÓES GOMES
-      ],
-          array_column($ids_DirCampus, 'chef_div_id')
-      );
+    $usuariosEspecificos = array_merge([
+        'bfd757a5-4f2d-4a10-87a8-a872ae69f1fd', // MATHEUS ESCOBOZO GUIZILINI
+        'b8fa555f-cedb-47cf-91cc-7581736aac88',  // JOSé ROBERTO DE GÓES GOMES
+    ], array_column(
+        $ids_DirCampus, 'chef_div_id'
+    )
+    );
 
     $rel = Outros::qry(" 
         select 
@@ -463,54 +458,40 @@ function aguardandoRelatorio($p, $userId)
     ");
 
     if (isset($rel)) {
-        foreach ($rel as $rp) {
+        foreach ($rel as $relatorio) {
             $tipoRel = '';
-            switch ($rp->tipo) {
-                case 'fi':
-                    $tipoRel = '📊 Final';
-                    break;
-                case 're':
-                    $tipoRel = '📊 Final com renovação';
-                    break;
-                case 'pr':
-                    $tipoRel = '📊 Final com prorrogação';
-                    break;
-                case 'pa':
-                    $tipoRel = '📊 Relatório parcial';
-                    break;
-                default:
-                    $tipoRel = 'ERROR';
-            }
-            $link = in_array($rp->tipo, ['fi', 're', 'pr']) ? 'f' : 'p';
+            $tipoRel = tipoRelatorioIcon($relatorio->tipo);
+
+            $link = in_array($relatorio->tipo, ['fi', 're', 'pr']) ? 'f' : 'p';
 
             $pub = '<span class="badge badge-light">Em avaliação</span>';
-            if ($rp->publicado == 1) {
+            if ($relatorio->publicado == 1) {
                 $pub = '';
-                $linkFeito = '<a href="../relatorio/editar'.$link.'.php?id='.$rp->id.'" target="_blank">';
+                $linkFeito = '<a href="../relatorio/editar'.$link.'.php?id='.$relatorio->id.'" target="_blank">';
 
-                $rel_Infos .= $linkFeito.'<button class="btn btn-primary btn-sm mb-2">'.$tipoRel.'&nbsp;'.$rp->created_at.'&nbsp;'.$pub.'</button></a> &nbsp; ';
+                $rel_Infos .= $linkFeito.'<button class="btn btn-primary btn-sm mb-2">'.$tipoRel.'&nbsp;'.formatarData($relatorio->created_at).'&nbsp;'.$pub.'</button></a> &nbsp; ';
             } else {
-                if ($rp->last_result == 'r' && $profId == $userId) {
+                if ($relatorio->last_result == 'r' && $profId == $userId) {
                     $pub = '<span class="badge badge-light">Solicitação de alterações</span>';
-                    $linkFeito = '<a href="../relatorio/editar'.$link.'.php?id='.$rp->id.'" target="_blank">';
-                    $rel_Infos .= $linkFeito.'<button class="btn btn-danger btn-sm mb-2">'.$tipoRel.'&nbsp;'.$rp->created_at.'&nbsp;'.$pub.'</button></a> &nbsp; ';
+                    $linkFeito = '<a href="../relatorio/editar'.$link.'.php?id='.$relatorio->id.'" target="_blank">';
+                    $rel_Infos .= $linkFeito.'<button class="btn btn-danger btn-sm mb-2 ml-2">'.$tipoRel.'&nbsp;'.formatarData($relatorio->created_at).'&nbsp;'.$pub.'</button></a> &nbsp; ';
                 } elseif (in_array($userId, $usuariosEspecificos)) {
-                    $linkFeito = '<a href="../relatorio/editar'.$link.'.php?id='.$rp->id.'" target="_blank">';
+                    $linkFeito = '<a href="../relatorio/editar'.$link.'.php?id='.$relatorio->id.'" target="_blank">';
                     $rel_Infos .= $linkFeito.'<button 
-                            class="btn btn-primary btn-sm mb-2"  
+                            class="btn btn-primary btn-sm mb-2 ml-2"  
                             data-toggle="tooltip" 
                             data-placement="top" 
                             title="Relatório em avaliação."
-                        >'.$tipoRel.'&nbsp;'.$rp->created_at.'&nbsp;'.$pub.'</button></a> &nbsp; ';
+                        >'.$tipoRel.'&nbsp;'.formatarData($relatorio->created_at).'&nbsp;'.$pub.'</button></a> &nbsp; ';
                 } else {
                     $rel_Infos .= '
                         <button 
-                            class="btn btn-primary btn-sm mb-2" 
+                            class="btn btn-primary btn-sm mb-2 ml-2" 
                             disabled 
                             data-toggle="tooltip" 
                             data-placement="top" 
                             title="Relatório em avaliação."
-                        >'.$tipoRel.'&nbsp;'.$rp->created_at.'&nbsp;'.$pub.'</button> &nbsp; ';
+                        >'.$tipoRel.'&nbsp;'.formatarData($relatorio->created_at).'&nbsp;'.$pub.'</button> &nbsp; ';
                 }
             }
         }
@@ -518,10 +499,11 @@ function aguardandoRelatorio($p, $userId)
 
     if ($userId == $profId) {
         return
-            // tirar o d-none
-            createBT('visualizar', $i, $v).''.
-            '<a href="../relatorio/index.php?id='.$i.'" class="btn btn-success btn-sm mb-2 ml-2 ">📝 Relatório Final</a> &nbsp;'.
-            $rel_Infos;
+            // tirar o
+            createBT('visualizar', $i, $v).' &nbsp; '.
+            '<a href="../relatorio/index.php?id='.$i.'" class="btn btn-success btn-sm mb-2 mr-2">📝 Relatório Final</a>'.
+            $rel_Infos.
+            createBT('declaracao', $i, $v, null, null, null, $userId, $profId);
     } elseif (in_array($userId, $usuariosEspecificos)) {
         return createBT('visualizar', $i, $v).$rel_Infos;
     //    createBT('alteraSAP', $i, $v).' &nbsp; ';
@@ -538,7 +520,7 @@ function finalizado($p, $userId): string
     $profId = $p->id_prof;
     $rel_Infos = '';
 
-    $rel_par = Outros::qry(" Select 
+    $rel_par = Outros::qry(" select 
                                 r.id, r.tipo, r.publicado, r.created_at
                             from 
                                 relats r 
@@ -546,30 +528,10 @@ function finalizado($p, $userId): string
                                 r.idproj = '".$i."' 
                             order by r.created_at desc
                         ");
-
     if (isset($rel_par)) {
-        $rel_Infos = '';
         foreach ($rel_par as $rp) {
             $tipoRel = '';
-            switch ($rp->tipo) {
-                case 'fi':
-                    $tipoRel = '📊 Relatório Final ';
-                    break;
-                case 're':
-                    $tipoRel = '📊 Relatório Final com renovação ';
-                    break;
-                case 'pr':
-                    $tipoRel = '📊 Relatório Final com prorrogação ';
-                    break;
-                case 'pa':
-                    $tipoRel = '📊 Relatório Parcial ';
-                    break;
-                case 'im':
-                    $tipoRel = '📊 Final importado ';
-                    break;
-                default:
-                    $tipoRel = 'ERROR';
-            }
+            $tipoRel = tipoRelatorioIcon($rp->tipo);
 
             $pub = '<span class="badge badge-light">Em avaliação</span>';
             if ($rp->publicado == 1) {
@@ -583,17 +545,20 @@ function finalizado($p, $userId): string
                     $linkFeito = '<a href="../upload/uploads/'.$rp->caminho.'" target="_blank">';
                 }
 
-                $rel_Infos .= $linkFeito.'<button class="btn btn-primary btn-sm mb-2">'.$tipoRel.'&nbsp;'.$rp->created_at.'&nbsp;'.$pub.'</button> &nbsp; ';
+                $rel_Infos .= $linkFeito.'<button class="btn btn-primary btn-sm mb-2 ml-2">'.$tipoRel.'&nbsp;'.formatarData($rp->created_at).''.$pub.'</button>';
             } else {
-                $rel_Infos .= '<button class="btn btn-primary btn-sm mb-2 disabled">'.$tipoRel.'&nbsp;'.$rp->created_at.'&nbsp;'.$pub.'</button> &nbsp; ';
+                $rel_Infos .= '<button class="btn btn-primary btn-sm mb-2 disabled ml-2">'.$tipoRel.'&nbsp;'.formatarData($rp->created_at).''.$pub.'</button>';
             }
         }
     }
 
-    return
-      createBT('visualizar', $i, $v).' &nbsp; '.
-      createBT('relatorioFinal', $i, $v, null, null, null, $userId, $profId).''.
-      $rel_Infos;
+    $btns = '';
+    $btns = createBT('visualizar', $i, $v).' &nbsp; '.
+    createBT('relatorioFinal', $i, $v, null, null, null, $userId, $profId).''.
+    $rel_Infos.'
+    '.createBT('declaracao', $i, $v, null, null, null, $userId, $profId);
+
+    return $btns;
 }
 
 function cancelado($p): string
@@ -609,6 +574,6 @@ function cancelado($p): string
 
 <script>
     $(function () {
-        $('[data-toggle="tooltip"]').tooltip(
+        $('[data-toggle="tooltip"]').tooltip()
     });
 </script>

@@ -33,6 +33,7 @@ $dataAtual = date('d/m/Y');
 $dataFormatSubmit = formatarData($dataSubmissao);
 $dataFormatVigenIni = formatarData($proj->vigen_ini);
 $dataFormatVigenFim = formatarData($proj->vigen_fim);
+$relTipo = mudaAbreviacaoTipoRel($relatorio->tipo);
 
 $mensagemEstado = '';
 if ($estado == 'em avaliação') {
@@ -61,7 +62,6 @@ if ($estado == 'em avaliação') {
     ';
     }
 } elseif ($estado == 'finalizado' && $relatorio) {
-    $relTipo = mudaAbreviacaoTipoRel($relatorio->tipo);
     if ($relatorio->publicado !== '1') {
         $mensagemEstado = '
             Existe um <strong>relatório '.$relTipo.'</strong> em avaliação.

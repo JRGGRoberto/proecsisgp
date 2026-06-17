@@ -106,6 +106,7 @@ class Relatorio
             [
                 'updated_at' => date('Y-m-d H:i:s'),
                 'user' => $this->user,
+                'para_avaliar' => $this->para_avaliar,
             ]
         );
 

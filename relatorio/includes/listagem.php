@@ -198,7 +198,7 @@ echo $novoBTNs;
 
 <!-- The Modal -->
 <div class="modal fade" id="modelSubmit">
-  <div class="modal-dialog">
+  <div class="modal-dialog modal-lg">
     <div class="modal-content">
       <!-- Modal Header -->
       <div class="modal-header">
@@ -210,6 +210,7 @@ echo $novoBTNs;
       <div class="modal-body">
         *O responsável pelo preenchimento e encaminhamento é o coordenador da Proposta de Extensão
         <table class="table table-bordered" id="tbl_who_evaluetes">
+          <form method="post" action="submeter.php?">
           <thead class="thead-light">
             <tr>
               <td colspan="2">
@@ -236,7 +237,7 @@ echo $novoBTNs;
       </div>
       <!-- Modal footer -->
       <div class="modal-footer">
-        <form method="post" action="submeter.php?">
+        
           <input type="hidden" name="idRel" id="idRel">
            <button type="submit" class="btn btn-primary btn-sm mb-2" >Submeter</button>
            <button type="button" class="btn btn-danger  btn-sm mb-2" data-dismiss="modal">Fechar</button>
