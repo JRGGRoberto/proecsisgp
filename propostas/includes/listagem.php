@@ -173,30 +173,33 @@ foreach ($projetos as $proj) {
         $LastV = '<span class="badge badge-info mb-2">Não possui avaliações.</span>';
     }
 
+    
+
+
     $resultados .= '
       <div class="card mt-2">
         <div class="card-header">
             <div class="row">
               <div class="col-sm-6"><a class="collapsed card-link" data-toggle="collapse" href="#p'.$proj->id.'">📃 '.$proj->titulo.'</a></div>';
     switch ($proj->tipo_exten) {
-        case 1:
-            $proj->tipo_exten = 'Curso';
-            break;
-        case 2:
-            $proj->tipo_exten = 'Evento';
-            break;
-        case 3:
-            $proj->tipo_exten = 'Prestação de Serviço';
-            break;
-        case 4:
-            $proj->tipo_exten = 'Programa';
-            break;
-        case 5:
-            $proj->tipo_exten = 'Projeto';
-            break;
-        default:
-            $proj->tipo_exten = 'Sem tipo definido.';
-            break;
+      case 1:
+          $proj->tipo_exten = 'Curso';
+          break;
+      case 2:
+          $proj->tipo_exten = 'Evento';
+          break;
+      case 3:
+          $proj->tipo_exten = 'Prestação de Serviço';
+          break;
+      case 4:
+          $proj->tipo_exten = 'Programa';
+          break;
+      case 5:
+          $proj->tipo_exten = 'Projeto';
+          break;
+      default:
+          $proj->tipo_exten = 'Sem tipo definido.';
+          break;  
     }
     $resultados .= '<div class="col-sm-4">'.$proj->tipo_exten.'</div>
               <div class="col-sm-1">'

@@ -75,6 +75,28 @@ foreach ($sendColegiado as $co) {
     $coolSelectSend .= '<option value="'.$co->id.'"  '.$dis.'>'.$co->nome.' '.$info.'</option>';
 }
 
+// $qryInadimplentes = "
+//     SELECT
+//         p.id,
+//         p.id_prof,
+//         p.titulo,
+//         p.vigen_ini as inicio,
+//         p.vigen_fim as fim
+//     FROM projmaster p
+//     LEFT JOIN relats r
+//         ON r.idproj = p.id
+//         AND r.tipo = 'pa'
+//     WHERE 
+//         r.id IS NULL
+//         AND p.id_prof = '".$user['id']."'
+//         AND TIMESTAMPDIFF(MONTH  , p.vigen_ini, p.vigen_fim) > 12
+//         AND DATE_ADD(p.vigen_ini, INTERVAL 12 MONTH) < CURRENT_DATE();
+// ";
+// $inadimplentes = Diversos::qry($qryInadimplentes);
+// echo '<pre>';
+// print_r($inadimplentes);
+// echo '</pre>';
+
 // Filtro de status
 $filtroStatus = filter_input(INPUT_GET, 'filtroStatus', FILTER_SANITIZE_STRING);
 
