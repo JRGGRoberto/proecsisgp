@@ -2,7 +2,7 @@
 
 use App\Entity\Avaliacoes;
 use App\Entity\ProjMaster;
-use App\Entity\Relats;
+use App\Entity\Relatorio;
 
 require '../includes/header.php';
 require '../includes/funcoes/func_mudaAbreviacao.php';
@@ -11,29 +11,59 @@ require '../includes/funcoes/func_proxAvaliador.php';
 
 $id = $_GET['id'];
 
+//flag pra definir se o projeto veio de eprotocolo
+$eProtocolo = false;
+
 $obProjeto = new ProjMaster();
 $proj = $obProjeto->getRegistro($id);
 $projTipo = mudaAbreviacaoTipoPropostas($proj->tipo_exten);
-$estado = mudaAbreviacaoEstadoProp($proj->estado);
+$dataAtual = date('d/m/Y');
 
-$obAval = new Avaliacoes();
-$where = "id_proj = '{$id}'";
-$aval = $obAval->getRegistrosByProj($where);
+//avaliação só ocorre se ele não tiver vindo do eprotocolo
+if ($proj->aprov_auto == 0) {
+    // echo 'Isso não veio do eprotocolo';
+    $obAval = new Avaliacoes();
+    $aval = $obAval->getRegistrosByProj("id_proj = '".$id."'");
 
-$obRelatorios = new Relats();
-$relatorio = $obRelatorios->getRegistroByProj($id);
+    $dataSubmissao = $aval[0]->created_at ?? '';
+    $dataFormatSubmit = formatarData($dataSubmissao);
 
-$lastAval = $obAval->getLastAvaliacao($id);
+
+    $lastAval = $obAval->getLastAvaliacao($id);
+    $instancia = mudaAbreviacaoInstancias($lastAval->tp_instancia);
+} else {
+    $eProtocolo = true;
+}
 
 $avaliador = getProximoAvaliador($id);
-$instancia = mudaAbreviacaoInstancias($lastAval->tp_instancia);
 
-$dataSubmissao = $aval[0]->created_at ?? '';
-$dataAtual = date('d/m/Y');
-$dataFormatSubmit = formatarData($dataSubmissao);
+
+$estado = mudaAbreviacaoEstadoProp($proj->estado);
+
+
+$obRelatorios = new Relatorio();
+
+$relatorio = $obRelatorios->getAll('idproj = "'.$id.'"');
+
+
+
+
+// echo '<pre>';
+// print_r($avaliador);
+// echo '</pre>';
+
 $dataFormatVigenIni = formatarData($proj->vigen_ini);
 $dataFormatVigenFim = formatarData($proj->vigen_fim);
-$relTipo = mudaAbreviacaoTipoRel($relatorio->tipo);
+
+    
+//só pega o tipo do relatório se existir um relatório referente ao projeto
+if (!empty($relatorio)){
+    // echo '<pre>';
+    // print_r($relatorio);
+    // echo '</pre>';
+    $relTipo = mudaAbreviacaoTipoRel($relatorio[0]->tipo);
+    // echo 'reltipo = '.$relTipo;
+} 
 
 $mensagemEstado = '';
 if ($estado == 'em avaliação') {
@@ -50,7 +80,7 @@ if ($estado == 'em avaliação') {
         <br>
     ';
 } elseif ($estado == 'em execução' && $relatorio) {
-    if ($relatorio->publicado !== '1') {
+    if ($relatorio[0]->publicado !== '1') {
         $mensagemEstado = '
             Existe um <strong>relatório '.$relTipo.'</strong> em avaliação.
             <br>
@@ -73,9 +103,14 @@ if ($estado == 'em avaliação') {
             <br>
         ';
     }
+} elseif ($estado == 'aguardando relatório final') {
+    if ($eProtocolo == true) {
+        $mensagemEstado = ''.$projTipo.' aprovado via <strong>e-Protocolo</strong>.
+        <br>
+        ';
+    }
 }
 ?>
-
 <!DOCTYPE html>
 <html lang="pt-br">
 
@@ -117,9 +152,11 @@ if ($estado == 'em avaliação') {
                     </p>
 
                     <p class="fs-5 lh-lg text-justify" >
-                        Informamos ainda que a proposta foi submetida para avaliação
-                        em <strong><?php echo $dataFormatSubmit; ?></strong>.
-                        <br>
+                        <?php if($eProtocolo == false):?>
+                            Informamos ainda que a proposta foi submetida para avaliação
+                            em <strong><?php echo $dataFormatSubmit; ?></strong>.
+                            <br>
+                        <?endif ?>
                         
                         <?php echo $mensagemEstado; ?>
 

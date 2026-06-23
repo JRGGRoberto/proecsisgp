@@ -298,7 +298,9 @@ function naoIniciado($p, $userId)
         return
             createBT('visualizar', $i, $v).' &nbsp; '.
             createBT('alteraSAP', $i, $v).' &nbsp; '.
+            createBT('declaracao', $i, $v, null, null, null, $userId, $profId);
             createBT('cancelar', $i, $v, null, null, $t);
+
     } else {
         return createBT('visualizar', $i, $v);
     }

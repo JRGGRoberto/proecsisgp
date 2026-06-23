@@ -32,20 +32,20 @@ class Relatorios
 
     public static function getRegistros($where = null, $order = null, $limit = null, $fields = '*')
     {
-        return (new Database('relatorios'))->select($where, $order, $limit, $fields)
+        return (new Database('relats'))->select($where, $order, $limit, $fields)
                                 ->fetchAll(\PDO::FETCH_CLASS, self::class);
     }
 
     public static function getQntdRegistros($where = null)
     {
-        return (new Database('relatorios'))->select($where, null, null, 'COUNT(*) as qtd')
+        return (new Database('relats'))->select($where, null, null, 'COUNT(*) as qtd')
                                       ->fetchObject()
                                       ->qtd;
     }
 
     public static function getRelatorio($id)
     {
-        return (new Database('relatorios'))->select('(id) = ("'.$id.'")')
+        return (new Database('relats'))->select('(id) = ("'.$id.'")')
                                       ->fetchObject(self::class);
     }
 }
