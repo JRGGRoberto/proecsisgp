@@ -142,6 +142,10 @@ $nome = $nome[0]; // will print Test
 require_once '../includes/funcoes/func_Cargos.php';
 $validade = verificarCargosAdmin($user);
 
+
+// Verificar se é adm ou não
+require_once '../includes/funcoes/func_Cargos.php';
+$validade = verificarCargosAdmin($user);
 ?>
 
 <!doctype html>
@@ -151,21 +155,21 @@ $validade = verificarCargosAdmin($user);
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <meta name="robots" content="noindex">
-  
-  <link rel="stylesheet" href="../includes/bootstrap-4.6.2-dist/css/bootstrap.min.css">
+<link rel="stylesheet" href="../includes/bootstrap-4.6.2-dist/css/bootstrap.min.css">
   <script src="../includes/jquery.min.js"></script>
   <script src="../includes/popper.min.js"></script>
   <script src="../includes/bootstrap-4.6.2-dist/js/bootstrap.bundle.min.js"></script>
--->
+
 
   <!-- para a inserção de leitor de xlsx -->
   <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
   
-<!--
+  <!--
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.1/dist/css/bootstrap.min.css">
   <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.1/dist/umd/popper.min.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.1/dist/js/bootstrap.bundle.min.js"></script>
+
 -->
   <link href="https://sistemaproec.unespar.edu.br/sistema/includes/summernote-bs4.min.css" rel="stylesheet">
   <script src="https://sistemaproec.unespar.edu.br/sistema/includes/summernote-bs4.min.js"></script>
@@ -414,29 +418,40 @@ $idCampus = $obUsuario['ca_id'];
 
             // Deixar o botão visivel para a aprovação de cadastro de novos pf ou ag
             if ($obUsuario['config'] == '1'){
-              $hiddenSolicitacaoCadastro = '';
-              $cargoCadastro = 'Professor';
+              $hiddenSolicitacao = '';
+              $nomeCargosSol = 'Professores';
               $uri = 'pf';
             } elseif ($obUsuario['config'] == '3'){
-              $hiddenSolicitacaoCadastro = '';
-              $cargoCadastro = 'Agente';
+              $hiddenSolicitacao = '';
+              $nomeCargosSol = 'Agentes';
               $uri = 'ag';
             } else {
-              $hiddenSolicitacaoCadastro = 'hidden';
+              $hiddenSolicitacao = 'hidden';
             }
             
           ?>
           <!-- Utilizar o nome do cargo especial para pasta para identificar corretamente a rota -->
           <a <?= $hiddenCargosEspeciais ?> class="dropdown-item btn-sm" href='../<?= $rota ?>'><?= $nome ?> <span class="badge badge-success">Novo!</span> </a>
           <div <?= $hiddenCargosEspeciais ?> class="dropdown-divider"></div>
-          
-          <!-- Cadastrar novo pf ou ag -->
-          <a <?= $hiddenSolicitacaoCadastro ?> class="dropdown-item btn-sm" href='../cadastroPessoas/index.php?cargo=<?=$uri?>&valida'>Cadastrar novo <?=$cargoCadastro?> <span class="badge badge-success">Novo!</span> </a>
-          <div <?= $hiddenSolicitacaoCadastro ?> class="dropdown-divider"></div>
 
-          <!-- Somente ADM e o Dir de Extensão e Cultura -->
-          <a <?= $hiddenAprovacaoCadastro ?> class="dropdown-item btn-sm" href='../cadastroPessoas/index.php?solicitacao=avalia'>Cadastro de pessoas <span class="badge badge-success">Novo!</span> </a>
-          <div <?= $hiddenAprovacaoCadastro ?> class="dropdown-divider"></div>
+          <?php if($validade != 1): ?>
+            <!-- Cadastrar novo pf ou ag -->
+            <a <?= $hiddenSolicitacao ?> class="dropdown-item btn-sm" href='../pessoas/index.php?tipo=cadastro&cargo=<?=$uri?>&valida&sucesso'>Cadastrar novos <?=$nomeCargosSol?> <span class="badge badge-success">Novo!</span> </a>
+            <div <?= $hiddenSolicitacao ?> class="dropdown-divider"></div>
+            
+            <!-- Remover pf ou ag -->
+            <a <?= $hiddenSolicitacao ?> class="dropdown-item btn-sm" href='../pessoas/index.php?tipo=desativacao&cargo=<?=$uri?>&valida&sucesso'>Desativar <?=$nomeCargosSol?> <span class="badge badge-success">Novo!</span> </a>
+            <div <?= $hiddenSolicitacao ?> class="dropdown-divider"></div>
+
+            <!-- Reativar pf ou ag -->
+            <a <?= $hiddenSolicitacao ?> class="dropdown-item btn-sm" href='../pessoas/index.php?tipo=reativacao&cargo=<?=$uri?>&valida&sucesso'>Reativar <?=$nomeCargosSol?> <span class="badge badge-success">Novo!</span> </a>
+            <div <?= $hiddenSolicitacao ?> class="dropdown-divider"></div>
+
+          <?php elseif($validade == 1): ?>
+            <!-- Somente ADM e o Dir de Extensão e Cultura -->
+            <a <?= $hiddenAprovacaoCadastro ?> class="dropdown-item btn-sm" href='../pessoas/index.php?tipo=avalia&valida&sucesso'>Listagem Pessoas <span class="badge badge-success">Novo!</span> </a>
+            <div <?= $hiddenAprovacaoCadastro ?> class="dropdown-divider"></div>
+          <?php endif; ?>
 
           <a class="dropdown-item btn-sm" href="../login/logout.php">Sair</a>
         </div>

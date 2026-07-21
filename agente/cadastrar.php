@@ -27,6 +27,7 @@ if (isset($_POST['nome'])) {
     $obAgente->nome = $_POST['nome'];
     $obAgente->cpf = $_POST['cpf'];
     $obAgente->email = $_POST['email'];
+    $obAgente->telefone = '';
     $obAgente->lotacao = $_POST['lotacao'];
     $obAgente->cat_func = $_POST['cat_func'];
     $obAgente->ativo = $_POST['ativo'];

@@ -39,8 +39,15 @@ class Professor
         // INSERIR A REGISTRO NO BANCO
         $newId = UuiuD::gera(); // exec('uuidgen -r');
         $obDatabase = new Database('professores');
+
+        if (!$this->id){
+            $id = $newId;
+        } else {
+            $id = $this->id;
+        }
+
         $obDatabase->insert([
-            'id' => $newId,
+            'id' => $id,
             'nome' => $this->nome,
             'cpf' => $this->cpf,
             'telefone' => $this->telefone,
@@ -80,6 +87,28 @@ class Professor
             'updated_at' => date('Y-m-d H:i:s'),
             'user' => $this->user,
         ]);
+    }
+
+    /**
+     * Método responsável por atualizar REGISTRO no banco
+     * @return boolean
+     */
+    public function atualizarAtivo(){ 
+        return (new Database('professores'))->update('id = "'.$this->id.'" ',[
+            'ativo'      => $this->ativo
+        ]);
+    }
+
+    /**
+     * Método responsável por atualizar REGISTRO no banco
+     * @return boolean
+     */
+    public function atualizarCatFunc(){ 
+        if($this->cat_func == 'c' || $this->cat_func == 'e' || $this->cat_func == 'd'){
+            return (new Database('professores'))->update('id = "'.$this->id.'" ',[
+                'cat_func' => $this->cat_func
+            ]);
+        }
     }
 
     /**
