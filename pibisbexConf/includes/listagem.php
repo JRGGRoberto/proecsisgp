@@ -11,6 +11,8 @@ foreach ($lista as $l) {
     $prj2 = explode(' ', trim($l->prj2));
     $prj3 = explode(' ', trim($l->prj3));
     $prj4 = explode(' ', trim($l->prj4));
+    // PIBEX-4 0 140 05/08/2025
+    //  [0]   [1][2] [3]
 
     $do1 = '';
     $do2 = '';
@@ -35,7 +37,7 @@ foreach ($lista as $l) {
     if (isset($prj2[1])) {
         ++$qntProj;
         if ($prj2[1] == 1) {
-            $do2 = '<div class="col"><button type="button" class="btn btn-success" >'.$prj2[0].'</button><br><sup>'.$prj2[2].'/190</sup></div>';
+            $do2 = '<div class="col"><button type="button" class="btn btn-success" >'.$prj2[0].'</button><br><sup>'.$prj2[2].'/190</sup><br>'.$prj2[3].'</div>';
             ++$qntProjDone;
         } else {
             $do2 = '<div class="col"><button type="button" class="btn btn-outline-secondary">'.$prj2[0].'</button></div>';
@@ -47,7 +49,7 @@ foreach ($lista as $l) {
     if (isset($prj3[1])) {
         ++$qntProj;
         if ($prj3[1] == 1) {
-            $do3 = '<div class="col"><button type="button" class="btn btn-success">'.$prj3[0].'</button><br><sup>'.$prj3[2].'/190</sup></div>';
+            $do3 = '<div class="col"><button type="button" class="btn btn-success">'.$prj3[0].'</button><br><span class="badge badge-info">'.$prj3[2].'/190</span> <span class="badge badge-secondary">'.$prj3[3].'</span></div>';
             ++$qntProjDone;
         } else {
             $do3 = '<div class="col"><button type="button" class="btn btn-outline-secondary">'.$prj3[0].'</button></div>';
@@ -69,7 +71,7 @@ foreach ($lista as $l) {
     }
 
     $res .= '<div class="row">';
-    $res .= '<div class="col-5"><strong>'.$l->nome.'</strong> ('.$qntProjDone.'/'.$qntProj.')<br><sub>'.$l->campus.' - '.$l->colegiado.'</sub><br><sup><a href="mailto:'.$l->email.'" target="_blank">'.$l->email.'</a></sup></div>';
+    $res .= '<div class="col-5"><strong>'.$l->nome.'</strong> ('.$qntProjDone.'/'.$qntProj.')<br><span>'.$l->campus.' - '.$l->colegiado.'</span><br><sup><a href="mailto:'.$l->email.'" target="_blank">'.$l->email.'</a></sup></div>';
     $res .= $do1;
     $res .= $do2;
     $res .= $do3;

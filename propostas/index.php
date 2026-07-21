@@ -4,14 +4,24 @@ require '../vendor/autoload.php';
 
 use App\Db\Pagination;
 use App\Entity\Palavras;
+use App\Entity\ProjMaster;
 use App\Session\Login;
 
 // Obriga o usuário a estar logado
 Login::requireLogin();
 $user = Login::getUsuarioLogado();
 
-// Busca
+$relPendentes = ProjMaster::getRelatoriosPendentes($user['id']);
+$inadimplente = false;
+foreach ($relPendentes as $p) {
+    if ($p['envio_rel_parcial'] === 'rel parcial pendente'
+        || $p['envio_rel_final'] === 'rel final pendente') {
+        $inadimplente = true;
+        // break;
+    }
+}
 
+// Busca
 $titulo = filter_input(INPUT_GET, 'titulo', FILTER_SANITIZE_STRING);
 $palavra = filter_input(INPUT_GET, 'palavra', FILTER_SANITIZE_STRING);
 $protocolo = filter_input(INPUT_GET, 'protocolo', FILTER_SANITIZE_STRING);
@@ -59,7 +69,6 @@ if (($user['tipo'] == 'professor') || $user['tipo'] == 'prof') {
 }
 
 use App\Entity\Diversos;
-use App\Entity\ProjMaster;
 
 $sendColegiado = Diversos::qry($qry);
 $coolSelectSend = '';
@@ -74,7 +83,66 @@ foreach ($sendColegiado as $co) {
 
     $coolSelectSend .= '<option value="'.$co->id.'"  '.$dis.'>'.$co->nome.' '.$info.'</option>';
 }
+$qryInadimplentes = "
+select
+        p.id,
+        p.id_prof,
+        p.titulo,
+        p.vigen_ini AS inicio,
+        p.vigen_fim AS fim,
+        p.estado,
 
+        -- rel parcial
+        case
+            when p.estado = 3
+                and timestampdiff(month, p.vigen_ini, p.vigen_fim) > 12
+                and p.vigen_ini >= '2025-01-01'
+                and date_add(p.vigen_ini, interval 12 month) < current_date()
+            then
+                case
+                    when rp.id is null then 'rel parcial pendente'
+                    else 'enviado'
+                end
+            else 'nao precisa'
+        end as envio_rel_parcial,
+
+        -- rel final
+        case
+            when p.estado = 4
+                and p.vigen_fim >= '2025-01-01'
+            then
+                case
+                    when rf.id is null then 'rel final pendente'
+                    else 'enviado'
+                end
+            else 'nao precisa'
+        end as envio_rel_final
+
+    from projmaster p
+
+    left join relats rp
+        on rp.idproj = p.id
+        and rp.tipo = 'pa'
+        and rp.tramitar = 1
+        and rp.publicado = 1
+
+    left join relats rf
+        on rf.idproj = p.id
+        and rf.tipo in ('fi','re','pr')
+        and rf.tramitar = 1
+        and rf.publicado = 1
+        and rf.last_result = 'a'
+        and rf.fase_atual = rf.fases
+
+    where p.id_prof = '".$user['id']."'
+";
+
+$inadimplentes = Diversos::qry($qryInadimplentes);
+/*
+echo '<pre>';
+print_r($inadimplentes);
+echo '</pre>';
+*/
 // Filtro de status
 $filtroStatus = filter_input(INPUT_GET, 'filtroStatus', FILTER_SANITIZE_STRING);
 

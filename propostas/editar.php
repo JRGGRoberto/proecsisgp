@@ -169,8 +169,6 @@ if (isset($_POST['titulo'])) {
     if (in_array($t, $anexoIII)) {
         $obProjeto->ch_semanal = $_POST['ch_semanal'];
 
-        $obProjeto->referencia = $_POST['referencia'];
-
         $cnpq_garea = 0;
         try {
             $cnpq_garea = intval($_POST['cnpq_garea']);
@@ -184,12 +182,12 @@ if (isset($_POST['titulo'])) {
         $obProjeto->cnpq_sarea = $_POST['cnpq_sarea'];
         $obProjeto->area_extensao = $_POST['area_extensao'];
         $obProjeto->linh_ext = $_POST['linh_ext'];
-        $obProjeto->referencia = $_POST['referencia'];
     }
 
     if (in_array($t, $anexoIV)) {
         $obProjeto->ch_total = $_POST['ch_total'];
     }
+    $obProjeto->referencia = $_POST['referencia'];
 
     /* não aceito no anexo IV
 

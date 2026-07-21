@@ -7,6 +7,11 @@ use App\Session\Login;
 Login::requireLogin();
 $user = Login::getUsuarioLogado();
 
+if ($user['ca_nome'] == 'Externo') {
+    header('location: ../pibisbex/');
+    exit;
+}
+
 /*
 <a href="../projetos/index.php" class="btn btn-primary btn-sm float-right">Meus projetos/propostas</a>
 header('location: ../projetos/index.php');

@@ -16,6 +16,7 @@ $ver_proj = $_GET['v'];
 $avaliacaoRelatorio = (object) AvaliaRelatorios::getById($id_ava);
 
 if ($avaliacaoRelatorio->idproj != $id_proj) {
+    echo 'aqui';
     header('location: ../avaliacoes/index.php?tpAva=p1&status=error');
     exit;
 }

@@ -28,6 +28,7 @@ $qnt1 = 0;
 $resultados = '<div id="accordion">';
 foreach ($avaliacoes as $ava) {
     ++$qnt1;
+    $tpRel = $ava->tipo == 'pa' ? 'p' : 'f';
     $resultados .= '
       <div class="card mt-2">
       <div class="card-header">
@@ -38,11 +39,18 @@ foreach ($avaliacoes as $ava) {
       </div>
       <div id="p'.$ava->id.'" class="collapse" data-parent="#accordion">
         <div class="card-body">
-          <h5>Tipo de Proposta</h5>
 
           <div class="col">
-          
+              <div class="p-1"></div>
+                <a href="../relatorio/editar'.$tpRel.'.php?id='.$ava->id_rel.'"><button class="btn btn-success btn-sm mb-2"> Visualizar relatório</button></a>
+              <div class="p-1"></div>
+
+              <div class="p-1"></div>
+                <a href="../forms/index.php?tp=r&i='.$ava->id.'&p='.$ava->idproj.'&v='.$ava->pver.'"><button class="btn btn-primary btn-sm mb-2"> Visualizar avaliação do relatório</button></a>
+              <div class="p-1"></div>
           </div>
+
+
         </div>
       </div>
     </div>';

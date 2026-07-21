@@ -10,11 +10,47 @@ use App\Entity\Outros;
 use App\Entity\Palavras;
 use App\Entity\Professor;
 use App\Entity\Projeto;
+use App\Entity\ProjMaster;
 use App\Session\Login;
 
 // Obriga o usuário a estar logado
 Login::requireLogin();
 $user = Login::getUsuarioLogado();
+
+$relPendentes = ProjMaster::getRelatoriosPendentes($user['id']);
+$inadimplente = false;
+
+foreach ($relPendentes as $p) {
+    if ($p['envio_rel_parcial'] === 'rel parcial pendente'
+        || $p['envio_rel_final'] === 'rel final pendente') {
+        $inadimplente = true;
+        $relTipo = '';
+        $relTitulo = $p['titulo'];
+
+        if ($p['estado'] == 3) {
+            $relTipo = 'parcial';
+        } else {
+            $relTipo = 'final';
+        }
+        // echo '<pre>';
+        // print_r($p);
+        // echo '</pre>';
+        break;
+    }
+}
+
+$inadAlert = '';
+$inadDisable = '';
+
+if ($inadimplente == true) {
+    $inadAlert .= "
+        <div class='alert alert-danger text-center' role='alert'>
+            Não é possível criar nenhum tipo de proposta. Realize o <strong>relatório ".$relTipo."</strong> da proposta ''<strong>".$relTitulo."</strong>'' para realizar novas ações.
+        </div>
+    ";
+
+    $inadDisable = 'disabled';
+}
 
 $anexoIV = [1, 2];
 $anexoIII = [3, 4, 5];
@@ -139,8 +175,6 @@ if (isset($_POST['titulo'])) {
             $obProjeto->ch_semanal = $_POST['ch_semanal'];
         }
 
-        $obProjeto->referencia = $_POST['referencia'];
-
         $cnpq_garea = 0;
         try {
             $cnpq_garea = intval($_POST['cnpq_garea']);
@@ -196,10 +230,7 @@ if (isset($_POST['titulo'])) {
     $obProjeto->justificativa = $_POST['justificativa'];
     $obProjeto->cronograma = $_POST['cronograma'];
 
-    if (in_array($t, $anexoIII)) {
-        $obProjeto->referencia = $_POST['referencia'];
-    }
-
+    $obProjeto->referencia = $_POST['referencia'];
     /*
     $obProjeto->parceria       =  $_POST['parceria'];
     if($obProjeto->parceria == 'S'){

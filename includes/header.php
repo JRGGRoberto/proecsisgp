@@ -6,8 +6,8 @@ use App\Session\Login;
 $obUsuario = Login::getUsuarioLogado();
 
 use App\Entity\MicroCred_avaliadores;
-// use App\Entity\Pibis_pibex_avaliadores;
 use App\Entity\Outros;
+use App\Entity\Pibis_pibex_avaliadores;
 
 require_once '../includes/funcoes/func_permissoes.php';
 
@@ -21,9 +21,9 @@ $horas >= 12 ? (int) ($horas -= 12) : (int) ($horas -= 0);
 $all = '';
 $autorizados = permissoesAvaliadorPibis();
 
-/*
 $menuPibis = '';
 $idUser = $obUsuario['id'];
+
 // Verifica se o usuário é um avaliador do PIBIS
 $obAvaliador = Pibis_pibex_avaliadores::getQntd('id = "'.$idUser.'" and ativo = 1');
 if ($obAvaliador > 0) {
@@ -35,6 +35,7 @@ if ($obAvaliador > 0) {
     $obAvaliador = Pibis_pibex_avaliadores::get($idUser, 'adm = 1');
     if ($obAvaliador instanceof Pibis_pibex_avaliadores) {
         $menuPibis .= "<a class='dropdown-item btn-sm' href='../pibisbexConf'>Acompanhamento</a>";
+        $menuPibis .= "<a class='dropdown-item btn-sm' href='../pibisbexConf/index2.php'>Acompanhamento modo 2</a>";
     }
 
     $menuPibis .= '</div>
@@ -45,7 +46,6 @@ if ($obAvaliador > 0) {
 } else {
     $menuPibis = '';
 }
-*/
 
 $menuAcompa = '';
 $qry123 = 'select distinct  prof_id from progradisp   where prof_id = "'.$obUsuario['id'].'"';
@@ -63,7 +63,6 @@ if (count($acompanha) > 0) {
 } else {
     $menuAcompa = '';
 }
-// $menuPibis = '';
 
 $menuMicro = '';
 $idUser = $obUsuario['id'];
@@ -114,7 +113,7 @@ if ($obUsuario['adm'] == 1) {
           <div class='dropdown-divider'></div>
           <a class='dropdown-item btn-sm' href='../hierarquia/index.php?hi=cnf'>Configurar hierarquia</a>
           <div class='dropdown-divider'></div>
-          <a class='dropdown-item btn-sm' href='../projetos/indexAll.php'>Todos os Projetos</a>
+          <a class='dropdown-item btn-sm' href='../propostas/indexAll.php'>Todos os Projetos</a>
           <div class='dropdown-divider'></div>";
 
     $adminOpts .= $qryAdm5;
@@ -139,6 +138,9 @@ if ($obUsuario['adm'] == 1) {
 
 $nome = explode(' ', trim($obUsuario['nome']));
 $nome = $nome[0]; // will print Test
+// Verificar se é adm ou não
+require_once '../includes/funcoes/func_Cargos.php';
+$validade = verificarCargosAdmin($user);
 
 ?>
 
@@ -149,7 +151,8 @@ $nome = $nome[0]; // will print Test
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <meta name="robots" content="noindex">
-  <!-- <link rel="stylesheet" href="../includes/bootstrap-4.6.2-dist/css/bootstrap.min.css">
+  
+  <link rel="stylesheet" href="../includes/bootstrap-4.6.2-dist/css/bootstrap.min.css">
   <script src="../includes/jquery.min.js"></script>
   <script src="../includes/popper.min.js"></script>
   <script src="../includes/bootstrap-4.6.2-dist/js/bootstrap.bundle.min.js"></script>
@@ -158,11 +161,12 @@ $nome = $nome[0]; // will print Test
   <!-- para a inserção de leitor de xlsx -->
   <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
   
+<!--
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.1/dist/css/bootstrap.min.css">
   <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.1/dist/umd/popper.min.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.1/dist/js/bootstrap.bundle.min.js"></script>
-
+-->
   <link href="https://sistemaproec.unespar.edu.br/sistema/includes/summernote-bs4.min.css" rel="stylesheet">
   <script src="https://sistemaproec.unespar.edu.br/sistema/includes/summernote-bs4.min.js"></script>
 
@@ -255,7 +259,7 @@ img.remover {
             <div class="col">
                   
                   <div>
-                      <span class="badge badge-success">SisGP <?php echo $clock[$horas]; ?> </span>
+                      <span class="badge badge-success">SisGP <?php echo $clock[$horas]; ?></span>
                   </div>
                   <div>
                     Sistema para Gerir Projetos
@@ -270,6 +274,7 @@ img.remover {
         ?>
       <div class="btn-group btn-group-sm float-right">   
       <div class="btn-group btn-group-sm">
+        <?php if ($obUsuario['ca_nome'] != 'Externo') { ?>
         <button type="button" class="btn btn-primary dropdown-toggle" data-toggle="dropdown">
         Propostas
         </button>
@@ -291,8 +296,8 @@ img.remover {
                 echo '<a class="dropdown-item btn-sm" href="../projetos_parados">Tramitação</a>';
             }
         }
-        if ($obUsuario['config'] == '3') {
-            echo "<a class='dropdown-item btn-sm' href='../projetos_parados_all'>Propostas paradas ADM</a>
+            if ($obUsuario['config'] == '3') {
+                echo "<a class='dropdown-item btn-sm' href='../projetos_parados_all'>Propostas paradas ADM</a>
                         
           <div class='dropdown-divider'></div>
           <button class='btn btn-light dropdown-toggle' type='button' id='dropdownMenuButton' data-toggle='dropdown' aria-haspopup='true' aria-expanded='false'>
@@ -307,8 +312,10 @@ img.remover {
                 <a class='dropdown-item btn-sm' href='../propostas/cadastrarADM.php?t=1'>Novo Curso ADM</a>
                 <a class='dropdown-item btn-sm' href='../propostas/cadastrarADM.php?t=2'>Novo Evento ADM</a>
           </div>";
+            }
         }
         ?>
+        
 
         </div>
       </div>
@@ -326,6 +333,7 @@ img.remover {
 -->
       <div class="btn-group btn-group-sm">
     <!--    <button type="button" class="btn btn-primary dropdown-toggle" data-toggle="dropdown">Manutenção temporária</button>-->
+<?php if ($obUsuario['ca_nome'] != 'Externo') { ?>
         <button type="button" class="btn btn-primary dropdown-toggle" data-toggle="dropdown">
         Avaliações
         </button>
@@ -338,21 +346,24 @@ img.remover {
 
 <?php
 $idCampus = $obUsuario['ca_id'];
-        if (in_array($obUsuario['config'], [3])) {
-            ?>
+    if (in_array($obUsuario['config'], [3])) {
+        ?>
      <div class="dropdown-divider"></div>
           <a class="dropdown-item btn-sm" href="../dec/index.php?tipo=atualizar&solicita=DEC&idLocal=<?php echo $idCampus; ?>">Alterações de projetos DEC <span class="badge badge-success">Novo!</span> </a>
           <a class="dropdown-item btn-sm" href="../dec/index.php?tipo=atualizados&solicita=DEC&idLocal=<?php echo $idCampus; ?>">Projetos alterados DEC [Histórico] <span class="badge badge-success">Novo!</span></a>
  
-<?php } ?> 
+<?php
+    }?> 
 
         </div>
       </div>
+      <?php
+}?> 
       
 <!--      <button type="button" class="btn btn-primary">Projetos</button>
     -->     
       <?php echo $menuAcompa; ?>
-      <?php // echo $menuPibis;?>
+      <?php echo $menuPibis; ?>
       <?php echo ''; // $menuMicro;?>
       <?php echo $adminOpts; ?>
 
@@ -362,7 +373,7 @@ $idCampus = $obUsuario['ca_id'];
         </button>
         <div class="dropdown-menu dropdown-menu-right">
           <?php
-                                $tipoUser = $obUsuario['tipo'] == 'agente' ? 'agente' : 'professor';
+                                          $tipoUser = $obUsuario['tipo'] == 'agente' ? 'agente' : 'professor';
         ?>
           
         
@@ -469,5 +480,5 @@ $idCampus = $obUsuario['ca_id'];
           echo "<span class='badge badge-danger float-right'>Admin</span>";
       }
   }
-
+fim:
 ?>

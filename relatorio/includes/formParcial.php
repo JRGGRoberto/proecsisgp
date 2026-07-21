@@ -26,7 +26,7 @@ if (isset($editar)) {
     <input type="hidden" name="id_prof" value="<?php echo $obProjeto->id_prof; ?>">
     <input type="hidden" name="tabela" value="projetos">
     <hr>
-    <?php echo $msgSolicitacoAlteracao; ?>
+  
 
     <div class="form-group">
       <label>

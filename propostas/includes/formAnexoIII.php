@@ -18,11 +18,14 @@
     <input type="hidden" name="id_prof" value="<?php echo $obProjeto->id_prof; ?>">
     <input type="hidden" name="tabela" value="projetos">
     <hr>
+    <?php
+
+  ?>
     <div class="form-group">
       <label>
         <h5><?php echo $n = 1; ?>. Título da proposta</h5>
       </label>
-      <input type="text" class="form-control" name="titulo" id="titulo"  maxlength="265" value="<?php echo $obProjeto->titulo; ?>" required >
+      <input type="text" class="form-control" <?php // echo $inadDisable;?> name="titulo" id="titulo"  maxlength="265" value="<?php echo $obProjeto->titulo; ?>" required >
     </div>
     <input type="hidden" name="tabela" value="projetos">
 
@@ -298,7 +301,7 @@
         <h5><?php echo ++$n; ?>. Equipe da prosposta</h5>
       </label>
       <?php
-      include './includes/equipeProposta.php';
+    include './includes/equipeProposta.php';
   ?>
 
       <hr>

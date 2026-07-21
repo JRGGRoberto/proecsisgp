@@ -129,6 +129,7 @@ include __DIR__.'/../../includes/headers.php';
 </div>
 <a href="../../propostas" class="btn btn-primary btn-sm mr-2">Voltar</a>
 
+<script src="../../includes/funcoes/func_formataTextArea.js">
 <?php
 
 include __DIR__.'/../../includes/footer.php';

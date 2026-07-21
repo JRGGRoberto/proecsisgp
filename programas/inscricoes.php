@@ -23,7 +23,7 @@ $user = LoginCandidato::getUsuarioLogado();
 // echo '</pre>';
 
 $cpf = $user['cpf'] ?? null;
-print_r($cpf);
+// print_r($cpf);
 if (!$cpf) {
     die('CPF não encontrado na sessão');
 }
@@ -86,7 +86,7 @@ if (isset($_POST['id_cand_del'])) {
 }
 
 
-include '../includes/headerProgramas.php';
+include '../includes/headerCand.php';
 echo $msg;
 echo '
 <script>

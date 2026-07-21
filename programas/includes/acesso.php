@@ -12,7 +12,7 @@ $alertaLogin = strlen($alertaLogin ?? '') ? '<div class="alert alert-danger">'.$
         <h2>UNESPAR</h2>
         <img src="https://sistemaproec.unespar.edu.br/sistema/imgs/logo_unespar.png" width="150" height="160">
         <hr>
-        <h3>Sistema de ???</h3>
+        <h3>PROEC - Sistema de Programas </h3>
 
     </div>
 

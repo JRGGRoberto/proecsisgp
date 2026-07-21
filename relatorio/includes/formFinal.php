@@ -50,11 +50,7 @@ if (isset($editar)) {
     
     
     <hr>
-    <?php
-        if ($editar != ' readonly ') {
-            echo $msgSolicitacoAlteracao;
-        }
-?>
+
 
     <div class="form-group">
       <label>

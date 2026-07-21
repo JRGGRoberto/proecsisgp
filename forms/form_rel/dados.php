@@ -16,24 +16,38 @@ $obProjeto = Projeto::getProjeto($obProjeto->id, $obProjeto->ver);
 $obProfessor = new Professor();
 $obProfessor = $obProfessor->getProfessor($obProjeto->id_prof);
 
-$anexados = Arquivo::getAnexados('forms', $form->id);
-$anex = '<ul id="anexos_edt">';
-foreach ($anexados as $att) {
-    $anex .=
-    '<li>
-      <a href="/home/sistemaproec/www/sistema/upload/uploads/'.$att->nome_rand.'" target="_blank">'.$att->nome_orig.'</a> 
-      <a href="../arquiv/index.php?tab='.$att->tabela.'&id='.$att->id_tab.'&arq='.$att->nome_rand.'" >  
-        <span class="badge badge-danger">🗑️ Excluir</span>
-      </a>
-  </li> ';
-}
-$anex .= '</ul>';
+$somenteLeitura = false;
 
 $cad = false;
 if (!$form) {
     $form = new Form_Rel();
     $cad = true;
+} else {
+    if (in_array($form->resultado, ['a', 'r'])) {
+        $somenteLeitura = true;
+    }
 }
+
+$anexados = Arquivo::getAnexados('forms', $form->id);
+$anex = '<ul id="anexos_edt">';
+$canDel = '';
+foreach ($anexados as $att) {
+    $canDel = '<a href="../arquiv/index.php?tab='.$att->tabela.'&id='.$att->id_tab.'&arq='.$att->nome_rand.'" >  
+         <span class="badge badge-danger">🗑️ Excluir</span>
+      </a>';
+
+    if ($somenteLeitura) {
+        $canDel = '';
+    }
+
+    $anex .=
+    '<li>
+      <a href="/home/sistemaproec/www/sistema/upload/uploads/'.$att->nome_rand.'" target="_blank">'.$att->nome_orig.'</a> 
+      '.$canDel.'
+  </li> ';
+}
+$anex .= '</ul>';
+
 // VALIDAÇÃO DO POST
 if (isset($_POST['resultado'])) {
     if ($relatorio->idproj == $id_proj) {
