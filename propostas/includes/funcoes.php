@@ -149,7 +149,8 @@ function montarTblEProgress(array $ListaVerAnts, $projId, $msg1)
 }
 
 // echo '<pre>';
-//     print_r($user);
+// print_r($profId);
+// print_r($userId);
 // echo '</pre>';
 
 function createBT($tipo, $id, $ver = null, $form = null, $tipo_exten = null, $titulo = null, $userId = null, $profId = null): string
@@ -175,13 +176,7 @@ function createBT($tipo, $id, $ver = null, $form = null, $tipo_exten = null, $ti
         case 'adequacoes':
             return '<a href="../forms/'.$form.'/vista.php?p='.$id.'&v='.($ver - 1).'"><button class="btn btn-danger btn-sm mb-2" > 📑 Informações de adequações </button></a>';
         case 'alteraSAP':
-            if ($userId == $profId) {
-                return '<a><button id="SAP'.$id.'v'.$ver.'" class="btn btn-warning btn-sm mb-2 ml-1" '.$hidden.' onclick="writeNumber(this)"> 🔄 Solicitar alteração </button></a>';
-            } else {
-                return '';
-            }
-
-            // no break
+            return '<a><button id="SAP'.$id.'v'.$ver.'" class="btn btn-warning btn-sm mb-2 ml-1" '.$hidden.' onclick="writeNumber(this)"> 🔄 Solicitar alteração </button></a>';
         case 'relatorioParcial':
             // tirar o
             if ($userId == $profId) {
@@ -309,68 +304,62 @@ function emExecucao($p, $userId): string
     $i = $p->id;
     $v = $p->ver;
     $tipo = $p->tipo_exten;
-
     $profId = $p->id_prof;
-    $relParcialInfo = '';
+    $rel_parInfos = '';
 
     $rel_par = Outros::qry("
         select 
             rp.id, 
             rp.last_result,
-            rp.publicado,
-            rp.created_at
-        from 
-            relats rp
-        where 
-            rp.idproj = '".$i."'
-            order by 
-                rp.created_at desc
+            if(rp.tramitar = 1 and rp.last_result = 'a' and rp.etapa = rp.etapas and rp.tramitar = 1, 1, 0 ) publicado, 
+            DATE_FORMAT(rp.created_at , '%d/%m/%Y') dt_create
+        from rel_parcial rp
+        where rp.idproj = '".$i."'
+            order by rp.created_at desc
         "
     );
-
-    // echo '<pre>';
-    // print_r($rel_par);
-    // echo '</pre>';
-    // exit;
-
-    if ($rel_par) {
+    if (isset($rel_par)) {
         foreach ($rel_par as $rp) {
             $pub = '<span class="badge badge-light ">Em avaliação</span>';
-
             if ($rp->publicado == 1) {
                 $pub = '';
 
-                $relParcialInfo .= '
+                $rel_parInfos .= '
                     <a href="../relatorio/editarp.php?id='.$rp->id.'" target="_blank">
-                        <button class="btn btn-primary btn-sm mb-2">📊 Relatório Parcial '.formatarData($rp->created_at).' </button>
+                        <button class="btn btn-primary btn-sm mb-2">📊 Relatório Parcial '.$rp->dt_create.' </button>
                     </a> &nbsp; ';
             } else {
                 if ($rp->last_result == 'r' && $profId == $userId) {
                     $pub = '<span class="badge badge-light">Solicitação de alterações</span>';
                     $linkFeito = '<a href="../relatorio/editarp.php?id='.$rp->id.'" target="_blank">';
-                    $relParcialInfo .= $linkFeito.'<button class="btn btn-danger btn-sm mb-2 "> 📊 Relatório Parcial &nbsp;'.formatarData($rp->created_at).'&nbsp;'.$pub.'</button></a> &nbsp; ';
+                    $rel_parInfos .= $linkFeito.'<button class="btn btn-danger btn-sm mb-2"> 📊 Relatório Parcial &nbsp;'.$rp->dt_create.'&nbsp;'.$pub.'</button></a> &nbsp; ';
                 } else {
-                    $relParcialInfo .= '
+                    $rel_parInfos .= '
                     <button 
                         class="btn btn-primary btn-sm mb-2" 
                         disabled 
                         data-toggle="tooltip" 
                         data-placement="top" 
                         title="Relatório em avaliação.">
-                            📊 Relatório Parcial '.formatarData($rp->created_at).'&nbsp;'.$pub.' 
+                            📊 Relatório Parcial '.$rp->dt_create.'&nbsp;'.$pub.' 
                     </button> &nbsp; ';
                 }
             }
         }
     }
 
-    $btns = '';
-    $btns = createBT('visualizar', $i, $v).' &nbsp; '.
-    createBT('relatorioParcial', $i, $v, null, $tipo, null, $userId, $profId).' &nbsp;'.
-    $relParcialInfo.
-    createBT('declaracao', $i, $v, null, null, null, $userId, $profId);
+    $seeBtn = null;
+    if ($userId == $profId) {
+        $seeBtn = createBT('alteraSAP', $i, $v).'  	&nbsp; ';
+    }
 
-    return $btns;
+    return
+        createBT('visualizar', $i, $v).'  	&nbsp; '.
+        createBT('relatorioParcial', $i, $v, null, $tipo, null, $userId, $profId).' &nbsp;'.
+        $seeBtn.
+        $rel_parInfos
+        // createBT('cancelar', $i, $v).' &nbsp; '
+    ;
 }
 
 function adequacoes($p, $user)
@@ -378,7 +367,7 @@ function adequacoes($p, $user)
     $i = $p->id;
     $v = $p->ver;
     $t = $p->titulo;
-    $form = $p->form;
+    $form = Outros::q("select form from avalia_last al where al.id_proj = '".$i."'")->form;
     $profId = $p->id_prof;
     $userId = $user['id'];
     $userConfig = $user['config'];
@@ -418,7 +407,8 @@ function ressubmit($p, $user)
     $i = $p->id;
     $v = $p->ver;
     // $t = $p->titulo;
-    $form = $p->form;
+    $form = Outros::q("select form from avalia_last al where al.id_proj = '".$i."'")->form;
+
     // $profId = $p->id_prof;
     // $userId = $user['id'];
     // $userConfig = $user['config'];
@@ -436,6 +426,7 @@ function aguardandoRelatorio($p, $userId)
     $i = $p->id;
     $v = $p->ver;
     $profId = $p->id_prof;
+
     $rel_Infos = '';
 
     $ids_DirCampus = Campi::getRegistros();
@@ -449,7 +440,8 @@ function aguardandoRelatorio($p, $userId)
 
     $rel = Outros::qry(" 
         select 
-            r.id, r.tipo, r.publicado, r.created_at, r.last_result 
+            r.id, r.tipo, r.publicado, r.created_at, r.last_result,
+            r.fase_atual, r.fases
         from 
             relats r 
         where 
@@ -463,8 +455,9 @@ function aguardandoRelatorio($p, $userId)
             $tipoRel = tipoRelatorioIcon($relatorio->tipo);
 
             $link = in_array($relatorio->tipo, ['fi', 're', 'pr']) ? 'f' : 'p';
+            $infEtapas = '['.$relatorio->fase_atual.'/'.$relatorio->fases.']';
 
-            $pub = '<span class="badge badge-light">Em avaliação</span>';
+            $pub = '<span class="badge badge-light">Em avaliação '.$infEtapas.'</span>';
             if ($relatorio->publicado == 1) {
                 $pub = '';
                 $linkFeito = '<a href="../relatorio/editar'.$link.'.php?id='.$relatorio->id.'" target="_blank">';

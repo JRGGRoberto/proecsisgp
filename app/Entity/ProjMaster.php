@@ -49,4 +49,58 @@ class ProjMaster
         return (new Database('projmaster'))->select('id = "'.$id.'"', null, null)
                                       ->fetchObject();
     }
+
+    public static function getRelatoriosPendentes($idProfessor)
+    {
+        $qryInadimplentes = "    
+            select
+                p.id,
+                p.id_prof,
+                p.titulo,
+                p.vigen_ini AS inicio,
+                p.vigen_fim AS fim,
+                p.estado,
+
+                -- rel parcial
+                case
+                when p.estado = 3
+                    and p.created_at >= '2026-06-01'
+                    and timestampdiff(month, p.vigen_ini, p.vigen_fim) > 12
+                    and date_add(p.vigen_ini, interval 12 month) < current_date()
+                    then
+                        case
+                            when rp.id is null then 'rel parcial pendente'
+                            else 'enviado'
+                        end
+                    else 'nao precisa'
+                end as envio_rel_parcial,
+
+                -- rel final
+                case
+                    when p.estado = 4 then 'rel final pendente'
+                    else 'nao precisa'
+                end as envio_rel_final
+            from projmaster p
+
+            left join relats rp
+                on rp.idproj = p.id
+                and rp.tipo = 'pa'
+                and rp.tramitar = 1
+                and rp.publicado = 1
+
+            left join relats rf
+                on rf.idproj = p.id
+                and rf.tipo in ('fi','re','pr')
+                and rf.tramitar = 1
+                and rf.publicado = 1
+                and rf.last_result = 'a'
+                and rf.fase_atual = rf.fases
+
+            where p.id_prof = '".$idProfessor."'
+        ";
+
+        return (new Database())->execute($qryInadimplentes, [
+            'id_prof' => $idProfessor,
+        ])->fetchAll(\PDO::FETCH_ASSOC);
+    }
 }

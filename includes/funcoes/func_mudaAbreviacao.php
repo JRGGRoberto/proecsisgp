@@ -9,10 +9,6 @@
 
 require '../vendor/autoload.php';
 
-use App\Session\Login;
-
-Login::requireLogin();
-
 function mudaAbreviacaoCampoAlterado($abreviacao)
 {
     $abrevia = [

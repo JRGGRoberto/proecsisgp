@@ -8,8 +8,8 @@ $obUsuario = Login::getUsuarioLogado();
 
 use App\Entity\CompararAlunos;
 use App\Entity\MicroCred_avaliadores;
-// use App\Entity\Pibis_pibex_avaliadores;
 use App\Entity\Outros;
+use App\Entity\Pibis_pibex_avaliadores;
 
 $idPermitido = CompararAlunos::getIdPermitidos();
 
@@ -28,9 +28,9 @@ $autorizados = [
     'a68f28dd-2b1b-49ec-8ef8-b6ed28ab3376', // [SUWELLY GONÇALVES SUASSUI PICH] Solicitação  Daniela Machado 31/07/2025
 ];
 
-/*
 $menuPibis = '';
 $idUser = $obUsuario['id'];
+
 // Verifica se o usuário é um avaliador do PIBIS
 $obAvaliador = Pibis_pibex_avaliadores::getQntd('id = "'.$idUser.'" and ativo = 1');
 if ($obAvaliador > 0) {
@@ -42,6 +42,7 @@ if ($obAvaliador > 0) {
     $obAvaliador = Pibis_pibex_avaliadores::get($idUser, 'adm = 1');
     if ($obAvaliador instanceof Pibis_pibex_avaliadores) {
         $menuPibis .= "<a class='dropdown-item btn-sm' href='../pibisbexConf'>Acompanhamento</a>";
+        $menuPibis .= "<a class='dropdown-item btn-sm' href='../pibisbexConf/index2.php'>Acompanhamento modo 2</a>";
     }
 
     $menuPibis .= '</div>
@@ -52,7 +53,6 @@ if ($obAvaliador > 0) {
 } else {
     $menuPibis = '';
 }
-*/
 
 $menuAcompa = '';
 $qry123 = 'select distinct  prof_id from progradisp   where prof_id = "'.$obUsuario['id'].'"';
@@ -70,7 +70,6 @@ if (count($acompanha) > 0) {
 } else {
     $menuAcompa = '';
 }
-// $menuPibis = '';
 
 $menuMicro = '';
 $idUser = $obUsuario['id'];
@@ -149,6 +148,9 @@ if ($obUsuario['adm'] == 1) {
 
 $nome = explode(' ', trim($obUsuario['nome']));
 $nome = $nome[0]; // will print Test
+// Verificar se é adm ou não
+require_once '../includes/funcoes/func_Cargos.php';
+$validade = verificarCargosAdmin($user);
 
 ?>
 
@@ -159,23 +161,21 @@ $nome = $nome[0]; // will print Test
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <meta name="robots" content="noindex">
-  <!-- <link rel="stylesheet" href="../includes/bootstrap-4.6.2-dist/css/bootstrap.min.css">
+  
+  <link rel="stylesheet" href="../includes/bootstrap-4.6.2-dist/css/bootstrap.min.css">
   <script src="../includes/jquery.min.js"></script>
   <script src="../includes/popper.min.js"></script>
   <script src="../includes/bootstrap-4.6.2-dist/js/bootstrap.bundle.min.js"></script>
--->
-
-
-
 
   <!-- para a inserção de leitor de xlsx -->
   <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
   
+<!--
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.1/dist/css/bootstrap.min.css">
   <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.1/dist/umd/popper.min.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.1/dist/js/bootstrap.bundle.min.js"></script>
-
+-->
   <link href="https://sistemaproec.unespar.edu.br/sistema/includes/summernote-bs4.min.css" rel="stylesheet">
   <script src="https://sistemaproec.unespar.edu.br/sistema/includes/summernote-bs4.min.js"></script>
 
@@ -268,7 +268,7 @@ img.remover {
             <div class="col">
                   
                   <div>
-                      <span class="badge badge-success">SisGP <?php echo $clock[$horas]; ?></span> <a href="../home"><span class="badge badge-warning">Sistema em manutenção</span></a>
+                      <span class="badge badge-success">SisGP <?php echo $clock[$horas]; ?></span>
                   </div>
                   <div>
                     Sistema para Gerir Projetos
@@ -283,6 +283,7 @@ img.remover {
         ?>
       <div class="btn-group btn-group-sm float-right">   
       <div class="btn-group btn-group-sm">
+        <?php if ($obUsuario['ca_nome'] != 'Externo') { ?>
         <button type="button" class="btn btn-primary dropdown-toggle" data-toggle="dropdown">
         Propostas
         </button>
@@ -304,8 +305,8 @@ img.remover {
                 echo '<a class="dropdown-item btn-sm" href="../projetos_parados">Tramitação</a>';
             }
         }
-        if ($obUsuario['config'] == '3') {
-            echo "<a class='dropdown-item btn-sm' href='../projetos_parados_all'>Propostas paradas ADM</a>
+            if ($obUsuario['config'] == '3') {
+                echo "<a class='dropdown-item btn-sm' href='../projetos_parados_all'>Propostas paradas ADM</a>
                         
           <div class='dropdown-divider'></div>
           <button class='btn btn-light dropdown-toggle' type='button' id='dropdownMenuButton' data-toggle='dropdown' aria-haspopup='true' aria-expanded='false'>
@@ -320,8 +321,10 @@ img.remover {
                 <a class='dropdown-item btn-sm' href='../propostas/cadastrarADM.php?t=1'>Novo Curso ADM</a>
                 <a class='dropdown-item btn-sm' href='../propostas/cadastrarADM.php?t=2'>Novo Evento ADM</a>
           </div>";
+            }
         }
         ?>
+        
 
         </div>
       </div>
@@ -339,6 +342,7 @@ img.remover {
 -->
       <div class="btn-group btn-group-sm">
     <!--    <button type="button" class="btn btn-primary dropdown-toggle" data-toggle="dropdown">Manutenção temporária</button>-->
+<?php if ($obUsuario['ca_nome'] != 'Externo') { ?>
         <button type="button" class="btn btn-primary dropdown-toggle" data-toggle="dropdown">
         Avaliações
         </button>
@@ -351,21 +355,24 @@ img.remover {
 
 <?php
 $idCampus = $obUsuario['ca_id'];
-        if (in_array($obUsuario['config'], [3])) {
-            ?>
+    if (in_array($obUsuario['config'], [3])) {
+        ?>
      <div class="dropdown-divider"></div>
           <a class="dropdown-item btn-sm" href="../dec/index.php?tipo=atualizar&solicita=DEC&idLocal=<?php echo $idCampus; ?>">Alterações de projetos DEC <span class="badge badge-success">Novo!</span> </a>
           <a class="dropdown-item btn-sm" href="../dec/index.php?tipo=atualizados&solicita=DEC&idLocal=<?php echo $idCampus; ?>">Projetos alterados DEC [Histórico] <span class="badge badge-success">Novo!</span></a>
  
-<?php } ?> 
+<?php
+    }?> 
 
         </div>
       </div>
+      <?php
+}?> 
       
 <!--      <button type="button" class="btn btn-primary">Projetos</button>
     -->     
       <?php echo $menuAcompa; ?>
-      <?php // echo $menuPibis;?>
+      <?php echo $menuPibis; ?>
       <?php echo ''; // $menuMicro;?>
       <?php echo $adminOpts; ?>
 
@@ -375,7 +382,7 @@ $idCampus = $obUsuario['ca_id'];
         </button>
         <div class="dropdown-menu dropdown-menu-right">
           <?php
-                                $tipoUser = $obUsuario['tipo'] == 'agente' ? 'agente' : 'professor';
+                                          $tipoUser = $obUsuario['tipo'] == 'agente' ? 'agente' : 'professor';
         ?>
           
         
@@ -398,9 +405,76 @@ $idCampus = $obUsuario['ca_id'];
             $hidden = 'hidden';
         }
         ?>
+          
+          
+          <!-- news feats -->
+<?php
+
+            if ($obUsuario['CargoEspecial'] != '0') {
+                require_once '../includes/funcoes/func_verificaCargosEspeciais.php';
+                $cargosEspeciais = dadosCargosEspeciais($obUsuario['CargoEspecial']);
+            } else {
+                $cargosEspeciais = null;
+            }
+        // Deixar o botão visivel somente para os cargos especiais
+        if (!empty($cargosEspeciais)) {
+            $nome = $cargosEspeciais[0]->siglaReitoria;
+            $rota = strtolower($nome);
+            $hiddenCargosEspeciais = '';
+        } else {
+            $hiddenCargosEspeciais = 'hidden';
+        }
+
+        if ($obUsuario['adm'] == 1) {
+            require_once '../includes/funcoes/func_permissoes.php';
+            $permissoesADM = permissoesADM();
+        } else {
+            $permissoesADM = null;
+        }
+        // Deixar o botão visivel para a aprovação de cadastro de novos pf ou ag
+        if ((!empty($permissoesADM) && in_array($obUsuario['id'], $permissoesADM)) || (!empty($cargosEspeciais))) {
+            $hiddenAprovacaoCadastro = '';
+        } else {
+            $hiddenAprovacaoCadastro = 'hidden';
+        }
+
+        // Deixar o botão visivel para a aprovação de cadastro de novos pf ou ag
+        if ($obUsuario['config'] == '1') {
+            $hiddenSolicitacao = '';
+            $nomeCargosSol = 'Professores';
+            $uri = 'pf';
+        } elseif ($obUsuario['config'] == '3') {
+            $hiddenSolicitacao = '';
+            $nomeCargosSol = 'Agentes';
+            $uri = 'ag';
+        } else {
+            $hiddenSolicitacao = 'hidden';
+        }
+
+        ?>
           <!-- Utilizar o nome do cargo especial para pasta para identificar corretamente a rota -->
-          <a <?php echo $hidden; ?> class="dropdown-item btn-sm" href='../<?php echo $rota; ?>'><?php echo $nome; ?> <span class="badge badge-success">Novo!</span> </a>
-          <div <?php echo $hidden; ?> class="dropdown-divider"></div>
+          <a <?php echo $hiddenCargosEspeciais; ?> class="dropdown-item btn-sm" href='../<?php echo $rota; ?>'><?php echo $nome; ?> <span class="badge badge-success">Novo!</span> </a>
+          <div <?php echo $hiddenCargosEspeciais; ?> class="dropdown-divider"></div>
+
+          <?php if ($validade != 1) { ?>
+            <!-- Cadastrar novo pf ou ag -->
+            <a <?php echo $hiddenSolicitacao; ?> class="dropdown-item btn-sm" href='../pessoas/index.php?tipo=cadastro&cargo=<?php echo $uri; ?>&valida&sucesso'>Cadastrar novos <?php echo $nomeCargosSol; ?> <span class="badge badge-success">Novo!</span> </a>
+            <div <?php echo $hiddenSolicitacao; ?> class="dropdown-divider"></div>
+            
+            <!-- Remover pf ou ag -->
+            <a <?php echo $hiddenSolicitacao; ?> class="dropdown-item btn-sm" href='../pessoas/index.php?tipo=desativacao&cargo=<?php echo $uri; ?>&valida&sucesso'>Desativar <?php echo $nomeCargosSol; ?> <span class="badge badge-success">Novo!</span> </a>
+            <div <?php echo $hiddenSolicitacao; ?> class="dropdown-divider"></div>
+
+            <!-- Reativar pf ou ag -->
+            <a <?php echo $hiddenSolicitacao; ?> class="dropdown-item btn-sm" href='../pessoas/index.php?tipo=reativacao&cargo=<?php echo $uri; ?>&valida&sucesso'>Reativar <?php echo $nomeCargosSol; ?> <span class="badge badge-success">Novo!</span> </a>
+            <div <?php echo $hiddenSolicitacao; ?> class="dropdown-divider"></div>
+
+          <?php } elseif ($validade == 1) { ?>
+            <!-- Somente ADM e o Dir de Extensão e Cultura -->
+            <a <?php echo $hiddenAprovacaoCadastro; ?> class="dropdown-item btn-sm" href='../pessoas/index.php?tipo=avalia&valida&sucesso'>Listagem Pessoas <span class="badge badge-success">Novo!</span> </a>
+            <div <?php echo $hiddenAprovacaoCadastro; ?> class="dropdown-divider"></div>
+          <?php } ?>
+          <!-- fim -->
 
 
 
@@ -446,5 +520,5 @@ $idCampus = $obUsuario['ca_id'];
           echo "<span class='badge badge-danger float-right'>Admin</span>";
       }
   }
-
+fim:
 ?>

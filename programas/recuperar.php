@@ -1,13 +1,12 @@
 <?php
 
 if (isset($_GET['erro'])) {
-  $alerta = '<div class="alert alert-warning">Dados não encontrados. Entre em contato com o coordenador de curso.</div>';
+    $alerta = '<div class="alert alert-warning">Dados não encontrados. Entre em contato com o coordenador de curso.</div>';
 }
 
 if (isset($_GET['sucesso'])) {
-  $alerta = '<div class="alert alert-success">Foi enviado uma nova senha para o email fornecido.</div>';
+    $alerta = '<div class="alert alert-success">Foi enviado uma nova senha para o email fornecido.</div>';
 }
-
 
 include '../includes/headersCl.php';
 
@@ -21,7 +20,7 @@ include '../includes/headersCl.php';
         <h2>UNESPAR</h2>
         <img src="https://sistemaproec.unespar.edu.br/sistema/imgs/logo_unespar.png" width="150" height="160">
         <hr>
-        <h3>Sistema de ???</h3>
+       <!-- <h3>Sistema de ???</h3> -->
     </div>
 
     <div class="col">

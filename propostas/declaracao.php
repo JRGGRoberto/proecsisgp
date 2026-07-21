@@ -2,7 +2,7 @@
 
 use App\Entity\Avaliacoes;
 use App\Entity\ProjMaster;
-use App\Entity\Relats;
+use App\Entity\Relatorio;
 
 require '../includes/header.php';
 require '../includes/funcoes/func_mudaAbreviacao.php';
@@ -20,8 +20,11 @@ $obAval = new Avaliacoes();
 $where = "id_proj = '{$id}'";
 $aval = $obAval->getRegistrosByProj($where);
 
-$obRelatorios = new Relats();
-$relatorio = $obRelatorios->getRegistroByProj($id);
+$obRelatorios = new Relatorio();
+$relatorio = $obRelatorios->getByIdBasic($id);
+echo '<pre>';
+print_r($relatorio);
+echo '</pre>';
 
 $lastAval = $obAval->getLastAvaliacao($id);
 

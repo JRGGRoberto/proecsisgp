@@ -129,9 +129,11 @@ menuAvaliarVoltar = document.getElementById("menuAvaliarVoltar");
 SectionVoltar = document.getElementById("SectionVoltar");
 menuAvaliarVoltar.remove();
 SectionVoltar.remove();
+
+
 </script>
 <script src="formsBtn.js"></script>
-
+<script src="../../includes/funcoes/func_formataTextArea.js">
 
 <?php
 

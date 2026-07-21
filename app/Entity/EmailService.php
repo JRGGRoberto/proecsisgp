@@ -105,28 +105,28 @@ class EmailService
             $mail->Body = $mensagem;
 
             return $mail->send();
-        }catch (Exception $e){
+        } catch (Exception $e) {
             return false;
         }
     }
 
-
-    public function enviar($dados){
+    public function enviar($dados)
+    {
         $this->definirBaseUrl();
         $this->validarSistema();
 
         $destinatario = $this->validaDestinatario();
 
-        if ($destinatario){
+        if ($destinatario) {
             $dados['destinatario'] = $destinatario;
         }
 
         $enviado = 0;
         $this->tipo = $dados['tipo'];
         $this->status = $this->sendMail(
-            $this->destinatario = $dados['destinatario'], 
-            $this->nome = $dados['nome'], 
-            $this->assunto = $dados['assunto'], 
+            $this->destinatario = $dados['destinatario'],
+            $this->nome = $dados['nome'],
+            $this->assunto = $dados['assunto'],
             $this->mensagem = $dados['mensagem']
         ) ? 1 : 0;
         $this->status = $enviado ? 1 : 0;
@@ -138,7 +138,7 @@ class EmailService
     }
 
     // --------------------------------------------------------------------------------
-    
+
     public function cadastrarProposta($projeto, $user)
     {
         require_once '../includes/mailBody/mailCadastrarProposta.php';
@@ -150,26 +150,26 @@ class EmailService
     // --------------------------------------------------------------------------------
 
     public function avaliacaoProposta($projeto, $resultado)
-    {   
+    {
         require_once '../includes/mailBody/mailAvaliacaoProposta.php';
         $dados = mailAvaliacaoProposta($projeto, $resultado);
 
         $insert = [
             'tipo' => $dados['tipo'],
-            'idref' => $dados['idref']
+            'idref' => $dados['idref'],
         ];
 
-        if ($dados['avaliador']){
-            $dadosAvaliador = array_merge($insert,$dados['avaliador']);
+        if ($dados['avaliador']) {
+            $dadosAvaliador = array_merge($insert, $dados['avaliador']);
             $this->enviar($dadosAvaliador);
         }
 
-        if ($dados['autor']){
-            $dadosAutor = array_merge($insert,$dados['autor']);
+        if ($dados['autor']) {
+            $dadosAutor = array_merge($insert, $dados['autor']);
             $this->enviar($dadosAutor);
-        } 
+        }
 
-        if (!$dados['autor'] || !$dados['avaliador']){
+        if (!$dados['autor'] || !$dados['avaliador']) {
             $this->enviar($dados);
         }
     }
@@ -178,12 +178,10 @@ class EmailService
 
     public function recuperarSenha($email, $nome, $idref, $novaSenha)
     {
-
         require_once '../includes/mailBody/mailRecuperarSenha.php';
         $dados = mailRecuperarSenha($email, $nome, $idref, $novaSenha);
 
         $this->enviar($dados);
-
     }
 
     // --------------------------------------------------------------------------------
@@ -201,26 +199,24 @@ class EmailService
 
         $insert = [
             'tipo' => $dados['tipo'],
-            'idref' => $dados['idref']
+            'idref' => $dados['idref'],
         ];
 
-        if ($dados['avaliador']){
-            $dadosAvaliador = array_merge($insert,$dados['avaliador']);
+        if ($dados['avaliador']) {
+            $dadosAvaliador = array_merge($insert, $dados['avaliador']);
             $arrEnviadosAvaliador = $this->enviar($dadosAvaliador);
         }
 
-        if ($dados['autor']){
-            $dadosAutor = array_merge($insert,$dados['autor']);
+        if ($dados['autor']) {
+            $dadosAutor = array_merge($insert, $dados['autor']);
             $arrEnviadosAutor = $this->enviar($dadosAutor);
         }
-        
-        if ($arrEnviadosAvaliador == '0'){
+
+        if ($arrEnviadosAvaliador == '0') {
             return 'avaliador';
-        }
-        elseif($arrEnviadosAutor == '0'){
+        } elseif ($arrEnviadosAutor == '0') {
             return 'autor';
-        }
-        else {
+        } else {
             return 'passou';
         }
     }
@@ -229,7 +225,6 @@ class EmailService
 
     public function analiseAlteracaoPropostas($idSolicitacao, $resultado, $userNome, $userEmail)
     {
-
         if (empty($idSolicitacao)) {
             // throw new Exception("ID da solicitação não informado para envio de email");
             throw new Exception('Solicitação de alteração não encontrada!');
@@ -240,36 +235,32 @@ class EmailService
 
         $insert = [
             'tipo' => $dados['tipo'],
-            'idref' => $dados['idref']
+            'idref' => $dados['idref'],
         ];
 
-        if ($dados['avaliador']){
-            $dadosAvaliador = array_merge($insert,$dados['avaliador']);
+        if ($dados['avaliador']) {
+            $dadosAvaliador = array_merge($insert, $dados['avaliador']);
             $arrEnviadosAvaliador = $this->enviar($dadosAvaliador);
         }
 
-        if ($dados['autor']){
-            $dadosAutor = array_merge($insert,$dados['autor']);
+        if ($dados['autor']) {
+            $dadosAutor = array_merge($insert, $dados['autor']);
             $arrEnviadosAutor = $this->enviar($dadosAutor);
         }
 
-        if ($dados['novoAutor']){
-            $dadosNovoAutor = array_merge($insert,$dados['novoAutor']);
+        if ($dados['novoAutor']) {
+            $dadosNovoAutor = array_merge($insert, $dados['novoAutor']);
             $arrEnviadosNovoAutor = $this->enviar($dadosNovoAutor);
         }
 
-        if ($arrEnviadosAvaliador == '0'){
+        if ($arrEnviadosAvaliador == '0') {
             return 'avaliador';
-        }
-        elseif($arrEnviadosAutor == '0'){
+        } elseif ($arrEnviadosAutor == '0') {
             return 'autor';
-        }
-        elseif($arrEnviadosNovoAutor == '0'){
+        } elseif ($arrEnviadosNovoAutor == '0') {
             return 'novoAutor';
-        }
-        else {
+        } else {
             return 'passou';
         }
-
     }
 }
