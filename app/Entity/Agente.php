@@ -11,6 +11,7 @@ class Agente {
   public $id;
   public $nome;
   public $cpf;
+  public $telefone;
   public $email;
   public $cat_func;
   public $ativo;
@@ -33,13 +34,14 @@ class Agente {
                             'id'         => $newId,
                             'nome'       => $this->nome,
                             'cpf'        => $this->cpf,
+                            'telefone'   => $this->telefone,
                             'email'      => $this->email,
                             'cat_func'   => $this->cat_func,
                             'ativo'      => $this->ativo,
                             'lotacao'    => $this->lotacao,
                             'senha'      => $this->senha,
                             'created_at' => date("Y-m-d H:i:s"),
-                          //  'updated_at' => $this->updated_at,
+                            // 'updated_at' => $this->updated_at,
                             'user'       => $this->user
                        ]);
 
@@ -47,9 +49,7 @@ class Agente {
     return true;
   }
 
-
-
-  /**
+/**
    * Método responsável por atualizar REGISTRO no banco
    * @return boolean
    */
@@ -68,7 +68,29 @@ class Agente {
                               ]);
   }
 
-  /**
+/**
+ * Método responsável por atualizar REGISTRO no banco
+ * @return boolean
+ */
+public function atualizarAtivo(){ 
+  return (new Database('agentes'))->update('id = "'.$this->id.'" ',[
+                              'ativo'      => $this->ativo
+                            ]);
+}
+
+/**
+ * Método responsável por atualizar REGISTRO no banco
+ * @return boolean
+ */
+public function atualizarCatFunc(){ 
+    if($this->cat_func == 'c' || $this->cat_func == 'e'){
+        return (new Database('agentes'))->update('id = "'.$this->id.'" ',[
+            'cat_func' => $this->cat_func
+        ]);
+    }
+}
+
+/**
    * Método responsável por excluir a professor do banco
    * @return boolean
    */
@@ -76,7 +98,7 @@ class Agente {
     return (new Database('agentes'))->delete('id = '.$this->id);
   }
 
-  /**
+/**
    * Método responsável por obter as professores do banco de dados
    * @param  string $whereagente
    * @param  string $order
@@ -88,7 +110,7 @@ class Agente {
                                   ->fetchAll(PDO::FETCH_CLASS,self::class);
   }
 
-  /**
+/**
    * Método responsável por obter as professores do banco de dados
    * @param  string $where
    * @param  string $order
@@ -102,7 +124,7 @@ class Agente {
   }
 
 
-  /**
+/**
    * Método responsável por obter a quantidade de registros
    * @param  integer $id
    * @return integer

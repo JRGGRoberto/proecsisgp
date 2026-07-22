@@ -9,29 +9,26 @@
 
 require '../vendor/autoload.php';
 
-function mudaAbreviacaoCampoAlterado($abreviacao)
-{
-    $abrevia = [
-        'vigen_ini' => 'Início da vigência',
-        'vigen_fim' => 'Fim da vigência',
-        'id_prof' => 'Coordenador da proposta',
-        'titulo' => 'Título da proposta',
-        'tide' => 'TIDE',
-    ];
 
-    return $abrevia[$abreviacao];
-}
+function mudaAbreviacaoCampoAlterado($abreviacao){
+  $abrevia = [
+    'vigen_ini' => 'Início da vigência',
+    'vigen_fim' => 'Fim da vigência',
+    'id_prof' => 'Coordenador da proposta',
+    'titulo' => 'Título da proposta',
+    'tide' => 'TIDE'
+  ];
+  return $abrevia[$abreviacao];
+};
 
-function mudaAbreviacaoAprovacao($abreviacao)
-{
-    $abrevia = [
-        'r' => 'Reprovado',
-        'a' => 'Aprovado',
-        'n' => 'Novo',
-        'e' => 'Em espera',
-    ];
-
-    return $abrevia[$abreviacao];
+function mudaAbreviacaoAprovacao($abreviacao){
+  $abrevia = [
+    'r' => 'Reprovado',
+    'a' => 'Aprovado',
+    'n' => 'Novo',
+    'e' => 'Em espera'
+  ];
+  return $abrevia[$abreviacao];
 }
 
 function mudaAbreviacaoTipoPropostas($abreviacao)
@@ -146,15 +143,32 @@ function mudaAbreviacaoTipoRel($abreviacao)
     return $abrevia[$abreviacao];
 }
 
-function tipoRelatorioIcon($abreviacao)
-{
+
+function mudaAbreviacaoCatFunc($abreviacao){
+  $abrevia = [
+    'e' => 'Efetivo',
+    'c' => 'Temporário',
+    'd' => 'Cargo'
+  ];
+  return $abrevia[$abreviacao];
+}
+
+function tipoRelatorioIcon($abreviacao) {
     $abrevia = [
         'fi' => '📊 Relatório Final ',
         're' => '📊 Relatório Final com renovação ',
         'pr' => '📊 Relatório Final com prorrogação',
         'pa' => '📊 Relatório Parcial ',
         'im' => '📊 Final importado ',
-    ];
-
+    ]; 
     return $abrevia[$abreviacao];
+}
+
+function tipoSolicitacao($abreviacao){
+  $abrevia = [
+    'reativacao' => 'Reativação',
+    'desativacao' => 'Desativação',
+    'cadastro' => 'Cadastro'
+  ];
+  return $abrevia[$abreviacao];
 }

@@ -20,24 +20,8 @@ function validaCPF(cpf) {
 	return true;
 }
 
-function aplicarValidacaoCPF(idFormulario, idCampoCPF = 'cpf') {
-
-    const formulario = document.getElementById(idFormulario);
-    const campoCPF = document.getElementById(idCampoCPF);
-
-    if (!formulario || !campoCPF) return;
-
-    formulario.addEventListener('submit', function(e) {
-
-        if (!validaCPF(campoCPF.value)) {
-            e.preventDefault();
-            alert('CPF inválido. Verifique o número digitado.');
-            campoCPF.focus();
-        }
-
-    });
-
-    campoCPF.addEventListener('input', function(e) {
+function arrumarCPF(valorCPF){
+    valorCPF.addEventListener('input', function(e) {
 
         let value = e.target.value;
 
