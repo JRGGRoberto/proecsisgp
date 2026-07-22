@@ -1,7 +1,7 @@
 <?php
 $adm = '';
 
-if ($tipo == 'prof'){
+if ($tipo == 'prof') {
     $form = 'Professor';
     $titulos = 'Professores';
     $valueForm = '';
@@ -10,8 +10,7 @@ if ($tipo == 'prof'){
     $colMdCatFunc = '2';
     $colMdCampus = '3';
     $colMdPortaria = '10';
-}
-elseif ($tipo == 'ag'){
+} elseif ($tipo == 'ag') {
     $form = 'Agente';
     $titulos = 'Agentes';
     $valueForm = 'n/a';
@@ -23,18 +22,17 @@ elseif ($tipo == 'ag'){
 }
 
 $anoAtual = date('Y');
-$proxAno = date('Y')+1;
+$proxAno = date('Y') + 1;
 
-if ($_GET['valida'] == 'true' && $validade == 1){
+if ($_GET['valida'] == 'true' && $validade == 1) {
     $btnEnviar = 'Cadastrar';
     $adm = '[Administrador]';
-}
-else {
+} else {
     $btnEnviar = 'Solicitar cadastro';
 }
 
 // Mensagens dependendo de acordo com o sucesso
-$alert ='';
+$alert = '';
 if (isset($_GET['sucesso']) && $_GET['sucesso'] == 1) {
     $alert = '
         <div class="alert alert-success alert-dismissible fade show d-flex justify-content-center align-items-center text-center" role="alert">
@@ -44,7 +42,7 @@ if (isset($_GET['sucesso']) && $_GET['sucesso'] == 1) {
             </button>
         </div>
     ';
-}elseif (isset($_GET['sucesso']) && $_GET['sucesso'] == 2) {
+} elseif (isset($_GET['sucesso']) && $_GET['sucesso'] == 2) {
     $alert = '
         <div class="alert alert-success alert-dismissible fade show d-flex justify-content-center align-items-center text-center" role="alert">
             Usuário cadastrado com sucesso!
@@ -53,7 +51,7 @@ if (isset($_GET['sucesso']) && $_GET['sucesso'] == 1) {
             </button>
         </div>
     ';
-}elseif (isset($_GET['sucesso']) && $_GET['sucesso'] == 'false') {
+} elseif (isset($_GET['sucesso']) && $_GET['sucesso'] == 'false') {
     $alert = '
         <div class="alert alert-danger alert-dismissible fade show d-flex justify-content-center align-items-center text-center" role="alert">
             Erro ao realizar cadastro!
@@ -79,10 +77,10 @@ $htmlTitulacao = '
         <label for="titulacao">Titulação</label>
         <select id="titulacao" name="titulacao" class="form-control" required>
             <option value="'.$valueForm.'" selected> Selecione... </option>
-            <option value="mestre" >Mestre</option>
-            <option value="doutor" >Doutor</option>
-            <option value="especialista" >Especialista</option>
-            <option value="graduado" >Graduado</option>
+            <option value="Mestre" >Mestre</option>
+            <option value="Doutor" >Doutor</option>
+            <option value="Especialista" >Especialista</option>
+            <option value="Bacharel" >Bacharel</option>
         </select>
     </div>
 ';
@@ -219,7 +217,6 @@ $htmlAnoLetivo = '
     </div>
 ';
 
-
 ?>
 
 <!-- Os JS abaixo estão sendo usados dentro de func_filtroCPF e func_filtroEmail -->
@@ -239,7 +236,7 @@ $htmlAnoLetivo = '
 <main class="container mt-4">
 
     <div class="form-row d-flex align-items-center mb-3">
-        <h1 class="mb-0"><?= $btnEnviar.' '.$form.' '.$adm?></h1>
+        <h1 class="mb-0"><?php echo $btnEnviar.' '.$form.' '.$adm; ?></h1>
         <button
             type="button"
             class="btn btn-primary btn-sm ml-auto"
@@ -249,26 +246,26 @@ $htmlAnoLetivo = '
         </button>
     </div>
     <p class="mb-4">
-        <strong>As solicitações serão encaminhadas para uma avaliação e futura adição dos <?=$titulos?> solicitados</strong>
+        <strong>As solicitações serão encaminhadas para uma avaliação e futura adição dos <?php echo $titulos; ?> solicitados</strong>
     </p>
 
     <!-- Mensagem de Sucesso -->
     <div>
-        <?php echo $alert ?>
+        <?php echo $alert; ?>
     </div>
-    <?php if (isset($_GET['sucesso']) && $_GET['sucesso'] == 1): ?>
+    <?php if (isset($_GET['sucesso']) && $_GET['sucesso'] == 1) { ?>
         <script>
             const url = new URL(window.location);
             url.search = url.search.replace('sucesso=1', 'sucesso');
             window.history.replaceState({}, document.title, url);
         </script>
-    <?php elseif (isset($_GET['sucesso']) && $_GET['sucesso'] == 2): ?>
+    <?php } elseif (isset($_GET['sucesso']) && $_GET['sucesso'] == 2) { ?>
         <script>
             const url = new URL(window.location);
             url.search = url.search.replace('sucesso=2', 'sucesso');
             window.history.replaceState({}, document.title, url);
         </script>
-    <?php endif; ?>
+    <?php } ?>
 
     <!-- Mostra a mensagem de alerta -->
     <div id="mensagens"></div>
@@ -299,59 +296,59 @@ $htmlAnoLetivo = '
 
         </div>
 
-        <?php if($tipo == 'prof'): ?>
+        <?php if ($tipo == 'prof') { ?>
             <!-- Linha 2 -->
             <div class="form-row">
-                <?php 
+                <?php
                     echo $htmlEmail;
-                    echo $htmlTitulacao;
-                ?>
+            echo $htmlTitulacao;
+            ?>
             </div>
 
             <!-- Linha 3 -->
             <div class="form-row">
-                <?php 
-                    echo $htmlAnoLetivo;
-                    echo $htmlPortaria;
-                ?>
+                <?php
+                echo $htmlAnoLetivo;
+            echo $htmlPortaria;
+            ?>
             </div>
 
             <!-- Linha 4 -->
             <div class="form-row">
-                <?php 
-                    echo $htmlCampus;
-                    echo $htmlCentro;
-                    echo $htmlColegiado;
-                ?>
+                <?php
+                echo $htmlCampus;
+            echo $htmlCentro;
+            echo $htmlColegiado;
+            ?>
             </div>
 
             <!-- Linha 5 -->
             <div class="form-row align-items-end">
-                <?php 
-                    echo $htmlCatFunc;
-                    echo $htmlRT;
-                    echo $htmlLattes;
-                ?>
+                <?php
+                echo $htmlCatFunc;
+            echo $htmlRT;
+            echo $htmlLattes;
+            ?>
             </div>
 
-        <?php elseif($tipo == 'ag'): ?>
+        <?php } elseif ($tipo == 'ag') { ?>
             <!-- Linha 2 -->
             <div class="form-row">
-                <?php 
-                    echo $htmlCatFunc;
-                    echo $htmlEmail;
-                ?>
+                <?php
+                echo $htmlCatFunc;
+            echo $htmlEmail;
+            ?>
             </div>
 
             <!-- Linha 3 -->
             <div class="form-row">
-                <?php 
-                    echo $htmlCampus;
-                    echo $htmlPortaria;
-                ?>
+                <?php
+                echo $htmlCampus;
+            echo $htmlPortaria;
+            ?>
             </div>
 
-        <?php endif; ?>
+        <?php } ?>
 
         <!-- Botões -->
         <div class="form-row mt-3">
@@ -360,7 +357,7 @@ $htmlAnoLetivo = '
                     type="submit"
                     class="btn btn-success"
                 >
-                    <?= $btnEnviar ?>
+                    <?php echo $btnEnviar; ?>
                 </button>
 
                 <button

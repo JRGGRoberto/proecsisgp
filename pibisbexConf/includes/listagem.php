@@ -25,7 +25,7 @@ foreach ($lista as $l) {
     if (isset($prj1[1])) {
         ++$qntProj;
         if ($prj1[1] == 1) {
-            $do1 = '<div class="col"><button type="button" class="btn btn-success" >'.$prj1[0].'</button><br><sup>'.$prj1[2].'/190</sup></div>';
+            $do1 = '<div class="col"><button type="button" class="btn btn-success col-12">'.$prj1[0].'</button><br><span class="badge badge-info">'.$prj1[2].'/190</span> <span class="badge badge-secondary">'.$prj1[3].'</span></div>';
             ++$qntProjDone;
         } else {
             $do1 = '<div class="col"><button type="button" class="btn btn-outline-secondary">'.$prj1[0].'</button></div>';
@@ -37,7 +37,7 @@ foreach ($lista as $l) {
     if (isset($prj2[1])) {
         ++$qntProj;
         if ($prj2[1] == 1) {
-            $do2 = '<div class="col"><button type="button" class="btn btn-success" >'.$prj2[0].'</button><br><sup>'.$prj2[2].'/190</sup><br>'.$prj2[3].'</div>';
+            $do2 = '<div class="col"><button type="button" class="btn btn-success col-12">'.$prj2[0].'</button><br><span class="badge badge-info">'.$prj2[2].'/190</span> <span class="badge badge-secondary">'.$prj2[3].'</span></div>';
             ++$qntProjDone;
         } else {
             $do2 = '<div class="col"><button type="button" class="btn btn-outline-secondary">'.$prj2[0].'</button></div>';
@@ -49,7 +49,7 @@ foreach ($lista as $l) {
     if (isset($prj3[1])) {
         ++$qntProj;
         if ($prj3[1] == 1) {
-            $do3 = '<div class="col"><button type="button" class="btn btn-success">'.$prj3[0].'</button><br><span class="badge badge-info">'.$prj3[2].'/190</span> <span class="badge badge-secondary">'.$prj3[3].'</span></div>';
+            $do3 = '<div class="col"><button type="button" class="btn btn-success col-12">'.$prj3[0].'</button><br><span class="badge badge-info">'.$prj3[2].'/190</span> <span class="badge badge-secondary">'.$prj3[3].'</span></div>';
             ++$qntProjDone;
         } else {
             $do3 = '<div class="col"><button type="button" class="btn btn-outline-secondary">'.$prj3[0].'</button></div>';
@@ -61,7 +61,7 @@ foreach ($lista as $l) {
     if (isset($prj4[1])) {
         ++$qntProj;
         if ($prj4[1] == 1) {
-            $do4 = '<div class="col"><button type="button" class="btn btn-success">'.$prj4[0].'</button><br><sup>'.$prj4[2].'/190</sup></div>';
+            $do4 = '<div class="col"><button type="button" class="btn btn-success col-12">'.$prj4[0].'</button><br><span class="badge badge-info">'.$prj4[2].'/190</span> <span class="badge badge-secondary">'.$prj4[3].'</span></div>';
             ++$qntProjDone;
         } else {
             $do4 = '<div class="col"><button type="button" class="btn btn-outline-secondary">'.$prj4[0].'</button></div>';
