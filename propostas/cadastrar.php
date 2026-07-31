@@ -323,10 +323,10 @@ $scriptVars =
 </script>";
 
 include '../includes/header.php';
-
+$uCAnome = $user['ca_nome'];
 echo '
 <script>
-campusNome = '.$user['ca_nome'].' 
+campusNome = "'.$uCAnome.'"
 </script>';
 
 if (in_array($t, $anexoIII)) {

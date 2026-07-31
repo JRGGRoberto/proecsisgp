@@ -1,15 +1,16 @@
 <?php
-// API que faz atualização na tabela projetos e na tabela solicitacao_adendos
+
+// API que faz atualização na tabela projetos e na tabela Solicitacao_adendos
 // Modifica os dados se forem aprovados e informa quem autorizou a modificação.
 // Utilizado em 'solicitaAlteracao/includes/listagemAtualizar.php' passando os parâmetros por $_GET
 
 require '../vendor/autoload.php';
 
-use App\Session\Login;
-use App\Entity\Outros;
-use App\Entity\Projeto; 
-use App\Entity\solicitacao_adendos;
 use App\Entity\EmailService;
+use App\Entity\Outros;
+use App\Entity\Projeto;
+use App\Entity\Solicitacao_adendos;
+use App\Session\Login;
 
 Login::requireLogin();
 $user = Login::getUsuarioLogado();
@@ -18,7 +19,7 @@ $user = Login::getUsuarioLogado();
 session_start();
 
 // Dados que serão atualizados na tabela projetos (apenas se aprovar)
-$dadosSolicitacao = solicitacao_adendos::getRegistros('id = "'.$_GET['idAdendos'].'"');
+$dadosSolicitacao = Solicitacao_adendos::getRegistros('id = "'.$_GET['idAdendos'].'"');
 $idLocal = $dadosSolicitacao[0]->id_localValidador;
 // $solicitante_nome = $dadosSolicitacao[0]->solicitante_nome;
 $dado_novo = $dadosSolicitacao[0]->dado_novo;
@@ -31,8 +32,7 @@ $campoAlterado = $qryCampo->campoAlterado;
 
 // Pega se for feito por um cargo especial
 require_once '../includes/funcoes/func_verificaCargosEspeciais.php';
-if ($campoAlterado == 'id_prof'){
-
+if ($campoAlterado == 'id_prof') {
     // Pega o nome do novo dono do projeto
     require_once '../includes/funcoes/func_recuperarDadosPessoas.php';
     $paramns['idPessoa'] = $dado_novo;
@@ -47,7 +47,7 @@ if ($campoAlterado == 'id_prof'){
     $location = 'DEC';
 }
 
-// Dados que serão inseridos na tabela solicitacao_adendos (aprovando ou não)
+// Dados que serão inseridos na tabela Solicitacao_adendos (aprovando ou não)
 $validador_id = $user['id'];
 $validador_nome = $user['nome'];
 $validador_cargo = $cargo;
@@ -63,12 +63,12 @@ if ($campoAlterado === 'vigen_fim' || $campoAlterado === 'vige_ini') {
     $dado_novo = $dado_novo.$hora;
 }
 
-// Atualiza a tabela solicitacao_adendos
+// Atualiza a tabela Solicitacao_adendos
 function updateAdendos($validador_id, $validador_nome, $validador_cargo, $email_ca, $mensagem_validador, $resultado)
 {
     $data = new DateTime('now', new DateTimeZone('America/Sao_Paulo'));
 
-    $adendo = new solicitacao_adendos();
+    $adendo = new Solicitacao_adendos();
     $adendo->id = $_GET['idAdendos'];
     $adendo->validador_id = $validador_id;
     $adendo->validador_nome = $validador_nome;
@@ -79,19 +79,18 @@ function updateAdendos($validador_id, $validador_nome, $validador_cargo, $email_
     $adendo->data_resultado = $data->format('Y-m-d H:i:s.v');
     $adendo->atualizar();
 
-    
     require_once '../includes/funcoes/func_pendencia.php';
     excluirPendencia($_GET['idAdendos'], 'alt');
 }
 
 $email = new EmailService();
 // Se o resultado for aprovado, é atualizado na tabela projeto
-if ($resultado === 'a'){
+if ($resultado === 'a') {
     $projetos = new Projeto();
     $projetos = Projeto::getProjeto($idproj, $verProj);
     $projetos->$campoAlterado = $dado_novo;
 
-    if ($projetos->atualizar() == 1){
+    if ($projetos->atualizar() == 1) {
         updateAdendos($validador_id, $validador_nome, $validador_cargo, $email_ca, $mensagem_validador, $resultado);
         // Envio de email de confirmação
         $enviado = $email->analiseAlteracaoPropostas(
@@ -102,7 +101,7 @@ if ($resultado === 'a'){
         );
 
         if ($enviado == 'avaliador' || $enviado == 'autor' || $enviado == 'novo autor') {
-            $_SESSION['msg'] = "Erro ao enviar e-mail de confirmação para o ".$enviado." da proposta";
+            $_SESSION['msg'] = 'Erro ao enviar e-mail de confirmação para o '.$enviado.' da proposta';
         }
         $_SESSION['msg'] = 'Avaliação realizada com sucesso!';
     } else {
@@ -118,11 +117,10 @@ if ($resultado === 'a'){
         $user['email']
     );
     if (!$enviado) {
-        $_SESSION['msg'] = "Erro ao enviar e-mail de confirmação";
+        $_SESSION['msg'] = 'Erro ao enviar e-mail de confirmação';
     }
     $_SESSION['msg'] = 'Avaliação realizada com sucesso!';
-}
-else {
+} else {
     $_SESSION['msg'] = 'Não foi possível realizar essa avaliação, tente novamente';
 }
 

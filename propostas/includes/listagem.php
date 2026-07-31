@@ -994,7 +994,7 @@ echo '</script>';
     // console.log('para_avaliar: '+para_avaliar);
     // exit;
 
-    fetch(`../api/enviaAlteracao.php`, {
+    fetch('../api/enviaAlteracao.php', {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json'
@@ -1009,15 +1009,28 @@ echo '</script>';
       })
     })
     .then(async (res) => {
+
+      // const text = await res.text();
+      // console.log("Stt:", res.status);
+      // console.log("R:", res);
+
+
       let data;
 
       try {
         data = await res.json();
       } catch {
-        // console.error("Resposta inválida:", text); // 
+        // console.log("Resposta inválida:", text); // 
         // throw new Error("Servidor retornou algo inválido"); //
         throw new Error("Ocorreu um erro interno ao processar o envio.");
       }
+
+      // try {
+      //   data = JSON.parse(text);
+      // } catch (e) {
+      //     throw new Error ("Resposta invalida:\n"+text);
+      // }
+
       if (data.status == 'ok') {
         $('#SAP').modal('hide');
         mostrarAlert('success', 'Solicitação enviada com sucesso!');

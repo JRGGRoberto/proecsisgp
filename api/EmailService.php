@@ -263,32 +263,4 @@ class EmailService
             return 'passou';
         }
     }
-
-    public function avaliacaoRelatorio($relatorio, $projeto, $resultado)
-    {
-        // $relatorio -> obj
-        // $resultado -> 'n' 'a' 'r'
-
-        require_once '../includes/mailBody/mailAvaliacaoRelatorio.php';
-        $dados = mailAvaliacaoRelatorio($relatorio, $projeto, $resultado);
-
-        $insert = [
-            'tipo' => $dados['tipo'],
-            'idref' => $dados['idref'],
-        ];
-
-        if ($dados['avaliador']) {
-            $dadosAvaliador = array_merge($insert, $dados['avaliador']);
-            $this->enviar($dadosAvaliador);
-        }
-
-        if ($dados['autor']) {
-            $dadosAutor = array_merge($insert, $dados['autor']);
-            $this->enviar($dadosAutor);
-        }
-
-        if (!$dados['autor'] || !$dados['avaliador']) {
-            $this->enviar($dados);
-        }
-    }
 }

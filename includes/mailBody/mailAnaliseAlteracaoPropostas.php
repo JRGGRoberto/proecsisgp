@@ -1,17 +1,15 @@
 <?php
 
 use App\Entity\Professor;
-use App\Entity\solicitacao_adendos;
+use App\Entity\Solicitacao_adendos;
 
 require '../vendor/autoload.php';
 
-
-
-function mailAnaliseAlteracaoPropostas($idSolicitacao, $resultado, $userNome, $userEmail) {
-
-    // Pega as infos da view solicitacao_adendos_v
+function mailAnaliseAlteracaoPropostas($idSolicitacao, $resultado, $userNome, $userEmail)
+{
+    // Pega as infos da view Solicitacao_adendos_v
     $where = 'id = "'.$idSolicitacao.'"';
-    $ObjSolicitacao = solicitacao_adendos::getRegistros($where);
+    $ObjSolicitacao = Solicitacao_adendos::getRegistros($where);
 
     $tipo = 8;
 
@@ -86,7 +84,7 @@ function mailAnaliseAlteracaoPropostas($idSolicitacao, $resultado, $userNome, $u
     $dados = [
         'tipo' => $tipo,
         'idref' => $idSolicitacao,
-        
+
         'avaliador' => [
             'destinatario' => $avaliadorDestinatario,
             'nome' => $avaliadorNome,
@@ -98,16 +96,16 @@ function mailAnaliseAlteracaoPropostas($idSolicitacao, $resultado, $userNome, $u
             'destinatario' => $autorDestinatario,
             'nome' => $autorNome,
             'assunto' => $autorAssunto,
-            'mensagem' => $autorMensagem
+            'mensagem' => $autorMensagem,
         ],
 
         'novoAutor' => [
             'destinatario' => $novoAutorDestinatario,
             'nome' => $novoAutorNome,
             'assunto' => $novoAutorAssunto,
-            'mensagem' => $novoAutorMensagem
-        ]
-
+            'mensagem' => $novoAutorMensagem,
+        ],
     ];
+
     return $dados;
 }
