@@ -7,7 +7,6 @@ use App\Entity\Inscricao;
 $options = '';
 $idCand = '';
 
-
 $cpf = $_POST['cpf'];
 // $senha = $_POST['senha'];
 
@@ -15,25 +14,19 @@ $cand = Candidato::getCpf($cpf);
 // echo '<pre>';
 // print_r($cand);
 // echo '</pre>';
-// exit; 
+// exit;
 
 $msg = '';
-
-
 
 if (!$cand) {
     $cand = new Candidato();
     $idCand = null;
     $evento = 'cadastrar';
-
-
 } else {
     // $evento = 'editar';
     // $cand2 = (object) Candidato::getCpf($_POST['cpf']);
     // $idCand = $cand2->id;
     header('location: cadastrar.php?erro=1');
-
-    
 }
 
 $ip = 'ααα.ABC.XYZ.ΩΩΩ';
@@ -82,18 +75,6 @@ if (isset($_POST['nome'])) {
           <strong>Success!</strong> Dados de usuário atualizado
         </div>';
     }
-
-    if ($_POST['inscricao'] != -1) {
-        $inscricao = new Inscricao();
-        $inscricao->id_can = $idCand;
-        $inscricao->id_prog = $_POST['inscricao'];
-        $inscricao->cadastrar();
-        $msg = '
-        <div class="alert alert-success alert-dismissible">
-          <button type="button" class="close" data-dismiss="alert">&times;</button>
-          <strong>Success!</strong> Inscrição no programa realizada
-        </div>';
-    }
 }
 
 if (isset($_POST['id_cand_del'])) {
@@ -126,7 +107,6 @@ echo '
 <script>
    cand_id = "'.$idCand.'";
 </script>';
-
 
 include __DIR__.'/includes/formulario.php';
 include '../includes/footer.php';

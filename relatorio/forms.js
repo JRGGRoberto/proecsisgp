@@ -1,6 +1,6 @@
 $('#sumnot_resumo').summernote({
   placeholder: 'Descrever o resumo da ação de extensão (no máximo 250 palavras), destacando sua relevância na perspectiva acadêmica e social, o público a que se destina e o resultado esperado. Este texto poderá ser publicado na homepage da PROEC, portanto, recomenda-se revisá-lo corretamente.',
-  height: 250,
+  height: 'auto',
   tabsize: 2,
   toolbar: [
     // [groupName, [list of button]]
@@ -20,7 +20,7 @@ $('#sumnot_resumo').summernote({
 $('#sumnot_atvd_per').summernote({
   placeholder: 'Indicar e detalhar quais atividades foram realizadas até o momento, de acordo com o cronograma apresentado.',
   tabsize: 2,
-  height: 250,
+  height: 'auto',
   toolbar: [
     // [groupName, [list of button]]
     
@@ -39,7 +39,7 @@ $('#sumnot_atvd_per').summernote({
 $('#sumnot_alteracoes').summernote({
   placeholder: 'Em caso de alteração na proposta, apresentar os pontos alterados e a justificativa',
   tabsize: 2,
-  height: 250,
+  height: 'auto',
   toolbar: [
     // [groupName, [list of button]]
     
@@ -58,7 +58,7 @@ $('#sumnot_alteracoes').summernote({
 $('#sumnot_atvd_prox_per').summernote({
   placeholder: 'Indicar quais atividades serão realizadas para o período restante da proposta.',
   tabsize: 2,
-  height: 250,
+  height: 'auto',
   toolbar: [
     // [groupName, [list of button]]
     
@@ -78,7 +78,7 @@ $('#sumnot_atvd_prox_per').summernote({
 $('#sumnot_contribuicao').summernote({
   placeholder: '(Identificar de que forma os resultados esperados do projeto contribuirão no cenário científico, tecnológicoe cultural  ). 10 linhas máximo',
   tabsize: 2,
-  height: 250,
+  height: 'auto',
   toolbar: [
     // [groupName, [list of button]]
     
@@ -97,7 +97,7 @@ $('#sumnot_contribuicao').summernote({
 $('#sumnot_cronograma').summernote({
   placeholder: '(considerar o período de vigência do projeto)',
   tabsize: 2,
-  height: 250,
+  height: 'auto',
   toolbar: [
     // [groupName, [list of button]]
     
@@ -116,7 +116,7 @@ $('#sumnot_cronograma').summernote({
 $('#sumnot_referencia').summernote({
   placeholder: 'Referências',
   tabsize: 2,
-  height: 250,
+  height: 'auto',
   toolbar: [
     // [groupName, [list of button]]
     
@@ -137,7 +137,7 @@ $('#sumnot_referencia').summernote({
 $('#sumnot_obs').summernote({
   placeholder: 'Observações',
   tabsize: 2,
-  height: 250,
+  height: 'auto',
   toolbar: [
     // [groupName, [list of button]]
     
@@ -157,7 +157,7 @@ $('#sumnot_obs').summernote({
 $('#sumnot_atividades').summernote({
   placeholder: 'Nas modalidades Programa ou Projeto',
   tabsize: 2,
-  height: 250,
+  height: 'auto',
   toolbar: [
     ['style', ['bold', 'italic', 'underline', 'hr', 'clear']],
     ['font', ['strikethrough', 'superscript', 'subscript']],
@@ -174,7 +174,7 @@ $('#sumnot_atividades').summernote({
 $('#sumnot_rel_tec_cien_executado').summernote({
   placeholder: 'Elaborar um texto indicando, obrigatoriamente, os objetivos alcançados, metodologia utilizada, dificuldades, resultados e conclusões. Este texto poderá ser substituído por um artigo aprovado e/ou publicado em periódico ou em anais de evento de difusão acadêmica. Neste caso, apresentar cópia do artigo.',
   tabsize: 2,
-  height: 250,
+  height: 'AUTO',
   toolbar: [
     ['style', ['bold', 'italic', 'underline', 'hr', 'clear']],
     ['font', ['strikethrough', 'superscript', 'subscript']],
@@ -192,7 +192,7 @@ $('#sumnot_rel_tec_cien_executado').summernote({
 $('#sumnot_divulgacao').summernote({
   placeholder: 'Conforme Regulamento de Extensão e Cultura  da UNESPAR, Art. 27 e parágrafos.',
   tabsize: 2,
-  height: 250,
+  height: 'AUTO',
   toolbar: [
     ['style', ['bold', 'italic', 'underline', 'hr', 'clear']],
     ['font', ['strikethrough', 'superscript', 'subscript']],

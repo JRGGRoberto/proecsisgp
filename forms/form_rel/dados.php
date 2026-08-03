@@ -3,6 +3,7 @@
 require '../vendor/autoload.php';
 
 use App\Entity\Arquivo;
+use App\Entity\EmailService;
 use App\Entity\Form_Rel;
 use App\Entity\Professor;
 use App\Entity\Projeto;
@@ -78,9 +79,13 @@ if (isset($_POST['resultado'])) {
         switch ($form->resultado) {
             case 'a':
                 $avaliacaoRelatorio->novaEtapaAvaliacao();
+                $email = new EmailService();
+                $email->avaliacaoRelatorio($relatorio, $obProjeto, $form->resultado);
                 break;
             case 'r':
                 $avaliacaoRelatorio->solicitarAlteracoes();
+                $email = new EmailService();
+                $email->avaliacaoRelatorio($relatorio, $obProjeto, $form->resultado);
                 break;
             case 'e':
                 echo 'Salvo para futuro converencia';

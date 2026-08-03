@@ -122,4 +122,20 @@ if (isset($_POST['atvd_per'])) {
 include '../includes/header.php';
 include __DIR__.'/includes/formParcial.php';
 echo $scriptDisble;
+echo '<script src="../includes/funcoes/func_formataTextArea.js"></script>';
+
+echo "
+
+<script>
+  function chSizeTextArea(txtArea) {
+    const textarea = document.getElementById(txtArea);
+    textarea.style.height = textarea.scrollHeight + 'px';
+  }
+
+  chSizeTextArea('sumnot_atvd_per');
+  
+</script>
+
+";
+
 include '../includes/footer.php';

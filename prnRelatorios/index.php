@@ -51,6 +51,8 @@ function capturar_saida($arquivo, $parametros = [])
 
 function montaUrl($form)
 {
+    echo '<script src="../includes/funcoes/func_formataTextArea.js"></script>';
+
     return '../forms/'.$form.'/vista.php';
 }
 
@@ -58,13 +60,11 @@ $resultado = '';
 $textApagar = '<a href="../../propostas" class="btn btn-primary btn-sm mr-2">Voltar</a>';
 $textApagar2 = '&ensp;&ensp;<span id="xpto141617">&ensp;</span>&ensp;';
 if (count($forms) == 0) {
-     
     ob_start();
     include '../includes/headers.php';
     $resultado = ob_get_clean();
     $resultado .= '<div class="alert alert-info">Nenhuma avaliação encontrada para este projeto.</div>';
     $resultado .= file_get_contents('../includes/footer.php');
-    
 } else {
     foreach ($forms as $frm) {
         $cor = $frm->res == 'a' ? 'success' : 'danger';

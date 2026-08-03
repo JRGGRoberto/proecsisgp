@@ -288,7 +288,7 @@ include '../includes/header.php';
 
 echo '
 <script>
-campusNome = '.$user['ca_nome'].' 
+campusNome = '.$user['ca_nome'].'
 </script>';
 
 // verifica se o usuário é dono do projeto

@@ -4,14 +4,24 @@ require '../vendor/autoload.php';
 
 use App\Db\Pagination;
 use App\Entity\Palavras;
+use App\Entity\ProjMaster;
 use App\Session\Login;
 
 // Obriga o usuário a estar logado
 Login::requireLogin();
 $user = Login::getUsuarioLogado();
 
-// Busca
+$relPendentes = ProjMaster::getRelatoriosPendentes($user['id']);
+$inadimplente = false;
+foreach ($relPendentes as $p) {
+    if ($p['envio_rel_parcial'] === 'rel parcial pendente'
+        || $p['envio_rel_final'] === 'rel final pendente') {
+        $inadimplente = true;
+        // break;
+    }
+}
 
+// Busca
 $titulo = filter_input(INPUT_GET, 'titulo', FILTER_SANITIZE_STRING);
 $palavra = filter_input(INPUT_GET, 'palavra', FILTER_SANITIZE_STRING);
 $protocolo = filter_input(INPUT_GET, 'protocolo', FILTER_SANITIZE_STRING);
@@ -59,7 +69,6 @@ if (($user['tipo'] == 'professor') || $user['tipo'] == 'prof') {
 }
 
 use App\Entity\Diversos;
-use App\Entity\ProjMaster;
 
 $sendColegiado = Diversos::qry($qry);
 $coolSelectSend = '';
@@ -74,30 +83,38 @@ foreach ($sendColegiado as $co) {
 
     $coolSelectSend .= '<option value="'.$co->id.'"  '.$dis.'>'.$co->nome.' '.$info.'</option>';
 }
-
 // $qryInadimplentes = "
-//     SELECT
+// select
 //         p.id,
 //         p.id_prof,
 //         p.titulo,
-//         p.vigen_ini as inicio,
-//         p.vigen_fim as fim
-//     FROM projmaster p
-//     LEFT JOIN relats r
-//         ON r.idproj = p.id
-//         AND r.tipo = 'pa'
-//     WHERE 
-//         r.id IS NULL
-//         AND p.id_prof = '".$user['id']."'
-//         AND TIMESTAMPDIFF(MONTH  , p.vigen_ini, p.vigen_fim) > 12
-//         AND DATE_ADD(p.vigen_ini, INTERVAL 12 MONTH) < CURRENT_DATE();
-// ";
-// $inadimplentes = Diversos::qry($qryInadimplentes);
-// echo '<pre>';
-// print_r($inadimplentes);
-// echo '</pre>';
+//         p.vigen_ini AS inicio,
+//         p.vigen_fim AS fim,
+//         p.estado,
 
-// Filtro de status
+// // $qryInadimplentes = "
+// //     SELECT
+// //         p.id,
+// //         p.id_prof,
+// //         p.titulo,
+// //         p.vigen_ini as inicio,
+// //         p.vigen_fim as fim
+// //     FROM projmaster p
+// //     LEFT JOIN relats r
+// //         ON r.idproj = p.id
+// //         AND r.tipo = 'pa'
+// //     WHERE 
+// //         r.id IS NULL
+// //         AND p.id_prof = '".$user['id']."'
+// //         AND TIMESTAMPDIFF(MONTH  , p.vigen_ini, p.vigen_fim) > 12
+// //         AND DATE_ADD(p.vigen_ini, INTERVAL 12 MONTH) < CURRENT_DATE();
+// // ";
+// // $inadimplentes = Diversos::qry($qryInadimplentes);
+// // echo '<pre>';
+// // print_r($inadimplentes);
+// // echo '</pre>';
+
+// // Filtro de status
 $filtroStatus = filter_input(INPUT_GET, 'filtroStatus', FILTER_SANITIZE_STRING);
 
 // Condições SQL

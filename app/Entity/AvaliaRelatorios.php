@@ -110,13 +110,6 @@ class AvaliaRelatorios
         limit 1
        ';
 
-        /*
-                 echo '<hr>'.
-                      '$id_rel: '.$id_rel.'<br>'.
-                      '$fase: '.$fase.'<br>'.
-                      '$id_professor: '.$id_professor.'<br>'.
-                      '<hr>'.$qry.'<hr>';
-        */
         $dados = Outros::q($qry);
         $instancia = $dados->id_instancia;
         // Se for uma resubmissão de uma recusa de [professor selecionado] a view to_avaliar_rel não retorna id_instancia

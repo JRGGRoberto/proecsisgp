@@ -469,7 +469,7 @@ class Projeto
     {
         $this->last_result = 'a';
         $this->edt = 0;
-        $this->titulo = $this->titulo.' RENOVACAO['.$this->protocolo.'] ';
+        $this->titulo = $this->titulo.' RENOVACAO ['.$this->protocolo.'] ';
         $this->protocolo = $this->protocolo.'R1';
         $this->id = null;
         $this->ver = 0;

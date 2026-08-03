@@ -77,7 +77,7 @@ foreach ($avaliacoes as $ava) {
     $tpRel = $ava->tipo == 'pa' ? 'p' : 'f';
 
     $resultados .= '
-      <div class="card mt-2">
+    <div class="card mt-2">
       <div class="card-header">
         <div class="row">
             <div class="col-sm-4"><a class="collapsed card-link" data-toggle="collapse" href="#p'.$ava->id.'">📃 '.$ava->titulo.'</a></div>

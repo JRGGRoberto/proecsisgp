@@ -1,4 +1,5 @@
 <?php
+
 // API que recebe os dados do formulário "formSAP" em listagem.php
 // Chama a função em '../includes/funcoes/func_enviaAlteracao.php'
 // Após isso retorna o status para o front se a solicitação de inserção na função der certo
@@ -38,19 +39,23 @@ try {
     Login::requireLogin();
     $user = Login::getUsuarioLogado();
 
-    $input = json_decode(file_get_contents("php://input"), true);
+    $input = json_decode(file_get_contents('php://input'), true);
 
     // Validação do input enviado
     if (in_array(null, $input, true)) {
-        throw new Exception("Um ou mais campos obrigatórios estão nulos ou não foram informados!");
+        throw new Exception('Um ou mais campos obrigatórios estão nulos ou não foram informados!');
     }
     if (!$input) {
-        // throw new Exception("JSON inválido"); // 
-        throw new Exception("Dados inválidos ou inexistentes!");
+        // throw new Exception("JSON inválido"); //
+        throw new Exception('Dados inválidos ou inexistentes!');
     }
 
     require_once '../includes/funcoes/func_enviaAlteracao.php';
     $ObjSolicitacao = enviaAlteracao($input, $user);
+
+    // echo json_encode($input);
+    // echo 'console.table('.$input.')';
+    // print_r($input);
 
     $email = new EmailService();
     $enviado = $email->solicitacaoAlteracaoPropostas(
@@ -59,29 +64,30 @@ try {
         $user['nome']
     );
 
-    if ($enviado == 'novoAutor'){
+    if ($enviado == 'novoAutor') {
         $enviado == 'novo autor';
     }
 
     if ($enviado == 'avaliador' || $enviado == 'autor' || $enviado == 'novo autor') {
-        throw new Exception("Erro ao enviar e-mail de confirmação para o ".$enviado." da proposta");
-    }
-    elseif ($enviado == 'passou'){
+        throw new Exception('Erro ao enviar e-mail de confirmação para o '.$enviado.' da proposta');
         echo json_encode([
-            "status" => "ok",
-            // "envia" => $enviado, // 
-            // "debug_input" => $input //
+            'status' => 'error',
+        ]);
+    } elseif ($enviado == 'passou') {
+        echo json_encode([
+            'status' => 'ok',
+            // 'envia' => $enviado, // dbg
+            // 'debug_input' => $input, // dbg
         ]);
     }
-
 } catch (Exception $e) {
-    http_response_code(500);
+    // http_response_code(500);
 
     echo json_encode([
-        "status" => "erro",
-        "msg" => $e->getMessage(),
-        // "envia" => 'erro envia', // 
-        // "text" => $e->getTraceAsString() //
+        'status' => 'erro',
+        'msg' => $e->getMessage(),
+        // 'envia' => 'erro envia', // dbg
+        // 'text' => $e->getTraceAsString(), // dbg
     ]);
     exit;
 }

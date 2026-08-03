@@ -47,7 +47,7 @@ if (isset($_POST['nome'])) {
     $obAgente->cpf = $_POST['cpf'];
     $obAgente->email = $_POST['email'];
     $obAgente->cat_func = $_POST['cat_func'];
-    $obAgente->ativo = $_POST['ativo'];
+    $obAgente->ativo = $_POST['ativo'] == 1 ? 1 : 0;
     $obAgente->lotacao = $_POST['lotacao'];
     //  $obAgente->config = $_POST['config'];
     $obAgente->updated_at = date('Y-m-d H:i:s');

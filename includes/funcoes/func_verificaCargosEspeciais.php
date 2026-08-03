@@ -1,7 +1,8 @@
 <?php
 // API para inserir um campo na tabela 
 
-require '../vendor/autoload.php';
+// require_once '../vendor/autoload.php';
+
 use App\Entity\Cargos_Especiais;
 
 // Pegar os dados apenas da PROEC

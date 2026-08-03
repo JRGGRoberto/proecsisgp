@@ -1,7 +1,7 @@
 <hr>
 <h4>Avaliação do projeto [<?php echo $proj->programa; ?>]: <?php echo $proj->nome; ?>
 
-<a href="."                                               class="btn btn-warning btn-sm float-right" > ↩️ Voltar</button>  <a href="./docs/<?php echo $proj->programa.'/'.$proj->link; ?>" target="_blank" class="btn btn-success btn-sm float-right">📃</a>
+<a href="."                                               class="btn btn-warning btn-sm float-right" > ↩️ Voltar</button>  <a href="./docs/all/<?php echo $proj->link; ?>" target="_blank" class="btn btn-success btn-sm float-right">📃</a>
 
 </h4>
 

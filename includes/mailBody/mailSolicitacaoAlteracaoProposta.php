@@ -2,7 +2,7 @@
 
 use App\Entity\Ca_Ce_Co;
 use App\Entity\Cargos_Especiais;
-use App\Entity\solicitacao_adendos;
+use App\Entity\Solicitacao_adendos;
 
 require '../vendor/autoload.php';
 
@@ -12,17 +12,17 @@ require '../vendor/autoload.php';
 // $userEmail = 'arthurguirro@gmail.com';
 // $userNome = 'Arthur';
 
-function mailSolicitacaoAlteracaoProposta($idSolicitacao, $userNome, $userEmail) {
-
+function mailSolicitacaoAlteracaoProposta($idSolicitacao, $userNome, $userEmail)
+{
     $tipo = 7;
 
     // Quem enviou a solicitação de modificação
     $autorDestinatario = $userEmail;
-    $autorNome = $userNome;    
-    
-    // Pega as infos da view solicitacao_adendos_v
+    $autorNome = $userNome;
+
+    // Pega as infos da view Solicitacao_adendos_v
     $where = 'id = "'.$idSolicitacao.'"';
-    $ObjSolicitacao = solicitacao_adendos::getRegistros($where);
+    $ObjSolicitacao = Solicitacao_adendos::getRegistros($where);
 
     // Pega quem vai receber o projeto para avaliação
     if ($ObjSolicitacao[0]->campoAlterado == 'id_prof') {
@@ -78,7 +78,7 @@ function mailSolicitacaoAlteracaoProposta($idSolicitacao, $userNome, $userEmail)
     $dados = [
         'tipo' => $tipo,
         'idref' => $idSolicitacao,
-        
+
         'avaliador' => [
             'destinatario' => $avaliadorDestinatario,
             'nome' => $avaliadorNome,
@@ -90,9 +90,9 @@ function mailSolicitacaoAlteracaoProposta($idSolicitacao, $userNome, $userEmail)
             'destinatario' => $autorDestinatario,
             'nome' => $autorNome,
             'assunto' => $autorAssunto,
-            'mensagem' => $autorMensagem
-        ]
-
+            'mensagem' => $autorMensagem,
+        ],
     ];
+
     return $dados;
 }

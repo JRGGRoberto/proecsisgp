@@ -22,7 +22,7 @@ foreach ($avaliacoes as $ava) {
         $detalhes .= '<div class="col-sm-1"><span class="badge badge-light">Q4: '.$ava->qn4.'</span></div>';
         $detalhes .= '<div class="col-sm-1"><span class="badge badge-light">Q5: '.$ava->qn5.'</span></div>';
         $detalhes .= '<div class="col-sm-1"><span class="badge badge-light">Q6: '.$ava->qn6.'</span></div>';
-        $detalhes .= '<div class="col-sm-1"><span class="badge badge-light">Q1: '.$ava->qn7.'</span></div>';
+        $detalhes .= '<div class="col-sm-1"><span class="badge badge-light">Q7: '.$ava->qn7.'</span></div>';
         $detalhes .= '<div class="col-sm-1"><span class="badge badge-light">Total: '.$ava->total.'</span></div>';
     } else {
         $detalhes = '<div class="col-sm-7"></div>';
@@ -32,7 +32,7 @@ foreach ($avaliacoes as $ava) {
       <div class="card mt-2">
         <div class="card-header">
           <div class="row">
-            <div class="col-sm-2"><a href="./docs/'.$ava->programa.'/'.$ava->link.'" target="_blank">📃 '.$ava->nomeproj.'</a></div>
+            <div class="col-sm-2"><a href="./docs/all/'.$ava->link.'" target="_blank">📃 '.$ava->nomeproj.'</a></div>
               '.$detalhes.'
             <div class="col-sm-1"><span class="badge badge-'.$cor[0].'">'.$cor[1].'</span></div>';
     if ($ava->avaliavel == 1) {

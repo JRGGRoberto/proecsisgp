@@ -48,14 +48,13 @@ $readonly = '';
 if(isset($_POST['nome'])){
 
   $vinculo->id_prof         = $obProfessor->id;
-  $vinculo->rt              = $_POST['rt'];
+  $vinculo->ano = $ano;
+  $vinculo->rt              = $_POST['rt'];           
   $vinculo->dt_obtn_tit     = $_POST['dt_obtn_tit'];
+  $vinculo->area_concurso   = $_POST['area_concurso'];
   $vinculo->tempo_cc        = $_POST['tempo_cc'];
   $vinculo->tempo_esu       = $_POST['tempo_esu'];
-  $vinculo->area_concurso   = $_POST['area_concurso'];
-  $vinculo->ano = $ano;
   $vinculo->user            = $user['id'];
- 
   $vinculo-> cadastrar();
 
   header('location: ../professor/index.php?status=success');

@@ -329,15 +329,7 @@ async function showModalSubmit(id){
   etapas.forEach(etp => {
     nomeElementoTbl(etp.nome, etp.avaliador)
   });
-  
-  
-
-
-
-
-
 }
 
 
 </script>
-

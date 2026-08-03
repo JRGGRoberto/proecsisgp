@@ -186,6 +186,7 @@ if (!$acessoOk) {
 // VALIDAÇÃO DO POST
 if (isset($_POST['nome'])) {
     // $obProfessor->id = $_POST['id'];
+
     $obProfessor->nome = strtoupper($_POST['nome']);
     $obProfessor->cpf = $_POST['cpf'];
     $obProfessor->telefone = $_POST['telefone'];
@@ -194,7 +195,7 @@ if (isset($_POST['nome'])) {
     $obProfessor->email = $_POST['email'];
     $obProfessor->id_colegiado = $_POST['id_colegiado'];
     $obProfessor->cat_func = $_POST['cat_func'];
-    $obProfessor->ativo = $_POST['ativo'];
+    $obProfessor->ativo = $_POST['ativo'] == 1 ? 1 : 0;
     if ($obProfessor->niveln > 0) {
         $obProfessor->ativo = 1;
     }

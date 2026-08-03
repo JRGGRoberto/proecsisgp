@@ -1,15 +1,14 @@
 <?php
 
 require '../vendor/autoload.php';
-use App\Session\Login;
 
-Login::requireLogin();
-
-/*
 ini_set('display_errors', 1);
 ini_set('display_startup_errors', 1);
 error_reporting(E_ALL);
-*/
+
+use App\Session\Login;
+
+Login::requireLogin();
 
 use App\Entity\Arquivo;
 use App\Entity\Diversos;
@@ -278,9 +277,10 @@ if (isset($_POST['titulo'])) {
 
 include '../includes/header.php';
 
+$uCAnome = $user['ca_nome'];
 echo '
 <script>
-campusNome = '.$user['ca_nome'].' 
+campusNome = "'.$uCAnome.'"
 </script>';
 
 // verifica se o usuário é dono do projeto

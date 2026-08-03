@@ -2,6 +2,7 @@
 
 require '../vendor/autoload.php';
 
+use App\Entity\EmailService;
 use App\Entity\Projeto;
 use App\Entity\Relatorio;
 use App\Session\Login;
@@ -31,6 +32,9 @@ if ($objRelToSubmit->fase_atual < 0) {
 
     if ($objProj->id_prof == $user['id']) {
         $objRelToSubmit->submeter();
+
+        $email = new EmailService();
+        $email->avaliacaoRelatorio($objRelToSubmit, $objProj, 'n');
         header('location: index.php?id='.$objProj->id.'&msg=Oksubmit');
     }
 }

@@ -3,6 +3,10 @@ use App\Session\Login;
 
 Login::requireLogin();
 $user = Login::getUsuarioLogado();
+$readOnly = '';
+if ($user['ca_nome'] == 'Externo') {
+    $readOnly = ' readonly disabled ';
+}
 
 ?>
 <script src="./jquery.mask.min.js"></script>    
@@ -10,9 +14,9 @@ $user = Login::getUsuarioLogado();
 <main>
 
   <section>
-    <a href="index.php">
-      <button class="btn btn-sm btn-success float-right">Voltar</button>
-    </a>
+    
+      <button class="btn btn-sm btn-success float-right" onclick="history.back()">Voltar</button>
+    
   </section>
 
   <h2 class="mt-3"><?php echo TITLE; ?></h2>
@@ -21,12 +25,12 @@ $user = Login::getUsuarioLogado();
     
     <div class="row">
                           
-     <input id="idprf" name="idprf" type="text" hidden value="<?php echo $obAgente->id; ?>">
+     <input id="idprf" name="idprf" type="text" hidden value="<?php echo $obAgente->id; ?>" >
 
       <div class="col-8">
         <div class="form-group">
           <label>Nome</label>
-          <input type="text" class="form-control" name="nome" maxlength="60"  value="<?php echo $obAgente->nome; ?>" required>
+          <input type="text" class="form-control" <?php echo $readOnly; ?> name="nome" maxlength="60"  value="<?php echo $obAgente->nome; ?>" required >
         </div>
       </div>
 
@@ -34,7 +38,7 @@ $user = Login::getUsuarioLogado();
         <div class="form-group">
           <label>CPF</label>
           <a href="#" data-toggle="tooltip" title="Informe apenas os números" 
-          style="text-decoration:none;"><input type="text" class="form-control" name="cpf" id="cpf" maxlength="11" value="<?php echo $obAgente->cpf; ?>" onfocusout="valCPF()" ></a>
+          style="text-decoration:none;"><input type="text"  <?php echo $readOnly; ?> class="form-control" name="cpf" id="cpf" maxlength="11" value="<?php echo $obAgente->cpf; ?>" onfocusout="valCPF()" ></a>
 
         </div>
       </div>
@@ -43,16 +47,18 @@ $user = Login::getUsuarioLogado();
       <div class="col">
         <div class="form-group">
           <label>E-mail <?php echo $infoMail[0]; ?></label>
-          <input type="email" class="form-control" name="email" id="email" maxlength="40" value="<?php echo $obAgente->email; ?>" onfocusout="valEmail()" required <?php echo $infoMail[1]; ?>>
+          <input type="email" class="form-control" <?php echo $readOnly; ?> name="email" id="email" maxlength="40" value="<?php echo $obAgente->email; ?>" onfocusout="valEmail()" required <?php echo $infoMail[1]; ?>>
         </div>
       </div>
 
       <div class="col">
         <div class="form-group">
           <label for="ca">Campus</label>
-          <select name="lotacao" id="ca" class="form-control" required>
+          <select name="lotacao" id="ca" class="form-control" <?php echo $readOnly; ?> required>
              <option value="">Selecione</option>
-             <?php echo $opts; ?>
+             <?php
+
+             echo $opts; ?>
           </select>
         </div> 
       </div>
@@ -70,6 +76,8 @@ echo "<script>
   
     <div class="row">
       <div class="col">
+        <?php if ($readOnly != ' readonly disabled ') {
+            ?>
         
         <div class="form-group">
           <label>Categoria funcional</label>
@@ -126,6 +134,6 @@ echo "<script>
       <button type="submit" class="btn btn-success">Enviar</button>
       <button type="reset" class="btn btn-success">Limpar</button>
     </div>
-
+ <?php } ?>
   </form>
 </main>

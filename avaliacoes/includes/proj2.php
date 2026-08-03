@@ -1,6 +1,7 @@
 <?php
 
 require '../includes/msgAlert.php';
+use App\Entity\Avaliacoes;
 
 $qnt1 = 0;
 $resultados = '';
@@ -9,11 +10,13 @@ foreach ($avaliacoes as $ava) {
     $estiloD = '';
     $cor = '';
 
+    $info = 'Etapa '.$ava->fase_seq.' ['.$ava->tp_instancia.']';
+
     if ($ava->resultado == 'r') {
         $cor = 'warning';
-        $progresso = '<span class="badge badge-warning"> ↩️ Solicitação de revisão</span>';
+        $progresso = '<span class="badge badge-warning"> ↩️ Solicitação de revisão <br>'.$info.'</span>';
     } elseif ($ava->resultado == 'a') {
-        $progresso = '<span class="badge badge-success"> 🆗 Favorável</span>';
+        $progresso = '<span class="badge badge-success"> 🆗 Favorável <br>'.$info.'</span>';
         $cor = 'success';
     } else {
         $progresso = '<span class="badge badge-danger">Error</span>';
@@ -24,6 +27,56 @@ foreach ($avaliacoes as $ava) {
     $titulo = $ava->titulo;
     if ($ava->ver > 0) {
         $titulo .= ' [Versão: '.($ava->ver + 1).']';
+    }
+
+    $where = 'id_proj = "'.$ava->id_proj.'"';
+    $order = 'ver desc, fase_seq desc';
+    $ListaVerAnts = Avaliacoes::getRegistros($where, $order, null);
+    $LastV = '
+    <table class="table table-bordered table-sm">
+      <thead class="thead-dark">
+        <tr>
+          <th>Projeto</th>
+          <th>Relatório <a href="../prnRelatorios/index.php?id='.$ava->id_proj.'" target="_blank"><span class="badge badge-secondary">Prn All🖨️</span></a></th>
+          <th>Parte</th>
+        </tr>
+      </thead>
+      <tbody>
+    ';
+    $a = 0;
+    $tp_proposta = ['?', 'Curso', 'Evento', 'Prestação de serviço', 'Programa', 'Projeto'];
+    foreach ($ListaVerAnts as $la) {
+        ++$a;
+        $class = '';
+        $td = '';
+        switch ($la->resultado) {
+            case 'a':
+                $class = 'table-success';
+                $td = '<td><a href="../forms/'.$la->form.'/vista.php?p='.$ava->id_proj.'&v='.$la->ver.'" target="_blank">📄 </a></td>';
+                break;
+            case 'r':
+                $class = 'table-danger';
+                $td = '<td><a href="../forms/'.$la->form.'/vista.php?p='.$ava->id_proj.'&v='.$la->ver.'" target="_blank">📄 </a></td>';
+                break;
+            default:
+                $class = 'table-warning';
+                $td = '<td>➖</td>';
+        }
+        $LastV .=
+        '<tr class="'.$class.'">
+         <td><a href="../propostas/visualizar.php?id='.$ava->id_proj.'&v='.$la->ver.'&w=nw" target="_blank">📄 <span class="badge badge-info">'.($la->ver + 1).'</span></a></td>'
+
+          .$td.
+
+          '<td>'.$la->fase_seq.'/'.$la->etapas.'</td>
+        </tr>';
+    }
+    $LastV .=
+      '</tbody>
+     </table>';
+
+    if ($a == 0) {
+        $LastV = '';
     }
 
     $resultados .= '
@@ -47,7 +100,15 @@ foreach ($avaliacoes as $ava) {
 
         </div>
      </div>
+     <div id="p'.$ava->id_ava.'" class="collapse" data-parent="#accordion">
+        <div class="card-body">hi
+        </div>
+     </div>
+     
   </div>
+
+
+
 </div>    
 
           

@@ -2,23 +2,29 @@
 
 require '../vendor/autoload.php';
 
+use App\Entity\Outros;
+use App\Entity\Pibis_pibex_avaliadores;
 use App\Session\Login;
 
 // Obriga o usuário a estar logado
 Login::requireLogin();
 $user = Login::getUsuarioLogado();
 
-use App\Entity\Outros;
+$obAvaliador = Pibis_pibex_avaliadores::get($user['id'], 'adm = 1');
+if (!$obAvaliador instanceof Pibis_pibex_avaliadores) {
+    header('location: ../home/');
+    exit;
+}
 
 $qry =
 "
 select 
    ppa.id,
    u.nome,  u.email, u.ca_nome campus, u.co_nome colegiado,
-   (select concat(p.nomeproj, ' ',p.doit, ' ', p.total) from pibispibex_v p where p.aval_id = pp.aval_id order by 1 limit 1 offset 0) prj1,
-   (select concat(p.nomeproj, ' ',p.doit, ' ', p.total)  from pibispibex_v p where p.aval_id = pp.aval_id order by 1 limit 1 offset 1) prj2,
-   (select concat(p.nomeproj, ' ',p.doit, ' ', p.total)  from pibispibex_v p where p.aval_id = pp.aval_id order by 1 limit 1 offset 2) prj3,
-   (select concat(p.nomeproj, ' ',p.doit, ' ', p.total)  from pibispibex_v p where p.aval_id = pp.aval_id order by 1 limit 1 offset 3) prj4
+   (select concat(p.nomeproj, ' ',p.doit, ' ', p.total, ' ', DATE_FORMAT(p.updated_at, '%d/%m/%Y')) from pibispibex_v p where p.aval_id = pp.aval_id order by 1 limit 1 offset 0) prj1,
+   (select concat(p.nomeproj, ' ',p.doit, ' ', p.total, ' ', DATE_FORMAT(p.updated_at, '%d/%m/%Y')) from pibispibex_v p where p.aval_id = pp.aval_id order by 1 limit 1 offset 1) prj2,
+   (select concat(p.nomeproj, ' ',p.doit, ' ', p.total, ' ', DATE_FORMAT(p.updated_at, '%d/%m/%Y')) from pibispibex_v p where p.aval_id = pp.aval_id order by 1 limit 1 offset 2) prj3,
+   (select concat(p.nomeproj, ' ',p.doit, ' ', p.total, ' ', DATE_FORMAT(p.updated_at, '%d/%m/%Y')) from pibispibex_v p where p.aval_id = pp.aval_id order by 1 limit 1 offset 3) prj4
 FROM  
    pibis_pibex_avaliadores ppa
    left join usuarios u on ppa.id  = u.id 

@@ -12,6 +12,7 @@ class Vinculo {
   public $id;
   public $ano;
   public $rt;
+  public $tide;
   public $id_prof;
   public $area_concurso;
   public $dt_obtn_tit;
@@ -33,6 +34,7 @@ class Vinculo {
         'id'            =>  $newId,
         'ano'           =>  $this->ano,
         'rt'            =>  $this->rt,
+        'tide'          =>  $this->tide,
         'id_prof'       =>  $this->id_prof,
         'area_concurso' =>  $this->area_concurso,
         'dt_obtn_tit'   =>  $this->dt_obtn_tit,
@@ -40,9 +42,10 @@ class Vinculo {
         'tempo_esu'     =>  $this->tempo_esu,
         'obs'           =>  $this->obs,
         'created_at'    =>  $this->created_at,
-      //  'updated_at'  =>  $this->updated_at,
+        // 'updated_at'  =>  $this->updated_at,
         'user'          =>  $this->user
     ]);
+    return true;
   }
 
   public function atualizar(){ 
@@ -83,6 +86,7 @@ class Vinculo {
     $where = 'vinculo = "'.$this->id.'"';
     $disciplinas = Disciplinas::get($where);
     $discp = new Disciplinas();
+
     foreach($disciplinas as $dis){
       $discp = Disciplinas::getById($dis->id);
       $discp->vinculo = null;
@@ -102,6 +106,7 @@ class Vinculo {
 
     (new Database('pad22'))->delete('vinculo = "'.$this->id.'"');
     (new Database('pad23'))->delete('vinculo = "'.$this->id.'"');
+    (new Database('pad24'))->delete('vinculo = "'.$this->id.'"');
     (new Database('pad3'))->delete('vinculo = "'.$this->id.'"');
     (new Database('pad4'))->delete('vinculo = "'.$this->id.'"');
     return (new Database('vinculo'))->delete('id = "'.$this->id .'"');

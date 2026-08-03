@@ -5,8 +5,9 @@ use App\Session\Login;
 Login::requireLogin();
 $user = Login::getUsuarioLogado();
 
-use App\Entity\CompararAlunos;
-$idPermitido = CompararAlunos::getIdPermitidos();
+require_once '../includes/funcoes/func_permissoes.php';
+$idPermitido = permissoesEnviarBolsistas();
+
 
 // Garante que só entra quem pode 
 require_once '../includes/funcoes/func_verificaCargosEspeciais.php';

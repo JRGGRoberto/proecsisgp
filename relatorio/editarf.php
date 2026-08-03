@@ -21,7 +21,6 @@ $user = Login::getUsuarioLogado();
 $id = $_GET['id'];
 $relatorio = new Relatorio();
 $relatorio = $relatorio->getById($id);
-
 $tf = $relatorio->tipo;
 
 $obProjeto = Projeto::getProjetoLast($relatorio->idproj);
@@ -61,11 +60,6 @@ foreach ($anexados as $att) {
   </li> ';
 }
 $anex .= '</ul>';
-
-$msgSolicitacoAlteracao = '';
-if ($relatorio->last_result == 'r') {
-    include __DIR__.'/includes/msgAlteração.php';
-}
 
 $cursosetor = '';
 
@@ -136,4 +130,19 @@ if (isset($_POST['valida'])) {
 include '../includes/header.php';
 include __DIR__.'/includes/formFinal.php';
 echo $scriptDisble;
+echo ' <script src="../includes/funcoes/func_formataTextArea.js"></script>';
+
+echo "
+
+<script>
+  function chSizeTextArea(txtArea) {
+    const textarea = document.getElementById(txtArea);
+    textarea.style.height = textarea.scrollHeight + 'px';
+  }
+
+  chSizeTextArea('solicitacoes');
+  chSizeTextArea('parecer');
+</script>
+
+";
 include '../includes/footer.php';
