@@ -101,7 +101,7 @@ class AvaliaRelatorios
     {
         $qry = '
         select 
-          id, id_rel, ver, regra_def, fase_seq, form, r.tp_avaliador , COALESCE(id_instancia, "'.$id_professor.'" ) id_instancia
+          id, id_rel, ver, regra_def, fase_seq, form, r.tp_avaliador , COALESCE(r.id_instancia, "'.$id_professor.'" ) id_instancia
         from 
           to_avaliar_rel r
         where 

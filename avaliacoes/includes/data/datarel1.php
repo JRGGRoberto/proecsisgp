@@ -15,7 +15,16 @@ switch ($user['config']) {
         break;
     case 1: // Coordenador;
         array_push($condicoes,
-            '( ( tp_instancia = "co" and  id_instancia = "'.$user['co_id'].'") 
+            '( ( tp_instancia = "co" and  id_instancia = "'.$user['co_id'].'"
+                  and exists (
+                                 select 1 
+                                 from 
+                                    colegiados c  
+                                 where 
+                                    c.id = id_instancia and
+                                    c.coord_id =  "'.$user['id'].'"
+                              )
+               ) 
                 or 
                ( tp_instancia = "pf" and  id_instancia = "'.$user['id'].'")   
              )');

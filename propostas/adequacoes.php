@@ -285,10 +285,10 @@ if (isset($_POST['titulo'])) {
  */
 
 include '../includes/header.php';
-
+$uCAnome = $user['ca_nome'];
 echo '
 <script>
-campusNome = '.$user['ca_nome'].'
+campusNome = "'.$uCAnome.'"
 </script>';
 
 // verifica se o usuário é dono do projeto
