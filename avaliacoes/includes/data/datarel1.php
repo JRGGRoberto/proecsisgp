@@ -17,7 +17,7 @@ switch ($user['config']) {
         array_push($condicoes,
             '( 
                ( tp_instancia = "co" and
-                 id_instancia = (select c.id from colegiados c where c.coord_id   = "'.$user['id'].'")  
+                 id_instancia in (select c.id from colegiados c where c.coord_id   = "'.$user['id'].'" )  
                ) 
              or 
                ( tp_instancia = "pf" and  id_instancia = "'.$user['id'].'")   

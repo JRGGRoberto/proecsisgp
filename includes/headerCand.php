@@ -1,4 +1,4 @@
-<?php 
+<?php
 
 use App\Session\LoginCandidato;
 
@@ -35,67 +35,86 @@ $user = LoginCandidato::getUsuarioLogado();
   </head>
   <body class="bg-light text-dark">
 
+  
 <nav class="navbar navbar-light p-2"
      style="background-image: linear-gradient(0deg, #002661 6%, #007F3D 7%, #007F3D 9%, #FFFFFF 10%, #FFFFFF 80%, #D8D8D8 98%, #000000 99%);">
-
-    <div class="container-fluid d-flex justify-content-between align-items-center">
-
-        <div class="container text-center p-3">
-            <div class="row">
-                <div>
-                    <img src="https://sistemaproec.unespar.edu.br/sistema/imgs/logo_unespar.png"
-                         class="d-inline-block align-top"
-                         alt=""
-                         loading="lazy"
-                         width="64"
-                         height="68">
+    <div class="container justify-content-center">
+        <!-- Logo + informações -->
+        <div class="d-flex align-items-center mx-2 my-3">
+    
+            <img src="https://sistemaproec.unespar.edu.br/sistema/imgs/logo_unespar.png"
+                 class="mr-3"
+                 alt="UNESPAR"
+                 loading="lazy"
+                 width="64"
+                 height="68">
+    
+            <div>
+                <div class="text-left">
+                    Pró-Reitoria de
                 </div>
-
-                <div class="col">
-                    <div class="text-left">
-                        Pró-Reitoria de
-                    </div>
-
-                    <div class="text-left">
-                        <a href="./home.php" style="color: #002661;">
-                            <strong>Extensão e Cultura - PROEC</strong>
-                        </a>
-                    </div>
-
-                    <div class="text-left">
-                        Universidade Estadual do Paraná
-                    </div>
+    
+                <div class="text-left">
+                    <a href="./home.php" style="color: #002661;">
+                        <strong>Extensão e Cultura - PROEC</strong>
+                    </a>
+                </div>
+    
+                <div class="text-left">
+                    Universidade Estadual do Paraná
                 </div>
             </div>
+    
         </div>
-
-        <div class="btn-group btn-group-sm">
-
-            <button type="button" class="btn btn-primary dropdown-toggle" data-toggle="dropdown">
-                📋 Inscrições
-            </button>
-
-            <div class="dropdown-menu">
-                <a class="dropdown-item btn-sm" href="./inscricoes.php">
-                    Minhas inscrições
-                </a>
+        <div style="width: 575px;"></div>
+    
+    
+        <!-- Menu direita -->
+        <div class="d-flex">
+    
+            <div class="btn-group btn-group-sm mr-2">
+    
+                <button type="button" 
+                        class="btn btn-primary dropdown-toggle" 
+                        data-toggle="dropdown">
+                    📋 Inscrições
+                </button>
+    
+                <div class="dropdown-menu">
+                    <a class="dropdown-item btn-sm" href="./inscricoes.php">
+                        Minhas inscrições
+                    </a>
+                </div>
+    
             </div>
-
-        </div>
-
-        <div class="btn-group btn-group-sm">
-            <button type="button" class="btn btn-primary dropdown-toggle" data-toggle="dropdown">
-                👤 <?= explode(' ', trim($user['nome']))[0]; ?>
-            </button>
-
-            <div class="dropdown-menu dropdown-menu-right">
-                <a class="dropdown-item btn-sm" href="./editar.php">Perfil</a>
-
-                <div class="dropdown-divider"></div>
-
-                <a class="dropdown-item btn-sm" href="../programas">Sair</a>
+    
+    
+            <div class="btn-group btn-group-sm">
+    
+                <button type="button" 
+                        class="btn btn-primary dropdown-toggle" 
+                        data-toggle="dropdown">
+                    👤 <?php echo explode(' ', trim($user['nome']))[0]; ?>
+                </button>
+    
+                <div class="dropdown-menu dropdown-menu-right">
+    
+                    <a class="dropdown-item btn-sm" href="./editar.php">
+                        Perfil
+                    </a>
+    
+                    <div class="dropdown-divider"></div>
+    
+                    <a class="dropdown-item btn-sm" href="../programas">
+                        Sair
+                    </a>
+    
+                </div>
+    
             </div>
+    
         </div>
     </div>
+</nav>
 
 </nav>
