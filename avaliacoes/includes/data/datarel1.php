@@ -28,7 +28,7 @@ switch ($user['config']) {
     case 2: // Dir Centro de Area CE
         array_push($condicoes,
             ' tp_instancia = "ce"',
-            ' id_instancia in ("'.$user['ce_id'].'", "'.$user['id'].'")  ');
+            ' id_instancia in ( select id from centros where dir_ca_id = "'.$user['id'].'"  ) ');
         break;
     case 3: // Chefe de divisão CA
         array_push($condicoes,

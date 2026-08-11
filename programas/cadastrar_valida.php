@@ -62,10 +62,12 @@ if (isset($_POST['nome'])) {
     $cand->ip_address = $ip;
 
     if ($evento == 'cadastrar') {
+        $idCand = $cand->cadastrar();
 
-    $idCand = $cand->cadastrar();
+        $email = new EmailService();
+        $email->cadastrarCandidato($cand, $idCand);
 
-    $msg = '
+        $msg = '
     <div class="alert alert-success text-center mt-4">
         <h5 class="mb-3">
             '.$cand->nome.', sua conta foi criada com sucesso!
@@ -80,8 +82,7 @@ if (isset($_POST['nome'])) {
         </a>
     </div>';
 
-    $mostrarFormulario = false;
-    
+        $mostrarFormulario = false;
     } else {
         $cand->atualizar();
         $msg = '

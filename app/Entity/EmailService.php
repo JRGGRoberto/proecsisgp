@@ -291,4 +291,12 @@ class EmailService
             $this->enviar($dados);
         }
     }
+
+    public function cadastrarCandidato($cand, $idCand)
+    {
+        require_once '../includes/mailBody/mailCadastrarCand.php';
+        $dados = mailCadastrarCand($cand, $idCand);
+
+        $this->enviar($dados);
+    }
 }
