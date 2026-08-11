@@ -29,6 +29,41 @@ class Solicita_Pessoas{
     public $vinculo_remocao;
     public $data_solicitacao;
 
+
+    /**
+     * Método responsável por cadastrar um novo Registro no banco
+    * @return boolean
+    */
+    // Inserir no banco após a solicitação de adendos
+    public function insertRegistrosAdm(){
+        $obDatabase = new Database('tb_solicita_pessoa');
+        $obDatabase->insert(
+            [
+                'id' => $this->id,
+                'tp_solicitacao' => $this->tp_solicitacao,
+                'tp_cadastro' => $this->tp_cadastro,
+                'id_solicitador' => $this->id_solicitador,
+                'id_avaliador' => $this->id_avaliador,
+                'resultado' => $this->resultado,
+                'id_pessoa' => $this->id_pessoa,
+                'nome' => $this->nome,
+                'cpf' => $this->cpf,
+                'titulacao' => $this->titulacao,
+                'lattes' => $this->lattes,
+                'email' => $this->email,
+                'telefone' => $this->telefone,
+                'ca_id' => $this->ca_id,
+                'co_id' => $this->co_id,
+                'cat_func' => $this->cat_func,
+                'rt' => $this->rt,
+                'portaria' => $this->portaria,
+                'ano_letivo' => $this->ano_letivo,
+                'vinculo_remocao' => $this->vinculo_remocao,
+                'data_solicitacao' => $this->data_solicitacao,
+            ]);
+        return true;
+    }
+
     /**
      * Método responsável por cadastrar um novo Registro no banco
     * @return boolean
@@ -78,7 +113,7 @@ class Solicita_Pessoas{
     }
 
     /**
-     * Método responsável por excluir a professor do banco.
+     * Método responsável por excluir a Solicitacao_Pessoa do banco.
      *
      * @return bool
      */

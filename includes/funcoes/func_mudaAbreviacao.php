@@ -166,9 +166,17 @@ function tipoRelatorioIcon($abreviacao) {
 
 function tipoSolicitacao($abreviacao){
   $abrevia = [
-    'reativacao' => 'Reativação',
+    'cadastro' => 'Cadastro',
     'desativacao' => 'Desativação',
-    'cadastro' => 'Cadastro'
+    'reativacao' => 'Reativação',
+
+    //Serve para quando quero separar o que é solicitação ou remoção de solicitação
+    'desativacaoRm' => 'Desativação',
+    'reativacaoRm' => 'Reativação', 
+
+    'cadastroAdmin' => 'Cadastro',
+    'desativacaoAdmin' => 'Reativação',
+    'reativacaoAdmin' => 'Desativação',
   ];
   return $abrevia[$abreviacao];
 }

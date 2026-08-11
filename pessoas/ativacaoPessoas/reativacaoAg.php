@@ -4,7 +4,6 @@ require '../vendor/autoload.php';
 
 use App\Db\Pagination;
 use App\Entity\Agente;
-use App\Entity\Solicita_Pessoas;
 use App\Session\Login;
 
 Login::requireLogin();
@@ -18,6 +17,30 @@ if($_SERVER['REQUEST_METHOD'] === 'POST'){
             $where = 'id = "'.$_POST['solicitacao_ReativaPessoa'].'"';
             $pessoa_requisicao = Agente::gets($where);
             $pessoa_requisicao[0]->ativo = 1;
+            $pessoa_requisicao[0]->cat_func = $_POST['categoria'];
+
+            $post = [
+                'tp_solicitacao' => 'reativacaoAdmin',
+                'tp_cadastro' => 'ag',
+                'id_solicitador' => $user['id'],
+                'id_avaliador' => $user['id'],
+                'resultado' => 'a',
+                'id_pessoa' => $pessoa_requisicao[0]->id,
+                'nome' => $pessoa_requisicao[0]->nome,
+                'cpf' => $pessoa_requisicao[0]->cpf,
+                'titulacao' => 'n/a',
+                'lattes' => '',
+                'email' => $pessoa_requisicao[0]->email,
+                'telefone' => $pessoa_requisicao[0]->telefone,
+                'ca_id' => $pessoa_requisicao[0]->lotacao,
+                'co_id' => '',
+                'cat_func' => $_POST['categoria'],
+                'rt' => '',
+                'portaria' => '',
+                'ano_letivo' => date('Y'),
+                'vinculo_remocao' => '',
+                'tide' => '',
+            ];
 
             // Para garantir que tenha um email para acessar e esteja em um campus
             if(!$pessoa_requisicao[0]->email || !$pessoa_requisicao[0]->lotacao){
@@ -29,9 +52,8 @@ if($_SERVER['REQUEST_METHOD'] === 'POST'){
                 exit;
             }
 
-            $pessoa_requisicao[0]->cat_func = $_POST['categoria'];
-            
-            if($pessoa_requisicao[0]->atualizarAtivo() && $pessoa_requisicao[0]->atualizarCatFunc()){
+            require_once '../includes/funcoes/func_solicitaPessoas.php';
+            if($pessoa_requisicao[0]->atualizarAtivo() && $pessoa_requisicao[0]->atualizarCatFunc() && solicitacaoPessoas($post)){
                 echo "
                     <script>
                         window.location.href = 'index.php?tipo=reativacao&cargo=ag&valida".$true."&sucesso=2'
@@ -39,7 +61,14 @@ if($_SERVER['REQUEST_METHOD'] === 'POST'){
                 ";
                 exit;
             }
-  
+            else {
+                echo "
+                    <script>
+                        window.location.href = 'index.php?tipo=reativacao&cargo=pf&valida".$true."&sucesso=false'
+                    </script>
+                ";
+                exit;
+            }
         }
     }
     else { // QUANDO É FEITO POR DEC
@@ -62,6 +91,8 @@ if($_SERVER['REQUEST_METHOD'] === 'POST'){
                 'tp_solicitacao' => 'reativacao',
                 'tp_cadastro' => 'ag',
                 'id_solicitador' => $user['id'],
+                'id_avaliador' => null,
+                'resultado' => null,
                 'id_pessoa' => $pessoa_requisicao[0]->id,
                 'nome' => $pessoa_requisicao[0]->nome,
                 'cpf' => $pessoa_requisicao[0]->cpf,
@@ -72,19 +103,26 @@ if($_SERVER['REQUEST_METHOD'] === 'POST'){
                 'ca_id' => $pessoa_requisicao[0]->lotacao,
                 'co_id' => '',
                 'cat_func' => $_POST['categoria'],
-                'ano_letivo' => date('Y'),
                 'rt' => '',
                 'portaria' => '',
+                'ano_letivo' => date('Y'),
                 'vinculo_remocao' => '',
+                'tide' => '',
             ];
 
             require_once '../includes/funcoes/func_solicitaPessoas.php';
-            $insert = solicitacaoPessoas($post);
-
-            if($insert){
+            if(solicitacaoPessoas($post)){
                 echo "
                     <script>
                         window.location.href = 'index.php?tipo=reativacao&cargo=ag&valida".$true."&sucesso=1'
+                    </script>
+                ";
+                exit;
+            }
+            else {
+                echo "
+                    <script>
+                        window.location.href = 'index.php?tipo=reativacao&cargo=pf&valida".$true."&sucesso=false'
                     </script>
                 ";
                 exit;
@@ -97,12 +135,18 @@ if($_SERVER['REQUEST_METHOD'] === 'POST'){
             require_once '../includes/funcoes/func_solicitaPessoas.php';
 
             $IdP = $_POST['remover_solicitacao'];
-            $remove = removeSolicitacao($IdP);
-
-            if($remove){
+            if(removeSolicitacao($IdP)){
                 echo "
                     <script>
                         window.location.href = 'index.php?tipo=reativacao&cargo=ag&valida".$true."&sucesso=1'
+                    </script>
+                ";
+                exit;
+            }
+            else {
+                echo "
+                    <script>
+                        window.location.href = 'index.php?tipo=reativacao&cargo=pf&valida".$true."&sucesso=false'
                     </script>
                 ";
                 exit;

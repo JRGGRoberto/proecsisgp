@@ -31,7 +31,7 @@ if (isset($_GET['sucesso']) && $_GET['sucesso'] == 1) {
 elseif (isset($_GET['sucesso']) && $_GET['sucesso'] == 2) {
     $alert = '
         <div class="alert alert-success alert-dismissible fade show d-flex justify-content-center align-items-center text-center" role="alert">
-            Usuário desativado com sucesso!
+            Ação realizada com sucesso!
             <button type="button" class="close ml-2" data-dismiss="alert">
                 &times;
             </button>
@@ -119,7 +119,7 @@ $htmlRT = '
     
     <?php if($validade != 1): ?>
     <p class="mb-4">
-        <strong>As solicitações serão encaminhadas para uma avaliação e futura desativação dos <?=$nome?> solicitados</strong>
+        <strong>As solicitações serão encaminhadas aos responsáveis para avaliação.</strong>
     </p>
     <?php endif; ?>
 

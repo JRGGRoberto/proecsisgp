@@ -4,7 +4,7 @@ require '../vendor/autoload.php';
 
 use App\Db\Pagination;
 use App\Entity\Agente;
-use App\Entity\Solicita_Pessoas;
+use App\Entity\EmailService;
 use App\Session\Login;
 
 Login::requireLogin();
@@ -16,13 +16,44 @@ if($_SERVER['REQUEST_METHOD'] === 'POST'){
         if (array_key_exists('solicitacao_DesativaPessoa', $_POST)) { // Verifica se foi informado um ID de um Prof
 
             $where = 'id = "'.$_POST['solicitacao_DesativaPessoa'].'"';
-            $agnt = Agente::gets($where);
-            $agnt[0]->ativo = 0;
-            
-            if($agnt[0]->atualizarAtivo()){
+            $pessoa_requisicao = Agente::gets($where);
+            $pessoa_requisicao[0]->ativo = 0;
+
+            $post = [
+                'tp_solicitacao' => 'desativacaoAdmin',
+                'tp_cadastro' => 'ag',
+                'id_solicitador' => $user['id'],
+                'id_avaliador' => $user['id'],
+                'resultado' => 'a',
+                'id_pessoa' => $pessoa_requisicao[0]->id,
+                'nome' => $pessoa_requisicao[0]->nome,
+                'cpf' => $pessoa_requisicao[0]->cpf,
+                'titulacao' => 'n/a',
+                'lattes' => '',
+                'email' => $pessoa_requisicao[0]->email,
+                'telefone' => $pessoa_requisicao[0]->telefone,
+                'ca_id' => $pessoa_requisicao[0]->lotacao,
+                'co_id' => '',
+                'cat_func' => null,
+                'rt' => '',
+                'portaria' => '',
+                'ano_letivo' => date('Y'),
+                'vinculo_remocao' => '',
+            ];
+
+            require_once '../includes/funcoes/func_solicitaPessoas.php';
+            if($pessoa_requisicao[0]->atualizarAtivo() && solicitacaoPessoas($post)){
                 echo "
                     <script>
                         window.location.href = 'index.php?tipo=desativacao&cargo=ag&valida".$true."&sucesso=2'
+                    </script>
+                ";
+                exit;
+            }
+            else {
+                echo "
+                    <script>
+                        window.location.href = 'index.php?tipo=cadastro&cargo=ag&valida".$true."&sucesso=false';
                     </script>
                 ";
                 exit;
@@ -41,6 +72,8 @@ if($_SERVER['REQUEST_METHOD'] === 'POST'){
                 'tp_solicitacao' => 'desativacao',
                 'tp_cadastro' => 'ag',
                 'id_solicitador' => $user['id'],
+                'id_avaliador' => null,
+                'resultado' => null,
                 'id_pessoa' => $pessoa_requisicao[0]->id,
                 'nome' => $pessoa_requisicao[0]->nome,
                 'cpf' => $pessoa_requisicao[0]->cpf,
@@ -51,16 +84,14 @@ if($_SERVER['REQUEST_METHOD'] === 'POST'){
                 'ca_id' => $pessoa_requisicao[0]->lotacao,
                 'co_id' => '',
                 'cat_func' => $pessoa_requisicao[0]->cat_func,
-                'ano_letivo' => date('Y'),
                 'rt' => '',
                 'portaria' => '',
+                'ano_letivo' => date('Y'),
                 'vinculo_remocao' => '',
             ];
 
             require_once '../includes/funcoes/func_solicitaPessoas.php';
-            $insert = solicitacaoPessoas($post);
-
-            if($insert){
+            if(solicitacaoPessoas($post)){
                 echo "
                     <script>
                         window.location.href = 'index.php?tipo=desativacao&cargo=ag&valida".$true."&sucesso=1'
@@ -68,20 +99,31 @@ if($_SERVER['REQUEST_METHOD'] === 'POST'){
                 ";
                 exit;
             }
-
+            else {
+                echo "
+                    <script>
+                        window.location.href = 'index.php?tipo=cadastro&cargo=ag&valida".$true."&sucesso=false';
+                    </script>
+                ";
+                exit;
+            }
         }
         // Retira da tabela tb_solicita_pessoa
         elseif (array_key_exists('remover_solicitacao', $_POST)) {
             // Aqui é para a desativação de pessoas
             require_once '../includes/funcoes/func_solicitaPessoas.php';
-
-            $IdP = $_POST['remover_solicitacao'];
-            $remove = removeSolicitacao($IdP);
-
-            if($remove){
+            if(removeSolicitacao($_POST['remover_solicitacao'])){
                 echo "
                     <script>
                         window.location.href = 'index.php?tipo=desativacao&cargo=ag&valida".$true."&sucesso=1'
+                    </script>
+                ";
+                exit;
+            }
+            else {
+                echo "
+                    <script>
+                        window.location.href = 'index.php?tipo=cadastro&cargo=ag&valida".$true."&sucesso=false';
                     </script>
                 ";
                 exit;

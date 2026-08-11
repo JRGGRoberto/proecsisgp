@@ -1,5 +1,4 @@
 <?php
-
 // API que faz atualização na tabela projetos e na tabela Solicitacao_adendos
 // Modifica os dados se forem aprovados e informa quem autorizou a modificação.
 // Utilizado em 'solicitaAlteracao/includes/listagemAtualizar.php' passando os parâmetros por $_GET

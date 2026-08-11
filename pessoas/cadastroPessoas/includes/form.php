@@ -77,10 +77,10 @@ $htmlTitulacao = '
         <label for="titulacao">Titulação</label>
         <select id="titulacao" name="titulacao" class="form-control" required>
             <option value="'.$valueForm.'" selected> Selecione... </option>
-            <option value="Mestre" >Mestre</option>
-            <option value="Doutor" >Doutor</option>
-            <option value="Especialista" >Especialista</option>
-            <option value="Bacharel" >Bacharel</option>
+            <option value="mestre" >Mestre</option>
+            <option value="doutor" >Doutor</option>
+            <option value="especialista" >Especialista</option>
+            <option value="bacharel" >Bacharel</option>
         </select>
     </div>
 ';
