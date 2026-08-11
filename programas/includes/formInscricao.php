@@ -1,29 +1,62 @@
 
 <!--mudar essa bomba para uma página espe´cifica -->
+<?php
+$msgTitulo = 'PIBIS / PIBEX';
+if (strlen($filtro) > 1) {
+    $msgTitulo = strtoupper($filtro);
+}
+?>
+
+
 <form method="post" id="formInsc">
   <div class="container justify-content-center">
     <div class="row">
       <div class="col">
         <div class="form-group">
-          <label>Projeto [escolha uma para se inscrever]</label>
-          <select name="inscricao"  class="form-control" id="inscricao">
-            <option value="-1">Selecione uma opção ou deste esta apenas para atualizar dados</option>
-            <?php echo $options; ?>
-          </select>
+          <h2 class="mb-4"><?php echo $msgTitulo; ?></h2>
+          
+          <label class="mt-5">Projetos [escolha um para mais informações] </label>
+
+
+          <div>
+            <select class="form-control" id="inscricao" name="inscricao" onchange="geraCriterio(this.value);">
+              <option value="-1">
+                Selecione um projeto ou deixe esta opção para apenas atualizar dados
+              </option>
+              <?php echo $options; ?>
+            </select>
+          </div>
+          <div id="cont-criterio">
+            
+          </div>
         </div>
-      </div>
+      </div>  
     </div>
 
+    <div class="row mt-3">
+      <div class="col">
+        <div id="criteriosAvaliacao"></div>
+      </div>
+    </div>
 
     <div class="row">
       <div class="col">
         <div class="form-group" id="listaInscricoes"></div>
       </div>
     </div>
+    <div class="form-group d-flex justify-content-between align-items-center">
 
-    <div class="form-group">
-      <button type="submit" class="btn btn-success">Enviar</button>
+        <a href="./home.php" class="btn btn-sm btn-success">
+          Voltar
+        </a>
+
+        <button type="submit" class="btn btn-sm btn-primary">
+          Inscrever
+        </button>
+
     </div>
+
+    
   </div>
 </form>
 
@@ -39,7 +72,7 @@
           </div>
 
           <div class="modal-body">
-            Tem certeza remover a inscrição do programa? 
+            Tem certeza remover a inscrição do projeto? 
             <p><strong id="alertIdLabel"></strong></p>
             <form method="post" id="frmdelInscr">
               <input type="hidden" name="id_cand_del" id="id_cand_del" value="<?php echo ''; ?>">

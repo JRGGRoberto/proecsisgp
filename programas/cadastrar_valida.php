@@ -10,7 +10,7 @@ $idCand = '';
 
 $cpf = $_POST['cpf'];
 // $senha = $_POST['senha'];
-
+$mostrarFormulario = true;
 $cand = Candidato::getCpf($cpf);
 // echo '<pre>';
 // print_r($cand);
@@ -62,12 +62,27 @@ if (isset($_POST['nome'])) {
     $cand->ip_address = $ip;
 
     if ($evento == 'cadastrar') {
-        // $idCand = $cand->cadastrar();
+        $idCand = $cand->cadastrar();
+
+        $email = new EmailService();
+        $email->cadastrarCandidato($cand, $idCand);
+
         $msg = '
-        <div class="alert alert-success alert-dismissible">
-          <button type="button" class="close" data-dismiss="alert">&times;</button>
-          <strong>Success!</strong> Cadastro de usuário realizado
-        </div>';
+    <div class="alert alert-success text-center mt-4">
+        <h5 class="mb-3">
+            '.$cand->nome.', sua conta foi criada com sucesso!
+        </h5>
+
+        <p>
+            Agora você já pode acessar o sistema para realizar sua inscrição.
+        </p>
+
+        <a href="../programas" class="btn btn-primary">
+            Acessar sistema
+        </a>
+    </div>';
+
+        $mostrarFormulario = false;
     } else {
         $cand->atualizar();
         $msg = '
@@ -109,5 +124,7 @@ echo '
    cand_id = "'.$idCand.'";
 </script>';
 
-include __DIR__.'/includes/formulario.php';
+if ($mostrarFormulario) {
+    include __DIR__.'/includes/formulario.php';
+}
 include '../includes/footer.php';

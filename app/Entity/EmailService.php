@@ -456,7 +456,11 @@ class EmailService
         }
     }
 
-    // ---------------------------------------------------------------------------------
+    public function cadastrarCandidato($cand, $idCand)
+    {
+        require_once '../includes/mailBody/mailCadastrarCand.php';
+        $dados = mailCadastrarCand($cand, $idCand);
 
-    
+        $this->enviar($dados);
+    }
 }

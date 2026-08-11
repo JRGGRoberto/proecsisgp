@@ -19,7 +19,7 @@ function listarInscricoes() {
       if(inscricao.aberto == 1) {
         const option = document.createElement("option");
         option.value = inscricao.id;
-        option.text = `${inscricao.prog} - ${inscricao.prof} [ ${inscricao.campus} ] ${inscricao.colegiado} - ${inscricao.aberto}`;
+        option.text = `${inscricao.prog}  - ${inscricao.prof} - ${inscricao.colegiado} [ ${inscricao.campus} ] `;
         elementoSelect.appendChild(option);
       }
     } else {
@@ -27,7 +27,7 @@ function listarInscricoes() {
       div.className = "alert alert-secondary alert-dismissible fade show";
       div.id = inscricao.id;
 
-      let contHTML = `<strong>${inscricao.prog}</strong> ${inscricao.prof} <span class="badge badge-secondary">${inscricao.campus}</span> ${inscricao.colegiado}. <span class="badge badge-secondary">${inscricao.em}</span>`;
+      let contHTML = `<strong>${inscricao.prog}</strong> ${inscricao.prof}  <span class="badge badge-secondary">${inscricao.campus}</span> ${inscricao.colegiado}. <span class="badge badge-secondary">${inscricao.em}</span>`;
       if (inscricao.aberto == 1) {
         contHTML = contHTML + 
               `<button type="button" class="fechar close" data-bs-dismiss="modal" aria-label="Close">
@@ -45,7 +45,7 @@ function listarInscricoes() {
 }
 
 async function getDataInscri() {
-  dataInscri = await fetch(`../api/incricCand.php?ca=${cand_id}`) 
+  dataInscri = await fetch(`../api/incricCand.php?ca=${cand_id}&tp=${filtro}`) 
     .then(resp => resp.json())
     .catch(error => []);
   listarInscricoes();
@@ -98,5 +98,53 @@ document.getElementById('btnNao').addEventListener('click', function() {
     modalInstance.hide();
   }
 });
+
+function geraCriterio(id){
+  let index = dataInscri.findIndex(e => e.id === id); 
+
+
+  // console.log(dataInscri[index].criterios);
+
+  let geraCriterioDiv = document.getElementById('cont-criterio');
+  geraCriterioDiv.innerHTML = `
+      <div class="card shadow-sm mt-3">
+          
+          <div class="card-header bg-primary text-white">
+              <h5 class="mb-0">
+                  <i class="bi bi-clipboard-check"></i>
+                  Informações do programa
+              </h5>
+          </div>
+
+          <div class="card-body">
+
+              <div class="mb-3">
+
+                  <h4 class="font-weight-bold mb-0">
+                      ${dataInscri[index].titulo}
+                  </h4>
+              </div>
+
+
+              <p class="mb-3">
+                  A classificação seguirá os seguintes critérios:
+              </p>
+
+              <div class="alert border">
+                  ${dataInscri[index].criterios.replace(/\n/g, "<br>")}
+              </div>
+
+          </div>
+
+          <div class="card-footer small">
+              Programa:
+              <strong>${dataInscri[index].prog}</strong>
+          </div>
+
+      </div>
+  `;
+}
+
+
 
 getDataInscri();
