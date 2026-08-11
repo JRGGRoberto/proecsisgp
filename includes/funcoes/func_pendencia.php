@@ -138,9 +138,7 @@ function criarPendencia($id_ref, $resultado, $tipo_pendencia, $cargo_recebedor =
 
 // Para excluir a pendência é preciso passar o ID de referência
 // ID de avaliação/Solicitacao_adendos/projeto ou relatorios
-function excluirPendencia($id_ref, $tipo_pendencia)
-{
-    (new Pendencias())->excluir($id_ref, $tipo_pendencia);
-
+function excluirPendencia($id_ref, $tipo_pendencia){
+    (new Pendencias)->excluir($id_ref, $tipo_pendencia);
     return true;
 }

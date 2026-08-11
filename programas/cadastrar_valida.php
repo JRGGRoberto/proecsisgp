@@ -2,6 +2,7 @@
 
 require '../vendor/autoload.php';
 use App\Entity\Candidato;
+use App\Entity\EmailService;
 use App\Entity\Inscricao;
 
 $options = '';
@@ -61,7 +62,7 @@ if (isset($_POST['nome'])) {
     $cand->ip_address = $ip;
 
     if ($evento == 'cadastrar') {
-        $idCand = $cand->cadastrar();
+        // $idCand = $cand->cadastrar();
         $msg = '
         <div class="alert alert-success alert-dismissible">
           <button type="button" class="close" data-dismiss="alert">&times;</button>

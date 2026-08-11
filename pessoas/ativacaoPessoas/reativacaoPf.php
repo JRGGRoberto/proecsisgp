@@ -4,7 +4,6 @@ require '../vendor/autoload.php';
 
 use App\Db\Pagination;
 use App\Entity\Professor;
-use App\Entity\Solicita_Pessoas;
 use App\Session\Login;
 
 Login::requireLogin();
@@ -35,23 +34,43 @@ if($_SERVER['REQUEST_METHOD'] === 'POST'){
                 $tide = 0;
             }
 
-            $pessoa_requisicao[0]->cat_func = $_POST['categoria'];
-
-            $post = [  // O que vai para a tabela Vínculo
-                'ano' => date('Y'), // ANO ATUAL
-                'rt' => $_POST['regime'], // PEGAR REGIME POR POST
+            $post = [
+                'tp_solicitacao' => 'reativacaoAdmin',
+                'tp_cadastro' => 'pf',
+                'id_solicitador' => $user['id'],
+                'id_avaliador' => $user['id'],
+                'resultado' => 'a',
+                'id_pessoa' => $pessoa_requisicao[0]->id,
+                'nome' => $pessoa_requisicao[0]->nome,
+                'cpf' => $pessoa_requisicao[0]->cpf,
+                'titulacao' => $pessoa_requisicao[0]->titulacao,
+                'lattes' => $pessoa_requisicao[0]->lattes,
+                'email' => $pessoa_requisicao[0]->email,
+                'telefone' => $pessoa_requisicao[0]->telefone,
+                'ca_id' => '',
+                'co_id' => $pessoa_requisicao[0]->id_colegiado,
+                'cat_func' => $_POST['categoria'],
+                'rt' => $_POST['regime'],
+                'portaria' => '',
+                'ano_letivo' => date('Y'), 
+                'vinculo_remocao' => '',
                 'tide' => $tide,
-                'id_prof' => $pessoa_requisicao[0]->id,
-                'user' => $user['id'],
             ];
 
             require_once '../includes/funcoes/func_solicitaPessoas.php';
-            $insert = reativacaoPessoasAdmin($post);
 
-            if($pessoa_requisicao[0]->atualizarAtivo() && $pessoa_requisicao[0]->atualizarCatFunc() && $insert){
+            if($pessoa_requisicao[0]->atualizarAtivo() && $pessoa_requisicao[0]->atualizarCatFunc() && solicitacaoPessoas($post)){
                 echo "
                     <script>
                         window.location.href = 'index.php?tipo=reativacao&cargo=pf&valida".$true."&sucesso=2'
+                    </script>
+                ";
+                exit;
+            }
+            else {
+                echo "
+                    <script>
+                        window.location.href = 'index.php?tipo=reativacao&cargo=pf&valida".$true."&sucesso=false'
                     </script>
                 ";
                 exit;
@@ -74,39 +93,49 @@ if($_SERVER['REQUEST_METHOD'] === 'POST'){
                 exit;
             }
 
-            if(!$pessoa_requisicao[0]->titulacao){
-                $titulacao = 'n/a';
+            if ($_POST['regime'] == 'TIDE'){
+                $tide = 1;
             } else {
-                $titulacao = $pessoa_requisicao[0]->titulacao;
+                $tide = 0;
             }
 
             $post = [
                 'tp_solicitacao' => 'reativacao',
                 'tp_cadastro' => 'pf',
                 'id_solicitador' => $user['id'],
+                'id_avaliador' => null,
+                'resultado' => null,
                 'id_pessoa' => $pessoa_requisicao[0]->id,
                 'nome' => $pessoa_requisicao[0]->nome,
                 'cpf' => $pessoa_requisicao[0]->cpf,
-                'titulacao' => $titulacao,
+                'titulacao' => $pessoa_requisicao[0]->titulacao,
                 'lattes' => $pessoa_requisicao[0]->lattes,
                 'email' => $pessoa_requisicao[0]->email,
                 'telefone' => $pessoa_requisicao[0]->telefone,
                 'ca_id' => '',
                 'co_id' => $pessoa_requisicao[0]->id_colegiado,
                 'cat_func' => $_POST['categoria'],
-                'ano_letivo' => date('Y'),
                 'rt' => $_POST['regime'],
                 'portaria' => '',
+                'ano_letivo' => date('Y'),
                 'vinculo_remocao' => '',
+                'tide' => $tide,
             ];
 
             require_once '../includes/funcoes/func_solicitaPessoas.php';
-            $insert = solicitacaoPessoas($post);
 
-            if($insert){
+            if(solicitacaoPessoas($post)){
                 echo "
                     <script>
                         window.location.href = 'index.php?tipo=reativacao&cargo=pf&valida".$true."&sucesso=1'
+                    </script>
+                ";
+                exit;
+            }
+            else {
+                echo "
+                    <script>
+                        window.location.href = 'index.php?tipo=reativacao&cargo=pf&valida".$true."&sucesso=false'
                     </script>
                 ";
                 exit;
@@ -118,12 +147,18 @@ if($_SERVER['REQUEST_METHOD'] === 'POST'){
             require_once '../includes/funcoes/func_solicitaPessoas.php';
 
             $IdP = $_POST['remover_solicitacao'];
-            $remove = removeSolicitacao($IdP);
-
-            if($remove){
+            if(removeSolicitacao($IdP)){
                 echo "
                     <script>
                         window.location.href = 'index.php?tipo=reativacao&cargo=pf&valida".$true."&sucesso=1'
+                    </script>
+                ";
+                exit;
+            }
+            else {
+                echo "
+                    <script>
+                        window.location.href = 'index.php?tipo=reativacao&cargo=pf&valida".$true."&sucesso=false'
                     </script>
                 ";
                 exit;
