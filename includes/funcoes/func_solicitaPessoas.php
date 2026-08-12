@@ -37,11 +37,12 @@ function analiseVinculo($post){
 
 function analiseProfessor($post){
     $insert = false;
-    if (!$post['tp_solicitacao'] == 'cadastro' || !$post['tp_solicitacao'] == 'cadastroAdmin'){
+    if ($post['tp_solicitacao'] != 'cadastro' || $post['tp_solicitacao'] != 'cadastroAdmin') {
         $where = 'id = "'.$post['id_pessoa'].'"';
-        $profs = Professor::getProfessores($where);  
+        $profs = Professor::getProfessores($where);
         $vinculo_remocao = Vinculo::getByAnoProf($profs[0]->id, $post['ano_letivo']);
     }
+
 
     if ($post['tp_solicitacao'] == 'cadastro' || $post['tp_solicitacao'] == 'cadastroAdmin'){
         // Cadastra o professor            

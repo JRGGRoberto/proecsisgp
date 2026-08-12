@@ -215,7 +215,7 @@ if (isset($_GET['fNome'])) {
 }
 
 if ($validade == 1) {
-    $where = 'ativo = "0"'.$qryLotacao.$qryNome;
+    $where = 'ativo = "0"'.$qryLotacao.$qryNome.' AND tipo = "pf"';
 } else {
     $caId = preg_match('/^(?!.*--)[A-Za-z0-9-]+$/', $user['co_id']) ? $user['co_id'] : '';
     $where = 'id_colegiado = "'.$caId.'" AND ativo = "0"';

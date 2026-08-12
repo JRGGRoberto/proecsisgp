@@ -269,7 +269,6 @@ class EmailService
     //Exemplo no arquivo includes\funcoes\func_solicitaPessoas.php
     public function alteracaoPessoas($post, $senha = '', $resultado = '')
     {
-
         // Não preciso do ID do interessado pois como será enviado os dados por $post pega lá mesmo
         
         // ID de quem avaliou, no caso como foi feito por ADM não teve avaliação

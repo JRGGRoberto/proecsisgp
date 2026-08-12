@@ -104,7 +104,8 @@ function mailInsercaoADM($dados){
         if($dados['vinculo_remocao']){
             $link = 
             '<p>
-                Link para acesso ao PAD do professor: http://sis7.localhost/sistema/upload/uploads/pads/'.$dados['vinculo_remocao'].'.html
+                Link para acesso ao PAD do professor: 
+                href="'.$baseUrl.'/sistema/upload/uploads/pads/'.$dados['vinculo_remocao'].'.html" target="_blank">'.$nomeInteressado.'</a>
             </p>';
         }
         else {
@@ -143,19 +144,19 @@ function mailInsercaoADM($dados){
         'tipo' => $tipo, 
 
         'administrador' => [
-            'destinatário' => $dados['emailResponsavelAvaliacao'],
+            'destinatario' => $dados['emailResponsavelAvaliacao'],
             'nome' => $dados ['nomeResponsavelAvaliacao'],
             'assunto' => $assunto,
             'mensagem' => $msg1($nomeADM,$nomeInteressado,$tipoCargos),
         ],
         'chefe' => [
-            'destinatário' => $dados['emailResponsavelLocal'],
+            'destinatario' => $dados['emailResponsavelLocal'],
             'nome' => $dados ['nomeResponsavelLocal'],
             'assunto' => $assunto,
             'mensagem' => $msg1($nomeChefe,$nomeInteressado,$tipoCargos),
         ],
         'interessado' => [
-            'destinatário' => $dados['emailInteressado'],
+            'destinatario' => $dados['emailInteressado'],
             'nome' => $dados ['nomeInteressado'],
             'assunto' => $assunto,
             'mensagem' => $msg2,
@@ -197,7 +198,7 @@ function mailSolicitacaoPessoas($dados){
         'tipo' => $tipo, 
 
         'chefe' => [
-            'destinatário' => $dados['emailResponsavelLocal'],
+            'destinatario' => $dados['emailResponsavelLocal'],
             'nome' => $dados ['nomeResponsavelLocal'],
             'assunto' => $assunto,
             'mensagem' => $msg1($nomeChefe,$nomeInteressado,$tipoCargos),
@@ -237,7 +238,7 @@ function mailRemocaoSolicitacaoPessoas($dados){
         'tipo' => $tipo, 
 
         'chefe' => [
-            'destinatário' => $dados['emailResponsavelLocal'],
+            'destinatario' => $dados['emailResponsavelLocal'],
             'nome' => $dados ['nomeResponsavelLocal'],
             'assunto' => $assunto,
             'mensagem' => $msg1($nomeChefe,$nomeInteressado,$tipoCargos),
@@ -334,14 +335,18 @@ function mailAvaliacaoADM($dados){
 
         $link = null;
         if ($dados['tp_solicitacao'] == 'desativacao'){
-            $assunto = 'Usuário desativado';
+            $assunto = 'Usuário desativado';         
             if($dados['vinculo_remocao']){
                 $link = 
                 '<p>
-                    Link para acesso ao PAD do professor: '.$baseUrl.'/sistema/upload/uploads/pads/'.$dados['vinculo_remocao'].'.html
+                    Link para acesso ao PAD do professor: 
+                    href="'.$baseUrl.'/sistema/upload/uploads/pads/'.$dados['vinculo_remocao'].'.html" target="_blank">'.$nomeInteressado.'</a>
                 </p>';
-            } else { $link=null; }
-                
+            }
+            else {
+                $link = null;
+            }
+
             $msg2 = '
                 <h2>Acesso desativado no sistema!</h2>
                 <p>Olá <strong>'.$nomeInteressado.'</strong>,</p>
@@ -375,19 +380,19 @@ function mailAvaliacaoADM($dados){
         'tipo' => $tipo, 
 
         'administrador' => [
-            'destinatário' => $dados['emailResponsavelAvaliacao'],
+            'destinatario' => $dados['emailResponsavelAvaliacao'],
             'nome' => $dados ['nomeResponsavelAvaliacao'],
             'assunto' => $assunto,
             'mensagem' => $msg1($nomeADM,$nomeInteressado,$tipoCargos,$n_tp_solicitacao),
         ],
         'chefe' => [
-            'destinatário' => $dados['emailResponsavelLocal'],
+            'destinatario' => $dados['emailResponsavelLocal'],
             'nome' => $dados ['nomeResponsavelLocal'],
             'assunto' => $assunto,
             'mensagem' => $msg1($nomeChefe,$nomeInteressado,$tipoCargos,$n_tp_solicitacao),
         ],
         'interessado' => [
-            'destinatário' => $dados['emailInteressado'],
+            'destinatario' => $dados['emailInteressado'],
             'nome' => $dados ['nomeInteressado'],
             'assunto' => $assunto,
             'mensagem' => $msg2,
