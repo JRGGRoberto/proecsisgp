@@ -9,17 +9,15 @@ use App\Session\Login;
 Login::requireLogin();
 $user = Login::getUsuarioLogado();
 
-if($_SERVER['REQUEST_METHOD'] === 'POST'){
-    
-    if ($validade == 1){ // PARA ADMINISTRADOR
+if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+    if ($validade == 1) { // PARA ADMINISTRADOR
         if (array_key_exists('solicitacao_ReativaPessoa', $_POST)) { // Verifica se foi informado um ID de um Professor
-
             $wherePessoa = 'id = "'.$_POST['solicitacao_ReativaPessoa'].'"';
             $pessoa_requisicao = Professor::getProfessores($wherePessoa);
             $pessoa_requisicao[0]->ativo = 1;
 
             // Para garantir que tenha um email para acessar e esteja em um colegiado
-            if(!$pessoa_requisicao[0]->email || !$pessoa_requisicao[0]->id_colegiado){
+            if (!$pessoa_requisicao[0]->email || !$pessoa_requisicao[0]->id_colegiado) {
                 echo "
                     <script>
                         window.location.href = 'index.php?tipo=reativacao&cargo=pf&valida".$true."&sucesso=false'
@@ -28,7 +26,7 @@ if($_SERVER['REQUEST_METHOD'] === 'POST'){
                 exit;
             }
 
-            if ($_POST['regime'] == 'TIDE'){
+            if ($_POST['regime'] == 'TIDE') {
                 $tide = 1;
             } else {
                 $tide = 0;
@@ -52,22 +50,21 @@ if($_SERVER['REQUEST_METHOD'] === 'POST'){
                 'cat_func' => $_POST['categoria'],
                 'rt' => $_POST['regime'],
                 'portaria' => '',
-                'ano_letivo' => date('Y'), 
+                'ano_letivo' => date('Y'),
                 'vinculo_remocao' => '',
                 'tide' => $tide,
             ];
 
             require_once '../includes/funcoes/func_solicitaPessoas.php';
 
-            if($pessoa_requisicao[0]->atualizarAtivo() && $pessoa_requisicao[0]->atualizarCatFunc() && solicitacaoPessoas($post)){
+            if ($pessoa_requisicao[0]->atualizarAtivo() && $pessoa_requisicao[0]->atualizarCatFunc() && solicitacaoPessoas($post)) {
                 echo "
                     <script>
                         window.location.href = 'index.php?tipo=reativacao&cargo=pf&valida".$true."&sucesso=2'
                     </script>
                 ";
                 exit;
-            }
-            else {
+            } else {
                 echo "
                     <script>
                         window.location.href = 'index.php?tipo=reativacao&cargo=pf&valida".$true."&sucesso=false'
@@ -76,15 +73,13 @@ if($_SERVER['REQUEST_METHOD'] === 'POST'){
                 exit;
             }
         }
-    }
-    else { // QUANDO É FEITO POR UM COORDENADOR
+    } else { // QUANDO É FEITO POR UM COORDENADOR
         if (array_key_exists('solicitacao_ReativaPessoa', $_POST)) { // Verifica se foi informado um ID de um Professor
-
-            $wherePessoa = 'id = "'.$_POST['solicitacao_ReativaPessoa'].'"'; 
+            $wherePessoa = 'id = "'.$_POST['solicitacao_ReativaPessoa'].'"';
             $pessoa_requisicao = Professor::getProfessores($wherePessoa);
 
             // Para garantir que tenha um email para acessar e esteja em um colegiado
-            if(!$pessoa_requisicao[0]->email || !$pessoa_requisicao[0]->id_colegiado){
+            if (!$pessoa_requisicao[0]->email || !$pessoa_requisicao[0]->id_colegiado) {
                 echo "
                     <script>
                         window.location.href = 'index.php?tipo=reativacao&cargo=pf&valida".$true."&sucesso=false'
@@ -93,7 +88,7 @@ if($_SERVER['REQUEST_METHOD'] === 'POST'){
                 exit;
             }
 
-            if ($_POST['regime'] == 'TIDE'){
+            if ($_POST['regime'] == 'TIDE') {
                 $tide = 1;
             } else {
                 $tide = 0;
@@ -124,15 +119,14 @@ if($_SERVER['REQUEST_METHOD'] === 'POST'){
 
             require_once '../includes/funcoes/func_solicitaPessoas.php';
 
-            if(solicitacaoPessoas($post)){
+            if (solicitacaoPessoas($post)) {
                 echo "
                     <script>
                         window.location.href = 'index.php?tipo=reativacao&cargo=pf&valida".$true."&sucesso=1'
                     </script>
                 ";
                 exit;
-            }
-            else {
+            } else {
                 echo "
                     <script>
                         window.location.href = 'index.php?tipo=reativacao&cargo=pf&valida".$true."&sucesso=false'
@@ -140,22 +134,19 @@ if($_SERVER['REQUEST_METHOD'] === 'POST'){
                 ";
                 exit;
             }
-
-        }
-        elseif (array_key_exists('remover_solicitacao', $_POST)) {
+        } elseif (array_key_exists('remover_solicitacao', $_POST)) {
             // Aqui é para a desativação de pessoas
             require_once '../includes/funcoes/func_solicitaPessoas.php';
 
             $IdP = $_POST['remover_solicitacao'];
-            if(removeSolicitacao($IdP)){
+            if (removeSolicitacao($IdP)) {
                 echo "
                     <script>
                         window.location.href = 'index.php?tipo=reativacao&cargo=pf&valida".$true."&sucesso=1'
                     </script>
                 ";
                 exit;
-            }
-            else {
+            } else {
                 echo "
                     <script>
                         window.location.href = 'index.php?tipo=reativacao&cargo=pf&valida".$true."&sucesso=false'
@@ -165,13 +156,12 @@ if($_SERVER['REQUEST_METHOD'] === 'POST'){
             }
         }
     }
-
 }
 
 require_once './func_exibirSolicitacao.php';
 $listPessoa = listaPessoas('reativacao');
 
-// Alterar para quando a $validade == 1 ele ver todos os professores 
+// Alterar para quando a $validade == 1 ele ver todos os professores
 $tipo = 'pf';
 $func = 'reativa';
 
@@ -195,32 +185,31 @@ if (isset($_GET['fId']) && is_array($_GET['fId'])) {
         $i = 0;
 
         foreach ($idColegiados as $ids) {
-            $i++;
+            ++$i;
             $qryLotacao .= 'id_colegiado = "'.$ids.'"';
             if ($i < $total) {
                 $qryLotacao .= ' OR ';
             }
         }
-        $qryLotacao = ' AND (' . $qryLotacao . ')';
+        $qryLotacao = ' AND ('.$qryLotacao.')';
     }
 }
-//Nome
+// Nome
 $qryNome = null;
 if (isset($_GET['fNome'])) {
     $fNome = trim($_GET['fNome']);
     if (preg_match('/^[\p{L}\s]+$/u', $fNome)) {
         $fNome = addslashes($fNome);
-        $qryNome = ' AND nome LIKE "%' . $fNome . '%"';
+        $qryNome = ' AND nome LIKE "%'.$fNome.'%"';
     }
 }
 
 if ($validade == 1) {
-    $where = 'ativo = "0"'.$qryLotacao.$qryNome.' AND tipo = "pf"';
+    $where = 'ativo = "0" '.$qryLotacao.$qryNome.' AND tipo = "pf"';
 } else {
     $caId = preg_match('/^(?!.*--)[A-Za-z0-9-]+$/', $user['co_id']) ? $user['co_id'] : '';
     $where = 'id_colegiado = "'.$caId.'" AND ativo = "0"';
 }
-
 
 // Para usar a paginação
 $professoresCount = Professor::getQntdProfessores($where);
@@ -228,4 +217,3 @@ $obPagination = new Pagination($professoresCount, $_GET['pagina'] ?? 1, 6);
 
 $professores = Professor::getProfessores($where, null, $obPagination->getLimite());
 include 'includes/form.php';
-?>

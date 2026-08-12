@@ -26,6 +26,8 @@ if (!$form) {
 } else {
     if (in_array($form->resultado, ['a', 'r'])) {
         $somenteLeitura = true;
+    } else {
+        $somenteLeitura = false;
     }
 }
 
