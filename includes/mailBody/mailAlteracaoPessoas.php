@@ -3,26 +3,25 @@
 require '../vendor/autoload.php';
 require_once '../includes/funcoes/func_mudaAbreviacao.php';
 
-function mailInsercaoADM($dados){
+function mailInsercaoADM($dados)
+{
     $tipo = 12; // Cadastro de pessoa por ADM
-    
+
     $nomeADM = ucwords(strtolower($dados['nomeResponsavelAvaliacao']));
     $nomeChefe = ucwords(strtolower($dados['nomeResponsavelLocal']));
     $nomeInteressado = ucwords(strtolower($dados['nomeInteressado']));
     $tipoCargos = tipoCargos($dados['tp_cadastro']);
 
-    if($_SERVER['HTTP_HOST'] == 'sistemaproec.unespar.edu.br'){  // Para produção
-        $baseUrl = 'https://'.$_SERVER['HTTP_HOST']; 
-    } 
-    else{ // Para Localhost
-        $baseUrl = 'http://'.$_SERVER['HTTP_HOST']; 
+    if ($_SERVER['HTTP_HOST'] == 'sistemaproec.unespar.edu.br') {  // Para produção
+        $baseUrl = 'https://'.$_SERVER['HTTP_HOST'];
+    } else { // Para Localhost
+        $baseUrl = 'http://'.$_SERVER['HTTP_HOST'];
     }
-    
 
-    if ($dados['tp_solicitacao'] == 'reativacaoAdmin'){
+    if ($dados['tp_solicitacao'] == 'reativacaoAdmin') {
         $assunto = 'Usuário ativado no sistema';
 
-        $msg1 = fn($nome, $nomeInteressado, $tipoCargos) => '
+        $msg1 = fn ($nome, $nomeInteressado, $tipoCargos) => '
             <h2>Reativação efetuada com sucesso!</h2>
             <p>Olá <strong>'.$nome.'</strong>,</p>
             <p>
@@ -36,7 +35,7 @@ function mailInsercaoADM($dados){
             </p>
             <br>
             <small>Este e-mail é automático.</small>   
-        ' ;
+        ';
 
         $msg2 = '
             <h2>Acesso disponível no sistema!</h2>
@@ -52,14 +51,13 @@ function mailInsercaoADM($dados){
             </p>
             <br><br>
             <small>Este e-mail é automático.</small>
-        ' ;
-
+        ';
     }
 
-    if ($dados['tp_solicitacao'] == 'cadastroAdmin'){
+    if ($dados['tp_solicitacao'] == 'cadastroAdmin') {
         $assunto = 'Usuário cadastrado';
 
-        $msg1 = fn($nome, $nomeInteressado, $tipoCargos) => '
+        $msg1 = fn ($nome, $nomeInteressado, $tipoCargos) => '
             <h2>Cadastrado incluído ao sistema!</h2>
             <p>Olá <strong>'.$nome.'</strong>,</p>
             <p>
@@ -73,7 +71,7 @@ function mailInsercaoADM($dados){
             </p>
             <br>
             <small>Este e-mail é automático.</small>   
-        ' ;
+        ';
 
         $msg2 = '
             <h2>Acesso disponível no sistema!</h2>
@@ -94,24 +92,23 @@ function mailInsercaoADM($dados){
             </p>
             <br><br>
             <small>Este e-mail é automático.</small>
-        ' ;
-
+        ';
     }
 
-    if ($dados['tp_solicitacao'] == 'desativacaoAdmin'){
+    if ($dados['tp_solicitacao'] == 'desativacaoAdmin') {
         $assunto = 'Usuário desativado';
 
-        if($dados['vinculo_remocao']){
-            $link = 
+        if ($dados['vinculo_remocao']) {
+            $link =
             '<p>
-                Link para acesso ao PAD do professor: http://sis7.localhost/sistema/upload/uploads/pads/'.$dados['vinculo_remocao'].'.html
+                Link para acesso ao PAD do professor: 
+                href="'.$baseUrl.'/sistema/upload/uploads/pads/'.$dados['vinculo_remocao'].'.html" target="_blank">'.$nomeInteressado.'</a>
             </p>';
-        }
-        else {
+        } else {
             $link = null;
         }
 
-        $msg1 = fn($nome, $nomeInteressado, $tipoCargos) => '
+        $msg1 = fn ($nome, $nomeInteressado, $tipoCargos) => '
             <h2>Usuário desativado no sistema!</h2>
             <p>Olá <strong>'.$nome.'</strong>,</p>
             <p>
@@ -126,7 +123,7 @@ function mailInsercaoADM($dados){
             </p>
             <br>
             <small>Este e-mail é automático.</small>   
-        ' ;
+        ';
 
         $msg2 = '
             <h2>Acesso desativado no sistema!</h2>
@@ -136,37 +133,37 @@ function mailInsercaoADM($dados){
             </p>
             <br><br>
             <small>Este e-mail é automático.</small>
-        ' ;
+        ';
     }
 
     $msg = [
-        'tipo' => $tipo, 
+        'tipo' => $tipo,
 
         'administrador' => [
-            'destinatário' => $dados['emailResponsavelAvaliacao'],
-            'nome' => $dados ['nomeResponsavelAvaliacao'],
+            'destinatario' => $dados['emailResponsavelAvaliacao'],
+            'nome' => $dados['nomeResponsavelAvaliacao'],
             'assunto' => $assunto,
-            'mensagem' => $msg1($nomeADM,$nomeInteressado,$tipoCargos),
+            'mensagem' => $msg1($nomeADM, $nomeInteressado, $tipoCargos),
         ],
         'chefe' => [
-            'destinatário' => $dados['emailResponsavelLocal'],
-            'nome' => $dados ['nomeResponsavelLocal'],
+            'destinatario' => $dados['emailResponsavelLocal'],
+            'nome' => $dados['nomeResponsavelLocal'],
             'assunto' => $assunto,
-            'mensagem' => $msg1($nomeChefe,$nomeInteressado,$tipoCargos),
+            'mensagem' => $msg1($nomeChefe, $nomeInteressado, $tipoCargos),
         ],
         'interessado' => [
-            'destinatário' => $dados['emailInteressado'],
-            'nome' => $dados ['nomeInteressado'],
+            'destinatario' => $dados['emailInteressado'],
+            'nome' => $dados['nomeInteressado'],
             'assunto' => $assunto,
             'mensagem' => $msg2,
-        ]
+        ],
     ];
-    
-    return $msg;
 
+    return $msg;
 }
 
-function mailSolicitacaoPessoas($dados){
+function mailSolicitacaoPessoas($dados)
+{
     $tipo = 13; // Solicitação pelos chefes
 
     $nomeChefe = ucwords(strtolower($dados['nomeResponsavelLocal']));
@@ -174,10 +171,10 @@ function mailSolicitacaoPessoas($dados){
     $tipoCargos = tipoCargos($dados['tp_cadastro']);
 
     require_once '../includes/funcoes/func_mudaAbreviacao.php';
-    $dados['tp_solicitacao'] = strtolower(tipoSolicitacao($dados['tp_solicitacao'])); 
+    $dados['tp_solicitacao'] = strtolower(tipoSolicitacao($dados['tp_solicitacao']));
 
     $assunto = 'Solicitação enviada!';
-    $msg1 = fn($nome, $nomeInteressado, $tipoCargos) => '
+    $msg1 = fn ($nome, $nomeInteressado, $tipoCargos) => '
         <h2>Solicitação incluída no sistema!</h2>
         <p>Olá <strong>'.$nome.'</strong>,</p>
         <p>
@@ -191,22 +188,24 @@ function mailSolicitacaoPessoas($dados){
         </p>
         <br>
         <small>Este e-mail é automático.</small>
-    ' ;
+    ';
 
     $msg = [
-        'tipo' => $tipo, 
+        'tipo' => $tipo,
 
         'chefe' => [
-            'destinatário' => $dados['emailResponsavelLocal'],
-            'nome' => $dados ['nomeResponsavelLocal'],
+            'destinatario' => $dados['emailResponsavelLocal'],
+            'nome' => $dados['nomeResponsavelLocal'],
             'assunto' => $assunto,
-            'mensagem' => $msg1($nomeChefe,$nomeInteressado,$tipoCargos),
-        ]
-    ];   
+            'mensagem' => $msg1($nomeChefe, $nomeInteressado, $tipoCargos),
+        ],
+    ];
+
     return $msg;
 }
 
-function mailRemocaoSolicitacaoPessoas($dados){
+function mailRemocaoSolicitacaoPessoas($dados)
+{
     $tipo = 14; // Remoção de solicitação pelos chefes
 
     $nomeChefe = ucwords(strtolower($dados['nomeResponsavelLocal']));
@@ -214,10 +213,10 @@ function mailRemocaoSolicitacaoPessoas($dados){
     $tipoCargos = tipoCargos($dados['tp_cadastro']);
 
     require_once '../includes/funcoes/func_mudaAbreviacao.php';
-    $dados['tp_solicitacao'] = strtolower(tipoSolicitacao($dados['tp_solicitacao'])); 
+    $dados['tp_solicitacao'] = strtolower(tipoSolicitacao($dados['tp_solicitacao']));
 
     $assunto = 'Remoção de solicitação efetuada.';
-    $msg1 = fn($nome, $nomeInteressado, $tipoCargos) => '
+    $msg1 = fn ($nome, $nomeInteressado, $tipoCargos) => '
         <h2>Remoção de solicitação efetuada no sistema!</h2>
         <p>Olá <strong>'.$nome.'</strong>,</p>
         <p>
@@ -231,23 +230,24 @@ function mailRemocaoSolicitacaoPessoas($dados){
         </p>
         <br>
         <small>Este e-mail é automático.</small>
-    ' ;
+    ';
 
     $msg = [
-        'tipo' => $tipo, 
+        'tipo' => $tipo,
 
         'chefe' => [
-            'destinatário' => $dados['emailResponsavelLocal'],
-            'nome' => $dados ['nomeResponsavelLocal'],
+            'destinatario' => $dados['emailResponsavelLocal'],
+            'nome' => $dados['nomeResponsavelLocal'],
             'assunto' => $assunto,
-            'mensagem' => $msg1($nomeChefe,$nomeInteressado,$tipoCargos),
-        ]
-    ];   
+            'mensagem' => $msg1($nomeChefe, $nomeInteressado, $tipoCargos),
+        ],
+    ];
+
     return $msg;
 }
 
-function mailAvaliacaoADM($dados){
-    
+function mailAvaliacaoADM($dados)
+{
     $tipo = 15; // Cadastro de pessoa por ADM
 
     $nomeADM = ucwords(strtolower($dados['nomeResponsavelAvaliacao']));
@@ -256,20 +256,18 @@ function mailAvaliacaoADM($dados){
     $tipoCargos = tipoCargos($dados['tp_cadastro']);
 
     require_once '../includes/funcoes/func_mudaAbreviacao.php';
-    $n_tp_solicitacao = strtolower(tipoSolicitacao($dados['tp_solicitacao'])); 
+    $n_tp_solicitacao = strtolower(tipoSolicitacao($dados['tp_solicitacao']));
 
-
-    if($_SERVER['HTTP_HOST'] == 'sistemaproec.unespar.edu.br'){  // Para produção
-        $baseUrl = 'https://'.$_SERVER['HTTP_HOST']; 
-    } 
-    else{ // Para Localhost
-        $baseUrl = 'http://'.$_SERVER['HTTP_HOST']; 
+    if ($_SERVER['HTTP_HOST'] == 'sistemaproec.unespar.edu.br') {  // Para produção
+        $baseUrl = 'https://'.$_SERVER['HTTP_HOST'];
+    } else { // Para Localhost
+        $baseUrl = 'http://'.$_SERVER['HTTP_HOST'];
     }
 
-    if ($dados['resultado'] == 'r'){
+    if ($dados['resultado'] == 'r') {
         $assunto = 'Avaliação de solicitação';
 
-        $msg1 = fn($nome, $nomeInteressado, $tipoCargos, $n_tp_solicitacao) => '
+        $msg1 = fn ($nome, $nomeInteressado, $tipoCargos, $n_tp_solicitacao) => '
             <h2>Avaliação de solicitação</h2>
             <p>Olá <strong>'.$nome.'</strong>,</p>
             <p>
@@ -283,11 +281,9 @@ function mailAvaliacaoADM($dados){
             </p>
             <br>
             <small>Este e-mail é automático.</small>   
-        ' ; 
-    }
-    elseif ($dados['resultado'] == 'a'){
-        
-        if ($dados['tp_solicitacao'] == 'cadastro'){
+        ';
+    } elseif ($dados['resultado'] == 'a') {
+        if ($dados['tp_solicitacao'] == 'cadastro') {
             $assunto = 'Usuário cadastrado';
 
             $msg2 = '
@@ -309,10 +305,10 @@ function mailAvaliacaoADM($dados){
                 </p>
                 <br><br>
                 <small>Este e-mail é automático.</small>
-            ' ;
+            ';
         }
 
-        if ($dados['tp_solicitacao'] == 'reativacao'){
+        if ($dados['tp_solicitacao'] == 'reativacao') {
             $assunto = 'Usuário ativado no sistema';
 
             $msg2 = '
@@ -329,19 +325,22 @@ function mailAvaliacaoADM($dados){
                 </p>
                 <br><br>
                 <small>Este e-mail é automático.</small>
-            ' ;
+            ';
         }
 
         $link = null;
-        if ($dados['tp_solicitacao'] == 'desativacao'){
+        if ($dados['tp_solicitacao'] == 'desativacao') {
             $assunto = 'Usuário desativado';
-            if($dados['vinculo_remocao']){
-                $link = 
+            if ($dados['vinculo_remocao']) {
+                $link =
                 '<p>
-                    Link para acesso ao PAD do professor: '.$baseUrl.'/sistema/upload/uploads/pads/'.$dados['vinculo_remocao'].'.html
+                    Link para acesso ao PAD do professor: 
+                    href="'.$baseUrl.'/sistema/upload/uploads/pads/'.$dados['vinculo_remocao'].'.html" target="_blank">'.$nomeInteressado.'</a>
                 </p>';
-            } else { $link=null; }
-                
+            } else {
+                $link = null;
+            }
+
             $msg2 = '
                 <h2>Acesso desativado no sistema!</h2>
                 <p>Olá <strong>'.$nomeInteressado.'</strong>,</p>
@@ -350,10 +349,10 @@ function mailAvaliacaoADM($dados){
                 </p>
                 <br><br>
                 <small>Este e-mail é automático.</small>
-            ' ;
+            ';
         }
 
-        $msg1 = fn($nome, $nomeInteressado, $tipoCargos, $n_tp_solicitacao) => '
+        $msg1 = fn ($nome, $nomeInteressado, $tipoCargos, $n_tp_solicitacao) => '
             <h2>Solicitação de '.ucfirst($n_tp_solicitacao).' efetuada com sucesso!</h2>
             <p>Olá <strong>'.$nome.'</strong>,</p>
             <p>
@@ -368,32 +367,31 @@ function mailAvaliacaoADM($dados){
             </p>
             <br>
             <small>Este e-mail é automático.</small>   
-        ' ;
+        ';
     }
 
     $msg = [
-        'tipo' => $tipo, 
+        'tipo' => $tipo,
 
         'administrador' => [
-            'destinatário' => $dados['emailResponsavelAvaliacao'],
-            'nome' => $dados ['nomeResponsavelAvaliacao'],
+            'destinatario' => $dados['emailResponsavelAvaliacao'],
+            'nome' => $dados['nomeResponsavelAvaliacao'],
             'assunto' => $assunto,
-            'mensagem' => $msg1($nomeADM,$nomeInteressado,$tipoCargos,$n_tp_solicitacao),
+            'mensagem' => $msg1($nomeADM, $nomeInteressado, $tipoCargos, $n_tp_solicitacao),
         ],
         'chefe' => [
-            'destinatário' => $dados['emailResponsavelLocal'],
-            'nome' => $dados ['nomeResponsavelLocal'],
+            'destinatario' => $dados['emailResponsavelLocal'],
+            'nome' => $dados['nomeResponsavelLocal'],
             'assunto' => $assunto,
-            'mensagem' => $msg1($nomeChefe,$nomeInteressado,$tipoCargos,$n_tp_solicitacao),
+            'mensagem' => $msg1($nomeChefe, $nomeInteressado, $tipoCargos, $n_tp_solicitacao),
         ],
         'interessado' => [
-            'destinatário' => $dados['emailInteressado'],
-            'nome' => $dados ['nomeInteressado'],
+            'destinatario' => $dados['emailInteressado'],
+            'nome' => $dados['nomeInteressado'],
             'assunto' => $assunto,
             'mensagem' => $msg2,
-        ]
+        ],
     ];
-    
-    return $msg;
 
+    return $msg;
 }

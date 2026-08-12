@@ -40,7 +40,7 @@ $user = LoginCandidato::getUsuarioLogado();
      style="background-image: linear-gradient(0deg, #002661 6%, #007F3D 7%, #007F3D 9%, #FFFFFF 10%, #FFFFFF 80%, #D8D8D8 98%, #000000 99%);">
     <div class="container justify-content-center">
         <!-- Logo + informações -->
-        <div class="d-flex align-items-center mx-2 my-3">
+        <div class="align-items-center mx-2 my-3">
     
             <img src="https://sistemaproec.unespar.edu.br/sistema/imgs/logo_unespar.png"
                  class="mr-3"
@@ -66,11 +66,11 @@ $user = LoginCandidato::getUsuarioLogado();
             </div>
     
         </div>
-        <div style="width: 575px;"></div>
+        <div style="width: 575px;" class=" mx-2 my-3"></div>
     
     
         <!-- Menu direita -->
-        <div class="d-flex">
+        <div class="d-flex  mx-2 my-3">
     
             <div class="btn-group btn-group-sm mr-2">
     
