@@ -4,6 +4,7 @@ use App\Entity\Professor;
 use App\Entity\Solicitacao_adendos;
 
 require '../vendor/autoload.php';
+require_once '../includes/funcoes/func_mudaAbreviacao.php';
 
 function mailAnaliseAlteracaoPropostas($idSolicitacao, $resultado, $userNome, $userEmail)
 {

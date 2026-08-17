@@ -102,7 +102,7 @@ function mailInsercaoADM($dados)
             $link =
             '<p>
                 Link para acesso ao PAD do professor: 
-                href="'.$baseUrl.'/sistema/upload/uploads/pads/'.$dados['vinculo_remocao'].'.html" target="_blank">'.$nomeInteressado.'</a>
+                <a href="'.$baseUrl.'/sistema/upload/uploads/pads/'.$dados['vinculo_remocao'].'.html" target="_blank">'.$nomeInteressado.'</a>
             </p>';
         } else {
             $link = null;
@@ -335,7 +335,7 @@ function mailAvaliacaoADM($dados)
                 $link =
                 '<p>
                     Link para acesso ao PAD do professor: 
-                    href="'.$baseUrl.'/sistema/upload/uploads/pads/'.$dados['vinculo_remocao'].'.html" target="_blank">'.$nomeInteressado.'</a>
+                    <a href="'.$baseUrl.'/sistema/upload/uploads/pads/'.$dados['vinculo_remocao'].'.html" target="_blank">'.$nomeInteressado.'</a>
                 </p>';
             } else {
                 $link = null;

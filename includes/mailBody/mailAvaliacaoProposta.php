@@ -7,6 +7,7 @@ use App\Entity\Projeto;
 require '../vendor/autoload.php';
 
 require_once '../includes/funcoes/func_proxAvaliador.php';
+require_once '../includes/funcoes/func_mudaAbreviacao.php';
 
 function autorProj($id_prof){
     $where = 'id = "'.$id_prof.'"';
