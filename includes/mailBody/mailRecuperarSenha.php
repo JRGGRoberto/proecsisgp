@@ -1,6 +1,7 @@
 <?php
 
 require '../vendor/autoload.php';
+require_once '../includes/funcoes/func_mudaAbreviacao.php';
 
 function mailRecuperarSenha($destinatario, $nome, $idref, $novaSenha) {
 

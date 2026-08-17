@@ -1,15 +1,15 @@
-<?php
-
-namespace App\Entity;
+<?php 
+namespace App\Entity; 
 
 // require '../../vendor/autoload.php';
 
 use App\Db\Database;
 use App\Db\LerDot;
+use PDO;
 use PHPMailer\PHPMailer\Exception;
 use PHPMailer\PHPMailer\PHPMailer;
 
-require_once '../includes/funcoes/func_mudaAbreviacao.php';
+// require_once '../includes/funcoes/func_mudaAbreviacao.php';
 
 class EmailService
 {
@@ -26,28 +26,64 @@ class EmailService
     public $user;
     public $url;
 
+
     /**
-     * Método responsável por cadastrar um novo Registro no banco.
+    * Método responsável por obter as pessoas do banco de dados
+    * @param  string $where
+    * @param  string $order
+    * @param  string $limit
+    * @return array
+    */
+    public static function getEmails($where = null, $order = null, $limit = null){
+        return (new Database('mailsmsgs'))->select($where,$order,$limit)
+                                    ->fetchAll(PDO::FETCH_CLASS,self::class);
+    }
+
+
+    /**
+     * Método responsável por cadastrar um novo email no banco.
      *
      * @return bool
      */
     private function cadastrarDB($dados)
     {
-        $obDatabase = new Database('mailsmsgs');
-        $this->id = $obDatabase->insert([
-            'destinatario' => $dados['destinatario'],
-            'nome' => $dados['nome'],
-            'sistema' => $this->sistema,
-            'tipo' => $dados['tipo'],
-            'idref' => $dados['idref'],
-            'status' => $this->status,
-            'assunto' => $dados['assunto'],
-            'mensagem' => $dados['mensagem'],
-            'user' => $this->user,
-        ]);
 
-        // RETORNAR SUCESSO
-        return true;
+        // Espera 0 segundos e 100.000.000 nanossegundos
+        // Isso é feito para que o envio de email possa pegar o created certo
+        time_nanosleep(0, 900000000);
+
+        $obDatabase = new Database('mailsmsgs');
+        if (
+            $this->id = $obDatabase->insert([
+                'destinatario' => $dados['destinatario'],
+                'nome' => $dados['nome'],
+                'sistema' => $this->sistema,
+                'tipo' => $dados['tipo'],
+                'idref' => $dados['idref'],
+                'status' => $this->status,
+                'assunto' => $dados['assunto'],
+                'mensagem' => $dados['mensagem'],
+                'user' => $this->user,
+            ])
+        ){
+            // RETORNAR SUCESSO
+            return true;
+        } else {
+            // NÃO RETORNAR SUCESSO
+            return false;
+        }
+    }
+
+    /**
+    * Método responsável por atualizar o email no banco
+    * @return boolean
+    */
+    public function atualizarStatus()
+    {
+        return (new Database('mailsmsgs'))->update('(id) = ( "'.$this->id.'" )',
+            [
+                'status' => $this->status
+            ]);
     }
 
     private function validaDestinatario()
@@ -77,64 +113,26 @@ class EmailService
         $this->sistema = $partes[0];
     }
 
-    private function sendMail($destinatario, $nome, $assunto, $mensagem)
-    {
-        $mail = new PHPMailer(true);
-
-        try {
-            $env = new LerDot();
-            $mail->isSMTP();
-            $mail->Host = $env::get('HOSTMAIL');
-            $mail->SMTPAuth = true;
-            $mail->Username = $env::get('MAILUSERNAME');
-            $mail->Password = $env::get('MAILPASSWD');
-            $mail->Port = $env::get('MAILPORT');
-            $mail->SMTPSecure = PHPMailer::ENCRYPTION_STARTTLS;
-
-            // define para inserir html
-            $mail->isHTML(true);
-            $mail->CharSet = 'UTF-8';
-
-            // remetente
-            $mail->setFrom($mail->Username, 'Sistema PROEC');
-
-            $mail->addAddress($destinatario, $nome);
-            $mail->Subject = $assunto;
-
-            // email
-            $mail->Body = $mensagem;
-
-            return $mail->send();
-        } catch (Exception $e) {
-            return false;
-        }
-    }
-
+    // Aqui que valida o que será inserido no banco de dados
     public function enviar($dados)
     {
         $this->definirBaseUrl();
         $this->validarSistema();
 
         $destinatario = $this->validaDestinatario();
-
         if ($destinatario) {
             $dados['destinatario'] = $destinatario;
         }
 
-        $enviado = 0;
+        $this->destinatario = $dados['destinatario'];
+        $this->idref =  $dados['idref'];
+        $this->nome = $dados['nome'];
+        $this->assunto = $dados['assunto'];
+        $this->mensagem = $dados['mensagem'];
         $this->tipo = $dados['tipo'];
-        $this->status = $this->sendMail(
-            $this->destinatario = $dados['destinatario'],
-            $this->nome = $dados['nome'],
-            $this->assunto = $dados['assunto'],
-            $this->mensagem = $dados['mensagem']
-        ) ? 1 : 0;
-        $this->status = $enviado ? 1 : 0;
-        $arrEnviados[] = $enviado;
+        $this->status = '0';
 
-        $this->cadastrarDB($dados);
-
-        return $arrEnviados;
+        return $this->cadastrarDB($dados);
     }
 
     // --------------------------------------------------------------------------------

@@ -5,6 +5,7 @@ use App\Entity\Cargos_Especiais;
 use App\Entity\Solicitacao_adendos;
 
 require '../vendor/autoload.php';
+require_once '../includes/funcoes/func_mudaAbreviacao.php';
 
 // use \App\Entity\Professor;
 
