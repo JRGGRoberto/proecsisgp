@@ -14,16 +14,19 @@ use App\Entity\Outros;
 $iduser = $user['id'];
 
 $qrySelProg = '
-select 
-   p.id, p.prog , COUNT(s.id_can) ok,  count(i.id_can) inscritos
-from 
-   divulga_proj p
-   left join inscricao i on i.id_prog  = p.id 
-   left join inscricao s on s.id_prog  = p.id and s.cancelado = 0 AND s.classif = 1
-where 
-idprof = "'.$iduser.'"
-group by 1;
+SELECT 
+    p.id, e.nome prog , COUNT(s.id_can) ok,  
+    count(i.id_can) inscritos, if(now() > e.selcand_fim, 0 , 1) ativo
+FROM editais e
+    INNER JOIN progradisp p ON e.id  = p.edt_id 
+    LEFT JOIN inscricao i ON i.id_prog = p.id 
+    LEFT JOIN candidatos c on c.id = i.id_can
+    LEFT JOIN inscricao s on s.id_prog  = p.id and s.cancelado = 0 AND s.classif = 1
+WHERE 
+     p.prof_id = "'.$iduser.'"
+GROUP BY 1;
 ';
+
 $programas = Outros::qry($qrySelProg);
 $candidatos = '';
 
@@ -35,6 +38,11 @@ foreach ($programas as $prog) {
     } else {
         $corClass = 'warning';
     }
+
+    if ($prog->ativo == 0) {
+        $corClass = 'secondary';
+    }
+
     $btnsProgs .= '<button type="submit" class="btn btn-'.$corClass.' btn-sm mr-2" name="acao" value="'.$prog->id.'">'.$prog->prog.
     ' Inscritos: '.$prog->inscritos.'</button>';
 }

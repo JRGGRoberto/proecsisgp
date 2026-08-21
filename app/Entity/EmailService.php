@@ -1,13 +1,12 @@
-<?php 
-namespace App\Entity; 
+<?php
+
+namespace App\Entity;
 
 // require '../../vendor/autoload.php';
 
 use App\Db\Database;
 use App\Db\LerDot;
-use PDO;
 use PHPMailer\PHPMailer\Exception;
-use PHPMailer\PHPMailer\PHPMailer;
 
 // require_once '../includes/funcoes/func_mudaAbreviacao.php';
 
@@ -26,19 +25,20 @@ class EmailService
     public $user;
     public $url;
 
-
     /**
-    * Método responsável por obter as pessoas do banco de dados
-    * @param  string $where
-    * @param  string $order
-    * @param  string $limit
-    * @return array
-    */
-    public static function getEmails($where = null, $order = null, $limit = null){
-        return (new Database('mailsmsgs'))->select($where,$order,$limit)
-                                    ->fetchAll(PDO::FETCH_CLASS,self::class);
+     * Método responsável por obter as pessoas do banco de dados.
+     *
+     * @param string $where
+     * @param string $order
+     * @param string $limit
+     *
+     * @return array
+     */
+    public static function getEmails($where = null, $order = null, $limit = null)
+    {
+        return (new Database('mailsmsgs'))->select($where, $order, $limit)
+                                    ->fetchAll(\PDO::FETCH_CLASS, self::class);
     }
-
 
     /**
      * Método responsável por cadastrar um novo email no banco.
@@ -47,7 +47,6 @@ class EmailService
      */
     private function cadastrarDB($dados)
     {
-
         // Espera 0 segundos e 100.000.000 nanossegundos
         // Isso é feito para que o envio de email possa pegar o created certo
         time_nanosleep(0, 900000000);
@@ -65,7 +64,7 @@ class EmailService
                 'mensagem' => $dados['mensagem'],
                 'user' => $this->user,
             ])
-        ){
+        ) {
             // RETORNAR SUCESSO
             return true;
         } else {
@@ -75,14 +74,15 @@ class EmailService
     }
 
     /**
-    * Método responsável por atualizar o email no banco
-    * @return boolean
-    */
+     * Método responsável por atualizar o email no banco.
+     *
+     * @return bool
+     */
     public function atualizarStatus()
     {
         return (new Database('mailsmsgs'))->update('(id) = ( "'.$this->id.'" )',
             [
-                'status' => $this->status
+                'status' => $this->status,
             ]);
     }
 
@@ -125,7 +125,7 @@ class EmailService
         }
 
         $this->destinatario = $dados['destinatario'];
-        $this->idref =  $dados['idref'];
+        $this->idref = $dados['idref'];
         $this->nome = $dados['nome'];
         $this->assunto = $dados['assunto'];
         $this->mensagem = $dados['mensagem'];
@@ -263,40 +263,38 @@ class EmailService
     }
 
     // --------------------------------------------------------------------------------
-    
-    //Exemplo no arquivo includes\funcoes\func_solicitaPessoas.php
+
+    // Exemplo no arquivo includes\funcoes\func_solicitaPessoas.php
     public function alteracaoPessoas($post, $senha = '', $resultado = '')
     {
         // Não preciso do ID do interessado pois como será enviado os dados por $post pega lá mesmo
-        
+
         // ID de quem avaliou, no caso como foi feito por ADM não teve avaliação
         /** @var Professor */
         $responsavelAvaliacao = Professor::getProfessor($post->id_avaliador);
 
         // ID do chefe da pessoa que vai sair (coord ou DEC)
-        if ($post->co_id && !$post->ca_id){            
+        if ($post->co_id && !$post->ca_id) {
             $co = Colegiado::getRegistro($post->co_id);
             /** @var Professor */
             $responsavelLocal = Professor::getProfessor($co->coord_id);
-        }
-        elseif ($post->ca_id && !$post->co_id){
+        } elseif ($post->ca_id && !$post->co_id) {
             $ca = Campi::getRegistro($post->ca_id);
             /** @var Professor */
             $responsavelLocal = Professor::getProfessor($ca->chef_div_id);
-        }
-        else {
+        } else {
             exit;
         }
-        
+
         $dadosEmail = [
             'nomeResponsavelAvaliacao' => $responsavelAvaliacao->nome ?? '',
-            'emailResponsavelAvaliacao' => $responsavelAvaliacao->email ?? '', 
- 
+            'emailResponsavelAvaliacao' => $responsavelAvaliacao->email ?? '',
+
             'nomeResponsavelLocal' => $responsavelLocal->nome,
-            'emailResponsavelLocal' => $responsavelLocal->email, 
+            'emailResponsavelLocal' => $responsavelLocal->email,
 
             'nomeInteressado' => $post->nome,
-            'emailInteressado' =>$post->email,
+            'emailInteressado' => $post->email,
             'senhaAcesso' => $senha,
             'vinculo_remocao' => $post->vinculo_remocao ?? '',
 
@@ -308,12 +306,12 @@ class EmailService
         require_once '../includes/mailBody/mailAlteracaoPessoas.php';
 
         // Quando é feito pelo admin é enviado para o admin, o chefe e o interessado
-        if ($post->tp_solicitacao == 'cadastroAdmin' || $post->tp_solicitacao == 'desativacaoAdmin' || $post->tp_solicitacao == 'reativacaoAdmin'){
-            // Aqui pega o que vai ser enviado escrito para o email das pessoas 
+        if ($post->tp_solicitacao == 'cadastroAdmin' || $post->tp_solicitacao == 'desativacaoAdmin' || $post->tp_solicitacao == 'reativacaoAdmin') {
+            // Aqui pega o que vai ser enviado escrito para o email das pessoas
             $dados = mailInsercaoADM($dadosEmail);
             $insert = [
                 'tipo' => $dados['tipo'],
-                'idref' => $post->id
+                'idref' => $post->id,
             ];
 
             if ($dados['administrador']) {
@@ -328,30 +326,25 @@ class EmailService
                 $dadosInteressado = array_merge($insert, $dados['interessado']);
                 $arrEnviadosInteressado = $this->enviar($dadosInteressado);
             }
-            
+
             if ($arrEnviadosAdministrador == '0') {
                 return 'administrador';
-            } 
-            elseif ($arrEnviadosChefe == '0') {
+            } elseif ($arrEnviadosChefe == '0') {
                 return 'chefe';
-            }
-            elseif ($arrEnviadosInteressado == '0') {
+            } elseif ($arrEnviadosInteressado == '0') {
                 return 'interessado';
-            }
-            else {
+            } else {
                 return 'passou';
             }
-        }  
-        // Ou seja, se for algo que tenha que ser aceito para que possa ser feito     
+        }
+        // Ou seja, se for algo que tenha que ser aceito para que possa ser feito
         elseif ($post->tp_solicitacao == 'cadastro' || $post->tp_solicitacao == 'desativacao' || $post->tp_solicitacao == 'reativacao') {
-
-            if ($post->resultado == 'r') // Se o ADM reprovar
-            {
-                // Aqui pega o que vai ser enviado escrito para o email das pessoas 
+            if ($post->resultado == 'r') { // Se o ADM reprovar
+                // Aqui pega o que vai ser enviado escrito para o email das pessoas
                 $dados = mailAvaliacaoADM($dadosEmail);
                 $insert = [
                     'tipo' => $dados['tipo'],
-                    'idref' => $post->id
+                    'idref' => $post->id,
                 ];
 
                 if ($dados['administrador']) {
@@ -362,24 +355,20 @@ class EmailService
                     $dadosChefe = array_merge($insert, $dados['chefe']);
                     $arrEnviadosChefe = $this->enviar($dadosChefe);
                 }
-                
+
                 if ($arrEnviadosAdministrador == '0') {
                     return 'administrador';
-                } 
-                elseif ($arrEnviadosChefe == '0') {
+                } elseif ($arrEnviadosChefe == '0') {
                     return 'chefe';
-                }
-                else {
+                } else {
                     return 'passou';
                 }
-            }
-            elseif ($post->resultado == 'a') // Se o ADM aprovar
-            {
-                // Aqui pega o que vai ser enviado escrito para o email das pessoas 
+            } elseif ($post->resultado == 'a') { // Se o ADM aprovar
+                // Aqui pega o que vai ser enviado escrito para o email das pessoas
                 $dados = mailAvaliacaoADM($dadosEmail);
                 $insert = [
                     'tipo' => $dados['tipo'],
-                    'idref' => $post->id
+                    'idref' => $post->id,
                 ];
 
                 if ($dados['administrador']) {
@@ -394,60 +383,51 @@ class EmailService
                     $dadosInteressado = array_merge($insert, $dados['interessado']);
                     $arrEnviadosInteressado = $this->enviar($dadosInteressado);
                 }
-                
+
                 if ($arrEnviadosAdministrador == '0') {
                     return 'administrador';
-                } 
-                elseif ($arrEnviadosChefe == '0') {
+                } elseif ($arrEnviadosChefe == '0') {
                     return 'chefe';
-                }
-                elseif ($arrEnviadosInteressado == '0') {
+                } elseif ($arrEnviadosInteressado == '0') {
                     return 'interessado';
-                }
-                else {
+                } else {
                     return 'passou';
                 }
-            } 
-            else // Aqui é para quando o DEC ou o Coord faz a solicitação, dessa forma ainda não teve resultado
-            { 
+            } else { // Aqui é para quando o DEC ou o Coord faz a solicitação, dessa forma ainda não teve resultado
                 $dados = mailSolicitacaoPessoas($dadosEmail);
 
                 $insert = [
                     'tipo' => $dados['tipo'],
-                    'idref' => $post->id
+                    'idref' => $post->id,
                 ];
 
                 if ($dados['chefe']) {
                     $dadosChefe = array_merge($insert, $dados['chefe']);
                     $arrEnviadosChefe = $this->enviar($dadosChefe);
                 }
-                
+
                 if ($arrEnviadosChefe == '0') {
                     return 'chefe';
-                }
-                else {
+                } else {
                     return 'passou';
                 }
-            }         
-        }
-        elseif ($post->tp_solicitacao == 'cadastroRm' || $post->tp_solicitacao == 'desativacaoRm' || $post->tp_solicitacao == 'reativacaoRm') {
-
+            }
+        } elseif ($post->tp_solicitacao == 'cadastroRm' || $post->tp_solicitacao == 'desativacaoRm' || $post->tp_solicitacao == 'reativacaoRm') {
             $dados = mailRemocaoSolicitacaoPessoas($dadosEmail);
 
             $insert = [
                 'tipo' => $dados['tipo'],
-                'idref' => $post->id
+                'idref' => $post->id,
             ];
 
             if ($dados['chefe']) {
                 $dadosChefe = array_merge($insert, $dados['chefe']);
                 $arrEnviadosChefe = $this->enviar($dadosChefe);
             }
-            
+
             if ($arrEnviadosChefe == '0') {
                 return 'chefe';
-            }
-            else {
+            } else {
                 return 'passou';
             }
         }
@@ -459,5 +439,33 @@ class EmailService
         $dados = mailCadastrarCand($cand, $idCand);
 
         $this->enviar($dados);
+    }
+
+    public function avaliacaoRelatorio($relatorio, $projeto, $resultado)
+    {
+        // $relatorio -> obj
+        // $resultado -> 'n' 'a' 'r'
+
+        require_once '../includes/mailBody/mailAvaliacaoRelatorio.php';
+        $dados = mailAvaliacaoRelatorio($relatorio, $projeto, $resultado);
+
+        $insert = [
+            'tipo' => $dados['tipo'],
+            'idref' => $dados['idref'],
+        ];
+
+        if ($dados['avaliador']) {
+            $dadosAvaliador = array_merge($insert, $dados['avaliador']);
+            $this->enviar($dadosAvaliador);
+        }
+
+        if ($dados['autor']) {
+            $dadosAutor = array_merge($insert, $dados['autor']);
+            $this->enviar($dadosAutor);
+        }
+
+        if (!$dados['autor'] || !$dados['avaliador']) {
+            $this->enviar($dados);
+        }
     }
 }

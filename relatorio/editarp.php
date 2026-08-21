@@ -2,9 +2,9 @@
 
 require '../vendor/autoload.php';
 
+error_reporting(E_ALL);
 ini_set('display_errors', 1);
 ini_set('display_startup_errors', 1);
-error_reporting(E_ALL);
 
 use App\Entity\Arquivo;
 use App\Entity\Campi;
@@ -61,11 +61,6 @@ foreach ($anexados as $att) {
   </li> ';
 }
 $anex .= '</ul>';
-
-$msgSolicitacoAlteracao = '';
-if ($relatorio->last_result == 'r') {
-    include __DIR__.'/includes/msgAlteração.php';
-}
 
 $cursosetor = '';
 

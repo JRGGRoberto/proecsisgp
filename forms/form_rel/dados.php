@@ -45,7 +45,7 @@ foreach ($anexados as $att) {
 
     $anex .=
     '<li>
-      <a href="/home/sistemaproec/www/sistema/upload/uploads/'.$att->nome_rand.'" target="_blank">'.$att->nome_orig.'</a> 
+      <a href="../upload/uploads/'.$att->nome_rand.'" target="_blank">'.$att->nome_orig.'</a> 
       '.$canDel.'
   </li> ';
 }
