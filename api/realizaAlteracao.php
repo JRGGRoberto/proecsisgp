@@ -85,11 +85,15 @@ function updateAdendos($validador_id, $validador_nome, $validador_cargo, $email_
 $email = new EmailService();
 // Se o resultado for aprovado, é atualizado na tabela projeto
 if ($resultado === 'a') {
-    $projetos = new Projeto();
-    $projetos = Projeto::getProjeto($idproj, $verProj);
-    $projetos->$campoAlterado = $dado_novo;
 
-    if ($projetos->atualizar()) {
+    if ($campoAlterado != 'tide'){
+        $dado_novo = "'".$dado_novo."'";
+    }
+
+    $erro = Projeto::atualizarCampo("update projetos set ".$campoAlterado." = ".$dado_novo."  where id = '".$idproj."';");
+
+    // Tem que ser negação por que o banco retorna ou o erro ou false
+    if (!$erro) {
         updateAdendos($validador_id, $validador_nome, $validador_cargo, $email_ca, $mensagem_validador, $resultado);
         // Envio de email de confirmação
         $enviado = $email->analiseAlteracaoPropostas(
@@ -109,7 +113,7 @@ if ($resultado === 'a') {
 } elseif ($resultado === 'r') {
     updateAdendos($validador_id, $validador_nome, $validador_cargo, $email_ca, $mensagem_validador, $resultado);
     // Envio de email de confirmação
-    $email->analiseAlteracaoPropostas(
+    $enviado = $email->analiseAlteracaoPropostas(
         $_GET['idAdendos'],
         $resultado,
         $user['nome'],

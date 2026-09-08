@@ -50,7 +50,7 @@ class EmailService
         // Espera 0 segundos e 100.000.000 nanossegundos
         //                     900.000.000
         // Isso é feito para que o envio de email possa pegar o created certo
-        // time_nanosleep(0, 900000000);
+        // time_nanosleep(0, 900000000); // Não está usando, modificado em banco
 
         $obDatabase = new Database('mailsmsgs');
 
