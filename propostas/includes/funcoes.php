@@ -18,19 +18,19 @@ function dt($dt)
 
 function resumirTexto(string $texto, int $limite = 256): string
 {
-    $remStyle = '</style>';
-    $posStyle = strpos($texto, $remStyle);
-    if ($posStyle > 0) {
-        $texto = substr($texto, $posStyle);
-    }
+    // tira tudo q veio do summernote
+    $texto = preg_replace('/<style\b[^>]>.?<\/style>/is', '', $texto);
+    // remove paragrafo
+    $texto = preg_replace('/<p[^>]>\s<\/p>/i', '', $texto);
 
+    // limpa td
     $textoLimpo = trim(strip_tags($texto));
 
     if (mb_strlen($textoLimpo) <= $limite) {
         return $textoLimpo;
     }
 
-    return substr($textoLimpo, 0, $limite).' <span class="badge badge-pill badge-success">(continua...)</span>';
+    return mb_substr($textoLimpo, 0, $limite).' <span class="badge badge-pill badge-success">(continua...)</span>';
 }
 
 // Monta tabela de avaliações dos projetos
