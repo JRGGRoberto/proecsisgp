@@ -118,7 +118,9 @@ if($_GET['tipo'] == 'avalia'){
 $pessoasCount = Solicita_Pessoas::getQntdPessoas($where);
 $obPagination = new Pagination($pessoasCount, $_GET['pagina'] ?? 1, 4);
 
-$solicitacao_pessoas = Solicita_Pessoas::getRegistros($where, null, $obPagination->getLimite());
+$order = 'data_solicitacao DESC';
+
+$solicitacao_pessoas = Solicita_Pessoas::getRegistros($where, $order, $obPagination->getLimite());
 
 include 'includes/pagAnalisaCadastro.php';
 

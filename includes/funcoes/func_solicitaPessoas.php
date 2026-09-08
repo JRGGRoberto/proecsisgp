@@ -75,9 +75,17 @@ function analiseProfessor($post)
             $insert = true;
         }
     } elseif ($post['tp_solicitacao'] == 'desativacao') {
-        require_once __DIR__.'/func_conexaoEpad.php';
-        if (conexaoEpad($post['id_solicitador'], $profs[0]->id, $vinculo_remocao->id, $v = true)) {
-            $insert = true;
+
+        if(!$vinculo_remocao){ // Se o professor desativado não tiver vinculo
+            $profs[0]->ativo = 0;
+            if ($profs[0]->atualizarAtivo()){
+                $insert = true;
+            }
+        } else { // Se o professor desativado tiver vinculo
+            require_once __DIR__.'/func_conexaoEpad.php'; 
+            if (conexaoEpad($post['id_solicitador'], $profs[0]->id, $vinculo_remocao->id, $v = true)) {
+                $insert = true;
+            }
         }
     }
 
