@@ -215,5 +215,5 @@ if ($validade == 1) {
 $professoresCount = Professor::getQntdProfessores($where);
 $obPagination = new Pagination($professoresCount, $_GET['pagina'] ?? 1, 6);
 
-$professores = Professor::getProfessores($where, null, $obPagination->getLimite());
+$professores = Professor::getProfessores($where, $order, $obPagination->getLimite());
 include 'includes/form.php';

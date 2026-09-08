@@ -211,6 +211,6 @@ if ($validade == 1) {
 $agentesCount = Agente::getQntd($where);
 $obPagination = new Pagination($agentesCount, $_GET['pagina'] ?? 1, 6);
 
-$agentes = Agente::gets($where, null, $obPagination->getLimite());
+$agentes = Agente::gets($where, $order, $obPagination->getLimite());
 include 'includes/form.php';
 ?>
