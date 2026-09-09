@@ -83,67 +83,38 @@ foreach ($sendColegiado as $co) {
 
     $coolSelectSend .= '<option value="'.$co->id.'"  '.$dis.'>'.$co->nome.' '.$info.'</option>';
 }
-$qryInadimplentes = "
-select
-        p.id,
-        p.id_prof,
-        p.titulo,
-        p.vigen_ini AS inicio,
-        p.vigen_fim AS fim,
-        p.estado,
+// $qryInadimplentes = "
+// select
+//         p.id,
+//         p.id_prof,
+//         p.titulo,
+//         p.vigen_ini AS inicio,
+//         p.vigen_fim AS fim,
+//         p.estado,
 
-        -- rel parcial
-        case
-            when p.estado = 3
-                and timestampdiff(month, p.vigen_ini, p.vigen_fim) > 12
-                and p.vigen_ini >= '2025-01-01'
-                and date_add(p.vigen_ini, interval 12 month) < current_date()
-            then
-                case
-                    when rp.id is null then 'rel parcial pendente'
-                    else 'enviado'
-                end
-            else 'nao precisa'
-        end as envio_rel_parcial,
+// // $qryInadimplentes = "
+// //     SELECT
+// //         p.id,
+// //         p.id_prof,
+// //         p.titulo,
+// //         p.vigen_ini as inicio,
+// //         p.vigen_fim as fim
+// //     FROM projmaster p
+// //     LEFT JOIN relats r
+// //         ON r.idproj = p.id
+// //         AND r.tipo = 'pa'
+// //     WHERE 
+// //         r.id IS NULL
+// //         AND p.id_prof = '".$user['id']."'
+// //         AND TIMESTAMPDIFF(MONTH  , p.vigen_ini, p.vigen_fim) > 12
+// //         AND DATE_ADD(p.vigen_ini, INTERVAL 12 MONTH) < CURRENT_DATE();
+// // ";
+// // $inadimplentes = Diversos::qry($qryInadimplentes);
+// // echo '<pre>';
+// // print_r($inadimplentes);
+// // echo '</pre>';
 
-        -- rel final
-        case
-            when p.estado = 4
-                and p.vigen_fim >= '2025-01-01'
-            then
-                case
-                    when rf.id is null then 'rel final pendente'
-                    else 'enviado'
-                end
-            else 'nao precisa'
-        end as envio_rel_final
-
-    from projmaster p
-
-    left join relats rp
-        on rp.idproj = p.id
-        and rp.tipo = 'pa'
-        and rp.tramitar = 1
-        and rp.publicado = 1
-
-    left join relats rf
-        on rf.idproj = p.id
-        and rf.tipo in ('fi','re','pr')
-        and rf.tramitar = 1
-        and rf.publicado = 1
-        and rf.last_result = 'a'
-        and rf.fase_atual = rf.fases
-
-    where p.id_prof = '".$user['id']."'
-";
-
-$inadimplentes = Diversos::qry($qryInadimplentes);
-/*
-echo '<pre>';
-print_r($inadimplentes);
-echo '</pre>';
-*/
-// Filtro de status
+// // Filtro de status
 $filtroStatus = filter_input(INPUT_GET, 'filtroStatus', FILTER_SANITIZE_STRING);
 
 // Condições SQL

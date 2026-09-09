@@ -12,24 +12,11 @@ $userId = $user['id'];
 
 require '../includes/msgAlert.php';
 
-class Blocos
-{
-    public $pos;
-    public $cor;
+require_once __DIR__.'/funcoesListagem.php';
 
-    public function __construct($pos, $cor)
-    {
-        $this->pos = $pos;
-        $this->cor = $cor;
-    }
-}
 
 $qnt1 = 0;
-$col = '';
-$LastV = '';
-// echo '<pre>';
-// print_r($user);
-// echo '</pre>';
+
 
 $_GET['pag'] = 'listagem';
 include './includes/funcoes.php';
@@ -37,211 +24,159 @@ include './includes/funcoes.php';
 $resultados =
 '<div id="accordion">';
 
-// echo '<pre>';
-// print_r($user);
-// echo '</pre>';
-
 $consultaObj = new Diversos();
-$relParcialInadimplente = $consultaObj->qry('
-  select 
-    p.*
-  from 
-    projmaster p
-  where 
-    current_timestamp() between p.vigen_ini and p.vigen_fim
-    and timestampdiff(month, p.vigen_ini, p.vigen_fim) > 12
-    -- and p.created_at >= "2025-03-01"
-    and p.id_prof = "'.$user['id'].'"
-    and not exists (
-      select 
-        1
-      from 
-        relats r
-      where 
-        r.idproj = p.id
-        and r.tipo = "pa"
-        and r.publicado = 1
-    )
-');
 
-// echo '<pre>';
-// print_r($relParcialInadimplente);
-// echo '</pre>';
+function getDadosAvaliacoes($idProjeto, $proj, $progresso){
+  $where = 'id_proj = "'.$idProjeto.'"';
+  $order = 'ver desc, fase_seq desc';
+
+  $avaliacoes = Avaliacoes::getRegistros($where, $order, null);
+
+  if (count($avaliacoes) > 0) {
+    $retorno = montarTblAvalProp($avaliacoes, $idProjeto, $progresso);
+    return [
+      'avaliacoes' => $retorno[0],
+      'ultima' => $retorno[1],
+      'botao' => $retorno[2]
+    ];
+  }
+
+  //eprotocolo
+  if ($proj->aprov_auto == 1) {
+      return [
+        'avaliacoes' => '',
+        'ultima' => '<span class="badge badge-info">Projeto aprovado via e-Protocolo.</span>',
+        'botao' => ''
+      ];
+  }
+
+  //sem aval
+  return [
+      'avaliacoes' => '',
+      'ultima' => '<span class="badge badge-info">Não possui avaliações.</span>',
+      'botao' => ''
+  ];
+}
 
 foreach ($projetos as $proj) {
-    ++$qnt1;
-    // $showRelatorios = false;
-    // $submetido = false;
-    $progresso = '';
-    $showRelatorios = false;
+  ++$qnt1;
 
-    // echo '<pre>';
-    //   print_r($proj);
-    // echo '</pre>';
-    // break;
+  $progresso = '';
+  $showRelatorios = false;
 
-    // echo ($proj->estado);
+  //pega o valor inteiro pro case
+  $estadoOriginal = $proj->estado;
 
-    switch ($proj->estado) {
-        case 0:  // Não iniciado
-            $progresso = '<span class="badge badge-info">Não submetido</span>';
-            $btn = naoSubmetido($proj, $user);
-            break;
-        case 1: // Em avaliação
-            $progresso = '<span class="badge badge-warning ">Em avaliação</span> ';
-            $btn = emAvaliacao($proj, $user);
-            break;
-        case 2: // Não iniciado
-            $progresso = '<span class="badge badge-secondary ">Não iniciado</span> ';
-            $btn = naoIniciado($proj, $userId);
-            break;
-        case 3: // Em execução   -- ou seja, já aprovado.
-            $progresso = '<span class="badge badge-primary ">Em execução</span> ';
-            $btn = emExecucao($proj, $userId);
-            break;
-            // case 31: // Em execução com relatório parcial publicado
-            //     $progresso = '<span class="badge badge-primary ">Em execução - Parcial publicado</span> ';
-            //     $btn = emExecucao($proj, $userId);
-            //     break;
-        case 4: // Finalizada a vigência
-            $progresso = '<span class="badge badge-success ">Aguarde Relatório Final</span> ';
-            $nomeEstado = 'Aguarde Relatório Final';
-            $btn = aguardandoRelatorio($proj, $userId);
-            break;
-        case 5: // Finalizado e entregue o relatório final/renovação
-            $progresso = '<span class="badge badge-success ">Finalizado</span> ';
-            $nomeEstado = 'Finalizado';
-            $btn = finalizado($proj, $user);
-            break;
-        case 6:
-            $progresso = '<span class="badge badge-danger ">Necessário adequações</span> ';
-            $nomeEstado = 'Adequacoes';
-            $btn = adequacoes($proj, $user);
-            break;
-        case 7:
-            $progresso = '<span class="badge badge-info ">Necessário ressubmeter</span> ';
-            $nomeEstado = 'Necessário Ressubmeter';
-            $btn = ressubmit($proj, $user);
-            break;
-        case 51: // Finalizado e entregue o relatório final/renovação
-            $proj->estado = '<span class="badge badge-success ">Finalizado</span> ';
-            $nomeEstado = 'Finalizado';
-            $btn = finalizado($proj, $user);
-            break;
-            // case 9: // Cancelado
-            //     $progresso = '<span class="badge badge-danger ">Cancelado</span> ';
-            //     $btn = cancelado($proj);
-            //     break;
-        default:
-            $progresso = '<span class="badge badge-danger">Erro estado</span>';
-            break;
-    }
+  //cria o badge do estado 
+  $estado = getEstadoProjeto($estadoOriginal);
+  $proj->estado = $estado['badge'];
 
-    // is_null($proj->colegiado) ? $col = 'A definir' : $col = $proj->colegiado;
+  //retorna os botoes de acordo com o estado
+  $botoesEstado = getBotoesProjeto($proj, $user, $userId, $estadoOriginal);
+  $btn = $botoesEstado['botoes'];
+  $necessitaAlteracoes = $botoesEstado['necessitaAlteracoes'];
 
-    $dataFim = '';
-    if (strlen($proj->vigen_fim) > 8) {
-        $dataFim = substr($proj->vigen_fim, 8, 2).'/'.
-                  substr($proj->vigen_fim, 5, 2).'/'.
-                  substr($proj->vigen_fim, 0, 4);
-    }
+  if ($necessitaAlteracoes) {
+    $proj->estado = '<span class="badge badge-danger">Aguarde Relatório Final - Necessário adequações</span>';
+  } else {
+    $proj->estado = $estado['badge'];
+  }
 
-    $dataInicio = '';
-    if (strlen($proj->vigen_ini) > 8) {
-        $dataInicio = substr($proj->vigen_ini, 8, 2).'/'.
-                  substr($proj->vigen_ini, 5, 2).'/'.
-                  substr($proj->vigen_ini, 0, 4);
-    }
+  $nomeEstado = $estado['nome'];  
 
-    $where = 'id_proj = "'.$proj->id.'"';
-    $order = 'ver desc, fase_seq desc';
-    $ListaVerAnts = Avaliacoes::getRegistros($where, $order, null);
+  $dataFim = '';
+  if (strlen($proj->vigen_fim) > 8) {
+      $dataFim = substr($proj->vigen_fim, 8, 2).'/'.
+                substr($proj->vigen_fim, 5, 2).'/'.
+                substr($proj->vigen_fim, 0, 4);
+  }
 
-    $qntAvaliacoes = count($ListaVerAnts);
-    $btnAvaliacoes = '';
-    $LastV = '';
+  $dataInicio = '';
+  if (strlen($proj->vigen_ini) > 8) {
+      $dataInicio = substr($proj->vigen_ini, 8, 2).'/'.
+                substr($proj->vigen_ini, 5, 2).'/'.
+                substr($proj->vigen_ini, 0, 4);
+  }
+  
+  $dadosAvaliacoes = getDadosAvaliacoes(
+      $proj->id,
+      $proj,
+      $progresso
+  );
 
-    if ($qntAvaliacoes > 0) {
-        $retorno = montarTblEProgress($ListaVerAnts, $proj->id, $progresso);
+  $ultimaAval = $dadosAvaliacoes['ultima'];
+  $btnAvaliacoes = $dadosAvaliacoes['botao'];
 
-        $LastV = $retorno[1];
-        $btnAvaliacoes = $retorno[2] ?? '';
-    } elseif ($proj->aprov_auto == 1) {
-        // $progresso = $msg1;
-        $LastV = '<span class="badge badge-info mb-2">Projeto aprovado via e-Protocolo.</span>';
-    } else {
-        $LastV = '<span class="badge badge-info mb-2">Não possui avaliações.</span>';
-    }
+    
+  $resultados .= '
+    <div class="card mt-2">
+      <div class="card-header">
+        <div class="row align-items-center">
+          <div class="col-sm-12">
+            <a class="collapsed card-link" data-toggle="collapse" href="#p'.$proj->id.'">
+              📃 '.$proj->titulo.'
+            </a>
+          </div>
+        </div>   
+        <div class="row">
+          <div class="col-sm"><strong>Situação:</strong> '.$proj->estado.'</div>
+        </div>';
 
-    $resultados .= '
-      <div class="card mt-2">
-        <div class="card-header">
-            <div class="row">
-              <div class="col-sm-6"><a class="collapsed card-link" data-toggle="collapse" href="#p'.$proj->id.'">📃 '.$proj->titulo.'</a></div>';
-    switch ($proj->tipo_exten) {
-        case 1:
-            $proj->tipo_exten = 'Curso';
-            break;
-        case 2:
-            $proj->tipo_exten = 'Evento';
-            break;
-        case 3:
-            $proj->tipo_exten = 'Prestação de Serviço';
-            break;
-        case 4:
-            $proj->tipo_exten = 'Programa';
-            break;
-        case 5:
-            $proj->tipo_exten = 'Projeto';
-            break;
-        default:
-            $proj->tipo_exten = 'Sem tipo definido.';
-            break;
-    }
-    $resultados .= '<div class="col-sm-4">'.$proj->tipo_exten.'</div>
-              <div class="col-sm-1">'
-    .$progresso.'
-              </div>
-              <div class="col-sm-1"></div>
-            </div>
-            <div class="row">
-              <div class="col-sm"><strong>Submetido para:</strong> '.$proj->submetido_para.'</div> 
-              <div class="col-sm"><strong>Protocolo:</strong> '.$proj->protocolo.'</div> 
-              <div class="col-sm"><strong>Vigência:</strong> '.$dataInicio.' - '.$dataFim.'</div> 
-            </div>
+        $tipo_exten = mudaAbreviacaoTipoPropostas($proj->tipo_exten);
+
+        $resultados .= '
+        <div class="row">
+          <div class="col-sm"><strong>Tipo de Proposta:</strong> '.$tipo_exten.'</div>
         </div>
 
-        <div id="p'.$proj->id.'" class="collapse" data-parent="#accordion">
-          <div class="card-body">
-            <div class="row">
-              <div class="col-12">
-                <p><strong>Resumo:</strong> '.resumirTexto($proj->resumo).'</p>
-            
-              </div>
-              <div class="row mt-2">
-                <div class="col-12  mx-3">
-                  '.$LastV.'
-                </div>
-              </div>
-            </div>
-            
-            <div class=""> 
-            ';
-    $resultados .= $btn.' '.$btnAvaliacoes;
-    $resultados .= '        
+        <div class="row">
+          <div class="col-sm"><strong>Submetido para:</strong> '.$proj->submetido_para.'</div> 
+          <div class="col-sm"><strong>Protocolo:</strong> '.$proj->protocolo.'</div> 
+          <div class="col-sm"><strong>Vigência:</strong> '.$dataInicio.' - '.$dataFim.'</div> 
+        </div>
+      </div>
+
+      <div id="p'.$proj->id.'" class="collapse" data-parent="#accordion">
+        <div class="card-body">
+          <div class="row">
+            <div class="col-12">
+              <p><strong>Resumo:</strong> '.resumirTexto($proj->resumo).'</p>
             </div>
           </div>
-        </div> 
-      </div>
+
+          <div class="mb-3">
+            '.$btn.'
+          </div>
+
+          <div class="mb-2">
+            <hr>
+            <strong>Tramitação da Proposta</strong>
+
+            <div class="mt-2">
+              <button
+                type="button"
+                class="btn btn-primary btn-sm"
+                data-toggle="collapse"
+                data-target="#avaliacoes-'.$proj->id.'"
+                aria-controls="avaliacoes-'.$proj->id.'">
+                📋 Avaliações
+              </button>
+            </div>
+
+            <div id="avaliacoes-'.$proj->id.'" class="collapse mt-3">
+              '.$ultimaAval.'
+            </div>
+          </div>
+        </div>
+      </div> 
+    </div>
   ';
 }
+
 $resultados .=
 '</div>';
 
 $qnt1 > 0 ? $resultados : $resultados = 'Nenhum registro encontrado.';
-// echo '<pre>';
-// print_r($projetos);
-// echo '</pre>';
 
 $page = basename($_SERVER['PHP_SELF']);
 $todosProjetos = ($page === 'projetos_all.php');
