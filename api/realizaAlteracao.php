@@ -86,10 +86,6 @@ function updateAdendos($validador_id, $validador_nome, $validador_cargo, $email_
 $email = new EmailService();
 // Se o resultado for aprovado, é atualizado na tabela projeto
 if ($resultado === 'a') {
-    if ($campoAlterado != 'tide') {
-        $dado_novo = "'".$dado_novo."'";
-    }
-
     $qry = 'update projetos set '.$campoAlterado.' = "'.$dado_novo.'"  where id = "'.$idproj.'";';
     $erro = Projeto::atualizarCampo($qry);
 

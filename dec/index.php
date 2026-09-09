@@ -7,12 +7,12 @@ use App\Session\Login;
 Login::requireLogin();
 $user = Login::getUsuarioLogado();
 
-if ($user['config'] != 3){
-  echo "<script>location.replace('../home');</script>";
-  exit;
+if ($user['config'] == 0) {
+    echo "<script>location.replace('../home');</script>";
+    exit;
 }
 
-if ($_GET['tipo'] == 'atualizar'){
+if ($_GET['tipo'] == 'atualizar') {
     header('Location: ../solicitaAlteracao/index.php?tipo=atualizar&solicita=DEC&idLocal='.$_GET['idLocal']);
     exit;
 } elseif ($_GET['tipo'] == 'atualizados') {

@@ -6,6 +6,12 @@ $link = '../'.$tipoPorA.'/editar.php?id='.$id;
 
 $infoMail = '';
 
+$acesso = $user['config'] > 0 || (int) $user['admin'] === 1;
+$btnProjetosRelts = '';
+if ($acesso) {
+    $btnProjetosRelts = '<p><a href="../acoesColeg/" class="btn btn-primary btn-sm">Trabalhos publicados</a></p>';
+}
+
 $email = $user['email'];
 $conta = explode('@', $email);
 if ($conta[1] == 'unespar.edu.br') {
@@ -49,6 +55,7 @@ if ($conta[1] == 'unespar.edu.br') {
         <p><a href="../propostas/projetos_all.php" class="btn btn-primary btn-sm">Todos os projetos/propostas</a></p>
 
         <?php echo $btnDashboard; ?>
+        <?php echo $btnProjetosRelts; ?>
        
       </div>
 <!--      <div class="col">
