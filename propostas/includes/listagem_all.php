@@ -3,6 +3,8 @@
 require '../includes/msgAlert.php';
 $_GET['pag'] = 'listagem_all';
 include './includes/funcoes.php';
+require_once __DIR__.'/funcoesListagem.php';
+
 
 use App\Entity\Avaliacoes;
 use App\Entity\Outros;
@@ -18,44 +20,10 @@ $userId = $user['id'];
 
 $osCabeca = [1, 2, 3, 4]; // só a elite
 
-/*
-echo '<pre>';
-print_r($user);
-echo '</pre>';
-*/
-
-// if (in_array($userConfig, $osCabeca)) {
-//   print_r($osCabeca);
-// }
-
-class Blocos
-{
-    public $pos;
-    public $cor;
-
-    public function __construct($pos, $cor)
-    {
-        $this->pos = $pos;
-        $this->cor = $cor;
-    }
-}
-
 $currentUrl = $_SERVER['REQUEST_URI'];
-// echo '<pre>';
-// print_r($user);
-// echo '</pre>';
 
 $qnt1 = 0;
 
-// function resumirTexto(string $texto, int $limite = 256): string
-// {
-//     $textoLimpo = trim(strip_tags($texto));
-//     if (mb_strlen($textoLimpo) <= $limite) {
-//         return $textoLimpo;
-//     }
-
-//     return substr($textoLimpo, 0, $limite).' <span class="badge badge-pill badge-success">(continua...)</span>';
-// }
 
 $resultados = '<div id="accordion">';
 foreach ($projetos as $proj) {
@@ -82,70 +50,19 @@ foreach ($projetos as $proj) {
     $relatorios = Relatorio::getAll();
     $qtdRelatorios = count($relatorios);
 
-    /*
-      $query = "select * from relatorios r where r.publicado <> 1 and r.idproj = '".$proj->id."'";
-      $relatoriosNaoPublicados = Outros::qry($query);
-    */
 
-    switch ($proj->estado) {
-        case 0:  // Não iniciado
-            $proj->estado = '<span class="badge badge-info">Não submetido</span>';
-            $nomeEstado = 'Não submetido';
-            $btn = naoSubmetido($proj, $user);
-            break;
-        case 1: // Em avaliação
-            $proj->estado = '<span class="badge badge-warning ">Em avaliação</span> ';
-            $nomeEstado = 'Em avaliação';
-            $btn = emAvaliacao($proj, $user);
-            break;
-        case 2: // Não iniciado
-            $proj->estado = '<span class="badge badge-secondary ">Não iniciado</span> ';
-            $nomeEstado = 'Não iniciado';
-            $btn = naoIniciado($proj, $userId);
-            break;
-        case 3: // Em execução   -- ou seja, já aprovado.
-            $proj->estado = '<span class="badge badge-primary ">Em execução</span> ';
-            $nomeEstado = 'Em execução';
-            $btn = emExecucao($proj, $userId);
-            break;
-        case 4: // Finalizada a vigência
-            $proj->estado = '<span class="badge badge-success ">Aguarde Relatório Final</span> ';
-            $nomeEstado = 'Aguarde Relatório Final';
-            $btn = aguardandoRelatorio($proj, $userId);
-            break;
-        case 5: // Finalizado e entregue o relatório final/renovação
-            $proj->estado = '<span class="badge badge-success ">Finalizado</span> ';
-            $nomeEstado = 'Finalizado';
-            $btn = finalizado($proj, $user);
-            break;
-            // adequações
-        case 6:
-            $proj->estado = '<span class="badge badge-warning ">Em avaliação</span> ';
-            $nomeEstado = 'Em avaliação';
-            $btn = emAvaliacao($proj, $user);
-            break;
-            // ressubmeter
-        case 7:
-            $proj->estado = '<span class="badge badge-warning ">Em avaliação</span> ';
-            $nomeEstado = 'Em avaliação';
-            $btn = emAvaliacao($proj, $user);
-            break;
+      //pega o valor inteiro pro case
+      $estadoOriginal = $proj->estado;
 
-        case 51: // Finalizado e entregue o relatório final/renovação
-            $proj->estado = '<span class="badge badge-success ">Finalizado</span> ';
-            $nomeEstado = 'Finalizado';
-            $btn = finalizado($proj, $user);
-            break;
-        case 9: // Cancelado
-            $proj->estado = '<span class="badge badge-danger ">Cancelado</span> ';
-            $nomeEstado = 'Cancelado';
-            $btn = cancelado($proj);
-            break;
-        default:
-            $proj->estado = '<span class="badge badge-danger">Erro estado</span>';
-            break;
-    }
+      //cria o badge do estado 
+      $estado = getEstadoProjeto($estadoOriginal);
+      $proj->estado = $estado['badge'];
 
+      //retorna os botoes de acordo com o estado
+      $botoesEstado = getBotoesProjeto($proj, $user, $userId, $estadoOriginal);
+      $btn = $botoesEstado['botoes'];
+
+    
     // 2023-03-09 00:00:00
     $resultados .= '
   <div class="card mt-3">
@@ -199,7 +116,7 @@ foreach ($projetos as $proj) {
             'Não iniciado',
         ];
         if (
-            in_array($nomeEstado, $estadosPermitidos)
+            in_array($proj->estado, $estadosPermitidos)
             && (in_array($userConfig, $osCabeca) || $userId == $proj->id_prof)
         ) {
             $resultados .= '
@@ -224,7 +141,7 @@ foreach ($projetos as $proj) {
     $LastV = '';
     // Se estiver em avaliação E o usuário for cabeça OU for o dono do projeto aparece as avaliações
     if ((
-        $nomeEstado == 'Em avaliação'
+        $proj->estado == 'Em avaliação'
         && in_array($userConfig, $osCabeca))
         || $userId == $proj->id_prof
     ) {
@@ -233,7 +150,7 @@ foreach ($projetos as $proj) {
         : '';
 
         if ($qntAvaliacoes > 0) {
-            $retorno = montarTblEProgress($avaliacoesAnteriores, $proj->id, $progresso);
+            $retorno = montarTblAvalProp($avaliacoesAnteriores, $proj->id, $progresso);
             $LastV = $retorno[1];
             // print_r($retorno[2]);
             $btnAvaliacoes = $retorno[2] ?? '';
@@ -245,8 +162,8 @@ foreach ($projetos as $proj) {
             '.$LastV.'
           </div>
           <div>';
-        $resultados .= $btnAvaliacoes;
-        $resultados .= '  
+            $resultados .= $btnAvaliacoes;
+            $resultados .= '  
           </div>
         </div>     
       ';

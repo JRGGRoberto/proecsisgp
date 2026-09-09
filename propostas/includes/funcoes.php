@@ -1,5 +1,6 @@
 <?php
 
+use App\Entity\AvaliaRelatorios;
 use App\Entity\Outros;
 use App\Session\Login;
 
@@ -16,119 +17,129 @@ function dt($dt)
     return substr($dt, 8, 2).'/'.substr($dt, 5, 2).'/'.substr($dt, 0, 4);
 }
 
+
+function avaliacoesRelatorios() {
+
+}
+
+
 function resumirTexto(string $texto, int $limite = 256): string
 {
-    $remStyle = '</style>';
-    $posStyle = strpos($texto, $remStyle);
-    if ($posStyle > 0) {
-        $texto = substr($texto, $posStyle);
-    }
+    //tira tudo q veio do summernote
+    $texto = preg_replace('/<style\b[^>]*>.*?<\/style>/is', '', $texto);
+    //remove paragrafo
+    $texto = preg_replace('/<p[^>]*>\s*<\/p>/i', '', $texto);
 
+    //limpa td
     $textoLimpo = trim(strip_tags($texto));
 
     if (mb_strlen($textoLimpo) <= $limite) {
         return $textoLimpo;
     }
 
-    return substr($textoLimpo, 0, $limite).' <span class="badge badge-pill badge-success">(continua...)</span>';
+    return mb_substr($textoLimpo, 0, $limite).' <span class="badge badge-pill badge-success">(continua...)</span>';
 }
 
 // Monta tabela de avaliações dos projetos
-function montarTblEProgress(array $ListaVerAnts, $projId, $msg1)
+function montarTblAvalProp(array $avaliacoes, $projId, $mensagem)
 {
     $todasConcluidas = false;
-    $LastV =
+    $ultimaAval =
         '<table class="table table-bordered table-sm">
-          <thead class="thead-dark">
-            <tr>
-                <th>Projeto</th>
-                <th class="mx-4">Parecere(s) 
-                    <a href="../prnRelatorios/index.php?id='.$projId.'" target="_blank"><span class="badge badge-secondary">Visualizar  🖨️</span></a>
-                </th>
-                <th>Situação</th>
-                <th>Parte</th>
-            </tr>
-          </thead>
-          <tbody>';
-    $a = 0;
+            <thead class="thead-dark">
+                <tr>
+                    <th>Projeto</th>
+                    <th class="mx-4">Parecere(s) 
+                        <a href="../prnRelatorios/index.php?id='.$projId.'" target="_blank"><span class="badge badge-secondary">Visualizar  🖨️</span></a>
+                    </th>
+                    <th>Situação</th>
+                    <th>Parte</th>
+                </tr>
+            </thead>
+            <tbody>';
+    $count = 0;
     $etapas = 0;
     $btnStatus = [];
 
-    foreach ($ListaVerAnts as $la) {
-        ++$a;
+    foreach ($avaliacoes as $aval) {
+        ++$count;
         $class = '';
         $td = '';
         $instancia = '';
-        $instancia = mudaAbreviacaoInstancias($la->tp_instancia);
+        $instancia = mudaAbreviacaoInstancias($aval->tp_instancia);
 
-        switch ($la->resultado) {
+        //config da tabela de avaliação
+        switch ($aval->resultado) {
             case 'a':
-                $la->resultado = 'Aprovado';
+                $aval->resultado = 'Aprovado';
                 $badgeSituacao = 'success';
 
                 $class = 'table-success';
-                $td = '<td class="text-nowrap"><a href="../forms/'.$la->form.'/vista.php?p='.$projId.'&v='.$la->ver.'" target="_blank">📄</a> '.$instancia.'</td>';
+                $td = '<td class="text-nowrap"><a href="../forms/'.$aval->form.'/vista.php?p='.$projId.'&v='.$aval->ver.'" target="_blank">📄</a> '.$instancia.'</td>';
 
-                array_push($btnStatus, new Blocos($la->fase_seq, 'success')); // 'primary')); //
+                $btnStatus[] = [
+                    'pos' => $aval->fase_seq,
+                    'cor' => 'success'
+                ]; 
                 break;
 
             case 'r':
-                $la->resultado = 'Solicitação de alterações';
+                $aval->resultado = 'Solicitação de alterações';
                 $badgeSituacao = 'danger';
 
                 $class = 'table-danger';
-                $td = '<td class="text-nowrap"><a href="../forms/'.$la->form.'/vista.php?p='.$projId.'&v='.$la->ver.'" target="_blank">📄</a> '.$instancia.'</td>';
+                $td = '<td class="text-nowrap"><a href="../forms/'.$aval->form.'/vista.php?p='.$projId.'&v='.$aval->ver.'" target="_blank">📄</a> '.$instancia.'</td>';
 
-                array_push($btnStatus, new Blocos($la->fase_seq, 'danger'));
+                $btnStatus[] = [
+                    'pos' => $aval->fase_seq,
+                    'cor' => 'danger'
+                ];
                 break;
             default:
-                $la->resultado = 'Em análise';
+                $aval->resultado = 'Em análise';
                 $badgeSituacao = 'warning';
                 $class = 'table-warning';
-                $td = '<td class="text-nowrap"><span class="badge badge-light">Espera de parecer... ['.$instancia.'] '.formatarData($la->created_at).'</span></td>';
+                $td = '<td class="text-nowrap"><span class="badge badge-light">Espera de parecer... ['.$instancia.'] '.formatarData($aval->created_at).'</span></td>';
 
-                array_push($btnStatus, new Blocos($la->fase_seq, 'warning'));
+                $btnStatus[] = [
+                    'pos' => $aval->fase_seq,
+                    'cor' => 'warning'
+                ];
         }
 
-        $LastV .=
+        $ultimaAval .=
            '<tr class="'.$class.'">
                 <td>
-                   <a href="../propostas/visualizar.php?id='.$projId.'&v='.$la->ver.'&w=nw" target="_blank">📄 <span class="badge badge-info">'.($la->ver + 1).'</span></a>
+                   <a href="../propostas/visualizar.php?id='.$projId.'&v='.$aval->ver.'&w=nw" target="_blank">📄 <span class="badge badge-info">'.($aval->ver + 1).'</span></a>
                 </td>'
-
-          .$td.
-                '<td><span class="align-middle badge badge-'.$badgeSituacao.'">'.$la->resultado.'</span></td>'.
-                '<td>'.$la->fase_seq.'/'.$la->etapas.'</td>
+            .$td.
+                '<td><span class="align-middle badge badge-'.$badgeSituacao.'">'.$aval->resultado.'</span></td>'.
+                '<td>'.$aval->fase_seq.'/'.$aval->etapas.'</td>
             </tr>';
 
-        $etapas = $la->etapas;
+        $etapas = $aval->etapas;
 
-        if ($la->etapas == $la->fase_seq && $la->resultado == 'a') {
+        if ($aval->etapas == $aval->fase_seq && $aval->resultado == 'a') {
             $todasConcluidas = true;
         }
     }
 
-    $LastV .=
+    $ultimaAval .=
       '</tbody>
     </table>';
 
     $btnStatus = array_reverse($btnStatus);
 
-    $btnS = [];  // / criando todos os blocos em CINZA
-    for ($x = 0; $x <= $etapas - 1; ++$x) {
-        array_push($btnS, new Blocos($x, 'secondary'));
-    }
-
     foreach ($btnStatus as $btn) {
-        $btnS[$btn->pos - 1] = $btn;
+        $btnS[$btn['pos'] - 1] = $btn;
     }
 
     $progresso =
-     '<span class="badge badge-light">Processo ['.$msg1.']<br>
+     '<span class="badge badge-light">Processo ['.$mensagem.']<br>
         <div class="btn-group">';
 
     foreach ($btnS as $btn) {
-        $progresso .= '<button type="button" class="btn btn-'.$btn->cor.'" disabled></button>';
+        $progresso .= '<button type="button" class="btn btn-'.$btn['cor'].'" disabled></button>';
     }
 
     $progresso .=
@@ -145,13 +156,140 @@ function montarTblEProgress(array $ListaVerAnts, $projId, $msg1)
             </a>';
     }
 
-    return [$progresso, $LastV, $btnAvaliacoes];
+    return [$progresso, $ultimaAval, $btnAvaliacoes];
 }
 
-// echo '<pre>';
-// print_r($profId);
-// print_r($userId);
-// echo '</pre>';
+function montarTblAvalRel($relatorio, $tipoRel, $link, $resultadoRel, $avaliacoesRel, $avaliacoes){
+    $id = $relatorio->id;
+
+    $linkFeito = '<a href="../relatorio/editar'.$link.'.php?id='.$id.'" target="_blank">';
+
+    //pega a ultima avaliacao realizada no array de avaliacoes
+    $ultimaAval = end($avaliacoes);
+
+    if ($ultimaAval && $ultimaAval->resultado == 'r') {
+        $html = '
+        <div class="mb-1">
+            '.$linkFeito.'
+                <button class="btn btn-danger btn-sm mb-2">
+                    '.$tipoRel.'&nbsp;'.formatarData($relatorio->created_at).'&nbsp;'.$resultadoRel.'
+                </button>
+            </a>
+        '; 
+    } else {
+        $html = '
+            <div class="mb-3">
+                '.$linkFeito.'
+                    <button class="btn btn-primary btn-sm mb-2">
+                        '.$tipoRel.'&nbsp;'.formatarData($relatorio->created_at).'&nbsp;'.$resultadoRel.'
+                    </button>
+                </a>
+        ';
+    }
+
+    if (!empty($avaliacoes)) {
+        $html .= '
+            <button
+                class="btn btn-secondary btn-sm mb-2"
+                type="button"
+                data-toggle="collapse"
+                data-target="#avaliacoes-rel-'.$id.'"
+                aria-expanded="false"
+                aria-controls="avaliacoes-rel-'.$id.'"
+            >
+                📋 Avaliações
+            </button>
+
+            <div
+                id="avaliacoes-rel-'.$id.'"
+                class="collapse"
+            >
+                '.$avaliacoesRel.'
+            </div>
+        ';
+    }
+
+    $html .= '
+        </div>
+    ';
+
+    return $html;                 
+}
+
+function createRelAvaliacoes($avaliacoes, $relatorio)
+{
+    if (empty($avaliacoes)) {
+        return '';
+    }
+
+    $tabelaRelAval = ' 
+        <table class="table table-bordered table-sm mb-0">
+            <thead class="thead-dark">
+                <tr>
+                    <th>Relatório</th>
+                    <th>Parecer(es)</th>
+                    <th>Situação</th>
+                    <th>Parte</th>
+                </tr>
+            </thead>
+            <tbody>
+    ';
+    foreach ($avaliacoes as $avaliacao) {
+                
+        switch ($avaliacao->resultado) {
+            case 'a':
+                $resultado = 'Aprovado';
+                $badgeSituacao = 'success';
+                $class = 'table-success';
+                break;
+            case 'r':
+                $resultado = 'Solicitação de alterações';
+                $badgeSituacao = 'danger';
+                $class = 'table-danger';
+                break;
+            default:
+                $resultado = 'Em análise';
+                $badgeSituacao = 'warning';
+                $class = 'table-warning';
+                break;
+        }
+
+        $linkAvaliacao = '
+            <a
+                href="../relatorio/aval.php?id='.$avaliacao->id.'"
+                target="_blank"
+            >
+                📄
+            </a>
+        ';
+
+        $tabelaRelAval .= '
+            <tr class="'.$class.'">
+                <td>
+                    '.tipoRelatorioIcon($relatorio->tipo).'
+                </td>
+                <td class="text-nowrap">
+                    '.$linkAvaliacao.'
+                    '.mudaAbreviacaoInstancias($avaliacao->tp_instancia).'
+                </td>
+                <td>
+                    <span class="badge badge-'.$badgeSituacao.'">
+                        '.$resultado.'
+                    </span>
+                </td>
+                <td>
+                    '.$avaliacao->fase_seq.'/'.$relatorio->fases.'
+                </td>
+            </tr>
+        ';
+    }
+
+    $tabelaRelAval .= '
+            </tbody>
+        </table>
+    ';
+    return $tabelaRelAval;
+}
 
 function createBT($tipo, $id, $ver = null, $form = null, $tipo_exten = null, $titulo = null, $userId = null, $profId = null): string
 {
@@ -183,7 +321,7 @@ function createBT($tipo, $id, $ver = null, $form = null, $tipo_exten = null, $ti
                 // Se não for evento
                 if ($tipo_exten != 2) {
                     return '
-                        <a href="../relatorio/index.php?id='.$id.'"><button class="btn btn-success btn-sm mb-2 "> 📝 Relatório Parcial </button></a> 
+                        <a href="../relatorio/index.php?id='.$id.'"><button class="btn btn-success btn-sm mb-2 "> 📝 Criar/Editar Relatórios </button></a> 
                     ';
                 } else {
                     // Evento:
@@ -195,7 +333,7 @@ function createBT($tipo, $id, $ver = null, $form = null, $tipo_exten = null, $ti
                                 Title="Relatório parcial não é aplicado para eventos."
                                 data-placement="bottom" 
                                 disabled>
-                                📝 Relatório Parcial
+                                📝 Criar/Editar Relatórios
                             </button>
                         </a>
                     ';
@@ -207,14 +345,14 @@ function createBT($tipo, $id, $ver = null, $form = null, $tipo_exten = null, $ti
         case 'relatorioFinal':
             if ($userId == $profId) {
                 // tirar o
-                return '<a href="../relatorio/index.php?id='.$id.'"><button class="btn btn-success btn-sm mb-2 ml-4"> 📝 Relatório Final </button></a>';
+                return '<a href="../relatorio/index.php?id='.$id.'"><button class="btn btn-success btn-sm mb-2 ml-4"> 📝 Editar Relatórios </button></a>';
             } else {
                 return '';
             }
             // no break
         case 'declaracao' :
             if ($userId == $profId) {
-                return '<a href="./declaracao.php?id='.$id.'"><button class="btn btn-info btn-sm mb-2 ml-2 ">📃 Declaração </button></a>';
+                return '<a href="./declaracao.php?id='.$id.'"><button class="btn btn-info btn-sm mb-2 ">📃 Declaração </button></a>';
             } else {
                 return '';
             }
@@ -222,6 +360,16 @@ function createBT($tipo, $id, $ver = null, $form = null, $tipo_exten = null, $ti
         default:
             return '';
     }
+}
+           
+function getUsuariosEspecificos()
+{
+    $ids_DirCampus = Campi::getRegistros();
+
+    return array_merge([
+        'bfd757a5-4f2d-4a10-87a8-a872ae69f1fd',
+        'b8fa555f-cedb-47cf-91cc-7581736aac88',
+    ], array_column($ids_DirCampus, 'chef_div_id'));
 }
 
 function naoSubmetido($p, $user): string
@@ -294,7 +442,7 @@ function naoIniciado($p, $userId)
             createBT('visualizar', $i, $v).' &nbsp; '.
             createBT('alteraSAP', $i, $v).' &nbsp; '.
             createBT('declaracao', $i, $v, null, null, null, $userId, $profId);
-            createBT('cancelar', $i, $v, null, null, $t);
+            // createBT('cancelar', $i, $v, null, null, $t);
 
     } else {
         return createBT('visualizar', $i, $v);
@@ -303,7 +451,8 @@ function naoIniciado($p, $userId)
 
 function emExecucao($p, $userId): string
 {
-    $i = $p->id;
+    $i = 
+    $p->id;
     $v = $p->ver;
     $tipo = $p->tipo_exten;
     $profId = $p->id_prof;
@@ -322,28 +471,40 @@ function emExecucao($p, $userId): string
     );
     if (isset($rel_par)) {
         foreach ($rel_par as $rp) {
-            $pub = '<span class="badge badge-light ">Em avaliação</span>';
+            $resultadoRel = '<span class="badge badge-light ">Em avaliação</span>';
+            $avaliacoes = Outros::qry("
+                SELECT 
+                    fr.*
+                FROM avaliacoes_rel ar
+                INNER JOIN form_rel fr 
+                    ON fr.id = ar.id
+                WHERE ar.id_rel = '".$rp->id."'
+                ORDER BY fr.created_at ASC
+            ");
+
             if ($rp->publicado == 1) {
-                $pub = '';
+                $resultadoRel = '';
 
                 $rel_parInfos .= '
                     <a href="../relatorio/editarp.php?id='.$rp->id.'" target="_blank">
-                        <button class="btn btn-primary btn-sm mb-2">📊 Relatório Parcial '.$rp->dt_create.' </button>
-                    </a> &nbsp; ';
+                        <button class="btn btn-primary btn-sm ">
+                            📊 Relatório Parcial '.$rp->dt_create.' 
+                            </button>
+                    </a> &nbsp; ';  
             } else {
                 if ($rp->last_result == 'r' && $profId == $userId) {
-                    $pub = '<span class="badge badge-light">Solicitação de alterações</span>';
+                    $resultadoRel = '<span class="badge badge-light">Solicitação de alterações</span>';
                     $linkFeito = '<a href="../relatorio/editarp.php?id='.$rp->id.'" target="_blank">';
-                    $rel_parInfos .= $linkFeito.'<button class="btn btn-danger btn-sm mb-2"> 📊 Relatório Parcial &nbsp;'.$rp->dt_create.'&nbsp;'.$pub.'</button></a> &nbsp; ';
+                    $rel_parInfos .= $linkFeito.'<button class="btn btn-danger btn-sm "> 📊 Relatório Parcial &nbsp;'.$rp->dt_create.'&nbsp;'.$resultadoRel.'</button></a> &nbsp; ';
                 } else {
                     $rel_parInfos .= '
                     <button 
-                        class="btn btn-primary btn-sm mb-2" 
+                        class="btn btn-primary btn-sm" 
                         disabled 
                         data-toggle="tooltip" 
                         data-placement="top" 
                         title="Relatório em avaliação.">
-                            📊 Relatório Parcial '.$rp->dt_create.'&nbsp;'.$pub.' 
+                            📊 Relatório Parcial '.$rp->dt_create.'&nbsp;'.$resultadoRel.' 
                     </button> &nbsp; ';
                 }
             }
@@ -411,15 +572,12 @@ function ressubmit($p, $user)
     // $t = $p->titulo;
     $form = Outros::q("select form from avalia_last al where al.id_proj = '".$i."'")->form;
 
-    // $profId = $p->id_prof;
-    // $userId = $user['id'];
-    // $userConfig = $user['config'];
 
     return
+    createBT('visualizar', $i, $v).'  	&nbsp; '.
     createBT('editar', $i, $v).'  	&nbsp; '.
     createBT('adequacoes', $i, $v, $form).'  	&nbsp; '.
     createBT('submeterNovamente', $i, $v).'  	&nbsp; '.
-    createBT('visualizar', $i, $v).'  	&nbsp; '.
     createBT('cancelar', $i, $v);
 }
 
@@ -431,80 +589,133 @@ function aguardandoRelatorio($p, $userId)
 
     $rel_Infos = '';
 
-    $ids_DirCampus = Campi::getRegistros();
-    $usuariosEspecificos = array_merge([
-        'bfd757a5-4f2d-4a10-87a8-a872ae69f1fd', // MATHEUS ESCOBOZO GUIZILINI
-        'b8fa555f-cedb-47cf-91cc-7581736aac88',  // JOSé ROBERTO DE GÓES GOMES
-    ], array_column(
-        $ids_DirCampus, 'chef_div_id'
-    )
-    );
+    //puxa os cabeça
+    $usuariosEspecificos = getUsuariosEspecificos();
 
     $rel = Outros::qry(" 
-        select 
-            r.id, r.tipo, r.publicado, r.created_at, r.last_result,
-            r.fase_atual, r.fases
-        from 
-            relats r 
-        where 
-            r.idproj = '".$i."' 
-        order by r.created_at desc
+        SELECT 
+            r.id,
+            r.tipo,
+            r.publicado,
+            r.created_at,
+            r.last_result,
+            r.fase_atual,
+            r.fases
+        FROM relats r
+        WHERE r.idproj = '".$i."' 
+        ORDER BY r.created_at DESC
     ");
+
+
+    $botoes = createBT('visualizar', $i, $v);
+
+    if ($userId == $profId) {
+        $botoes .= '
+            <a href="../relatorio/index.php?id='.$i.'" 
+                class="btn btn-success btn-sm mb-2 mr-1">
+                📝 Criar/Editar Relatórios
+            </a>';
+                
+        $botoes .= createBT('declaracao', $i, $v, null, null, null, $userId, $profId);
+    }
+
+    $necessitaAlteracoes = false;
 
     if (isset($rel)) {
         foreach ($rel as $relatorio) {
-            $tipoRel = '';
-            $tipoRel = tipoRelatorioIcon($relatorio->tipo);
 
+            //puxando cada avaliacao do relatorio
+            $avaliacoes = Outros::qry("
+                    SELECT  
+                         ar.*
+                    FROM avaliacoes_rel ar
+                    WHERE ar.id_rel = '".$relatorio->id."'
+                    ORDER BY ar.fase_seq ASC, ar.created_at ASC
+            ");
+
+            $avaliacoesRel = createRelAvaliacoes($avaliacoes, $relatorio);
+
+            $tipoRel = tipoRelatorioIcon($relatorio->tipo);
             $link = in_array($relatorio->tipo, ['fi', 're', 'pr']) ? 'f' : 'p';
+
             $infEtapas = '['.$relatorio->fase_atual.'/'.$relatorio->fases.']';
 
-            $pub = '<span class="badge badge-light">Em avaliação '.$infEtapas.'</span>';
-            if ($relatorio->publicado == 1) {
-                $pub = '';
-                $linkFeito = '<a href="../relatorio/editar'.$link.'.php?id='.$relatorio->id.'" target="_blank">';
+            $resultadoRel = '<span class="badge badge-light">
+                        Em avaliação '.$infEtapas.'
+                    </span>';
 
-                $rel_Infos .= $linkFeito.'<button class="btn btn-primary btn-sm mb-2">'.$tipoRel.'&nbsp;'.formatarData($relatorio->created_at).'&nbsp;'.$pub.'</button></a> &nbsp; ';
+
+            if ($relatorio->publicado == 1) {
+                $resultadoRel = '';
+                $rel_Infos .= montarTblAvalRel($relatorio, $tipoRel, $link, $resultadoRel, $avaliacoesRel, $avaliacoes);
+
+            //em avaliação
             } else {
+
                 if ($relatorio->last_result == 'r' && $profId == $userId) {
-                    $pub = '<span class="badge badge-light">Solicitação de alterações</span>';
-                    $linkFeito = '<a href="../relatorio/editar'.$link.'.php?id='.$relatorio->id.'" target="_blank">';
-                    $rel_Infos .= $linkFeito.'<button class="btn btn-danger btn-sm mb-2 ml-2">'.$tipoRel.'&nbsp;'.formatarData($relatorio->created_at).'&nbsp;'.$pub.'</button></a> &nbsp; ';
-                } elseif (in_array($userId, $usuariosEspecificos)) {
-                    $linkFeito = '<a href="../relatorio/editar'.$link.'.php?id='.$relatorio->id.'" target="_blank">';
-                    $rel_Infos .= $linkFeito.'<button 
-                            class="btn btn-primary btn-sm mb-2 ml-2"  
-                            data-toggle="tooltip" 
-                            data-placement="top" 
-                            title="Relatório em avaliação."
-                        >'.$tipoRel.'&nbsp;'.formatarData($relatorio->created_at).'&nbsp;'.$pub.'</button></a> &nbsp; ';
+                    $necessitaAlteracoes = true;
+                    
+                    $resultadoRel = '<span class="badge badge-light">Solicitação de alterações</span>';
+                    $rel_Infos .= montarTblAvalRel($relatorio, $tipoRel, $link, $resultadoRel, $avaliacoesRel, $avaliacoes);
+
+                } elseif (in_array($userId, $usuariosEspecificos) || $userId == $profId ) {
+                    $rel_Infos .= montarTblAvalRel($relatorio, $tipoRel, $link, $resultadoRel, $avaliacoesRel, $avaliacoes);
                 } else {
                     $rel_Infos .= '
-                        <button 
-                            class="btn btn-primary btn-sm mb-2 ml-2" 
-                            disabled 
-                            data-toggle="tooltip" 
-                            data-placement="top" 
-                            title="Relatório em avaliação."
-                        >'.$tipoRel.'&nbsp;'.formatarData($relatorio->created_at).'&nbsp;'.$pub.'</button> &nbsp; ';
+                        <div class="mb-1">
+                            <button 
+                                class="btn btn-primary btn-sm"
+                                disabled
+                                data-toggle="tooltip"
+                                data-placement="top"
+                                title="Relatório em avaliação."
+                            >
+                                '.$tipoRel.'&nbsp;'.
+                                formatarData($relatorio->created_at).'&nbsp;'.$resultadoRel.'
+                            </button>
+                        </div>
+                    ';
                 }
             }
         }
     }
 
-    if ($userId == $profId) {
-        return
-            // tirar o
-            createBT('visualizar', $i, $v).' &nbsp; '.
-            '<a href="../relatorio/index.php?id='.$i.'" class="btn btn-success btn-sm mb-2 mr-2">📝 Relatório Final</a>'.
-            $rel_Infos.
-            createBT('declaracao', $i, $v, null, null, null, $userId, $profId);
+    if (!empty($rel_Infos)) {
+        $botoes .= '
+                <div class="w-100 border-top mt-2 pt-2 mb-2">
+                    <strong>Relatórios</strong>
+                </div>
+                '.$rel_Infos.'
+        ';
+    }
+
+    //se for o dono do projeto
+    if ($userId == $profId) {  
+        return [
+            'botoes' => $botoes,
+            'necessitaAlteracoes' => $necessitaAlteracoes
+        ];
+
+    //os cabeças 
     } elseif (in_array($userId, $usuariosEspecificos)) {
-        return createBT('visualizar', $i, $v).$rel_Infos;
-    //    createBT('alteraSAP', $i, $v).' &nbsp; ';
+        return [
+            'botoes' => createBT('visualizar', $i, $v).
+                (!empty($rel_Infos) ? '
+                    <div class="mt-2 mb-1">
+                        <strong>📊 Relatórios</strong>
+                    </div>
+                    <div class="ml-2">
+                        '.$rel_Infos.'
+                    </div>
+                ' : ''),
+            'necessitaAlteracoes' => $necessitaAlteracoes
+        ];
+
     } else {
-        return createBT('visualizar', $i, $v);
-        //    createBT('alteraSAP', $i, $v).' &nbsp; ';
+        return [
+            'botoes' => createBT('visualizar', $i, $v),
+            'necessitaAlteracoes' => false
+        ];
     }
 }
 
@@ -515,34 +726,86 @@ function finalizado($p, $userId): string
     $profId = $p->id_prof;
     $rel_Infos = '';
 
-    $rel_par = Outros::qry(" select 
-                                r.id, r.tipo, r.publicado, r.created_at
-                            from 
-                                relats r 
-                            where 
-                                r.idproj = '".$i."' 
-                            order by r.created_at desc
-                        ");
-    if (isset($rel_par)) {
-        foreach ($rel_par as $rp) {
-            $tipoRel = '';
-            $tipoRel = tipoRelatorioIcon($rp->tipo);
+    $usuariosEspecificos = getUsuariosEspecificos();
 
-            $pub = '<span class="badge badge-light">Em avaliação</span>';
-            if ($rp->publicado == 1) {
-                $pub = '';
+    //puxando relatorios do projeto 
+    $rel = Outros::qry(" 
+        SELECT 
+            r.id,
+            r.tipo,
+            r.publicado,
+            r.created_at,
+            r.last_result,
+            r.fase_atual,
+            r.fases
+        FROM relats r
+        WHERE r.idproj = '".$i."' 
+        ORDER BY r.created_at DESC
+    ");
 
-                $link = in_array($rp->tipo, ['fi', 're', 'pr']) ? 'f' : 'p';
-                $linkFeito = '<a href="../relatorio/editar'.$link.'.php?id='.$rp->id.'" target="_blank">';
+    $botoes = createBT('visualizar', $i, $v);
 
-                if ($rp->tipo == 'im') {
-                    $tipoRel = '📊 Relatório Final (importado) ';
-                    $linkFeito = '<a href="../upload/uploads/'.$rp->caminho.'" target="_blank">';
-                }
+    if ($userId == $profId) {
+        $botoes .= '
+            <a href="../relatorio/index.php?id='.$i.'"class="btn btn-success btn-sm mb-2 mr-1">
+                📝 Criar/Editar Relatórios
+            </a>';
+                
+        $botoes .= createBT('declaracao', $i, $v, null, null, null, $userId, $profId);
+    }
 
-                $rel_Infos .= $linkFeito.'<button class="btn btn-primary btn-sm mb-2 ml-2">'.$tipoRel.'&nbsp;'.formatarData($rp->created_at).''.$pub.'</button>';
+    $botoes .= '<div class="w-100 border-top mt-2 pt-2 mb-2"><strong>Relatórios</strong></div>';
+    if (isset($rel)) {
+        foreach ($rel as $relatorio) {
+
+            //puxando cada avaliacao do relatorio
+            $avaliacoes = Outros::qry("
+                    SELECT 
+                        ar.*
+                    FROM avaliacoes_rel ar
+                    WHERE ar.id_rel = '".$relatorio->id."'
+                    ORDER BY ar.fase_seq ASC, ar.created_at ASC
+            ");
+
+            $avaliacoesRel = createRelAvaliacoes($avaliacoes, $relatorio);
+            $tipoRel = tipoRelatorioIcon($relatorio->tipo);
+            //seta o link na visualização do rel
+            $link = in_array($relatorio->tipo, ['fi', 're', 'pr']) ? 'f' : 'p';
+
+            $infEtapas = '['.$relatorio->fase_atual.'/'.$relatorio->fases.']';
+
+            $resultadoRel = '<span class="badge badge-light">
+                        Em avaliação '.$infEtapas.'
+                    </span>';
+
+            if ($relatorio->publicado == 1) {
+                $resultadoRel = '';
+                $rel_Infos .= montarTblAvalRel($relatorio, $tipoRel, $link, $resultadoRel, $avaliacoesRel, $avaliacoes);
+
             } else {
-                $rel_Infos .= '<button class="btn btn-primary btn-sm mb-2 disabled ml-2">'.$tipoRel.'&nbsp;'.formatarData($rp->created_at).''.$pub.'</button>';
+
+                if ($relatorio->last_result == 'r' && $profId == $userId) {
+                    $resultadoRel = '<span class="badge badge-light">Solicitação de alterações</span>';
+                    $rel_Infos .= montarTblAvalRel($relatorio, $tipoRel, $link, $resultadoRel, $avaliacoesRel, $avaliacoes);
+
+                } elseif (in_array($userId, $usuariosEspecificos)) {
+                    $rel_Infos .= montarTblAvalRel($relatorio, $tipoRel, $link, $resultadoRel, $avaliacoesRel, $avaliacoes);
+
+                } else {
+                    $rel_Infos .= '
+                        <div class="mb-1">
+                            <button 
+                                class="btn btn-primary btn-sm"
+                                disabled
+                                data-toggle="tooltip"
+                                data-placement="top"
+                                title="Relatório em avaliação."
+                            >
+                                '.$tipoRel.'&nbsp;'.
+                                formatarData($relatorio->created_at).'&nbsp;'.$resultadoRel.'
+                            </button>
+                        </div>';
+                }
             }
         }
     }
@@ -565,7 +828,6 @@ function cancelado($p): string
 }
 
 ?>
-
 
 <script>
     $(function () {
