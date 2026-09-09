@@ -55,6 +55,7 @@ if ($_GET['tipo'] === 'avalia' || $_GET['tipo'] === 'historico') {
         }
     }
     elseif ($_GET['tipo'] === 'desativacao'){
+        $order  = 'nome ASC';
         switch ($_GET['cargo'] ?? '') {
             // Desativação de Agentes
             case 'ag':
@@ -79,6 +80,7 @@ if ($_GET['tipo'] === 'avalia' || $_GET['tipo'] === 'historico') {
         }
     }
     elseif ($_GET['tipo'] === 'reativacao'){
+        $order  = 'nome ASC';
         switch ($_GET['cargo'] ?? '') {
             // Reativação de Agentes
             case 'ag':

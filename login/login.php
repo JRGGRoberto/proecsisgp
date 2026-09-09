@@ -3,6 +3,7 @@
 require '../vendor/autoload.php';
 
 use App\Db\LerDot;
+use App\Entity\LogConnect;
 use App\Entity\Usuario;
 use App\Session\Login;
 
@@ -29,6 +30,19 @@ function validaMail($email)
 
 $email = $_POST['email']; // $_GET['email']; //
 $senha = $_POST['senha']; // $_GET['senha']; //
+$ipaddress = $_POST['ipaddress'];
+$moreInformations = $_POST['moreInformations'];
+$ObInf = json_decode($moreInformations, true);
+
+$logConnect = new LogConnect();
+$logConnect->conta = $email;
+$logConnect->sistema = 'proec';
+$logConnect->ip = $ipaddress;
+$logConnect->navegador = $ObInf['navegador'];
+$logConnect->so = $ObInf['sistemaOperacional'];
+$logConnect->coresproc = $ObInf['totalCoresProcessador'];
+$logConnect->mem_aporx_gb = $ObInf['memoriaAproximadaGB'];
+
 if ($log) {
     echo '<p>Email:'.$email.' <br>Senha: '.$senha.' </p>';
 }
@@ -105,6 +119,8 @@ if (isset($email)) {
                 if ($log) {
                     echo '<p>106 - logou pelo AD e criou a  sessão</p>';
                 }
+                $logConnect->tp_connection = 'ad';
+                $logConnect->cadastrar();
                 Login::login($obUsuario);
                 exit;   // logou pelo AD e criou a  sessão<<<---
             } else {
@@ -140,6 +156,8 @@ if (isset($email)) {
             if ($log) {
                 echo '<p>141 - Logar</p>';
             }
+            $logConnect->tp_connection = 'sd';
+            $logConnect->cadastrar();
             Login::login($obUsuario);
             exit;
         }
@@ -160,9 +178,13 @@ if (isset($email)) {
         }
         goto montaTela;
     }
+
     if ($log) {
         echo '<p>164 - Loga com usuário e senha do banco</p>';
     }
+
+    $logConnect->tp_connection = 'db';
+    $logConnect->cadastrar();
     Login::login($obUsuario);
     exit;
 }

@@ -2,6 +2,8 @@
 
 require '../vendor/autoload.php';
 
+require_once '../includes/funcoes/func_mudaAbreviacao.php';
+
 function mailCadastrarProposta($projeto, $user){
 
     $tipo = 1;

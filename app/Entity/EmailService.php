@@ -7,9 +7,8 @@ namespace App\Entity;
 use App\Db\Database;
 use App\Db\LerDot;
 use PHPMailer\PHPMailer\Exception;
-use PHPMailer\PHPMailer\PHPMailer;
 
-require_once '../includes/funcoes/func_mudaAbreviacao.php';
+// require_once '../includes/funcoes/func_mudaAbreviacao.php';
 
 class EmailService
 {
@@ -27,27 +26,67 @@ class EmailService
     public $url;
 
     /**
-     * Método responsável por cadastrar um novo Registro no banco.
+     * Método responsável por obter as pessoas do banco de dados.
+     *
+     * @param string $where
+     * @param string $order
+     * @param string $limit
+     *
+     * @return array
+     */
+    public static function getEmails($where = null, $order = null, $limit = null)
+    {
+        return (new Database('mailsmsgs'))->select($where, $order, $limit)
+                                    ->fetchAll(\PDO::FETCH_CLASS, self::class);
+    }
+
+    /**
+     * Método responsável por cadastrar um novo email no banco.
      *
      * @return bool
      */
     private function cadastrarDB($dados)
     {
-        $obDatabase = new Database('mailsmsgs');
-        $this->id = $obDatabase->insert([
-            'destinatario' => $dados['destinatario'],
-            'nome' => $dados['nome'],
-            'sistema' => $this->sistema,
-            'tipo' => $dados['tipo'],
-            'idref' => $dados['idref'],
-            'status' => $this->status,
-            'assunto' => $dados['assunto'],
-            'mensagem' => $dados['mensagem'],
-            'user' => $this->user,
-        ]);
+        // Espera 0 segundos e 100.000.000 nanossegundos
+        //                     900.000.000
+        // Isso é feito para que o envio de email possa pegar o created certo
+        // time_nanosleep(0, 900000000); // Não está usando, modificado em banco
 
-        // RETORNAR SUCESSO
-        return true;
+        $obDatabase = new Database('mailsmsgs');
+
+        if (
+            // Pega negação de negação pq o insert retorna FALSE quando cadastra
+            !$this->id = $obDatabase->insert([
+                'destinatario' => $dados['destinatario'],
+                'nome' => $dados['nome'],
+                'sistema' => $this->sistema,
+                'tipo' => $dados['tipo'],
+                'idref' => $dados['idref'],
+                'status' => $this->status,
+                'assunto' => $dados['assunto'],
+                'mensagem' => $dados['mensagem'],
+                'user' => $this->user,
+            ])
+        ) {
+            // RETORNAR SUCESSO
+            return true;
+        } else {
+            // NÃO RETORNAR SUCESSO
+            return false;
+        }
+    }
+
+    /**
+     * Método responsável por atualizar o email no banco.
+     *
+     * @return bool
+     */
+    public function atualizarStatus()
+    {
+        return (new Database('mailsmsgs'))->update('(id) = ( "'.$this->id.'" )',
+            [
+                'status' => $this->status,
+            ]);
     }
 
     private function validaDestinatario()
@@ -77,64 +116,26 @@ class EmailService
         $this->sistema = $partes[0];
     }
 
-    private function sendMail($destinatario, $nome, $assunto, $mensagem)
-    {
-        $mail = new PHPMailer(true);
-
-        try {
-            $env = new LerDot();
-            $mail->isSMTP();
-            $mail->Host = $env::get('HOSTMAIL');
-            $mail->SMTPAuth = true;
-            $mail->Username = $env::get('MAILUSERNAME');
-            $mail->Password = $env::get('MAILPASSWD');
-            $mail->Port = $env::get('MAILPORT');
-            $mail->SMTPSecure = PHPMailer::ENCRYPTION_STARTTLS;
-
-            // define para inserir html
-            $mail->isHTML(true);
-            $mail->CharSet = 'UTF-8';
-
-            // remetente
-            $mail->setFrom($mail->Username, 'Sistema PROEC');
-
-            $mail->addAddress($destinatario, $nome);
-            $mail->Subject = $assunto;
-
-            // email
-            $mail->Body = $mensagem;
-
-            return $mail->send();
-        } catch (Exception $e) {
-            return false;
-        }
-    }
-
+    // Aqui que valida o que será inserido no banco de dados
     public function enviar($dados)
     {
         $this->definirBaseUrl();
         $this->validarSistema();
 
         $destinatario = $this->validaDestinatario();
-
         if ($destinatario) {
             $dados['destinatario'] = $destinatario;
         }
 
-        $enviado = 0;
+        $this->destinatario = $dados['destinatario'];
+        $this->idref = $dados['idref'];
+        $this->nome = $dados['nome'];
+        $this->assunto = $dados['assunto'];
+        $this->mensagem = $dados['mensagem'];
         $this->tipo = $dados['tipo'];
-        $this->status = $this->sendMail(
-            $this->destinatario = $dados['destinatario'],
-            $this->nome = $dados['nome'],
-            $this->assunto = $dados['assunto'],
-            $this->mensagem = $dados['mensagem']
-        ) ? 1 : 0;
-        $this->status = $enviado ? 1 : 0;
-        $arrEnviados[] = $enviado;
+        $this->status = '0';
 
-        $this->cadastrarDB($dados);
-
-        return $arrEnviados;
+        return $this->cadastrarDB($dados);
     }
 
     // --------------------------------------------------------------------------------
@@ -202,20 +203,24 @@ class EmailService
             'idref' => $dados['idref'],
         ];
 
-        if ($dados['avaliador']) {
-            $dadosAvaliador = array_merge($insert, $dados['avaliador']);
-            $arrEnviadosAvaliador = $this->enviar($dadosAvaliador);
-        }
+        $return = null;
 
-        if ($dados['autor']) {
+        if (!empty($dados['autor'])) {
             $dadosAutor = array_merge($insert, $dados['autor']);
-            $arrEnviadosAutor = $this->enviar($dadosAutor);
+            if (!$this->enviar($dadosAutor)) {
+                $return = 'autor';
+            }
         }
 
-        if ($arrEnviadosAvaliador == '0') {
-            return 'avaliador';
-        } elseif ($arrEnviadosAutor == '0') {
-            return 'autor';
+        if (!empty($dados['avaliador'])) {
+            $dadosAvaliador = array_merge($insert, $dados['avaliador']);
+            if (!$this->enviar($dadosAvaliador)) {
+                $return = 'avaliador';
+            }
+        }
+
+        if (!empty($return)) {
+            return $return;
         } else {
             return 'passou';
         }
@@ -238,30 +243,211 @@ class EmailService
             'idref' => $dados['idref'],
         ];
 
-        if ($dados['avaliador']) {
-            $dadosAvaliador = array_merge($insert, $dados['avaliador']);
-            $arrEnviadosAvaliador = $this->enviar($dadosAvaliador);
-        }
-
         if ($dados['autor']) {
             $dadosAutor = array_merge($insert, $dados['autor']);
-            $arrEnviadosAutor = $this->enviar($dadosAutor);
+            if (!$this->enviar($dadosAutor)) {
+                $return = 'autor';
+            }
         }
 
         if ($dados['novoAutor']) {
             $dadosNovoAutor = array_merge($insert, $dados['novoAutor']);
-            $arrEnviadosNovoAutor = $this->enviar($dadosNovoAutor);
+            if (!$this->enviar($dadosNovoAutor)) {
+                $return = 'novoAutor';
+            }
         }
 
-        if ($arrEnviadosAvaliador == '0') {
-            return 'avaliador';
-        } elseif ($arrEnviadosAutor == '0') {
-            return 'autor';
-        } elseif ($arrEnviadosNovoAutor == '0') {
-            return 'novoAutor';
+        if ($dados['avaliador']) {
+            $dadosAvaliador = array_merge($insert, $dados['avaliador']);
+            if (!$this->enviar($dadosAvaliador)) {
+                $return = 'avaliador';
+            }
+        }
+
+        if (!empty($return)) {
+            return $return;
         } else {
             return 'passou';
         }
+    }
+
+    // --------------------------------------------------------------------------------
+
+    // Exemplo no arquivo includes\funcoes\func_solicitaPessoas.php
+    public function alteracaoPessoas($post, $senha = '', $resultado = '')
+    {
+        // Não preciso do ID do interessado pois como será enviado os dados por $post pega lá mesmo
+
+        // ID de quem avaliou, no caso como foi feito por ADM não teve avaliação
+        /** @var Professor */
+        $responsavelAvaliacao = Professor::getProfessor($post->id_avaliador);
+
+        // ID do chefe da pessoa que vai sair (coord ou DEC)
+        if ($post->co_id && !$post->ca_id) {
+            $co = Colegiado::getRegistro($post->co_id);
+            /** @var Professor */
+            $responsavelLocal = Professor::getProfessor($co->coord_id);
+        } elseif ($post->ca_id && !$post->co_id) {
+            $ca = Campi::getRegistro($post->ca_id);
+            /** @var Professor */
+            $responsavelLocal = Professor::getProfessor($ca->chef_div_id);
+        } else {
+            exit;
+        }
+
+        $dadosEmail = [
+            'nomeResponsavelAvaliacao' => $responsavelAvaliacao->nome ?? '',
+            'emailResponsavelAvaliacao' => $responsavelAvaliacao->email ?? '',
+
+            'nomeResponsavelLocal' => $responsavelLocal->nome,
+            'emailResponsavelLocal' => $responsavelLocal->email,
+
+            'nomeInteressado' => $post->nome,
+            'emailInteressado' => $post->email,
+            'senhaAcesso' => $senha,
+            'vinculo_remocao' => $post->vinculo_remocao ?? '',
+
+            'tp_solicitacao' => $post->tp_solicitacao,
+            'tp_cadastro' => $post->tp_cadastro,
+            'resultado' => $resultado,
+        ];
+
+        require_once '../includes/mailBody/mailAlteracaoPessoas.php';
+
+        // Quando é feito pelo admin é enviado para o admin, o chefe e o interessado
+        if ($post->tp_solicitacao == 'cadastroAdmin' || $post->tp_solicitacao == 'desativacaoAdmin' || $post->tp_solicitacao == 'reativacaoAdmin') {
+            // Aqui pega o que vai ser enviado escrito para o email das pessoas
+            $dados = mailInsercaoADM($dadosEmail);
+            $insert = [
+                'tipo' => $dados['tipo'],
+                'idref' => $post->id,
+            ];
+
+            if ($dados['administrador']) {
+                $dadosAdministrador = array_merge($insert, $dados['administrador']);
+                $arrEnviadosAdministrador = $this->enviar($dadosAdministrador);
+            }
+            if ($dados['chefe']) {
+                $dadosChefe = array_merge($insert, $dados['chefe']);
+                $arrEnviadosChefe = $this->enviar($dadosChefe);
+            }
+            if ($dados['interessado']) {
+                $dadosInteressado = array_merge($insert, $dados['interessado']);
+                $arrEnviadosInteressado = $this->enviar($dadosInteressado);
+            }
+
+            if ($arrEnviadosAdministrador == '0') {
+                return 'administrador';
+            } elseif ($arrEnviadosChefe == '0') {
+                return 'chefe';
+            } elseif ($arrEnviadosInteressado == '0') {
+                return 'interessado';
+            } else {
+                return 'passou';
+            }
+        }
+        // Ou seja, se for algo que tenha que ser aceito para que possa ser feito
+        elseif ($post->tp_solicitacao == 'cadastro' || $post->tp_solicitacao == 'desativacao' || $post->tp_solicitacao == 'reativacao') {
+            if ($post->resultado == 'r') { // Se o ADM reprovar
+                // Aqui pega o que vai ser enviado escrito para o email das pessoas
+                $dados = mailAvaliacaoADM($dadosEmail);
+                $insert = [
+                    'tipo' => $dados['tipo'],
+                    'idref' => $post->id,
+                ];
+
+                if ($dados['administrador']) {
+                    $dadosAdministrador = array_merge($insert, $dados['administrador']);
+                    $arrEnviadosAdministrador = $this->enviar($dadosAdministrador);
+                }
+                if ($dados['chefe']) {
+                    $dadosChefe = array_merge($insert, $dados['chefe']);
+                    $arrEnviadosChefe = $this->enviar($dadosChefe);
+                }
+
+                if ($arrEnviadosAdministrador == '0') {
+                    return 'administrador';
+                } elseif ($arrEnviadosChefe == '0') {
+                    return 'chefe';
+                } else {
+                    return 'passou';
+                }
+            } elseif ($post->resultado == 'a') { // Se o ADM aprovar
+                // Aqui pega o que vai ser enviado escrito para o email das pessoas
+                $dados = mailAvaliacaoADM($dadosEmail);
+                $insert = [
+                    'tipo' => $dados['tipo'],
+                    'idref' => $post->id,
+                ];
+
+                if ($dados['administrador']) {
+                    $dadosAdministrador = array_merge($insert, $dados['administrador']);
+                    $arrEnviadosAdministrador = $this->enviar($dadosAdministrador);
+                }
+                if ($dados['chefe']) {
+                    $dadosChefe = array_merge($insert, $dados['chefe']);
+                    $arrEnviadosChefe = $this->enviar($dadosChefe);
+                }
+                if ($dados['interessado']) {
+                    $dadosInteressado = array_merge($insert, $dados['interessado']);
+                    $arrEnviadosInteressado = $this->enviar($dadosInteressado);
+                }
+
+                if ($arrEnviadosAdministrador == '0') {
+                    return 'administrador';
+                } elseif ($arrEnviadosChefe == '0') {
+                    return 'chefe';
+                } elseif ($arrEnviadosInteressado == '0') {
+                    return 'interessado';
+                } else {
+                    return 'passou';
+                }
+            } else { // Aqui é para quando o DEC ou o Coord faz a solicitação, dessa forma ainda não teve resultado
+                $dados = mailSolicitacaoPessoas($dadosEmail);
+
+                $insert = [
+                    'tipo' => $dados['tipo'],
+                    'idref' => $post->id,
+                ];
+
+                if ($dados['chefe']) {
+                    $dadosChefe = array_merge($insert, $dados['chefe']);
+                    $arrEnviadosChefe = $this->enviar($dadosChefe);
+                }
+
+                if ($arrEnviadosChefe == '0') {
+                    return 'chefe';
+                } else {
+                    return 'passou';
+                }
+            }
+        } elseif ($post->tp_solicitacao == 'cadastroRm' || $post->tp_solicitacao == 'desativacaoRm' || $post->tp_solicitacao == 'reativacaoRm') {
+            $dados = mailRemocaoSolicitacaoPessoas($dadosEmail);
+
+            $insert = [
+                'tipo' => $dados['tipo'],
+                'idref' => $post->id,
+            ];
+
+            if ($dados['chefe']) {
+                $dadosChefe = array_merge($insert, $dados['chefe']);
+                $arrEnviadosChefe = $this->enviar($dadosChefe);
+            }
+
+            if ($arrEnviadosChefe == '0') {
+                return 'chefe';
+            } else {
+                return 'passou';
+            }
+        }
+    }
+
+    public function cadastrarCandidato($cand, $idCand)
+    {
+        require_once '../includes/mailBody/mailCadastrarCand.php';
+        $dados = mailCadastrarCand($cand, $idCand);
+
+        $this->enviar($dados);
     }
 
     public function avaliacaoRelatorio($relatorio, $projeto, $resultado)

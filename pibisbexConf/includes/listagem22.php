@@ -20,6 +20,7 @@ $tblOculta = '
         <th>q6[0/20]</th>
         <th>q7[0/10]</th>
         <th>Total[0/190]</th>
+        <th>Justificativa</th>
       </tr>
     </thead>
     <tbody>';
@@ -28,7 +29,6 @@ $resultados = '
 <table class="table table-hover table-responsive-sm">
     <thead>
       <tr>
-        <th>Nº</th>
         <th>Proj</th>
         <th>Avaliador</th>
         <th>Q.1</th>
@@ -52,7 +52,6 @@ foreach ($data as $d) {
           <td>'.$d->email.'</td>
           <td>'.$d->doit.'</td>
           <td>'.$d->qn1.'</td>
-          <td>'.$d->qn1.'</td>
           <td>'.$d->qn2.'</td>
           <td>'.$d->qn3.'</td>
           <td>'.$d->qn4.'</td>
@@ -60,6 +59,7 @@ foreach ($data as $d) {
           <td>'.$d->qn6.'</td>
           <td>'.$d->qn7.'</td>
           <td>'.$d->total.'</td>
+          <td>'.$d->justificativa.'</td>
         </tr>';
 
     $class = '';

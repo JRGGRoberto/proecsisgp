@@ -18,11 +18,11 @@ function enviaAlteracao($input, $user)
 {
     $userId = $user['id'];
 
-    $valorNovo = trim(strip_tags($input['valorNovo']));
-    $msgSolicitacao = trim(strip_tags($input['msgSolicita']));
     $campo = $input['campo'];
+    $valorNovo = trim(strip_tags($input['valorNovo']));
     $valorAtual = $input['valorAtual'];
     $idProjeto = $input['idProj'];
+    $msgSolicitacao = trim(strip_tags($input['msgSolicita']));
 
     // Aqui vê se é professor ou agente
     $tipoPessoa = null;
@@ -31,7 +31,7 @@ function enviaAlteracao($input, $user)
     $pessoa = Professor::getProfessores($whrPessoa, null, null, $fldsPessoa);
     $tipoPessoa = $pessoa[0]->tipo;
 
-    // Aqui recebe o valor do id campus ($ca_id)
+    // Aqui recebe o valor do id campus ($ca_id) / Ou seja, vai para a
     $ca_id = null;
     if ($tipoPessoa == 'pf') {
         $whrCCC = 'co_id = "'.$input['para_avaliar'].'"';

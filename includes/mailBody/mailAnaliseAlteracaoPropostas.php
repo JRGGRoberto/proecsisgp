@@ -4,6 +4,7 @@ use App\Entity\Professor;
 use App\Entity\Solicitacao_adendos;
 
 require '../vendor/autoload.php';
+require_once '../includes/funcoes/func_mudaAbreviacao.php';
 
 function mailAnaliseAlteracaoPropostas($idSolicitacao, $resultado, $userNome, $userEmail)
 {
@@ -20,12 +21,12 @@ function mailAnaliseAlteracaoPropostas($idSolicitacao, $resultado, $userNome, $u
     $campoAlterado = mudaAbreviacaoCampoAlterado($ObjSolicitacao[0]->campoAlterado);
     $resultadoAvalia = mudaAbreviacaoAprovacao($resultado);
 
-    // Quem enviou a avaliação de modificação
-    $autorDestinatario = $userEmail;
-    $autorNome = $userNome;
+    // Quem enviou a AVALIAÇÃO de modificação
+    $avaliadorDestinatario = $userEmail;
+    $avaliadorNome = $userNome;
 
-    $autorAssunto = 'Avaliação de alteração de proposta';
-    $autorMensagem = '
+    $avaliadorAssunto = 'Avaliação de alteração de proposta';
+    $avaliadorMensagem = '
         <h2>Avaliação enviada com sucesso!</h2>
         <p>Olá <strong>'.$userNome.'</strong>,</p>
         <p>Sua avaliação de alteração foi retornada para <strong>'.$nomeDonoProj.'</strong>.</p>
@@ -37,12 +38,12 @@ function mailAnaliseAlteracaoPropostas($idSolicitacao, $resultado, $userNome, $u
         <small>Este e-mail é automático.</small>
     ';
 
-    // Quem vai receber a avaliação de modificação
-    $avaliadorDestinatario = $emailDonoProj;
-    $avaliadorNome = $nomeDonoProj;
+    // Quem vai RECEBER a avaliação de modificação
+    $autorDestinatario = $emailDonoProj;
+    $autorNome = $nomeDonoProj;
 
-    $avaliadorAssunto = 'Avaliação de alteração de proposta';
-    $avaliadorMensagem = '
+    $autorAssunto = 'Avaliação de alteração de proposta';
+    $autorMensagem = '
         <h2>Sua solicitação foi avaliada!</h2>
         <p>Olá <strong>'.$nomeDonoProj.'</strong>,</p>
         <p>
@@ -79,33 +80,52 @@ function mailAnaliseAlteracaoPropostas($idSolicitacao, $resultado, $userNome, $u
             <br><br>
             <small>Este e-mail é automático.</small>
         ';
-    }
 
-    $dados = [
+        $dados = [
         'tipo' => $tipo,
         'idref' => $idSolicitacao,
 
-        'avaliador' => [
-            'destinatario' => $avaliadorDestinatario,
-            'nome' => $avaliadorNome,
-            'assunto' => $avaliadorAssunto,
-            'mensagem' => $avaliadorMensagem,
-        ],
+            'avaliador' => [
+                'destinatario' => $avaliadorDestinatario,
+                'nome' => $avaliadorNome,
+                'assunto' => $avaliadorAssunto,
+                'mensagem' => $avaliadorMensagem,
+            ],
 
-        'autor' => [
-            'destinatario' => $autorDestinatario,
-            'nome' => $autorNome,
-            'assunto' => $autorAssunto,
-            'mensagem' => $autorMensagem,
-        ],
+            'autor' => [
+                'destinatario' => $autorDestinatario,
+                'nome' => $autorNome,
+                'assunto' => $autorAssunto,
+                'mensagem' => $autorMensagem,
+            ],
 
-        'novoAutor' => [
-            'destinatario' => $novoAutorDestinatario,
-            'nome' => $novoAutorNome,
-            'assunto' => $novoAutorAssunto,
-            'mensagem' => $novoAutorMensagem,
-        ],
-    ];
+            'novoAutor' => [
+                'destinatario' => $novoAutorDestinatario,
+                'nome' => $novoAutorNome,
+                'assunto' => $novoAutorAssunto,
+                'mensagem' => $novoAutorMensagem,
+            ],
+        ];
+    } else {
+        $dados = [
+            'tipo' => $tipo,
+            'idref' => $idSolicitacao,
 
+            'avaliador' => [
+                'destinatario' => $avaliadorDestinatario,
+                'nome' => $avaliadorNome,
+                'assunto' => $avaliadorAssunto,
+                'mensagem' => $avaliadorMensagem,
+            ],
+
+            'autor' => [
+                'destinatario' => $autorDestinatario,
+                'nome' => $autorNome,
+                'assunto' => $autorAssunto,
+                'mensagem' => $autorMensagem,
+            ],
+
+        ];
+    }
     return $dados;
 }

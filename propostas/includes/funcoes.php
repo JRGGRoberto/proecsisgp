@@ -25,12 +25,12 @@ function avaliacoesRelatorios() {
 
 function resumirTexto(string $texto, int $limite = 256): string
 {
-    //tira tudo q veio do summernote
-    $texto = preg_replace('/<style\b[^>]*>.*?<\/style>/is', '', $texto);
-    //remove paragrafo
-    $texto = preg_replace('/<p[^>]*>\s*<\/p>/i', '', $texto);
+    // tira tudo q veio do summernote
+    $texto = preg_replace('/<style\b[^>]>.?<\/style>/is', '', $texto);
+    // remove paragrafo
+    $texto = preg_replace('/<p[^>]>\s<\/p>/i', '', $texto);
 
-    //limpa td
+    // limpa td
     $textoLimpo = trim(strip_tags($texto));
 
     if (mb_strlen($textoLimpo) <= $limite) {
@@ -530,7 +530,10 @@ function adequacoes($p, $user)
     $i = $p->id;
     $v = $p->ver;
     $t = $p->titulo;
-    $form = Outros::q("select form from avalia_last al where al.id_proj = '".$i."'")->form;
+    $form = Outros::q("select form from avalia_last al where al.id_proj = '".$i."'");
+
+    $form == null ? $form = '' : $form = $form->form;
+
     $profId = $p->id_prof;
     $userId = $user['id'];
     $userConfig = $user['config'];
@@ -570,7 +573,8 @@ function ressubmit($p, $user)
     $i = $p->id;
     $v = $p->ver;
     // $t = $p->titulo;
-    $form = Outros::q("select form from avalia_last al where al.id_proj = '".$i."'")->form;
+    $form = Outros::q("select form from avalia_last al where al.id_proj = '".$i."'");
+    $form == null ? $form = '' : $form = $form->form;
 
 
     return

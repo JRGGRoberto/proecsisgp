@@ -26,6 +26,8 @@ if (!$form) {
 } else {
     if (in_array($form->resultado, ['a', 'r'])) {
         $somenteLeitura = true;
+    } else {
+        $somenteLeitura = false;
     }
 }
 
@@ -43,7 +45,7 @@ foreach ($anexados as $att) {
 
     $anex .=
     '<li>
-      <a href="/home/sistemaproec/www/sistema/upload/uploads/'.$att->nome_rand.'" target="_blank">'.$att->nome_orig.'</a> 
+      <a href="../upload/uploads/'.$att->nome_rand.'" target="_blank">'.$att->nome_orig.'</a> 
       '.$canDel.'
   </li> ';
 }

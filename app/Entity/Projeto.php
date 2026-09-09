@@ -2,6 +2,8 @@
 
 namespace App\Entity;
 
+use App\Entity\Outros;
+
 use App\Db\Database;
 use PDO;
 
@@ -159,7 +161,7 @@ class Projeto
 
             'parceria' => $this->parceria,
             'parcaatribuic' => $this->parcaatribuic,
-            'parcanomes ' => $this->parcanomes,
+            'parcanomes' => $this->parcanomes,
 
             'obs' => $this->obs,
 
@@ -175,12 +177,17 @@ class Projeto
         return $ida;
     }
 
+    // Para realizar a alteração em apenas um campo no sistema
+    public static function atualizarCampo($update){
+        $exec = Outros::q($update);
+        return $exec;
+    }
+
     /**
      * Método responsável por atualizar a PROJETO no banco.
      *
      * @return bool
      */
-
     // return (new Database('projetos'))->update('id = '.$this->id,[
     public function atualizar()
     {
@@ -237,7 +244,7 @@ class Projeto
 
                 'parceria' => $this->parceria,
                 'parcaatribuic' => $this->parcaatribuic,
-                'parcanomes ' => $this->parcanomes,
+                'parcanomes' => $this->parcanomes,
 
                 'obs' => $this->obs,
 
@@ -418,15 +425,15 @@ class Projeto
             insert into avaliacoes 
                 (id, id_proj, ver, regra_def, fase_seq, form, tp_instancia, id_instancia, resultado)
             values (
-               '".$dataToInsert->id."',
-               '".$dataToInsert->id_proj."',
-               ".$dataToInsert->ver.",
-               '".$dataToInsert->regra_def."',
-               ".$dataToInsert->fase_seq.",
-               '".$dataToInsert->form."',
-               '".$dataToInsert->tp_avaliador."',
-               '".$dataToInsert->idInstancia."',
-               '".$dataToInsert->resultado."'
+            '".$dataToInsert->id."',
+            '".$dataToInsert->id_proj."',
+            ".$dataToInsert->ver.",
+            '".$dataToInsert->regra_def."',
+            ".$dataToInsert->fase_seq.",
+            '".$dataToInsert->form."',
+            '".$dataToInsert->tp_avaliador."',
+            '".$dataToInsert->idInstancia."',
+            '".$dataToInsert->resultado."'
             )
         ";
             (new Database())->execute($sql);

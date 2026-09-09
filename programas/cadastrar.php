@@ -1,16 +1,14 @@
 <?php
 
-
 if (isset($_GET['erro'])) {
-  if($_GET['erro'] == 'cpf_invalido') {
-    $alertaLogin = 'CPF inválido.';
-  } elseif ($_GET['erro'] == '1'){
-    $alertaLogin = 'Já existe um usuário com esse CPF cadastrado no sistema.';
-  }
+    if ($_GET['erro'] == 'cpf_invalido') {
+        $alertaLogin = 'CPF inválido.';
+    } elseif ($_GET['erro'] == '1') {
+        $alertaLogin = 'Já existe um usuário com esse CPF cadastrado no sistema.';
+    }
 }
 
 $alertaLogin = strlen($alertaLogin ?? '') ? '<div class="alert alert-danger">'.$alertaLogin.'</div>' : '';
-
 
 include '../includes/headersCl.php';
 ?>
@@ -24,7 +22,7 @@ include '../includes/headersCl.php';
         <h2>UNESPAR</h2>
         <img src="https://sistemaproec.unespar.edu.br/sistema/imgs/logo_unespar.png" width="150" height="160">
         <hr>
-        <h3>Sistema de ???</h3>
+        <h3>Sistema de inscrições de bolsa</h3>
     </div>
 
     <div class="col">
@@ -135,10 +133,9 @@ form.addEventListener('submit', (e) => {
   }
 });
 
-</script>
+</script> 
 
 <?php
-
 
 include '../includes/footer.php';
 ?>

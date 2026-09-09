@@ -62,10 +62,10 @@ foreach ($anexados as $att) {
 }
 $anex .= '</ul>';
 
-$msgSolicitacoAlteracao = '';
-if ($relatorio->last_result == 'r') {
-    include __DIR__.'/includes/msgAlteração.php';
-}
+// $msgSolicitacoAlteracao = '';
+// if ($relatorio->last_result == 'r') {
+//     include __DIR__.'/includes/msgAlteração.php';
+// }
 
 $cursosetor = '';
 

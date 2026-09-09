@@ -26,12 +26,11 @@ $obProjetoMaster = Projeto::getProjetoMaster($_POST['modIDprj'], $_POST['modVerP
 $primeiroEnvio = $obProjeto->primeiraSubmit();
 $solicAlteracao = $obProjeto->foiReprovado();
 
-echo '<pre>';
-
 // echo '<pre>';
 // var_dump($resultado);
 // echo '</pre>';
 
+// echo '<pre>';
 // //print_r
 // var_dump([
 //     'primeira_submissao' => $primeiroEnvio,
@@ -42,7 +41,6 @@ echo '<pre>';
 //     'last_result' => $obProjeto->last_result,
 //     'protocolo' => $obProjeto->protocolo
 // ]);
-
 // echo '</pre>';
 // exit;
 

@@ -192,9 +192,11 @@ $url = explode('/', $_SERVER['PHP_SELF']);
         </div>
         
 
-        <div class="form-group">
-          <button type="submit" class="btn btn-success">Enviar</button>
-        </div>
+          <div class="form-group text-right mt-4">
+            <button type="submit" class="btn btn-success">
+                Enviar
+            </button>
+          </div>
 
       </form>
     </div>

@@ -2,6 +2,7 @@
 
 require '../vendor/autoload.php';
 
+use App\Entity\UuiuD;
 use App\Session\Login;
 Login::requireLogin();
 $user = Login::getUsuarioLogado();
@@ -21,15 +22,15 @@ if($_SERVER['REQUEST_METHOD'] === 'POST'){
             $tide = 0;
         }
 
-        $novaSenha = substr(md5(uniqid()), 0, 8); 
+        $novaSenha = substr(md5(uniqid()), 0, 8);
 
         $post = [
-            // Identificador de tabela e tipo de Cadastro
             'tp_solicitacao' => 'cadastroAdmin',
             'tp_cadastro' => 'pf',
-            // Quem cadastrou
-            'idResponsavel' => $user['id'],
-            // Dados que serão inseridos
+            'id_solicitador' => $user['id'],
+            'id_avaliador' => $user['id'],
+            'resultado' => 'a',
+            'id_pessoa' => UuiuD::gera(),
             'nome' => $_POST['nome'],
             'cpf' => $_POST['cpf'],
             'titulacao' => $_POST['titulacao'],
@@ -40,16 +41,15 @@ if($_SERVER['REQUEST_METHOD'] === 'POST'){
             'co_id' => $_POST['co'],
             'cat_func' => $_POST['categoria'],
             'rt' => $_POST['regime'],
-            'tide' => $tide,
             'portaria' => $_POST['portaria'],
             'ano_letivo' => $_POST['ano'],
             'vinculo_remocao' => '',
+            'tide' => $tide,
             'senha' => password_hash($novaSenha,PASSWORD_DEFAULT)
         ];
-        require_once '../includes/funcoes/func_solicitaPessoas.php';
-        $insert = insercaoPessoasAdmin($post);
 
-        if($insert){
+        require_once '../includes/funcoes/func_solicitaPessoas.php';
+        if(solicitacaoPessoas($post, $novaSenha)){
             echo "
                 <script>
                     window.location.href = 'index.php?tipo=cadastro&cargo=pf&valida".$true."&sucesso=2';
@@ -62,6 +62,7 @@ if($_SERVER['REQUEST_METHOD'] === 'POST'){
                     window.location.href = 'index.php?tipo=cadastro&cargo=ag&valida".$true."&sucesso=false';
                 </script>
             ";
+            exit;
         }
     }
     // Cadastro de Coordenador
@@ -70,6 +71,9 @@ if($_SERVER['REQUEST_METHOD'] === 'POST'){
             'tp_solicitacao' => 'cadastro',
             'tp_cadastro' => 'pf',
             'id_solicitador' => $user['id'],
+            'id_avaliador' => null,
+            'resultado' => null,
+            'id_pessoa' => UuiuD::gera(),
             'nome' => $_POST['nome'],
             'cpf' => $_POST['cpf'],
             'titulacao' => $_POST['titulacao'],
@@ -81,14 +85,13 @@ if($_SERVER['REQUEST_METHOD'] === 'POST'){
             'cat_func' => $_POST['categoria'],
             'rt' => $_POST['regime'],
             'portaria' => $_POST['portaria'],
-            'ano_letivo' => $_POST['ano'],
             'vinculo_remocao' => '',
+            'ano_letivo' => $_POST['ano'],
+            'tide' => $tide,
         ];
         
         require_once '../includes/funcoes/func_solicitaPessoas.php';
-        $insert = solicitacaoPessoas($post);
-
-        if($insert){
+        if(solicitacaoPessoas($post)){
             echo "
                 <script>
                     window.location.href = 'index.php?tipo=cadastro&cargo=pf&valida".$true."&sucesso=1';
@@ -101,6 +104,7 @@ if($_SERVER['REQUEST_METHOD'] === 'POST'){
                     window.location.href = 'index.php?tipo=cadastro&cargo=ag&valida".$true."&sucesso=false';
                 </script>
             ";
+            exit;
         }
     }
 }

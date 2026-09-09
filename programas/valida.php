@@ -8,7 +8,6 @@ use App\Session\LoginCandidato;
 $options = '';
 $idCand = '';
 
-
 // echo '<pre>';
 // print_r($_SESSION);
 // echo '</pre>';
@@ -19,7 +18,7 @@ $user = LoginCandidato::getUsuarioLogado();
 $cpf = $_POST['cpf'];
 $senha = $_POST['senha'];
 
-$cand = Candidato::getCpf($cpf);
+$cand = (object) Candidato::getCpf($cpf);
 $msg = '';
 $alertaLogin = '';
 
@@ -43,7 +42,6 @@ if (!empty($_SERVER['HTTP_CLIENT_IP'])) {
 } else {
     $ip = $_SERVER['REMOTE_ADDR'];
 }
-
 
 if (isset($_POST['nome'])) {
     $cand->nome = strtoupper($_POST['nome']);
@@ -72,7 +70,6 @@ if (isset($_POST['nome'])) {
         <button type="button" class="close" data-dismiss="alert">&times;</button>
         <strong>Success!</strong> Dados de usuário atualizado
     </div>';
-
 
     if ($_POST['inscricao'] != -1) {
         $inscricao = new Inscricao();

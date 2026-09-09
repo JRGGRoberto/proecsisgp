@@ -15,15 +15,20 @@ switch ($user['config']) {
         break;
     case 1: // Coordenador;
         array_push($condicoes,
-            '( ( tp_instancia = "co" and  id_instancia = "'.$user['co_id'].'") 
-                or 
+            '( 
+               ( tp_instancia = "co" and
+                 id_instancia in (select c.id from colegiados c where c.coord_id   = "'.$user['id'].'" )  
+               ) 
+             or 
                ( tp_instancia = "pf" and  id_instancia = "'.$user['id'].'")   
-             )');
+             )
+               '
+        );
         break;
     case 2: // Dir Centro de Area CE
         array_push($condicoes,
             ' tp_instancia = "ce"',
-            ' id_instancia in ("'.$user['ce_id'].'", "'.$user['id'].'")  ');
+            ' id_instancia in ( select id from centros where dir_ca_id = "'.$user['id'].'"  ) ');
         break;
     case 3: // Chefe de divisão CA
         array_push($condicoes,

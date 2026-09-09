@@ -9,10 +9,41 @@ ini_set('display_startup_errors', '1');
 error_reporting(E_ALL);
 
 $sql = '
-SELECT * from 
-   lisandro
-'
-;
+SELECT * from  lisandro
+';
+
+$sql = "SELECT 
+   p.protocolo,
+   p.coord, 
+   te.nome tipo,
+   p.titulo,
+   p.acec,
+   DATE_FORMAT(p.vigen_ini, '%d/%m/%Y')vigen_ini,
+   DATE_FORMAT(p.vigen_fim, '%d/%m/%Y')vigen_fim,
+   p.estado,
+   r.tipo,
+   p.resumo
+FROM   
+   projmaster p 
+   INNER JOIN tipo_exten te ON te.id = p.tipo_exten 
+   LEFT JOIN relats r ON r.idproj  = p.id  AND r.publicado = 1
+WHERE
+   p.para_avaliar  = 'c3bd0ba4-3b64-11ed-9793-0266ad9885af'";
+
+$tbLISANDRO = '
+            <tr>
+              <td>'.$c->protocolo.'</td>
+              <td>'.$c->coord.'</td>
+              <td>'.$c->titulo.'</td>
+              <td>'.$c->tipo.'</td>
+              <td>'.$c->tp_exten.'</td>
+              <td>'.$c->vig_inicio.'</td>
+              <td>'.$c->vig_fim.'</td>
+              <td>'.$c->relevancia.'</td>
+              <td>'.$c->link.'</td>
+              <td>'.$c->resumo.'</td>
+            </tr>
+          ';
 
 $contudo = Outros::qry($sql);
 $tb = '';

@@ -795,7 +795,7 @@ $adendos = Solicitacao_adendos::getRegistros('idproj = "'.$id . '" and resultado
 
 $msg = null;
 if ($adendos == null){
-  $msg = 'Não há adendos!';
+  $msg = 'N/A';
 }
 
 $html .= 

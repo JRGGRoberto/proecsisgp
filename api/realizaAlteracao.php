@@ -86,11 +86,15 @@ function updateAdendos($validador_id, $validador_nome, $validador_cargo, $email_
 $email = new EmailService();
 // Se o resultado for aprovado, é atualizado na tabela projeto
 if ($resultado === 'a') {
-    $projetos = new Projeto();
-    $projetos = Projeto::getProjeto($idproj, $verProj);
-    $projetos->$campoAlterado = $dado_novo;
+    if ($campoAlterado != 'tide') {
+        $dado_novo = "'".$dado_novo."'";
+    }
 
-    if ($projetos->atualizar() == 1) {
+    $qry = 'update projetos set '.$campoAlterado.' = "'.$dado_novo.'"  where id = "'.$idproj.'";';
+    $erro = Projeto::atualizarCampo($qry);
+
+    // Tem que ser negação por que o banco retorna ou o erro ou false
+    if (!$erro) {
         updateAdendos($validador_id, $validador_nome, $validador_cargo, $email_ca, $mensagem_validador, $resultado);
         // Envio de email de confirmação
         $enviado = $email->analiseAlteracaoPropostas(
@@ -100,7 +104,7 @@ if ($resultado === 'a') {
             $user['email']
         );
 
-        if ($enviado == 'avaliador' || $enviado == 'autor' || $enviado == 'novo autor') {
+        if ($enviado == 'avaliador' || $enviado == 'autor' || $enviado == 'novoAutor') {
             $_SESSION['msg'] = 'Erro ao enviar e-mail de confirmação para o '.$enviado.' da proposta';
         }
         $_SESSION['msg'] = 'Avaliação realizada com sucesso!';
@@ -110,7 +114,7 @@ if ($resultado === 'a') {
 } elseif ($resultado === 'r') {
     updateAdendos($validador_id, $validador_nome, $validador_cargo, $email_ca, $mensagem_validador, $resultado);
     // Envio de email de confirmação
-    $email->analiseAlteracaoPropostas(
+    $enviado = $email->analiseAlteracaoPropostas(
         $_GET['idAdendos'],
         $resultado,
         $user['nome'],
