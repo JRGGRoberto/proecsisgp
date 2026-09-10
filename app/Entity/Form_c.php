@@ -33,6 +33,11 @@ class Form_C{
                                   ->fetchObject(self::class);
   }
 
+  public static function getRegistroByProj($id_proj){
+    return (new Database('form_c'))->select('(id_proj)  = ("'.$id_proj.'")', null, null, 'id_avaliacao')
+                                  ->fetchObject(self::class);
+  }
+
 
 
   public function cadastrar(){
