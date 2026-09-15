@@ -29,7 +29,7 @@
             <div class="col">
               <div class="form-group">
                 <ul id="anexos"></ul>
-<?php echo $form->solicitacoes;
+<?php
                 if (!$somenteLeitura) {
                     echo ' <iframe src="../upload/upload.php" frameborder="0" scrolling="no"></iframe> ';
                 }

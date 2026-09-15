@@ -97,7 +97,10 @@ if (isset($_FILES['arquivo'])) {
     <span id="status" style="display: none;">
       <img src="../imgs/loader.gif" alt="Enviando..." />
     </span> <br />
-    <input type="file" name="arquivo" id="arquivo" accept=".doc, .txt, .pdf, .docx, .jpg, .png, .xlsx, .xls, .pptx, .ppt")/>
+    <input 
+      type="file" 
+      name="arquivo" 
+      id="arquivo" accept=".doc, .txt, .pdf, .docx, .jpg, .png, .xlsx, .xls, .pptx, .ppt"/>
         
 </form>
 

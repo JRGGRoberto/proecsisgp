@@ -400,6 +400,9 @@ function emAvaliacao($p, $user)
 
     $osCabeca = [1, 2, 3, 4]; // só a elite
 
+    // echo '<pre>';
+    // print_r($p);
+    // echo '</pre>';
     if ($userId == $profId) {
         if ($p->resultado == 'n') {
             if ($p->edt == 0) {
@@ -424,7 +427,6 @@ function emAvaliacao($p, $user)
             return
                 createBT('editar', $i, $v).'  	&nbsp; '.
                 createBT('adequacoes', $i, $v, $form).'  	&nbsp; '.
-                createBT('submeterNovamente', $i, $v).'  	&nbsp; '.
                 createBT('visualizar', $i, $v).'  	&nbsp; ';
         }
     } elseif (in_array($userConfig, $osCabeca)) {

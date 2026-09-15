@@ -142,7 +142,6 @@ foreach ($detalhes as $p) {
             <p><strong>Resumo</strong></p>
             <p><?php echo $p->resumo; ?></p>
 
-
             <?php if ($p->tp_rel != 'fi') { ?>
                 <p><strong>Público: </strong> Não possui relatório final ainda.</p>
             <?php } else {
