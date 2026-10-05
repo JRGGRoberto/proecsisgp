@@ -5,9 +5,7 @@ $_GET['pag'] = 'listagem_all';
 include './includes/funcoes.php';
 require_once __DIR__.'/funcoesListagem.php';
 
-
 use App\Entity\Avaliacoes;
-use App\Entity\Outros;
 use App\Entity\Relatorio;
 use App\Session\Login;
 
@@ -23,7 +21,6 @@ $osCabeca = [1, 2, 3, 4]; // só a elite
 $currentUrl = $_SERVER['REQUEST_URI'];
 
 $qnt1 = 0;
-
 
 $resultados = '<div id="accordion">';
 foreach ($projetos as $proj) {
@@ -50,19 +47,17 @@ foreach ($projetos as $proj) {
     $relatorios = Relatorio::getAll();
     $qtdRelatorios = count($relatorios);
 
+    // pega o valor inteiro pro case
+    $estadoOriginal = $proj->estado;
 
-      //pega o valor inteiro pro case
-      $estadoOriginal = $proj->estado;
+    // cria o badge do estado
+    $estado = getEstadoProjeto($estadoOriginal);
+    $proj->estado = $estado['badge'];
 
-      //cria o badge do estado 
-      $estado = getEstadoProjeto($estadoOriginal);
-      $proj->estado = $estado['badge'];
+    // retorna os botoes de acordo com o estado
+    $botoesEstado = getBotoesProjeto($proj, $user, $userId, $estadoOriginal);
+    $btn = $botoesEstado['botoes'];
 
-      //retorna os botoes de acordo com o estado
-      $botoesEstado = getBotoesProjeto($proj, $user, $userId, $estadoOriginal);
-      $btn = $botoesEstado['botoes'];
-
-    
     // 2023-03-09 00:00:00
     $resultados .= '
   <div class="card mt-3">
@@ -162,8 +157,8 @@ foreach ($projetos as $proj) {
             '.$LastV.'
           </div>
           <div>';
-            $resultados .= $btnAvaliacoes;
-            $resultados .= '  
+        $resultados .= $btnAvaliacoes;
+        $resultados .= '  
           </div>
         </div>     
       ';

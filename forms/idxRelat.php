@@ -4,10 +4,12 @@ use App\Entity\AvaliaRelatorios;
 use App\Entity\Projeto;
 
 // VALIDAÇÃO DO ID
+/*
 if (!isset($_GET['i'], $_GET['p'], $_GET['v'])) {
     header('location: /avaliacoes/index.php?tpAva=p1&status=error');
     exit;
 }
+*/
 
 $id_ava = $_GET['i'];
 $id_proj = $_GET['p'];
@@ -15,11 +17,13 @@ $ver_proj = $_GET['v'];
 
 $avaliacaoRelatorio = (object) AvaliaRelatorios::getById($id_ava);
 
+/*
 if ($avaliacaoRelatorio->idproj != $id_proj) {
     echo 'aqui';
     header('location: ../avaliacoes/index.php?tpAva=p1&status=error');
     exit;
 }
+    */
 
 $prj = Projeto::getProjetoView($avaliacaoRelatorio->idproj, $avaliacaoRelatorio->pver);
 

@@ -88,17 +88,17 @@ if (isset($_POST['valida'])) {
         $relatorio->atvd_prox_per = $_POST['atvd_prox_per'];
     }
 
-    $relatorio->ch_semanal = $_POST['ch_semanal'];
-    $relatorio->dim_mem_com_ex = $_POST['dim_mem_com_ex'];
-    $relatorio->dim_disc = $_POST['dim_disc'];
-    $relatorio->dim_doce = $_POST['dim_doce'];
-    $relatorio->dim_agent_estag = $_POST['dim_agent_estag'];
-    $relatorio->atividades = $_POST['atividades'];
+    $relatorio->ch_semanal = $_POST['ch_semanal'] ?? 0;
+    $relatorio->dim_mem_com_ex = $_POST['dim_mem_com_ex'] ?? 0;
+    $relatorio->dim_disc = $_POST['dim_disc'] ?? 0;
+    $relatorio->dim_doce = $_POST['dim_doce'] ?? 0;
+    $relatorio->dim_agent_estag = $_POST['dim_agent_estag'] ?? 0;
+    $relatorio->atividades = $_POST['atividades'] ?? 0;
 
     $relatorio->rel_tec_cien_executado = $_POST['rel_tec_cien_executado'];
     $relatorio->divulgacao = $_POST['divulgacao'];
     $relatorio->tramitar = $_POST['tramitar'];
-    $relatorio->visita_tec_qtd = $_POST['visita_tec_qtd'];
+    $relatorio->visita_tec_qtd = $_POST['visita_tec_qtd'] ?? 0;
 
     $idprjP = $relatorio->cadastrar();
 

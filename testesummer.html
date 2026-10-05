@@ -35,6 +35,40 @@
   ]
 });
 
+function numeroPorExtenso(numero) {
+  const unidades = ["zero", "um", "dois", "três", "quatro", "cinco", "seis", "sete", "oito", "nove", "dez", "onze", "doze", "treze", "quatorze", "quinze", "dezesseis", "dezessete", "dezoito", "dezenove"];
+  const dezenas = ["", "", "vinte", "trinta", "quarenta", "cinquenta", "sessenta", "setenta", "oitenta", "noventa"];
+  const centenas = ["", "cem", "duzentos", "trezentos", "quatrocentos", "quinhentos", "seiscentos", "setecentos", "oitocentos", "novecentos"];
+
+  if (numero < 20) return unidades[numero];
+
+  if (numero < 100) {
+    const d = Math.floor(numero / 10);
+    const u = numero % 10;
+    return u === 0 ? dezenas[d] : `${dezenas[d]} e ${unidades[u]}`;
+  }
+
+  if (numero === 100) return "cem";
+
+  if(numero < 1000) {
+    const c = Math.floor(numero /100);
+    const resto = numero % 100;
+
+    if(resto === 0) {
+      return centenas[c];
+    } else {
+      return `${centenas[c]} e ${numeroPorExtenso(resto)}`;
+    }
+  }
+
+  if (numero === 1000) return "mil";
+
+  // Para escopos maiores, a lógica se estende combinando milhares e centenas.
+  return "Número maior que 1000 não tratado neste exemplo básico.";
+}
+
+
+
 </script>
     
 </body>

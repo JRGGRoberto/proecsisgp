@@ -149,7 +149,7 @@ include '../includes/header.php';
     </div>
 </div>
 
-<script src="./frescura.js"></script>
+<script src="./script.js"></script>
 
 <script>
     document.getElementById('iconeArquivo').innerHTML =

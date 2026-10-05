@@ -1,5 +1,7 @@
 <?php
+
   $tituloHeader = '';
+
   switch ($tf) {
     case 'fi':
       $tituloHeader = 'RELATÓRIO FINAL DE AÇÃO DE EXTENSÃO E CULTURA';
@@ -10,33 +12,46 @@
     case 're':
       $tituloHeader = 'RELATÓRIO FINAL DE AÇÃO DE EXTENSÃO E CULTURA<BR>E solicitação de RENOVAÇÃO';
       break;
+    case 'pa':
+      $tituloHeader = 'RELATÓRIO PARCIAL DE AÇÃO DE EXTENSÃO E CULTURA';
+      break;
     default:
       $tituloHeader = 'não definido';
       break;
   }
+
   if (isset($editar)) {
+
     if (is_null($editar) || $editar == 'readonly') {
       $editar = ' readonly ';
     } else {
       $editar = '';
     }
+
   } else {
-      $editar = ' readonly ';
+    $editar = ' readonly ';
   }
 
 ?>
+
 <main>
+
   <!-- <section  id="SectionVoltar">
-    
       <button class="btn btn-success btn-sm float-right" id="backBtn">Voltar</button>
-    
   </section> -->
+
   <hr>
 
   <h4 style="text-align: center">ANEXO V</h4>
-  <h3 class="mt-3" style="text-align: center"><?php echo $tituloHeader; ?></h3>
 
-  <form name="formAnexo" id="formAnexo" method="POST" enctype="multipart/form-data">
+  <h3 class="mt-3" style="text-align: center">
+    <?php echo $tituloHeader; ?>
+  </h3>
+  <form name="formAnexo"
+        id="formAnexo"
+        method="POST"
+        enctype="multipart/form-data">
+
     <input type="hidden" name="id_prof" value="<?php echo $obProjeto->id_prof; ?>">
     <input type="hidden" name="tabela" value="projetos">
     <input type="hidden" name="valida" value="ok">
@@ -45,48 +60,230 @@
       <label>
         <h5><?php echo $n = 1; ?>. Título da proposta</h5>
       </label>
-      <input type="text" class="form-control"  value="<?php echo $obProjeto->titulo; ?>" readonly>
+
+      <input type="text"
+             class="form-control"
+             value="<?php echo $obProjeto->titulo; ?>"
+             readonly>
     </div>
-    
-    
     <hr>
-
-
     <div class="form-group">
       <label>
         <h5><?php echo ++$n; ?>. Protocolo da proposta</h5>
       </label>
-      <input type="text" class="form-control" name="protocolo" readonly value="<?php echo $obProjeto->protocolo; ?>">
+      <input type="text"
+             class="form-control"
+             name="protocolo"
+             readonly
+             value="<?php echo $obProjeto->protocolo; ?>">
     </div>
-
     <hr>
 
     <div class="form-group">
       <label>
         <h5><?php echo ++$n; ?>. Coordenador(a)</h5>
       </label>
-      <input type="text" class="form-control" name="coordNome" readonly value="<?php echo $obProjeto->nome_prof; ?>">
+
+      <input type="text"
+             class="form-control"
+             name="coordNome"
+             readonly
+             value="<?php echo $obProjeto->nome_prof; ?>">
     </div>
 
-    
     <hr>
 
+    <!-- rel parcial -->
 
-      <!-- visita tecnica -->
-      <div class="row">
-        <div class="col">
-          <div class="form-group">
-            <label for="visita_tec_qtd">
-              <h5><?php echo ++$n; ?>. Quantidade de visitas técnicas realizadas</h5>
-            </label>
-            <input type="number" id="visita_tec_qtd" name="visita_tec_qtd" class="form-control my-2 w-25" min="0" value="<?php echo $relatorio->visita_tec_qtd; ?>" <?php echo $editar; ?> >
+    <?php if ($tf == 'pa') { ?>
+
+      <?php
+        $periodo_ini_pa = null;
+
+        if (!is_null($relatorio->periodo_ini)) {
+          $periodo_ini_pa = substr($relatorio->periodo_ini, 0, 10);
+        }
+
+        $periodo_fim_pa = null;
+
+        if (!is_null($relatorio->periodo_fim)) {
+          $periodo_fim_pa = substr($relatorio->periodo_fim, 0, 10);
+        }
+      ?>
+
+      <div class="form-group">
+
+        <label>
+          <h5><?php echo ++$n; ?>. Período que se refere o Relatório</h5>
+        </label>
+
+        <div class="row">
+          <div class="col-3">
+            <div class="form-group">
+              <label>Início</label>
+
+              <input type="date"
+                     class="form-control"
+                     name="periodo_ini"
+                     id="periodo_ini"
+                     value="<?php echo $periodo_ini_pa; ?>"
+                     required
+                     <?php echo $editar; ?>>
+            </div>
+          </div>
+          <div class="col-3">
+            <div class="form-group">
+              <label>Fim</label>
+              <input type="date"
+                     class="form-control"
+                     name="periodo_fim"
+                     id="periodo_fim"
+                     value="<?php echo $periodo_fim_pa; ?>"
+                     required
+                     <?php echo $editar; ?>>
+            </div>
           </div>
         </div>
       </div>
 
+      <hr>
+
+    <?php } else { ?>
+
+        <!-- rel final (prorrog renov fi) -->
+
+      <?php
+        $periodo_ini1 = substr($obProjeto->vigen_ini, 0, 10);
+        $periodo_fim1 = substr($obProjeto->vigen_fim, 0, 10);
+        if ($tf == 're') {
+          $periodo_ini2 = null;
+          if (!is_null($relatorio->periodo_renov_ini)) {
+            $periodo_ini2 = substr($relatorio->periodo_renov_ini, 0, 10);
+          }
+          $periodo_fim2 = null;
+          if (!is_null($relatorio->periodo_renov_fim)) {
+            $periodo_fim2 = substr($relatorio->periodo_renov_fim, 0, 10);
+          }
+        }
+        if ($tf == 'pr') {
+          $periodo_fim3 = null;
+          if (!is_null($relatorio->periodo_prorroga_fim)) {
+            $periodo_fim3 = substr($relatorio->periodo_prorroga_fim, 0, 10);
+          }
+        }
+      ?>
+
+      <div class="form-group">
+
+        <label>
+          <h5><?php echo ++$n; ?>. Período que se refere o Relatório</h5>
+        </label>
+        <br>
+        <strong>Inicial - Original</strong>
+
+        <div class="row">
+          <div class="col-3">
+            <div class="form-group">
+              <label>Início</label>
+              <input type="date"
+                     class="form-control"
+                     value="<?php echo $periodo_ini1; ?>"
+                     readonly>
+            </div>
+          </div>
+          <div class="col-3">
+            <div class="form-group">
+              <label>Fim</label>
+              <input type="date"
+                     class="form-control"
+                     value="<?php echo $periodo_fim1; ?>"
+                     readonly>
+            </div>
+          </div>
+        </div>
+
+        <br>
+
+        <?php if ($tf == 're') { ?>
+
+          <strong>Renovação</strong>
+
+          <div class="row">
+            <div class="col-3">
+              <div class="form-group">
+                <label>Início para renovação</label>
+                <input type="date"
+                       name="periodo_renov_ini"
+                       id="periodo_renov_ini"
+                       class="form-control"
+                       value="<?php echo $periodo_ini2; ?>"
+                       required
+                       <?php echo $editar; ?>>
+
+              </div>
+            </div>
+            <div class="col-3">
+              <div class="form-group">
+                <label>Fim, para renovação</label>
+                <input type="date"
+                       name="periodo_renov_fim"
+                       id="periodo_renov_fim"
+                       class="form-control"
+                       value="<?php echo $periodo_fim2; ?>"
+                       required
+                       <?php echo $editar; ?>>
+              </div>
+            </div>
+          </div>
+          <br>
+
+        <?php } ?>
+
+        <?php if ($tf == 'pr') { ?>
+          <strong>Prorrogação</strong>
+          <div class="col-3">
+            <div class="form-group">
+              <label>Até</label>
+              <input type="date"
+                     name="periodo_prorroga_fim"
+                     id="periodo_prorroga_fim"
+                     class="form-control"
+                     value="<?php echo $periodo_fim3; ?>"
+                     required
+                     <?php echo $editar; ?>>
+            </div>
+          </div>
+          A prorrogação deve ter tempo máximo de 25% do período inicial e final informado no projeto.
+        <?php } ?>
+      </div>
+      <hr>
+
+    <?php } ?>
+
+
+    <div class="row">
+      <div class="col">
+        <div class="form-group">
+          <label for="visita_tec_qtd">
+            <h5>
+              <?php echo ++$n; ?>. Quantidade de visitas técnicas realizadas
+            </h5>
+          </label>
+          <input type="number"
+                 id="visita_tec_qtd"
+                 name="visita_tec_qtd"
+                 class="form-control my-2 w-25"
+                 min="0"
+                 value="<?php echo $relatorio->visita_tec_qtd; ?>"
+                 <?php echo $editar; ?>>
+        </div>
+      </div>
+    </div>
     <hr>
 
+
     <label>
+
       <h5><?php echo ++$n; ?>. Contato do Coordenador</h5>
     </label>
     <div class="row">
@@ -94,121 +291,142 @@
         <label>
           <h6><?php echo $n; ?>.1. Telefone</h6>
         </label>
-        <input type="text" class="form-control" name="tel" readonly value="<?php echo $obProfessor->telefone; ?>">
-      </div>
+        <input type="text"
+               class="form-control"
+               name="tel"
+               readonly
+               value="<?php echo $obProfessor->telefone; ?>">
 
+      </div>
       <div class="form-group col">
         <label>
           <h6><?php echo $n; ?>.2. Email</h6>
         </label>
-        <input type="text" class="form-control" name="email" readonly value="<?php echo $obProfessor->email; ?>">
+        <input type="text"
+               class="form-control"
+               name="email"
+               readonly
+               value="<?php echo $obProfessor->email; ?>">
       </div>
     </div>
-
     <hr>
 
+
+  
     <div class="form-group">
       <label>
-        <h5><?php echo ++$n; ?>. Colegiado de Curso*/ Setor</h5>
+        <h5>
+          <?php echo ++$n; ?>. Colegiado de Curso*/ Setor
+        </h5>
       </label>
-      <input type="text" class="form-control" name="cursosetor" readonly value="<?php echo $cursosetor; ?>">
+      <input type="text"
+             class="form-control"
+             name="cursosetor"
+             readonly
+             value="<?php echo $cursosetor; ?>">
+
     </div>
-
     <hr>
 
-    <?php
 
-      $periodo_ini1 = substr($obProjeto->vigen_ini, 0, 10);
-
-      $periodo_fim1 = substr($obProjeto->vigen_fim, 0, 10);
-
-      if ($tf == 're') {
-          $periodo_ini2 = null;
-          if (!is_null($relatorio->periodo_renov_ini)) {
-              $periodo_ini2 = substr($relatorio->periodo_renov_ini, 0, 10);
-          }
-          $periodo_fim2 = null;
-          if (!is_null($relatorio->periodo_renov_fim)) {
-              $periodo_fim2 = substr($relatorio->periodo_renov_fim, 0, 10);
-          }
-      }
-
-      if ($tf == 'pr') {
-          $periodo_fim3 = null;
-          if (!is_null($relatorio->periodo_prorroga_fim)) {
-              $periodo_fim3 = substr($relatorio->periodo_prorroga_fim, 0, 10);
-          }
-      }
-
-    ?>
-    <div class="form-group">
-      <label>
-        <h5><?php echo ++$n; ?>. Período que se refere o Relatório</h5>
-      </label>
-      <br>
-
-      <strong>Inicial - Original</strong>
+    <!-- Rel parcial -->
+    <?php if ($tf == 'pa') { ?>
       <div class="row">
-        <div class="col-3">
+        <div class="col">
           <div class="form-group">
-            <label>Início</label>
-            <input type="date" class="form-control" value="<?php echo $periodo_ini1; ?>" readonly>
-          </div>
-        </div>
+            <label for="atvd_per">
+              <h5>
+                <?php echo ++$n; ?>. Atividades realizadas no período
+              </h5>
 
-        <div class="col-3">
-          <div class="form-group">
-            <label>Fim</label>
-            <input type="date" class="form-control" value="<?php echo $periodo_fim1; ?>" readonly>
-          </div>
-        </div>
-      </div>
-      <br>
-
-      <?php if ($tf == 're') { ?>
-            <strong>Renovação</strong>
-            <div class="row">
-              <div class="col-3">
-                <div class="form-group">
-                  <label>Início para renovação</label>
-                  <input type="date" name="periodo_renov_ini" id="periodo_renov_ini" class="form-control" value="<?php echo $periodo_ini2; ?>" required <?php echo $editar; ?> >
-                </div>
-              </div>
-      
-              <div class="col-3">
-                <div class="form-group">
-                  <label>Fim, para renovação</label>
-                  <input type="date" name="periodo_renov_fim" id="periodo_renov_fim" class="form-control" value="<?php echo $periodo_fim2; ?>" required <?php echo $editar; ?> >
-                </div>
-              </div>
+            </label>
+            <div id="sumnot_atvd_per">
+              <?php echo $relatorio->atvd_per; ?>
             </div>
-          <br>
-      <?php } if ($tf == 'pr') { ?>
-      <strong>Prorrogação</strong>
-      
-        <div class="col-3">
-          <div class="form-group">
-            <label>Até</label>
-            <input type="date" name="periodo_prorroga_fim" id="periodo_prorroga_fim" class="form-control" value="<?php echo $periodo_fim3; ?>" required <?php echo $editar; ?>  <?php echo $editar; ?> >
+            <textarea id="atvd_per"
+                      name="atvd_per"
+                      rows="10"
+                      hidden></textarea>
+
           </div>
         </div>
-        A prorrogação deve ter tempo máximo de 25% do período inicial e final informado no projeto.
       </div>
 
-      <?php } ?>     
-
       <hr>
+
+
+      <div class="row">
+        <div class="col">
+          <div class="form-group">
+            <label for="alteracoes">
+              <h5>
+                <?php echo ++$n; ?>.
+                Alterações realizadas no período da pesquisa e justificativa
+              </h5>
+            </label>
+            <div id="sumnot_alteracoes">
+              <?php echo $relatorio->alteracoes; ?>
+            </div>
+            <textarea id="alteracoes"
+                      name="alteracoes"
+                      rows="10"
+                      hidden></textarea>
+          </div>
+        </div>
+      </div>
+      <hr>
+
+
+      <div class="row">
+        <div class="col">
+          <div class="form-group">
+            <label>
+              <h5>
+                <?php echo ++$n; ?>. Atividades para o próximo período
+              </h5>
+            </label>
+            <div id="sumnot_atvd_prox_per">
+              <?php echo $relatorio->atvd_prox_per; ?>
+            </div>
+            <textarea id="atvd_prox_per"
+                      name="atvd_prox_per"
+                      rows="10"
+                      hidden></textarea>
+          </div>
+        </div>
+      </div>
+      <hr>
+
+
+    <!-- ===================================================== -->
+    <!-- CAMPOS ESPECÍFICOS DO FINAL / RE / PR -->
+    <!-- ===================================================== -->
+
+    <?php } else { ?>
+
       <div class="form-group">
         <label>
-          <h5><?php echo ++$n; ?>. Carga semanal*:</h5>
+          <h5>
+            <?php echo ++$n; ?>. Carga semanal*:
+          </h5>
         </label>
-        <input type="number" min=0 max=44 class="form-control col-2"  required name="ch_semanal" value="<?php echo $relatorio->ch_semanal; ?>" <?php echo $editar; ?>>
+        <input type="number"
+               min="0"
+               max="44"
+               class="form-control col-2"
+               required
+               name="ch_semanal"
+               value="<?php echo $relatorio->ch_semanal; ?>"
+               <?php echo $editar; ?>>
       </div>
 
       <hr>
+
       <div class="form-group">
         <label>
-          <h5><?php echo ++$n; ?>. Dimensão do Projeto Executado</h5>
+          <h5>
+            <?php echo ++$n; ?>. Dimensão do Projeto Executado
+          </h5>
         </label>
         <table>
           <tr>
@@ -217,33 +435,67 @@
           </tr>
           <tr>
             <th>Membros da comunidade externa</th>
-            <td><input type="number" min=0 max=44 class="form-control" name="dim_mem_com_ex" value="<?php echo $relatorio->dim_mem_com_ex; ?>" <?php echo $editar; ?> ></td>
+            <td>
+              <input type="number"
+                     min="0"
+                     max="44"
+                     class="form-control"
+                     name="dim_mem_com_ex"
+                     value="<?php echo $relatorio->dim_mem_com_ex; ?>"
+                     <?php echo $editar; ?>>
+            </td>
           </tr>
           <tr>
             <th>Discentes</th>
-            <td><input type="number" min=0 max=44 class="form-control" name="dim_disc" value="<?php echo $relatorio->dim_disc; ?>" <?php echo $editar; ?> ></td>
+            <td>
+              <input type="number"
+                     min="0"
+                     max="44"
+                     class="form-control"
+                     name="dim_disc"
+                     value="<?php echo $relatorio->dim_disc; ?>"
+                     <?php echo $editar; ?>>
+            </td>
           </tr>
           <tr>
             <th>Docentes</th>
-            <td><input type="number" min=0 max=44 class="form-control" name="dim_doce" value="<?php echo $relatorio->dim_doce; ?>"  <?php echo $editar; ?> ></td>
+            <td>
+              <input type="number"
+                     min="0"
+                     max="44"
+                     class="form-control"
+                     name="dim_doce"
+                     value="<?php echo $relatorio->dim_doce; ?>"
+                     <?php echo $editar; ?>>
+            </td>
           </tr>
           <tr>
             <th>Agentes universitários e Estagiários</th>
-            <td><input type="number" min=0 max=44 class="form-control" name="dim_agent_estag" value="<?php echo $relatorio->dim_agent_estag; ?>"  <?php echo $editar; ?> ></td>
+            <td>
+              <input type="number"
+                     min="0"
+                     max="44"
+                     class="form-control"
+                     name="dim_agent_estag"
+                     value="<?php echo $relatorio->dim_agent_estag; ?>"
+                     <?php echo $editar; ?>>
+            </td>
           </tr>
         </table>
       </div>
-
       <hr>
-      
+
 
       <div class="row">
         <div class="col">
           <div class="form-group">
             <label>
-              <h5><?php echo ++$n; ?>. Certificação</h5>
+              <h5>
+                <?php echo ++$n; ?>. Certificação
+              </h5>
             </label>
-            <div>Se deseja solicitar certificados, anexe uma planilha com os seguintes dados:
+            <div>
+              Se deseja solicitar certificados, anexe uma planilha com os seguintes dados:
               <ul>
                 <li>Nome do participante</li>
                 <li>CPF</li>
@@ -256,44 +508,71 @@
           </div>
         </div>
       </div>
-
       <hr>
+
 
       <div class="row">
         <div class="col">
           <div class="form-group">
             <label for="atividades">
-              <h5><?php echo ++$n; ?>. Atividades executadas</h5>
+              <h5>
+                <?php echo ++$n; ?>. Atividades executadas
+              </h5>
             </label>
-            <div id="sumnot_atividades"><?php echo $relatorio->atividades; ?></div>
-            <textarea id="atividades" name="atividades" rows="10" hidden ></textarea>
+            <div id="sumnot_atividades">
+              <?php echo $relatorio->atividades; ?>
+            </div>
+            <textarea id="atividades"
+                      name="atividades"
+                      rows="10"
+                      hidden></textarea>
           </div>
         </div>
       </div>
-
       <hr>
+
+
       <?php if ($tf == 'pr') { ?>
         <div class="row">
           <div class="col">
             <div class="form-group">
               <label>
-                <h5><?php echo ++$n; ?>. Atividades a serem desenvolvidas no próximo período – quando da solicitação de prorrogação do prazo</h5>
+                <h5>
+                  <?php echo ++$n; ?>.
+                  Atividades a serem desenvolvidas no próximo período –
+                  quando da solicitação de prorrogação do prazo
+                </h5>
               </label>
-              <div id="sumnot_atvd_prox_per"><?php echo $relatorio->atvd_prox_per; ?></div>
-              <textarea id="atvd_prox_per" name="atvd_prox_per" rows="10" hidden ></textarea>
+              <div id="sumnot_atvd_prox_per">
+                <?php echo $relatorio->atvd_prox_per; ?>
+              </div>
+              <textarea id="atvd_prox_per"
+                        name="atvd_prox_per"
+                        rows="10"
+                        hidden></textarea>
             </div>
           </div>
         </div>
         <hr>
       <?php } ?>
+
+
       <div class="row">
         <div class="col">
           <div class="form-group">
             <label>
-              <h5><?php echo ++$n; ?>. Relatório técnico-científico do Projeto Executado</h5>
+              <h5>
+                <?php echo ++$n; ?>.
+                Relatório técnico-científico do Projeto Executado
+              </h5>
             </label>
-            <div id="sumnot_rel_tec_cien_executado"><?php echo $relatorio->rel_tec_cien_executado; ?></div>
-            <textarea id="rel_tec_cien_executado" name="rel_tec_cien_executado" rows="10" hidden ></textarea>
+            <div id="sumnot_rel_tec_cien_executado">
+              <?php echo $relatorio->rel_tec_cien_executado; ?>
+            </div>
+            <textarea id="rel_tec_cien_executado"
+                      name="rel_tec_cien_executado"
+                      rows="10"
+                      hidden></textarea>
           </div>
         </div>
       </div>
@@ -303,120 +582,139 @@
         <div class="col">
           <div class="form-group">
             <label>
-              <h5><?php echo ++$n; ?>. Divulgação científico-acadêmica e técnico-extensionistas</h5>
+              <h5>
+                <?php echo ++$n; ?>.
+                Divulgação científico-acadêmica e técnico-extensionistas
+              </h5>
             </label>
-            <div id="sumnot_divulgacao"><?php echo $relatorio->divulgacao; ?></div>
-            <textarea id="divulgacao" name="divulgacao" rows="10" hidden ></textarea>
+            <div id="sumnot_divulgacao">
+              <?php echo $relatorio->divulgacao; ?>
+            </div>
+            <textarea id="divulgacao"
+                      name="divulgacao"
+                      rows="10"
+                      hidden></textarea>
+
           </div>
         </div>
       </div>
       <hr>
+
 
       <div class="row">
         <div class="col">
           <div class="form-group">
             <label>
-              <h5><?php echo ++$n; ?>. Relatório Financeiro</h5>
+              <h5>
+                <?php echo ++$n; ?>. Relatório Financeiro
+              </h5>
             </label>
-            <div>Caso haja recursos envolvidos na ação, elaborar o Relatório Financeiro, utilize um modelo fornecido pela Pró-Reitoria de Administração e Finanças
+            <div>
+              Caso haja recursos envolvidos na ação, elaborar o Relatório Financeiro,
+              utilize um modelo fornecido pela Pró-Reitoria de Administração e Finanças
             </div>
-            <a href="https://praf.unespar.edu.br/downloads" target="_blank">Modelos PRAF</a>. Depois de preenchido, anexe o arquivo no seção Anexos.
+            <a href="https://praf.unespar.edu.br/downloads"
+               target="_blank">
+              Modelos PRAF
+            </a>.
+            Depois de preenchido, anexe o arquivo no seção Anexos.
+
           </div>
         </div>
       </div>
-<!--
-<?php if ($tf == 're') { ?>
-  <div class="row">
-        <div class="col">
-          <div class="form-group">
-            <label>
-              <h5><?php echo ++$n; ?>. Relatório Financeiro</h5>
-            </label>
-            <div>Caso haja recursos envolvidos na ação, elaborar o Relatório Financeiro, utilize um modelo fornecido pela Pró-Reitoria de Administração e Finanças
-            </div>
-            <a href="https://praf.unespar.edu.br/downloads" target="_blank">Modelos PRAF</a>. Depois de preenchido, anexe o arquivo no seção Anexos.
-          </div>
+    <?php } ?>
+
+
+    <div class="form-group">
+      <h5 id="attc">
+        <?php echo ++$n; ?>. Anexos
+      </h5>
+      <ul id="anexos"></ul>
+      <?php if ($editar != 'readonly') { ?>
+        <iframe src="../upload/upload.php"
+                frameborder="0"
+                scrolling="no">
+        </iframe>
+      <?php } ?>
+      <?php echo $anex; ?>
+    </div>
+    <hr>
+
+
+    <div class="row">
+      <div class="col-3">
+        <div class="form-group">
+          <label>Data</label>
+          <input type="date"
+                 name="data"
+                 class="form-control"
+                 id="dateAssing"
+                 value="<?php echo (substr($relatorio->created_at, 0, 10)) ?: date('Y-m-d'); ?>"
+                 required
+                 <?php echo $editar; ?>>
         </div>
       </div>
+    </div>
 
-<?php } ?> -->
-      <div class="form-group">
-        <h5 id="attc"><?php echo ++$n; ?>. Anexos</h5>
-        <ul id="anexos"></ul>
-          <?php if ($editar != 'readonly') { ?>
-            <iframe src="../upload/upload.php" frameborder="0" scrolling="no"></iframe>
-          <?php } ?>
-        <?php echo $anex; ?>
-      </div>
-      <hr>
-
-      <!-- <div class="row">
-        <div class="col">
-          <div class="form-group">
-            <label>
-              <h5><?php echo ++$n; ?>. Solicitações</h5>
-            </label>
-            <div id="sumnot_solicitacoes">
-                <?=  $formRel->solicitacoes  ?>
-            </div>
-            <textarea id="solicitacoes" name="solicitacoes" rows="10" hidden ></textarea>
-          </div>
-        </div>
-      </div> -->
-
-
-      <div class="row" >
-        <div class="col-3">
-          <div class="form-group">
-            <label>Data</label>
-            <input type="date" name="data" class="form-control" id="dateAssing" value="<?php echo (substr($relatorio->created_at, 0, 10)) ?: date('Y-m-d'); ?>" required <?php echo $editar; ?>>
-          </div>
-        </div>
-      </div>
-
-      <div class="form-group" id="menuAvaliarVoltar">
-        <?php
-            if ($editar == '') {
-                ?>
-            <a href="javascript: submitSumbeter()" class="btn btn-success btn-sm" >↗️ Salvar </a>
-        <?php } ?>
-         <a href="javascript: history.go(-1)" class="btn btn-warning btn-sm" >↗️ Voltar </a>
-      </div>
+    <div class="form-group" id="menuAvaliarVoltar">
+      <?php if ($editar == '') { ?>
+        <a href="javascript: submitSumbeter()"
+           class="btn btn-success btn-sm">
+          ↗️ Salvar
+        </a>
+      <?php } ?>
+      <a href="javascript: history.go(-1)"
+         class="btn btn-warning btn-sm">
+        ↗️ Voltar
+      </a>
+    </div>
 
 <?php
+
 /*
-echo date("l \\t\h\e jS");
+echo date("l \t\h\e jS");
 echo '<br>';
 echo $obProjeto->vigen_ini;
 echo '<br>';
 echo $obProjeto->vigen_fim;
 echo '<br>';
-
 $periodo_fim1 = substr($obProjeto->vigen_ini, 0, 10);
-$periodo_fim1 = substr($obProjeto->vigen_fim, 0, 10); */
+$periodo_fim1 = substr($obProjeto->vigen_fim, 0, 10);
+*/
 
 $path = explode('/', $_SERVER['REQUEST_URI']);
 $base = $_SERVER['REQUEST_SCHEME'].'://'.$_SERVER['HTTP_HOST'];
 $caminhoFormJS = $base.'/'.$path[1].'/relatorio/forms.js';
 $caminhoFormJS = '<script src="'.$caminhoFormJS.'"></script>';
+
 ?>
-    <input type="hidden" name="tabela" value="relatorios">
-    <input id="anexosJS" name="anexosJS" type="text" hidden>
+
+    <input type="hidden"
+           name="tabela"
+           value="relatorios">
+    <input id="anexosJS"
+           name="anexosJS"
+           type="text"
+           hidden>
   </form>
 </main>
 
+
 <script>
-
   $(document).ready(function () {
-    $('#sumnot_atividades').summernote('disable');
-    $('#sumnot_rel_tec_cien_executado').summernote('disable');
-    $('#sumnot_divulgacao').summernote('disable');
-
-    <?php if ($tf == 'pr') { ?>
-    $('#sumnot_atvd_prox_per').summernote('disable');
+    <?php if ($tf == 'pa') { ?>
+      $('#sumnot_atvd_per').summernote('disable');
+      $('#sumnot_alteracoes').summernote('disable');
+      $('#sumnot_atvd_prox_per').summernote('disable');
+    <?php } else { ?>
+      $('#sumnot_atividades').summernote('disable');
+      $('#sumnot_rel_tec_cien_executado').summernote('disable');
+      $('#sumnot_divulgacao').summernote('disable');
+      <?php if ($tf == 'pr') { ?>
+        $('#sumnot_atvd_prox_per').summernote('disable');
+      <?php } ?>
     <?php } ?>
   });
-    
 </script>
 
 <?php echo $caminhoFormJS; ?>

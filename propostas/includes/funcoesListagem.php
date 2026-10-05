@@ -85,10 +85,8 @@ function getBotoesProjeto($proj, $user, $userId, $estado)
             ];
 
         case 3:
-            return [
-                'botoes' => emExecucao($proj, $userId),
-                'necessitaAlteracoes' => false
-            ];
+            return emExecucao($proj, $userId);
+
 
         case 4:
             return aguardandoRelatorio($proj, $userId);
