@@ -5,6 +5,7 @@ namespace App\Entity;
 use App\Db\Database;
 
 // id  ver	protocolo	regras	id_prof	tipo_exten	titulo	vigen_ini	vigen_fim	vigen_fim_orig	para_avaliar	estado	fase_seq	form	resultado	tp_instancia	id_instancia	qnt_fases
+#[\AllowDynamicProperties]
 class ProjMaster
 {
     public $id;
@@ -99,8 +100,11 @@ class ProjMaster
             where p.id_prof = '".$idProfessor."'
         ";
 
-        return (new Database())->execute($qryInadimplentes, [
+        return Outros::qry($qryInadimplentes);
+
+        /*return (new Database())->execute($qryInadimplentes, [
             'id_prof' => $idProfessor,
         ])->fetchAll(\PDO::FETCH_ASSOC);
+        */
     }
 }

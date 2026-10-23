@@ -4,6 +4,7 @@ namespace App\Entity;
 
 use App\Db\Database;
 
+#[\AllowDynamicProperties]
 class Avaliacoes
 {
     public $id;
@@ -95,7 +96,7 @@ class Avaliacoes
         return (new Database('proj_avaliar'))->select($where, $order, $limit)
                                       ->fetchAll(\PDO::FETCH_CLASS, self::class);
     }
-        
+
     public static function getLastAvaliacao($id_proj)
     {
         return (new Database('avalia_last'))->select('id_proj =  "'.$id_proj.'"')

@@ -3,6 +3,7 @@
 require '../vendor/autoload.php';
 
 use App\Session\Login;
+
 $obUsuario = Login::getUsuarioLogado();
 
 use App\Entity\MicroCred_avaliadores;
@@ -140,12 +141,12 @@ $nome = explode(' ', trim($obUsuario['nome']));
 $nome = $nome[0]; // will print Test
 // Verificar se é adm ou não
 require_once '../includes/funcoes/func_Cargos.php';
-$validade = verificarCargosAdmin($user);
 
+$validade = verificarCargosAdmin($obUsuario);
 
 // Verificar se é adm ou não
 require_once '../includes/funcoes/func_Cargos.php';
-$validade = verificarCargosAdmin($user);
+$validade = verificarCargosAdmin($obUsuario);
 ?>
 
 <!doctype html>
@@ -387,71 +388,71 @@ $idCampus = $obUsuario['ca_id'];
 
           
           <?php
-            
-            if ($obUsuario['CargoEspecial'] != '0'){
-              require_once '../includes/funcoes/func_verificaCargosEspeciais.php';
-              $cargosEspeciais = dadosCargosEspeciais($obUsuario['CargoEspecial']);
-            } else {
-              $cargosEspeciais = null;
-            }
-            // Deixar o botão visivel somente para os cargos especiais
-            if (!empty($cargosEspeciais)){
-              $nome = $cargosEspeciais[0]->siglaReitoria;
-              $rota = strtolower($nome);
-              $hiddenCargosEspeciais = '';
-            } else {
-              $hiddenCargosEspeciais = 'hidden';
-            }
 
-            if ($obUsuario['adm'] == 1) {
-              require_once '../includes/funcoes/func_permissoes.php';
-              $permissoesADM = permissoesADM();
+            if ($obUsuario['CargoEspecial'] != '0') {
+                require_once '../includes/funcoes/func_verificaCargosEspeciais.php';
+                $cargosEspeciais = dadosCargosEspeciais($obUsuario['CargoEspecial']);
             } else {
-              $permissoesADM = null;
+                $cargosEspeciais = null;
             }
-            // Deixar o botão visivel para a aprovação de cadastro de novos pf ou ag
-            if ((!empty($permissoesADM) && in_array($obUsuario['id'], $permissoesADM)) || (!empty($cargosEspeciais))){
-              $hiddenAprovacaoCadastro = '';
-            } else {
-              $hiddenAprovacaoCadastro = 'hidden';
-            }
+        // Deixar o botão visivel somente para os cargos especiais
+        if (!empty($cargosEspeciais)) {
+            $nome = $cargosEspeciais[0]->siglaReitoria;
+            $rota = strtolower($nome);
+            $hiddenCargosEspeciais = '';
+        } else {
+            $hiddenCargosEspeciais = 'hidden';
+        }
 
-            // Deixar o botão visivel para a aprovação de cadastro de novos pf ou ag
-            if ($obUsuario['config'] == '1'){
-              $hiddenSolicitacao = '';
-              $nomeCargosSol = 'Professores';
-              $uri = 'pf';
-            } elseif ($obUsuario['config'] == '3'){
-              $hiddenSolicitacao = '';
-              $nomeCargosSol = 'Agentes';
-              $uri = 'ag';
-            } else {
-              $hiddenSolicitacao = 'hidden';
-            }
-            
-          ?>
+        if ($obUsuario['adm'] == 1) {
+            require_once '../includes/funcoes/func_permissoes.php';
+            $permissoesADM = permissoesADM();
+        } else {
+            $permissoesADM = null;
+        }
+        // Deixar o botão visivel para a aprovação de cadastro de novos pf ou ag
+        if ((!empty($permissoesADM) && in_array($obUsuario['id'], $permissoesADM)) || (!empty($cargosEspeciais))) {
+            $hiddenAprovacaoCadastro = '';
+        } else {
+            $hiddenAprovacaoCadastro = 'hidden';
+        }
+
+        // Deixar o botão visivel para a aprovação de cadastro de novos pf ou ag
+        if ($obUsuario['config'] == '1') {
+            $hiddenSolicitacao = '';
+            $nomeCargosSol = 'Professores';
+            $uri = 'pf';
+        } elseif ($obUsuario['config'] == '3') {
+            $hiddenSolicitacao = '';
+            $nomeCargosSol = 'Agentes';
+            $uri = 'ag';
+        } else {
+            $hiddenSolicitacao = 'hidden';
+        }
+
+        ?>
           <!-- Utilizar o nome do cargo especial para pasta para identificar corretamente a rota -->
-          <a <?= $hiddenCargosEspeciais ?> class="dropdown-item btn-sm" href='../<?= $rota ?>'><?= $nome ?> <span class="badge badge-success">Novo!</span> </a>
-          <div <?= $hiddenCargosEspeciais ?> class="dropdown-divider"></div>
+          <a <?php echo $hiddenCargosEspeciais; ?> class="dropdown-item btn-sm" href='../<?php echo $rota; ?>'><?php echo $nome; ?> <span class="badge badge-success">Novo!</span> </a>
+          <div <?php echo $hiddenCargosEspeciais; ?> class="dropdown-divider"></div>
 
-          <?php if($validade != 1): ?>
+          <?php if ($validade != 1) { ?>
             <!-- Cadastrar novo pf ou ag -->
-            <a <?= $hiddenSolicitacao ?> class="dropdown-item btn-sm" href='../pessoas/index.php?tipo=cadastro&cargo=<?=$uri?>&valida&sucesso'>Cadastrar novos <?=$nomeCargosSol?> <span class="badge badge-success">Novo!</span> </a>
-            <div <?= $hiddenSolicitacao ?> class="dropdown-divider"></div>
+            <a <?php echo $hiddenSolicitacao; ?> class="dropdown-item btn-sm" href='../pessoas/index.php?tipo=cadastro&cargo=<?php echo $uri; ?>&valida&sucesso'>Cadastrar novos <?php echo $nomeCargosSol; ?> <span class="badge badge-success">Novo!</span> </a>
+            <div <?php echo $hiddenSolicitacao; ?> class="dropdown-divider"></div>
             
             <!-- Remover pf ou ag -->
-            <a <?= $hiddenSolicitacao ?> class="dropdown-item btn-sm" href='../pessoas/index.php?tipo=desativacao&cargo=<?=$uri?>&valida&sucesso'>Desativar <?=$nomeCargosSol?> <span class="badge badge-success">Novo!</span> </a>
-            <div <?= $hiddenSolicitacao ?> class="dropdown-divider"></div>
+            <a <?php echo $hiddenSolicitacao; ?> class="dropdown-item btn-sm" href='../pessoas/index.php?tipo=desativacao&cargo=<?php echo $uri; ?>&valida&sucesso'>Desativar <?php echo $nomeCargosSol; ?> <span class="badge badge-success">Novo!</span> </a>
+            <div <?php echo $hiddenSolicitacao; ?> class="dropdown-divider"></div>
 
             <!-- Reativar pf ou ag -->
-            <a <?= $hiddenSolicitacao ?> class="dropdown-item btn-sm" href='../pessoas/index.php?tipo=reativacao&cargo=<?=$uri?>&valida&sucesso'>Reativar <?=$nomeCargosSol?> <span class="badge badge-success">Novo!</span> </a>
-            <div <?= $hiddenSolicitacao ?> class="dropdown-divider"></div>
+            <a <?php echo $hiddenSolicitacao; ?> class="dropdown-item btn-sm" href='../pessoas/index.php?tipo=reativacao&cargo=<?php echo $uri; ?>&valida&sucesso'>Reativar <?php echo $nomeCargosSol; ?> <span class="badge badge-success">Novo!</span> </a>
+            <div <?php echo $hiddenSolicitacao; ?> class="dropdown-divider"></div>
 
-          <?php elseif($validade == 1): ?>
+          <?php } elseif ($validade == 1) { ?>
             <!-- Somente ADM e o Dir de Extensão e Cultura -->
-            <a <?= $hiddenAprovacaoCadastro ?> class="dropdown-item btn-sm" href='../pessoas/index.php?tipo=avalia&valida&sucesso'>Listagem Pessoas <span class="badge badge-success">Novo!</span> </a>
-            <div <?= $hiddenAprovacaoCadastro ?> class="dropdown-divider"></div>
-          <?php endif; ?>
+            <a <?php echo $hiddenAprovacaoCadastro; ?> class="dropdown-item btn-sm" href='../pessoas/index.php?tipo=avalia&valida&sucesso'>Listagem Pessoas <span class="badge badge-success">Novo!</span> </a>
+            <div <?php echo $hiddenAprovacaoCadastro; ?> class="dropdown-divider"></div>
+          <?php } ?>
 
           <a class="dropdown-item btn-sm" href="../login/logout.php">Sair</a>
         </div>

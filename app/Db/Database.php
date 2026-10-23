@@ -52,15 +52,15 @@ class Database
     private function setConnection()
     {
         try {
-            $this->connection =
-              new \PDO('mysql:host='.$this->host.';dbname='.$this->name, $this->user, $this->pass,
-                  [
-                      \PDO::ATTR_ERRMODE => \PDO::ERRMODE_EXCEPTION,
-                      // PDO::ATTR_PERSISTENT => false,
-                      // PDO::ATTR_EMULATE_PREPARES => false,
-                      \PDO::MYSQL_ATTR_INIT_COMMAND => 'SET NAMES utf8',
-                  ]
-              );
+            $this->connection = new \PDO(
+                'mysql:host='.$this->host.';dbname='.$this->name.';charset=utf8mb4', $this->user, $this->pass,
+                [
+                    \PDO::ATTR_ERRMODE => \PDO::ERRMODE_EXCEPTION,
+                    // \PDO::MYSQL_ATTR_INIT_COMMAND => 'SET NAMES utf8',
+                    // PDO::ATTR_PERSISTENT => false,
+                    // PDO::ATTR_EMULATE_PREPARES => false,
+                ]
+            );
             // $this->connection->setAttribute(PDO::ATTR_ERRMODE,PDO::ERRMODE_EXCEPTION);
         } catch (\PDOException $e) {
             exit('ERROR: '.$e->getMessage());
@@ -165,9 +165,13 @@ class Database
     public function select($where = null, $order = null, $limit = null, $fields = '*')
     {
         // DADOS DA QUERY
-        $where = strlen($where) ? 'WHERE '.$where : '';
-        $order = strlen($order) ? 'ORDER BY '.$order : '';
-        $limit = strlen($limit) ? 'LIMIT '.$limit : '';
+
+        // $where = strlen($where) ? 'WHERE '.$where : '';
+        // $order = strlen($order) ? 'ORDER BY '.$order : '';
+        // $limit = strlen($limit) ? 'LIMIT '.$limit : '';
+        $where = !empty($where) ? 'WHERE '.$where : '';
+        $order = !empty($order) ? 'ORDER BY '.$order : '';
+        $limit = !empty($limit) ? 'LIMIT '.$limit : '';
         // MONTA A QUERY
         $query = 'SELECT '.$fields.' FROM '.$this->table.' '.$where.' '.$order.' '.$limit;
 

@@ -2,21 +2,24 @@
 
 namespace App\Entity;
 
-use \App\Db\Database;
-use \PDO;
+use App\Db\Database;
 
 /**
  * @param $id identificador do projeto
+ *
  * @return @array
  */
-class Area_Extensao{
+#[\AllowDynamicProperties]
+class Area_Extensao
+{
+    public $id;
+    public $nome;
+    public $sel;
 
-  public $id;
-  public $nome;
-  
-  public static function getRegistros($id = -1){
-    $sql = 
-    "select 
+    public static function getRegistros($id = -1)
+    {
+        $sql =
+        "select 
         a1.id, a1.nome, 
         if(IFNULL(p.id, 'a') != 'a', 'SELECTED', '') sel
       from 
@@ -26,29 +29,28 @@ class Area_Extensao{
             p.area_tema1  = a1.id 
           and 
             (p.id, p.ver) = 
-            (select id, max(ver) from projetos p2  where id = '" . $id ."')";
+            (select id, max(ver) from projetos p2  where id = '".$id."')";
 
-    return (new Database('area_extensao'))->selectJ($sql)
-      ->fetchAll(PDO::FETCH_CLASS,self::class);
-  }
+        return (new Database('area_extensao'))->selectJ($sql)
+          ->fetchAll(\PDO::FETCH_CLASS, self::class);
+    }
 
+    /**
+     * Método responsável por buscar um Registro com base em seu ID.
+     *
+     * @param int $id
+     *
+     * @return Area1
+     */
+    public static function getRegistro($id)
+    {
+        return (new Database('area_extensao'))->select('id = '.$id)
+                                      ->fetchObject(self::class);
+    }
 
-  /**
-   * Método responsável por buscar um Registro com base em seu ID
-   * @param  integer $id
-   * @return Area1
-   */
-  public static function getRegistro($id){
-    return (new Database('area_extensao'))->select('id = '.$id)
-                                  ->fetchObject(self::class);
-  }
-
-
-  public static function getRegs(){
-    return (new Database('area_extensao'))->select()
-                                  ->fetchObject(self::class);
-  }
-
+    public static function getRegs()
+    {
+        return (new Database('area_extensao'))->select()
+                                      ->fetchObject(self::class);
+    }
 }
-
-

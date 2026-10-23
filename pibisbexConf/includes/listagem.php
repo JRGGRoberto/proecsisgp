@@ -7,10 +7,10 @@ $user = Login::getUsuarioLogado();
 $res = '';
 
 foreach ($lista as $l) {
-    $prj1 = explode(' ', trim($l->prj1));
-    $prj2 = explode(' ', trim($l->prj2));
-    $prj3 = explode(' ', trim($l->prj3));
-    $prj4 = explode(' ', trim($l->prj4));
+    $prj1 = explode(' ', $l->prj1 = trim($l->prj1 ?? ''));
+    $prj2 = explode(' ', $l->prj2 = trim($l->prj2 ?? ''));
+    $prj3 = explode(' ', $l->prj3 = trim($l->prj3 ?? ''));
+    $prj4 = explode(' ', $l->prj4 = trim($l->prj4 ?? ''));
     // PIBEX-4 0 140 05/08/2025
     //  [0]   [1][2] [3]
 

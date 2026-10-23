@@ -4,6 +4,7 @@ namespace App\Entity;
 
 use App\Db\Database;
 
+#[\AllowDynamicProperties]
 class HistRelatorios
 {
     public $id;

@@ -14,17 +14,18 @@ $user = Login::getUsuarioLogado();
 $relPendentes = ProjMaster::getRelatoriosPendentes($user['id']);
 $inadimplente = false;
 foreach ($relPendentes as $p) {
-    if ($p['envio_rel_parcial'] === 'rel parcial pendente'
-        || $p['envio_rel_final'] === 'rel final pendente') {
+    if ($p->envio_rel_parcial === 'rel parcial pendente'
+        || $p->envio_rel_final === 'rel final pendente') {
         $inadimplente = true;
         // break;
     }
 }
 
 // Busca
-$titulo = filter_input(INPUT_GET, 'titulo', FILTER_SANITIZE_STRING);
-$palavra = filter_input(INPUT_GET, 'palavra', FILTER_SANITIZE_STRING);
-$protocolo = filter_input(INPUT_GET, 'protocolo', FILTER_SANITIZE_STRING);
+$titulo = htmlspecialchars(filter_input(INPUT_GET, 'titulo') ?? '', ENT_QUOTES | ENT_SUBSTITUTE, 'UTF-8');
+$palavra = htmlspecialchars(filter_input(INPUT_GET, 'palavra') ?? '', ENT_QUOTES | ENT_SUBSTITUTE, 'UTF-8');
+$protocolo = htmlspecialchars(filter_input(INPUT_GET, 'protocolo') ?? '', ENT_QUOTES | ENT_SUBSTITUTE, 'UTF-8');
+
 /*
 $palavra = filter_input(INPUT_GET, 'palavra', FILTER_SANITIZE_STRING);
 $protocolo = filter_input(INPUT_GET, 'palavra', FILTER_SANITIZE_STRING);
@@ -103,7 +104,7 @@ foreach ($sendColegiado as $co) {
 // //     LEFT JOIN relats r
 // //         ON r.idproj = p.id
 // //         AND r.tipo = 'pa'
-// //     WHERE 
+// //     WHERE
 // //         r.id IS NULL
 // //         AND p.id_prof = '".$user['id']."'
 // //         AND TIMESTAMPDIFF(MONTH  , p.vigen_ini, p.vigen_fim) > 12
@@ -115,14 +116,15 @@ foreach ($sendColegiado as $co) {
 // // echo '</pre>';
 
 // // Filtro de status
-$filtroStatus = filter_input(INPUT_GET, 'filtroStatus', FILTER_SANITIZE_STRING);
+
+$filtroStatus = htmlspecialchars(filter_input(INPUT_GET, 'filtroStatus') ?? '', ENT_QUOTES | ENT_SUBSTITUTE, 'UTF-8');
 
 // Condições SQL
 $condicoes = [
     'id_prof = "'.$user['id'].'"',
-    strlen($titulo) ? 'titulo LIKE "%'.str_replace(' ', '%', $titulo).'%"' : null,
-    strlen($palavra) ? $palavra : null,
-    strlen($protocolo) ? 'protocolo LIKE "%'.str_replace(' ', '%', $protocolo).'%"' : null,
+    $titulo = (is_string($titulo) && trim($titulo) !== '') ? 'titulo LIKE "%'.str_replace(' ', '%', $titulo).'%"' : null,
+    $palavra = (is_string($palavra) && trim($palavra) !== '') ? 'palavra LIKE "%'.str_replace(' ', '%', $palavra).'%"' : null,
+    $protocolo = (is_string($protocolo) && trim($protocolo) !== '') ? 'protocolo LIKE "%'.str_replace(' ', '%', $protocolo).'%"' : null,
     /*,
   strlen($area) ? "area_extensao = '$area_extensao'": null,
   strlen($linh_ext) ? 'linh_ext LIKE "%'.str_replace(' ','%',$linh_ext).'%"': null */

@@ -4,10 +4,12 @@ namespace App\Entity;
 
 use App\Db\Database;
 
+#[\AllowDynamicProperties]
 class Pibis_pibex_avaliadores
 {
     public $id;
     public $ativo;
+    public $adm;
     public $created_at;
     public $updated_at;
     public $user;

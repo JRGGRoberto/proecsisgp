@@ -52,7 +52,7 @@ if (isset($_POST['nome'])) {
     //  $obAgente->config = $_POST['config'];
     $obAgente->updated_at = date('Y-m-d H:i:s');
     $obAgente->user = $user['id'];
-    if (strlen($_POST['senha']) > 0) {
+    if ($_POST['senha'] !== null && $_POST['senha'] !== '') {
         $obAgente->senha = password_hash($_POST['senha'], PASSWORD_DEFAULT);
     }
     $obAgente->atualizar();

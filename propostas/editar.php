@@ -166,19 +166,34 @@ if (isset($_POST['titulo'])) {
     $obProjeto->regras = $regra;
 
     if (in_array($t, $anexoIII)) {
-        $obProjeto->ch_semanal = $_POST['ch_semanal'];
-
-        $cnpq_garea = 0;
-        try {
-            $cnpq_garea = intval($_POST['cnpq_garea']);
-        } catch (Exception $e) {
-            $cnpq_garea = 0;
+        if ($_POST['ch_semanal'] == null) {
+            $obProjeto->ch_semanal = 0;
+        } else {
+            $obProjeto->ch_semanal = $_POST['ch_semanal'];
         }
+
+        // garante q vai vir int
+        $cnpq_garea = (int) $_POST['cnpq_garea'];
         $obProjeto->cnpq_garea = $cnpq_garea;
 
-        $obProjeto->cnpq_area = $_POST['cnpq_area'];
+        // puxa o cnpq e verifico se está sendo classificado corretamente
+        $cnpq_area = $_POST['cnpq_area'] ?? null;
+        $cnpq_sarea = $_POST['cnpq_sarea'] ?? null;
 
-        $obProjeto->cnpq_sarea = $_POST['cnpq_sarea'];
+        // garante q vai salvar a proposta se ficar sem ser preenchido
+        if ($cnpq_area !== null && $cnpq_area !== '') {
+            $obProjeto->cnpq_area = (int) $cnpq_area;
+        } else {
+            $obProjeto->cnpq_area = null;
+        }
+
+        // garante q vai salvar a proposta se ficar sem ser preenchido
+        if ($cnpq_sarea !== null && $cnpq_sarea !== '') {
+            $obProjeto->cnpq_sarea = (int) $cnpq_sarea;
+        } else {
+            $obProjeto->cnpq_sarea = null;
+        }
+
         $obProjeto->area_extensao = $_POST['area_extensao'];
         $obProjeto->linh_ext = $_POST['linh_ext'];
     }

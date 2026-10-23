@@ -2,11 +2,10 @@
 
 namespace App\Entity;
 
-use App\Entity\Outros;
-
 use App\Db\Database;
 use PDO;
 
+#[\AllowDynamicProperties]
 class Projeto
 {
     public $id;
@@ -87,6 +86,9 @@ class Projeto
     // somente para views
     public $colegiado;
     public $aprov;
+
+    public $cancelado;
+    public $canceljustif;
 
     /**
      * Método responsável por cadastrar um novo projeto no banco.
@@ -178,8 +180,10 @@ class Projeto
     }
 
     // Para realizar a alteração em apenas um campo no sistema
-    public static function atualizarCampo($update){
+    public static function atualizarCampo($update)
+    {
         $exec = Outros::q($update);
+
         return $exec;
     }
 

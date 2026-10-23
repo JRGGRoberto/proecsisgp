@@ -2,11 +2,11 @@
 
 namespace App\Entity;
 
-use \App\Db\Database;
-use \PDO;
+use App\Db\Database;
 
-class Solicita_Pessoas{
-
+#[\AllowDynamicProperties]
+class Solicita_Pessoas
+{
     public $id;
     public $tp_solicitacao;
     public $tp_cadastro;
@@ -29,13 +29,14 @@ class Solicita_Pessoas{
     public $vinculo_remocao;
     public $data_solicitacao;
 
-
     /**
-     * Método responsável por cadastrar um novo Registro no banco
-    * @return boolean
-    */
+     * Método responsável por cadastrar um novo Registro no banco.
+     *
+     * @return bool
+     */
     // Inserir no banco após a solicitação de adendos
-    public function insertRegistrosAdm(){
+    public function insertRegistrosAdm()
+    {
         $obDatabase = new Database('tb_solicita_pessoa');
         $obDatabase->insert(
             [
@@ -61,15 +62,18 @@ class Solicita_Pessoas{
                 'vinculo_remocao' => $this->vinculo_remocao,
                 'data_solicitacao' => $this->data_solicitacao,
             ]);
+
         return true;
     }
 
     /**
-     * Método responsável por cadastrar um novo Registro no banco
-    * @return boolean
-    */
+     * Método responsável por cadastrar um novo Registro no banco.
+     *
+     * @return bool
+     */
     // Inserir no banco após a solicitação de adendos
-    public function insertRegistros(){
+    public function insertRegistros()
+    {
         $obDatabase = new Database('tb_solicita_pessoa');
         $obDatabase->insert(
             [
@@ -93,9 +97,10 @@ class Solicita_Pessoas{
                 'vinculo_remocao' => $this->vinculo_remocao,
                 'data_solicitacao' => $this->data_solicitacao,
             ]);
+
         return true;
     }
-    
+
     /**
      * Método responsável por atualizar a PROJETO no banco.
      *
@@ -108,7 +113,7 @@ class Solicita_Pessoas{
         return (new Database('tb_solicita_pessoa'))->update('(id) = ( "'.$this->id.'" )',
             [
                 'id_avaliador' => $this->id_avaliador,
-                'resultado' => $this->resultado
+                'resultado' => $this->resultado,
             ]);
     }
 
@@ -123,18 +128,20 @@ class Solicita_Pessoas{
     }
 
     /**
-     * Método responsável por obter as registros do banco de dados
-    * @param  string $where
-    * @param  string $order
-    * @param  string $limit
-    * @return array
-    */
+     * Método responsável por obter as registros do banco de dados.
+     *
+     * @param string $where
+     * @param string $order
+     * @param string $limit
+     *
+     * @return array
+     */
     // Exibe as informações
-    public static function getRegistros($where = null, $order = null, $limit = null, $fields = '*'){
+    public static function getRegistros($where = null, $order = null, $limit = null, $fields = '*')
+    {
         return (new Database('tb_solicita_pessoa'))->select($where, $order, $limit, $fields)
-                                    ->fetchAll(PDO::FETCH_CLASS,self::class);
+                                    ->fetchAll(\PDO::FETCH_CLASS, self::class);
     }
-
 
     /**
      * Método responsável por obter a quantidade de registros.

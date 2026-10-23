@@ -1,28 +1,42 @@
 <?php
 
 require '../includes/msgAlert.php';
+
 $_GET['pag'] = 'listagem_all';
+
 include './includes/funcoes.php';
+
 require_once __DIR__.'/funcoesListagem.php';
 
 use App\Entity\Avaliacoes;
-use App\Entity\Relatorio;
 use App\Session\Login;
 
 // Obriga o usuário a estar logado
 Login::requireLogin();
+
 $user = Login::getUsuarioLogado();
+
 $userConfig = $user['config'];
 $userTipo = $user['tipo'];
 $userId = $user['id'];
 
+/**
+ *  0 -> ?
+ *  1 -> várias pessoas que tem permissão (acho q todos q possuem cargo superior de prof ou agente)
+ *  2 -> diretor de centro de área
+ *  3 -> chefe div
+ *  4 -> diretor do campus.
+ */
 $osCabeca = [1, 2, 3, 4]; // só a elite
 
 $currentUrl = $_SERVER['REQUEST_URI'];
 
 $qnt1 = 0;
-
 $resultados = '<div id="accordion">';
+
+// echo '<pre>';
+// print_r($user);
+// echo '</pre>';
 foreach ($projetos as $proj) {
     $nomeExten = mudaAbreviacaoTipoPropostas($proj->tipo_exten);
 
@@ -31,155 +45,218 @@ foreach ($projetos as $proj) {
     is_null($proj->submetido_para) ? $col = 'A definir' : $col = $proj->submetido_para;
 
     $dataFim = '';
+
     if (strlen($proj->vigen_fim) > 8) {
-        $dataFim = substr($proj->vigen_fim, 8, 2).'/'.
-                  substr($proj->vigen_fim, 5, 2).'/'.
-                  substr($proj->vigen_fim, 0, 4);
+        $dataFim = substr($proj->vigen_fim, 8, 2).'/'
+          .substr($proj->vigen_fim, 5, 2).'/'
+          .substr($proj->vigen_fim, 0, 4);
     }
 
     $dataInicio = '';
+
     if (strlen($proj->vigen_ini) > 8) {
-        $dataInicio = substr($proj->vigen_ini, 8, 2).'/'.
-                  substr($proj->vigen_ini, 5, 2).'/'.
-                  substr($proj->vigen_ini, 0, 4);
+        $dataInicio = substr($proj->vigen_ini, 8, 2).'/'
+          .substr($proj->vigen_ini, 5, 2).'/'
+          .substr($proj->vigen_ini, 0, 4);
     }
 
-    $relatorios = Relatorio::getAll();
-    $qtdRelatorios = count($relatorios);
-
-    // pega o valor inteiro pro case
     $estadoOriginal = $proj->estado;
-
-    // cria o badge do estado
     $estado = getEstadoProjeto($estadoOriginal);
+
     $proj->estado = $estado['badge'];
 
-    // retorna os botoes de acordo com o estado
-    $botoesEstado = getBotoesProjeto($proj, $user, $userId, $estadoOriginal);
+    $estadoNome = $estado['nome'];
+    $botoesEstado = getBotoesProjeto(
+        $proj,
+        $user,
+        $userId,
+        $estadoOriginal
+    );
+
     $btn = $botoesEstado['botoes'];
 
-    // 2023-03-09 00:00:00
+    $where = 'id_proj = "'.$proj->id.'"';
+    $order = 'ver desc, fase_seq desc';
+
+    $avaliacoesAnteriores = Avaliacoes::getRegistros(
+        $where,
+        $order,
+        null
+    );
+
+    $qntAvaliacoes = count($avaliacoesAnteriores);
+
+    $avaliacoesTabela = '';
+    $ultimaAvaliacao = '';
+    $btnAvaliacoes = '';
+
+    // usuarios q podem visualizar as avaliacoes
+    $podeVerAvaliacoes = in_array($userConfig, $osCabeca) || $userId == $proj->id_prof;
+
+    if ($podeVerAvaliacoes && $qntAvaliacoes > 0) {
+        $retorno = montarTblAvalProp(
+            $avaliacoesAnteriores,
+            $proj->id,
+        );
+
+        /*
+          * [0] = tabela/listagem das avaliações
+          * [1] = última avaliação
+          * [2] = botões
+        */
+        $avaliacoesTabela = $retorno[1];
+        $ultimaAvaliacao = $retorno[0];
+        $btnAvaliacoes = $retorno[2] ?? '';
+    }
+
+    // card proj
     $resultados .= '
-  <div class="card mt-3">
-    <div class="card-header">
-
-      <div class="row mb-1">
-        <div class="col">
-          📃 <strong>Título:</strong>
-          <a class="collapsed card-link" data-toggle="collapse" href="#p'.$proj->id.'">
-            <strong>'.$proj->titulo.'</strong>
-          </a>
+      <div class="card mt-3">
+        <div class="card-header">
+          <div class="row mb-1">
+            <div class="col">
+              📃 <strong>Título:</strong>
+              <a
+                class="collapsed card-link"
+                data-toggle="collapse"
+                href="#p'.$proj->id.'"
+              >
+                <strong>'.$proj->titulo.'</strong>
+              </a>
+            </div>
+          </div>
+          <div class="row mb-1">
+              <div class="col-md-4">
+                  <strong>Coordenador:</strong>
+                  '.$proj->coord.'
+              </div>
+              <div class="col-md-4">
+                  <strong>Colegiado:</strong>
+                  '.$col.'
+              </div>
+              <div class="col-md-4">
+                  <strong>Campus:</strong>
+                  '.$proj->campus.'
+              </div>
+          </div>
+          <div class="row mb-1">
+              <div class="col-md-4">
+                  <strong>Situação:</strong>
+                  '.$proj->estado.'
+              </div>
+              <div class="col-md-4">
+                  <strong>Protocolo:</strong>
+                  '.$proj->protocolo.'
+              </div>
+              <div class="col-md-4">
+                  <strong>Vigência:</strong>
+                  '.$dataInicio.' - '.$dataFim.'
+              </div>
+          </div>
+          <div class="row">
+              <div class="col">
+                  <strong>Tipo de Proposta:</strong>
+                  '.$nomeExten.'
+              </div>
+          </div>
         </div>
-      </div>
-        
-      <div class="row mb-1">
-        <div class="col-md-4"><strong>Coordenador:</strong> '.$proj->coord.'</div>
-        <div class="col-md-4"><strong>Colegiado:</strong> '.$col.'</div>
-        <div class="col-md-4"><strong>Campus:</strong> '.$proj->campus.'</div>
-      </div>
+        <div
+          chat
+          id="p'.$proj->id.'"
+          class="collapse"
+          data-parent="#accordion"
+        >
+          <div class="card-body">
+            <!-- Resumo -->
+            <div class="row">
+              <div class="col-12">
+                <p>
+                  <strong>Resumo:</strong>
+                  '.resumirTexto($proj->resumo).'
+                </p>
+              </div>
+            </div>
 
-      <div class="row mb-1">
-        <div class="col-md-4"><strong>Situação:</strong> '.$proj->estado.'</div>
-        <div class="col-md-4"><strong>Protocolo:</strong> '.$proj->protocolo.' </div>
-        <div class="col-md-4"><strong>Vigência:</strong> '.$dataInicio.' - '.$dataFim.'</div>
-      </div>
-
-      <div class="row">
-        <div class="col"><strong>Tipo de Proposta:</strong> '.$nomeExten.'</div>
-      </div>
-    </div>
-
-    <div id="p'.$proj->id.'" class="collapse" data-parent="#accordion">
-      <div class="card-body">
-
-        <div class="row">
-          <div class="col-12"><p><strong>Resumo:</strong> '.resumirTexto($proj->resumo).'</p></div>
-        </div>
-
-        <div class=""> 
-        ';
-    $resultados .= $btn;
-    $resultados .= '        
-        </div>
-    ';
+            <!-- Botões do projeto -->
+            <div class="mb-3">
+              '.$btn.'
+            </div>
+            ';
     if ($proj->aprov_auto == 1) {
-        $resultados .= '<a><p class="badge badge-info p-2 mb-2"> Projeto aprovado via e-Protocolo. </p></a>';
+        $resultados .= '
+          <div class="mb-2">
+            <span class="badge badge-info p-2">
+              Projeto aprovado via e-Protocolo.
+            </span>
+          </div>
+        ';
     } else {
         $estadosPermitidos = [
             'Finalizado',
             'Em execução',
             'Não iniciado',
+            'Em avaliação',
         ];
-        if (
-            in_array($proj->estado, $estadosPermitidos)
-            && (in_array($userConfig, $osCabeca) || $userId == $proj->id_prof)
-        ) {
-            $resultados .= '
-              <a href="../prnRelatorios/index.php?id='.$proj->id.'" target="_blank"
-                  class="btn btn-primary btn-sm mb-2">
-                  🖨️ Avaliações
-              </a>
-        ';
-        }
     }
 
-    // Avaliacoes
-    $where = 'id_proj = "'.$proj->id.'"';
-    $order = 'ver desc, fase_seq desc';
-
-    $avaliacoesAnteriores = Avaliacoes::getRegistros($where, $order, null);
-    $qntAvaliacoes = count($avaliacoesAnteriores);
-
-    $progresso = '';
-    $btnAvaliacoes = '';
-
-    $LastV = '';
-    // Se estiver em avaliação E o usuário for cabeça OU for o dono do projeto aparece as avaliações
-    if ((
-        $proj->estado == 'Em avaliação'
-        && in_array($userConfig, $osCabeca))
-        || $userId == $proj->id_prof
-    ) {
-        $resultados .= !empty($avaliacoesAnteriores)
-        ? '<hr><span><strong> Avaliações 📊</strong></span>'
-        : '';
-
-        if ($qntAvaliacoes > 0) {
-            $retorno = montarTblAvalProp($avaliacoesAnteriores, $proj->id, $progresso);
-            $LastV = $retorno[1];
-            // print_r($retorno[2]);
-            $btnAvaliacoes = $retorno[2] ?? '';
-        }
-
+    // tabela de avaliações
+    if ($podeVerAvaliacoes) {
         $resultados .= '
-        <div class="row mt-2">
-          <div class="col-12">
-            '.$LastV.'
+          <div class="mb-2">
+            <hr>
+            <strong>Tramitação da Proposta</strong>
           </div>
-          <div>';
-        $resultados .= $btnAvaliacoes;
-        $resultados .= '  
-          </div>
-        </div>     
-      ';
+        ';
+        if ($qntAvaliacoes > 0) {
+            $idCollapseAvaliacoes = 'avaliacoes-proj-'.$proj->id;
+            $resultados .= '
+            <button
+              class="btn btn-primary btn-sm mb-2"
+              type="button"
+              data-toggle="collapse"
+              data-target="#'.$idCollapseAvaliacoes.'"
+              aria-expanded="false"
+              aria-controls="'.$idCollapseAvaliacoes.'"
+            >
+              📋 Avaliações
+            </button>
+
+            <div id="'.$idCollapseAvaliacoes.'" class="collapse">
+              <div class="table-responsive">
+                '.$avaliacoesTabela.'
+              </div>
+            </div>
+          ';
+            if (!empty($btnAvaliacoes)) {
+                $resultados .= '<div class="mt-2">'.$btnAvaliacoes.'</div>';
+            }
+        } else {
+            $resultados .= '
+            <span class="badge badge-info">
+              Não possui avaliações.
+            </span>
+          ';
+        }
     }
 
     $resultados .= '
-          </div> 
-        </div>  
-      </div>    
+          </div>
+        </div>
+      </div>
     ';
 }
 
-$qnt1 > 0 ? $resultados : $resultados = 'Nenhum registro encontrado.';
+if ($qnt1 > 0) {
+} else {
+    $resultados = 'Nenhum registro encontrado.';
+}
 
 $listar = $_GET['listar-projetos'] ?? 'meus-projetos';
-
 $page = basename($_SERVER['PHP_SELF']);
 $todosProjetos = ($page === 'projetos_all.php');
-
 include '../includes/paginacao.php';
 ?>
+
 
 <main>
   <h2 class="mt-0">Projetos</h2>
@@ -328,7 +405,6 @@ include '../includes/paginacao.php';
 
     
     <?php echo $resultados; ?>
-    
   </section>
 
   <section>

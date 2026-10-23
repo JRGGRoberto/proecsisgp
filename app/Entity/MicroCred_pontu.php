@@ -4,10 +4,12 @@ namespace App\Entity;
 
 use App\Db\Database;
 
+#[\AllowDynamicProperties]
 class MicroCred_pontu
 {
     public $proj_id;
     public $aval_id;
+    public $adm;
     public $qn1;
     public $qn2;
     public $qn3;

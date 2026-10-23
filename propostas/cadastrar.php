@@ -25,13 +25,13 @@ $relPendentes = ProjMaster::getRelatoriosPendentes($user['id']);
 $inadimplente = false;
 
 foreach ($relPendentes as $p) {
-    if ($p['envio_rel_parcial'] === 'rel parcial pendente'
-        || $p['envio_rel_final'] === 'rel final pendente') {
+    if ($p->envio_rel_parcial === 'rel parcial pendente'
+        || $p->envio_rel_final === 'rel final pendente') {
         $inadimplente = true;
         $relTipo = '';
-        $relTitulo = $p['titulo'];
+        $relTitulo = $p->titulo;
 
-        if ($p['estado'] == 3) {
+        if ($p->estado == 3) {
             $relTipo = 'parcial';
         } else {
             $relTipo = 'final';
@@ -179,16 +179,30 @@ if (isset($_POST['titulo'])) {
             $obProjeto->ch_semanal = $_POST['ch_semanal'];
         }
 
-        $cnpq_garea = 0;
-        try {
-            $cnpq_garea = intval($_POST['cnpq_garea']);
-        } catch (Exception $e) {
-            $cnpq_garea = 0;
-        }
+        // garante q vai vir int
+        $cnpq_garea = (int) $_POST['cnpq_garea'];
         $obProjeto->cnpq_garea = $cnpq_garea;
 
-        $obProjeto->cnpq_area = $_POST['cnpq_area'];
-        $obProjeto->cnpq_sarea = $_POST['cnpq_sarea'];
+        // puxa o cnpq e verifico se está sendo classificado corretamente
+        $cnpq_area = $_POST['cnpq_area'] ?? null;
+        $cnpq_sarea = $_POST['cnpq_sarea'] ?? null;
+
+        // garante q vai salvar a proposta se ficar sem ser preenchido
+        if ($cnpq_area !== null && $cnpq_area !== '') {
+            $obProjeto->cnpq_area = (int) $cnpq_area;
+        } else {
+            $obProjeto->cnpq_area = null;
+        }
+
+        // garante q vai salvar a proposta se ficar sem ser preenchido
+        if ($cnpq_sarea !== null && $cnpq_sarea !== '') {
+            $obProjeto->cnpq_sarea = (int) $cnpq_sarea;
+        } else {
+            $obProjeto->cnpq_sarea = null;
+        }
+
+        $obProjeto->area_extensao = $_POST['area_extensao'];
+        $obProjeto->linh_ext = $_POST['linh_ext'];
     }
 
     $obProjeto->area_extensao = $_POST['area_extensao'];

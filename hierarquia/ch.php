@@ -10,7 +10,7 @@ use App\Session\Login;
 Login::requireLogin();
 $user = Login::getUsuarioLogado();
 
-if (!(in_array($user[niveln], [1, 2, 3]) or $user[adm] == 1)) {
+if (!(in_array($user['niveln'], [1, 2, 3]) or $user['adm'] == 1)) {
     header('location: ../index.php?status=error');
     exit;
 }

@@ -4,6 +4,7 @@ namespace App\Entity;
 
 use App\Db\Database;
 
+#[\AllowDynamicProperties]
 class Solicitacao_adendos
 {
     public $id;
@@ -26,7 +27,7 @@ class Solicitacao_adendos
     public $data_resultado;
     public $resultado;
     public $data_solicitacao;
-    
+
     /**
      * Método responsável por cadastrar um novo Registro no banco.
      *

@@ -6,9 +6,9 @@ use App\Db\Pagination;
 use App\Entity\Avaliacoes;
 
 $condicoes = [
-    strlen($tituloB) ? 'titulo LIKE "%'.str_replace(' ', '%', $tituloB).'%"' : null,
-    strlen($nome_profB) ? 'nome_prof LIKE "%'.str_replace(' ', '%', $nome_profB).'%"' : null,
-    strlen($protocoloB) ? 'protocolo = "'.$protocoloB.'"' : null,
+    $tituloB = (is_string($tituloB) && trim($tituloB) !== '') ? 'titulo LIKE "%'.str_replace(' ', '%', $tituloB).'%"' : null,
+    $nome_profB = (is_string($nome_profB) && trim($nome_profB) !== '') ? 'nome_prof LIKE "%'.str_replace(' ', '%', $nome_profB).'%"' : null,
+    $protocoloB = (is_string($protocoloB) && trim($protocoloB) !== '') ? 'protocolo LIKE "%'.str_replace(' ', '%', $protocoloB).'%"' : null,
 ];
 
 // Condições SQL

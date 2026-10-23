@@ -4,6 +4,7 @@ namespace App\Entity;
 
 use App\Db\Database;
 
+#[\AllowDynamicProperties]
 class Professor
 {
     public $id;
@@ -21,6 +22,8 @@ class Professor
     public $created_at;
     public $updated_at;
     public $niveln;
+
+    public $ca_id;
     //  public $colegiado;
     public $user;
 
@@ -40,7 +43,7 @@ class Professor
         $newId = UuiuD::gera(); // exec('uuidgen -r');
         $obDatabase = new Database('professores');
 
-        if (!$this->id){
+        if (!$this->id) {
             $id = $newId;
         } else {
             $id = $this->id;
@@ -90,23 +93,27 @@ class Professor
     }
 
     /**
-     * Método responsável por atualizar REGISTRO no banco
-     * @return boolean
+     * Método responsável por atualizar REGISTRO no banco.
+     *
+     * @return bool
      */
-    public function atualizarAtivo(){ 
-        return (new Database('professores'))->update('id = "'.$this->id.'" ',[
-            'ativo'      => $this->ativo
+    public function atualizarAtivo()
+    {
+        return (new Database('professores'))->update('id = "'.$this->id.'" ', [
+            'ativo' => $this->ativo,
         ]);
     }
 
     /**
-     * Método responsável por atualizar REGISTRO no banco
-     * @return boolean
+     * Método responsável por atualizar REGISTRO no banco.
+     *
+     * @return bool
      */
-    public function atualizarCatFunc(){ 
-        if($this->cat_func == 'c' || $this->cat_func == 'e' || $this->cat_func == 'd'){
-            return (new Database('professores'))->update('id = "'.$this->id.'" ',[
-                'cat_func' => $this->cat_func
+    public function atualizarCatFunc()
+    {
+        if ($this->cat_func == 'c' || $this->cat_func == 'e' || $this->cat_func == 'd') {
+            return (new Database('professores'))->update('id = "'.$this->id.'" ', [
+                'cat_func' => $this->cat_func,
             ]);
         }
     }

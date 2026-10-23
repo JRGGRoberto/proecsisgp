@@ -8,6 +8,7 @@ class MicroCred_avaliadores
 {
     public $id;
     public $ativo;
+    public $adm;
     public $created_at;
     public $updated_at;
     public $user;
