@@ -4,7 +4,6 @@ require '../vendor/autoload.php';
 
 use App\Entity\Outros;
 use App\Entity\Palavras;
-use App\Entity\Projeto;
 use App\Session\Login;
 use App\Entity\ProjMaster;
 use App\Entity\Tipo_exten;
@@ -17,11 +16,11 @@ $user = Login::getUsuarioLogado();
 $tipos = Tipo_exten::getRegistros();
 
 // Busca
-$nome_prof = filter_input(INPUT_GET, htmlspecialchars('nome_prof'));
-$titulo = filter_input(INPUT_GET, htmlspecialchars('titulo'));
-$campus = filter_input(INPUT_GET, htmlspecialchars('campus'));
-$palavra = filter_input(INPUT_GET, htmlspecialchars('palavra'));
-$protocolo = filter_input(INPUT_GET, htmlspecialchars('protocolo'));
+$nome_prof = filter_input(INPUT_GET, 'nome_prof');
+$titulo = filter_input(INPUT_GET, 'titulo');
+$campus = filter_input(INPUT_GET, 'campus');
+$palavra = filter_input(INPUT_GET, 'palavra');
+$protocolo = filter_input(INPUT_GET, 'protocolo');
 
 /*
 $colegiado = filter_input(INPUT_GET, 'colegiado', FILTER_SANITIZE_STRING);
@@ -90,7 +89,7 @@ $condicoes = [
     !empty($protocolo) ? ' protocolo LIKE "%'.str_replace(' ', '%', $protocolo).'%"' : null,
     !empty($campus) ? ' campus LIKE "%'.str_replace(' ', '%', $campus).'%"' : null,
     !empty($nome_prof) ? ' coord LIKE "%'.str_replace(' ', '%', $nome_prof).'%"' : null,
-    !empty($tipoProj) ? ' tipo_exten = '.$tipoProj.'' : null,
+    ($tipoProj) ? ' tipo_exten = '.$tipoProj.'' : null,
     'estado <> 0'
 ];
 
