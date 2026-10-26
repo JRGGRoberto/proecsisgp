@@ -127,8 +127,6 @@ $whereFases = '
   and not (p.last_result = "a" and (p.fase_seq = p.etapas))
 ';
 
-
-
 if ($fase_seq) {
   $whereBase .= ' and exists (
       select 1 from avaliacoes ax
@@ -244,7 +242,7 @@ $projetosParados = Outros::qry($qry);
 
 
 // Filtro de status
-$filtroStatus = filter_input(INPUT_GET, 'filtroStatus', FILTER_SANITIZE_STRING);
+$filtroStatus = filter_input(INPUT_GET, 'filtroStatus');
 
 include '../includes/header.php';
 include __DIR__.'/includes/listagemAll.php';
