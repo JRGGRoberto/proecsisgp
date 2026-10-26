@@ -14,11 +14,12 @@ use App\Db\Pagination;
 use App\Entity\Solicitacao_adendos;
 
 // Pegar os valores do GET
-$idLocal = filter_input(INPUT_GET, 'idLocal', FILTER_SANITIZE_STRING);
-$tituloBusca = strtolower(trim(filter_input(INPUT_GET, 'titulo', FILTER_SANITIZE_STRING)));
-$coordenadorBusca = strtolower(trim(filter_input(INPUT_GET, 'coordenador', FILTER_SANITIZE_STRING)));
-$protocoloBusca = strtolower(trim(filter_input(INPUT_GET, 'protocolo', FILTER_SANITIZE_STRING)));
-$orderByBusca = strtolower(trim(filter_input(INPUT_GET, 'orderBy', FILTER_SANITIZE_STRING)));
+$idLocal = filter_input(INPUT_GET, 'idLocal');
+$tituloBusca = strtolower(trim(filter_input(INPUT_GET, 'titulo') ?? ''));
+$coordenadorBusca = strtolower(trim(filter_input(INPUT_GET, 'coordenador') ?? ''));
+$protocoloBusca = strtolower(trim(filter_input(INPUT_GET, 'protocolo') ?? ''));
+$orderByBusca = strtolower(trim(filter_input(INPUT_GET, 'orderBy') ?? ''));
+
 
 // Serve para que o Diretor de Programas e Projetos de Extensão veja todos os projetos atualizados mas altere apenas o dele
 if (($user['CargoEspecial'] != '0' || $user['reitoria'] != '0') && ($_GET['tipo'] == 'atualizados')) {
