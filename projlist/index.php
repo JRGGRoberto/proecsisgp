@@ -17,11 +17,11 @@ $user = Login::getUsuarioLogado();
 $tipos = Tipo_exten::getRegistros();
 
 // Busca
-$nome_prof = filter_input(INPUT_GET, 'nome_prof', FILTER_SANITIZE_STRING);
-$titulo = filter_input(INPUT_GET, 'titulo', FILTER_SANITIZE_STRING);
-$campus = filter_input(INPUT_GET, 'campus', FILTER_SANITIZE_STRING);
-$palavra = filter_input(INPUT_GET, 'palavra', FILTER_SANITIZE_STRING);
-$protocolo = filter_input(INPUT_GET, 'protocolo', FILTER_SANITIZE_STRING);
+$nome_prof = filter_input(INPUT_GET, htmlspecialchars('nome_prof'));
+$titulo = filter_input(INPUT_GET, htmlspecialchars('titulo'));
+$campus = filter_input(INPUT_GET, htmlspecialchars('campus'));
+$palavra = filter_input(INPUT_GET, htmlspecialchars('palavra'));
+$protocolo = filter_input(INPUT_GET, htmlspecialchars('protocolo'));
 
 /*
 $colegiado = filter_input(INPUT_GET, 'colegiado', FILTER_SANITIZE_STRING);
@@ -32,7 +32,7 @@ $palavOrig = $palavra;
 
 
 
-if (strlen($palavra)) {
+if (!empty($palavra)) {
     $palavra = Palavras::getProjByPalavra($palavra);
 } else {
     $palavra = '';
@@ -85,12 +85,12 @@ $tipoProj = filter_input(INPUT_GET, 'tipoProj', FILTER_SANITIZE_NUMBER_INT);// e
 
 // Condições SQL
 $condicoes = [
-    strlen($titulo) ? ' titulo LIKE "%'.str_replace(' ', '%', $titulo).'%"' : null,
-    strlen($palavra) ? $palavra : null,
-    strlen($protocolo) ? ' protocolo LIKE "%'.str_replace(' ', '%', $protocolo).'%"' : null,
-    strlen($campus) ? ' campus LIKE "%'.str_replace(' ', '%', $campus).'%"' : null,
-    strlen($nome_prof) ? ' coord LIKE "%'.str_replace(' ', '%', $nome_prof).'%"' : null,
-    strlen($tipoProj) ? ' tipo_exten = '.$tipoProj.'' : null,
+    !empty($titulo) ? ' titulo LIKE "%'.str_replace(' ', '%', $titulo).'%"' : null,
+    !empty($palavra) ? $palavra : null,
+    !empty($protocolo) ? ' protocolo LIKE "%'.str_replace(' ', '%', $protocolo).'%"' : null,
+    !empty($campus) ? ' campus LIKE "%'.str_replace(' ', '%', $campus).'%"' : null,
+    !empty($nome_prof) ? ' coord LIKE "%'.str_replace(' ', '%', $nome_prof).'%"' : null,
+    !empty($tipoProj) ? ' tipo_exten = '.$tipoProj.'' : null,
     'estado <> 0'
 ];
 
