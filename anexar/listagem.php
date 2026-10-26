@@ -46,9 +46,9 @@ if ($user['adm'] == 1) {
     $campus = 'Todos';
 
     $condicoes = [
-        strlen($titulo) ? 'titulo LIKE "%'.str_replace(' ', '%', $titulo).'%"' : null,
-        strlen($coordenador) ? 'coord LIKE "%'.str_replace(' ', '%', $coordenador).'%"' : null,
-        strlen($protocolo) ? 'protocolo LIKE "%'.str_replace(' ', '%', $protocolo).'%"' : null,
+        !empty($titulo) ? 'titulo LIKE "%'.str_replace(' ', '%', $titulo).'%"' : null,
+        !empty($coordenador) ? 'coord LIKE "%'.str_replace(' ', '%', $coordenador).'%"' : null,
+        !empty($protocolo) ? 'protocolo LIKE "%'.str_replace(' ', '%', $protocolo).'%"' : null,
     ];
 } else {
     $campus = $user['ca_nome'];

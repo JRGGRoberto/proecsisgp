@@ -214,7 +214,7 @@ $projetosParados = Outros::qry($qry);
 
 
 // Filtro de status
-$filtroStatus = filter_input(INPUT_GET, 'filtroStatus', FILTER_SANITIZE_STRING);
+$filtroStatus = filter_input(INPUT_GET, htmlspecialchars('filtroStatus'));
 
 include '../includes/header.php';
 include __DIR__.'/includes/listagem.php';
