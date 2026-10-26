@@ -4,11 +4,6 @@ namespace App\Entity;
 
 use App\Db\Database;
 
-/**
- * @param $id identificador do projeto
- *
- * @return @array
- */
 #[\AllowDynamicProperties]
 class Area_Cnpq
 {
