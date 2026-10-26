@@ -2,6 +2,7 @@
 
 namespace App\Session;
 
+#[\AllowDynamicProperties]
 class Login
 {
     /**
