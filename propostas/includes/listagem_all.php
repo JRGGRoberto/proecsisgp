@@ -46,15 +46,17 @@ foreach ($projetos as $proj) {
 
     $dataFim = '';
 
-    if (strlen($proj->vigen_fim) > 8) {
+    $tamanho = mb_strlen($proj->vigen_fim ?? '');
+
+    if ($tamanho > 8) {
         $dataFim = substr($proj->vigen_fim, 8, 2).'/'
           .substr($proj->vigen_fim, 5, 2).'/'
           .substr($proj->vigen_fim, 0, 4);
     }
 
     $dataInicio = '';
-
-    if (strlen($proj->vigen_ini) > 8) {
+    $tamanho = mb_strlen($proj->vigen_ini ?? '');
+    if ($tamanho > 8) {
         $dataInicio = substr($proj->vigen_ini, 8, 2).'/'
           .substr($proj->vigen_ini, 5, 2).'/'
           .substr($proj->vigen_ini, 0, 4);

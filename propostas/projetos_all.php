@@ -12,12 +12,12 @@ Login::requireLogin();
 $user = Login::getUsuarioLogado();
 
 // Busca
-$nome_prof = filter_input(INPUT_GET, 'nome_prof', FILTER_SANITIZE_STRING);
-$titulo = filter_input(INPUT_GET, 'titulo', FILTER_SANITIZE_STRING);
-$campus = filter_input(INPUT_GET, 'campus', FILTER_SANITIZE_STRING);
-$palavra = filter_input(INPUT_GET, 'palavra', FILTER_SANITIZE_STRING);
-$protocolo = filter_input(INPUT_GET, 'protocolo', FILTER_SANITIZE_STRING);
-$acecOp = filter_input(INPUT_GET, 'acecOp', FILTER_SANITIZE_STRING);
+$nome_prof = htmlspecialchars(filter_input(INPUT_GET, 'nome_prof') ?? '', ENT_QUOTES | ENT_SUBSTITUTE, 'UTF-8');
+$titulo = htmlspecialchars(filter_input(INPUT_GET, 'titulo') ?? '', ENT_QUOTES | ENT_SUBSTITUTE, 'UTF-8');
+$campus = htmlspecialchars(filter_input(INPUT_GET, 'campus') ?? '', ENT_QUOTES | ENT_SUBSTITUTE, 'UTF-8');
+$palavra = htmlspecialchars(filter_input(INPUT_GET, 'palavra') ?? '', ENT_QUOTES | ENT_SUBSTITUTE, 'UTF-8');
+$protocolo = htmlspecialchars(filter_input(INPUT_GET, 'protocolo') ?? '', ENT_QUOTES | ENT_SUBSTITUTE, 'UTF-8');
+$acecOp = htmlspecialchars(filter_input(INPUT_GET, 'acecOp') ?? '', ENT_QUOTES | ENT_SUBSTITUTE, 'UTF-8');
 
 /*
 $colegiado = filter_input(INPUT_GET, 'colegiado', FILTER_SANITIZE_STRING);
@@ -62,18 +62,27 @@ $vigenciaFinalizada = filter_input(INPUT_GET, 'vigenciaFinalizada', FILTER_SANIT
 $naoIniciados = filter_input(INPUT_GET, 'naoIniciados', FILTER_SANITIZE_NUMBER_INT);
 $emAvaliacao = filter_input(INPUT_GET, 'emAvaliacao', FILTER_SANITIZE_NUMBER_INT);
 
-// echo '<pre>';
-// print_r($condicoes);
-// echo '</pre>';
+function preenchido($valor)
+{
+    return $valor !== null && $valor !== '';
+}
 
 // Condições SQL
 $condicoes = [
+    preenchido($titulo) ? ' titulo LIKE "%'.str_replace(' ', '%', $titulo).'%"' : null,
+    preenchido($palavra) ? $palavra : null,
+    preenchido($protocolo) ? ' protocolo LIKE "%'.str_replace(' ', '%', $protocolo).'%"' : null,
+    preenchido($campus) ? ' campus LIKE "%'.str_replace(' ', '%', $campus).'%"' : null,
+    preenchido($nome_prof) ? ' coord LIKE "%'.str_replace(' ', '%', $nome_prof).'%"' : null,
+    preenchido($acecOp) ? ' acec = "'.$acecOp.'"' : null,
+    /*
     strlen($titulo) ? ' titulo LIKE "%'.str_replace(' ', '%', $titulo).'%"' : null,
     strlen($palavra) ? $palavra : null,
     strlen($protocolo) ? ' protocolo LIKE "%'.str_replace(' ', '%', $protocolo).'%"' : null,
     strlen($campus) ? ' campus LIKE "%'.str_replace(' ', '%', $campus).'%"' : null,
     strlen($nome_prof) ? ' coord LIKE "%'.str_replace(' ', '%', $nome_prof).'%"' : null,
     strlen($acecOp) ? ' acec = "'.$acecOp.'"' : null,
+    */
 ];
 
 // Puxa os estados via get dos checkboxs

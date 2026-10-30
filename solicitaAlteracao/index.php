@@ -14,12 +14,12 @@ use App\Db\Pagination;
 use App\Entity\Solicitacao_adendos;
 
 // Pegar os valores do GET
-$idLocal = filter_input(INPUT_GET, 'idLocal');
-$tituloBusca = strtolower(trim(filter_input(INPUT_GET, 'titulo') ?? ''));
-$coordenadorBusca = strtolower(trim(filter_input(INPUT_GET, 'coordenador') ?? ''));
-$protocoloBusca = strtolower(trim(filter_input(INPUT_GET, 'protocolo') ?? ''));
-$orderByBusca = strtolower(trim(filter_input(INPUT_GET, 'orderBy') ?? ''));
 
+$idLocal = htmlspecialchars(filter_input(INPUT_GET, 'idLocal') ?? '', ENT_QUOTES | ENT_SUBSTITUTE, 'UTF-8');
+$tituloBusca = htmlspecialchars(filter_input(INPUT_GET, 'titulo') ?? '', ENT_QUOTES | ENT_SUBSTITUTE, 'UTF-8');
+$coordenadorBusca = htmlspecialchars(filter_input(INPUT_GET, 'coordenador') ?? '', ENT_QUOTES | ENT_SUBSTITUTE, 'UTF-8');
+$protocoloBusca = htmlspecialchars(filter_input(INPUT_GET, 'protocolo') ?? '', ENT_QUOTES | ENT_SUBSTITUTE, 'UTF-8');
+$orderByBusca = htmlspecialchars(filter_input(INPUT_GET, 'orderBy') ?? '', ENT_QUOTES | ENT_SUBSTITUTE, 'UTF-8');
 
 // Serve para que o Diretor de Programas e Projetos de Extensão veja todos os projetos atualizados mas altere apenas o dele
 if (($user['CargoEspecial'] != '0' || $user['reitoria'] != '0') && ($_GET['tipo'] == 'atualizados')) {
@@ -34,6 +34,7 @@ $condicoesWhere = [
     $idloc,
     // Condição de filtro
     strlen($tituloBusca) ? 'titulo LIKE "%'.str_replace(' ', '%', $tituloBusca).'%"' : null,
+
     strlen($coordenadorBusca) ? 'coord LIKE "%'.str_replace(' ', '%', $coordenadorBusca).'%"' : null,
     strlen($protocoloBusca) ? 'protocolo LIKE "%'.str_replace(' ', '%', $protocoloBusca).'%"' : null,
 ];
