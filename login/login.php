@@ -36,7 +36,7 @@ $ObInf = json_decode($moreInformations, true);
 
 $logConnect = new LogConnect();
 $logConnect->conta = $email;
-$logConnect->sistema = 'proec';
+$logConnect->sistema = 'epad';
 $logConnect->ip = $ipaddress;
 $logConnect->navegador = $ObInf['navegador'];
 $logConnect->so = $ObInf['sistemaOperacional'];
@@ -130,63 +130,22 @@ if (isset($email)) {
                 }
                 goto montaTela;
             }
-        } else {
-            $alertaLogin = 'No [LDAP]';
-            if ($log) {
-                echo '<p>120 - No [LDAP]</p>';
-            }
-            goto validaSemLDAP;
-        }
+        } 
     } else {
         if ($log) {
             echo '<p>126 E-mail ou senha inválidos - tentar fora do LDAP</p>';
         }
         $alertaLogin = 'E-mail ou senha inválidos - tentar fora do LDAP';
-        goto validaSemLDAP;
     }
 
-    validaSemLDAP:
-    if ($log) {
-        echo '<p>134 validaSemLDAP</p>';
-    }
-    $obUsuario = Usuario::getUsuarioPorEmail($email);
-
-    if ($obUsuario instanceof Usuario) {
-        if ($obUsuario->email.$dia == $senha) {
-            if ($log) {
-                echo '<p>141 - Logar</p>';
-            }
-            $logConnect->tp_connection = 'sd';
-            $logConnect->cadastrar();
-            Login::login($obUsuario);
-            exit;
-        }
-    }
-
-    if (!$obUsuario instanceof Usuario || !password_verify($senha, $obUsuario->senha)) {
-        $alertaLogin = 'E-mail ou senha inválidos';
-        if ($log) {
-            echo '<p>151 - E-mail ou senha inválidos</p>';
-        }
-        goto montaTela;
-    }
-
-    if ($obUsuario->ativo != 1) {
+     if ($obUsuario->ativo != 1) {
         $alertaLogin = 'Conta desativada';
         if ($log) {
             echo '<p>159 - Conta desativada</p>';
         }
         goto montaTela;
     }
-
-    if ($log) {
-        echo '<p>164 - Loga com usuário e senha do banco</p>';
-    }
-
-    $logConnect->tp_connection = 'db';
-    $logConnect->cadastrar();
-    Login::login($obUsuario);
-    exit;
+   
 }
 
 montaTela:

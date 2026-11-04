@@ -34,7 +34,6 @@ $condicoesWhere = [
     $idloc,
     // Condição de filtro
     strlen($tituloBusca) ? 'titulo LIKE "%'.str_replace(' ', '%', $tituloBusca).'%"' : null,
-
     strlen($coordenadorBusca) ? 'coord LIKE "%'.str_replace(' ', '%', $coordenadorBusca).'%"' : null,
     strlen($protocoloBusca) ? 'protocolo LIKE "%'.str_replace(' ', '%', $protocoloBusca).'%"' : null,
 ];

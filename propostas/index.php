@@ -122,9 +122,9 @@ $filtroStatus = htmlspecialchars(filter_input(INPUT_GET, 'filtroStatus') ?? '', 
 // Condições SQL
 $condicoes = [
     'id_prof = "'.$user['id'].'"',
-    $titulo = (is_string($titulo) && trim($titulo) !== '') ? 'titulo LIKE "%'.str_replace(' ', '%', $titulo).'%"' : null,
-    $palavra = (is_string($palavra) && trim($palavra) !== '') ? 'palavra LIKE "%'.str_replace(' ', '%', $palavra).'%"' : null,
-    $protocolo = (is_string($protocolo) && trim($protocolo) !== '') ? 'protocolo LIKE "%'.str_replace(' ', '%', $protocolo).'%"' : null,
+    $Condtitulo = (is_string($titulo) && trim($titulo) !== '') ? 'titulo LIKE "%'.str_replace(' ', '%', $titulo).'%"' : null,
+    $Condpalavra = (is_string($palavra) && trim($palavra) !== '') ? 'palavra LIKE "%'.str_replace(' ', '%', $palavra).'%"' : null,
+    $Condprotocolo = (is_string($protocolo) && trim($protocolo) !== '') ? 'protocolo LIKE "%'.str_replace(' ', '%', $protocolo).'%"' : null,
     /*,
   strlen($area) ? "area_extensao = '$area_extensao'": null,
   strlen($linh_ext) ? 'linh_ext LIKE "%'.str_replace(' ','%',$linh_ext).'%"': null */

@@ -202,9 +202,9 @@ if (isset($_POST['nome'])) {
     $obProfessor->adm = $_POST['adm'];
     $obProfessor->updated_at = date('Y-m-d H:i:s');
     $obProfessor->user = $_POST['user'];
-    if (strlen($_POST['senha']) > 0) {
-        $obProfessor->senha = password_hash($_POST['senha'], PASSWORD_DEFAULT);
-    }
+    //   if (strlen($_POST['senha']) > 0) {
+    //       $obProfessor->senha = password_hash($_POST['senha'], PASSWORD_DEFAULT);
+    //   }
     $obProfessor->atualizar();
 
     header('location: index.php?status=success');

@@ -1,85 +1,93 @@
 <?php
+
 require '../vendor/autoload.php';
+
+function getResultadoTexto($resultado)
+{
+    return match ($resultado) {
+        'a' => 'Aprovado',
+        'r' => 'Solicitação de alterações',
+        'e' => 'Em análise',
+        default => 'Não informado'
+    };
+}
 
 ini_set('display_errors', 1);
 ini_set('display_startup_errors', 1);
 error_reporting(E_ALL);
 
-use \App\Session\Login;
+use App\Session\Login;
+
 Login::requireLogin();
 $user = Login::getUsuarioLogado();
-use \App\Entity\Professor;
-use \App\Entity\Vinculo;
+use App\Entity\Outros;
+use App\Entity\Professor;
+use App\Entity\Vinculo;
 
-use \App\Entity\Outros;
-
-//VALIDAÇÃO DO ID
-if(!isset($_GET['id']) ){
+// VALIDAÇÃO DO ID
+if (!isset($_GET['id'])) {
     header('location: index.php?status=error');
     exit;
 }
 
-if (!$user['adm'] == 1){
-  header('location: ../index.php?status=error');
-  exit;
+if (!$user['adm'] == 1) {
+    header('location: ../index.php?status=error');
+    exit;
 }
-
 
 $obProfessor = new Professor();
 $obProfessor = $obProfessor::getProfessor($_GET['id']);
 
-//VALIDAÇÃO DA TIPO
-if(!$obProfessor instanceof Professor){
-  header('location: ../index.php?status=error');
-  exit;
+// VALIDAÇÃO DA TIPO
+if (!$obProfessor instanceof Professor) {
+    header('location: ../index.php?status=error');
+    exit;
 }
 
 $sql = '
 SELECT * 
 FROM pad_sucinto 
 WHERE 
-   id_prof  = "'. $obProfessor->id .'" ' ;
+   id_prof  = "'.$obProfessor->id.'" ';
 $ativspad = Outros::qry($sql);
-
 
 $ano = '2024';
 $vinculo = Vinculo::getByAnoProf($obProfessor->id, $ano);
-define('TITLE','Remover do vinculo '. $ano);
+define('TITLE', 'Remover do vinculo '.$ano);
 $readonly = ' readonly ';
 
-if(isset($_POST['nome'])){
-  // remove PAD21
-  $sql = 'update disciplinas 
+if (isset($_POST['nome'])) {
+    // remove PAD21
+    $sql = 'update disciplinas 
             set 
               vinculo = null,
-              vinclogchuser = "'.  $user['id '].'" ,
+              vinclogchuser = "'.$user['id '].'" ,
               vinclogchdate = CURRENT_TIMESTAMP()
-            where vinculo = "'. $_POST['nome'] .'"';
-  $remoPAD = Outros::qry($sql);
+            where vinculo = "'.$_POST['nome'].'"';
+    $remoPAD = Outros::qry($sql);
 
-  // remove PAD22
-  $sql = 'delete from pad22 WHERE vinculo ="'. $_POST['nome'] .'"';
-  $remoPAD = Outros::qry($sql);
+    // remove PAD22
+    $sql = 'delete from pad22 WHERE vinculo ="'.$_POST['nome'].'"';
+    $remoPAD = Outros::qry($sql);
 
-  // remove PAD23
-  $sql = 'delete from pad23 WHERE vinculo ="'. $_POST['nome'] .'"';
-  $remoPAD = Outros::qry($sql);
- 
-  // remove PAD3
-  $sql = 'delete from pad3 WHERE vinculo ="'. $_POST['nome'] .'"';
-  $remoPAD = Outros::qry($sql);
-  
-  // remove PAD4
-  $sql = 'delete from pad4 WHERE vinculo ="'. $_POST['nome'] .'"';
-  $remoPAD = Outros::qry($sql);
-  
-  // remove PAD4
-  $vinculo->excluir();
- 
-    
-  header('location: ../professor/index.php?status=success');
-    
-  exit;
+    // remove PAD23
+    $sql = 'delete from pad23 WHERE vinculo ="'.$_POST['nome'].'"';
+    $remoPAD = Outros::qry($sql);
+
+    // remove PAD3
+    $sql = 'delete from pad3 WHERE vinculo ="'.$_POST['nome'].'"';
+    $remoPAD = Outros::qry($sql);
+
+    // remove PAD4
+    $sql = 'delete from pad4 WHERE vinculo ="'.$_POST['nome'].'"';
+    $remoPAD = Outros::qry($sql);
+
+    // remove PAD4
+    $vinculo->excluir();
+
+    header('location: ../professor/index.php?status=success');
+
+    exit;
 }
 
 include '../includes/header.php';
@@ -102,40 +110,38 @@ echo '
   </thead>
   <tbody>
 ';
-foreach($ativspad as $atv){
-  $usado = $atv->a21 + $atv->a22 + $atv->a23 + $atv->a3 + $atv->a4;
+foreach ($ativspad as $atv) {
+    $usado = $atv->a21 + $atv->a22 + $atv->a23 + $atv->a3 + $atv->a4;
 
-  $aprovado = $atv->assing_co == null? 'ainda não aprovado': 'aprovado';
-  echo '<tr>';
-    echo '<td>'. $atv->nome .'</td>';
-    echo '<td><a href="https://sistemaproec.unespar.edu.br/epad/padstoprn/index.php?id='. $atv->id .'" target="_blank">📄</a> </td>';
-    echo '<td>'. $atv->a21 .'h </td>';
-    echo '<td>'. $atv->a22 .'h</td>';
-    echo '<td>'. $atv->a23 .'h </td>';
-    echo '<td>'. $atv->a3  .'h</td>';
-    echo '<td>'. $atv->a4 .'h </td>';
-    echo '<td>'. $usado .'</td>';
-    echo '<td>'. $atv->rt .'</td>';
-    echo '<td>'. $aprovado .'</td>';
-  echo '</tr>';
+    $aprovado = $atv->assing_co == null ? 'ainda não aprovado' : 'aprovado';
+    echo '<tr>';
+    echo '<td>'.$atv->nome.'</td>';
+    echo '<td><a href="https://sistemaproec.unespar.edu.br/epad/padstoprn/index.php?id='.$atv->id.'" target="_blank">📄</a> </td>';
+    echo '<td>'.$atv->a21.'h </td>';
+    echo '<td>'.$atv->a22.'h</td>';
+    echo '<td>'.$atv->a23.'h </td>';
+    echo '<td>'.$atv->a3.'h</td>';
+    echo '<td>'.$atv->a4.'h </td>';
+    echo '<td>'.$usado.'</td>';
+    echo '<td>'.$atv->rt.'</td>';
+    echo '<td>'.$aprovado.'</td>';
+    echo '</tr>';
 }
 echo '
   </tbody>
 </table>
 
 <form method="post" id="formprof">
-      <input type="text" class="form-control" name="nome" maxlength="60"  value="'. $atv->id .'" readonly hidden>
+      <input type="text" class="form-control" name="nome" maxlength="60"  value="'.$atv->id.'" readonly hidden>
     <div class="form-group">
       <button type="submit" class="btn btn-danger">Remover</button>
-      <a href="../professor/editar.php?id='. $atv->id_prof .'"  class="btn btn-warning">Voltar</a>
+      <a href="../professor/editar.php?id='.$atv->id_prof.'"  class="btn btn-warning">Voltar</a>
     </div>
   </form>
 
 
 ';
 
-
-//include __DIR__.'/includes/formulario.php';
+// include __DIR__.'/includes/formulario.php';
 
 include '../includes/footer.php';
-  
