@@ -56,7 +56,7 @@ foreach ($vinculos as $vinc) {
         if ($user['adm'] == 1) {
             $padsv .= '  RT: '.$vinc->rt.' <a href="../vinc/editar.php?id='.$vinc->id.'">✏️</a> <a href="../vinc/del.php?id='.$vinc->id.'">⛔</a>';
         } else {
-            $padsv .= 'Sem vinculo';
+            $padsv .= 'RT: '.$vinc->rt;
         }
     }
     $padsv .= '<br>';
