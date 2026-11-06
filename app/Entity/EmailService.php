@@ -477,4 +477,15 @@ class EmailService
             $this->enviar($dados);
         }
     }
+
+
+    // public function mailNotificarAvaliador($id_proj, $titulo, $protocolo, $tipo_exten, $emailAvaliador, $nomeAvaliador){
+    //     require_once '../includes/mailBody/mailNotificarAvaliador.php';
+
+    //     $dados = mailNotificarAvaliador($id_proj, $titulo, $protocolo, $tipo_exten, $emailAvaliador, $nomeAvaliador);
+
+    //     $this->enviar($dados);
+
+    // }
+
 }

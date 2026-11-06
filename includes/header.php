@@ -302,7 +302,7 @@ img.remover {
             }
         }
             if ($obUsuario['config'] == '3') {
-                echo "<a class='dropdown-item btn-sm' href='../projetos_parados_all'>Propostas paradas ADM</a>
+                echo "<a class='dropdown-item btn-sm' href='../propostas_paradas'>Propostas paradas</a>
                         
           <div class='dropdown-divider'></div>
           <button class='btn btn-light dropdown-toggle' type='button' id='dropdownMenuButton' data-toggle='dropdown' aria-haspopup='true' aria-expanded='false'>
