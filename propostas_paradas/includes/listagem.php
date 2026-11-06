@@ -1,5 +1,9 @@
 <?php
 
+use App\Entity\EmailService;
+$emailService = new EmailService();
+
+
 $propostasAgrupadas = [];
 
 foreach ($propostasParadas as $proposta) {
@@ -17,6 +21,12 @@ foreach ($propostasAgrupadas as $avaliacoes) {
     $proj = $avaliacoes[0];
     $ultimaAvaliacao = end($avaliacoes);
 
+    $nomeAvaliador = htmlspecialchars($ultimaAvaliacao->avaliador_nome ?? 'Não informado', ENT_QUOTES, 'UTF-8');
+    $emailAvaliador = htmlspecialchars($ultimaAvaliacao->avaliador_email ?? '', ENT_QUOTES, 'UTF-8');
+
+    // $emailService->mailNotificarAvaliador(
+    //     $proj->id, $proj->titulo, $proj->protocolo, $proj->tipo_exten, $emailAvaliador, $nomeAvaliador
+    // );
     $observacao = '';
 
     if ($ultimaAvaliacao->resultado === 'r') {
@@ -150,8 +160,9 @@ foreach ($propostasAgrupadas as $avaliacoes) {
                 </tbody>
             </table>
             <a href="../propostas/visualizar.php?id='.$aval->id_projeto.'&v='.$proj->ver.'&w=1" target="_blank">
-              <button class="btn btn-success btn-sm mb-2">Projeto 📃</button>
+              <button class="btn btn-success btn-sm mb-2">📃 Projeto </button>
             </a>
+           
         ';
 
     $resultados .= '
@@ -238,10 +249,10 @@ include '../includes/paginacao.php';
                         onchange="showLimpar();"
                     >
                         <option value="">Todos</option>
-                        <option value="10" <?= $dias_parados == 10 ? 'selected' : ''; ?>>
+                        <option value="10" <?= $diasParados == 10 ? 'selected' : ''; ?>>
                             10 dias ou mais
                         </option>
-                        <option value="30" <?= $dias_parados == 30 ? 'selected' : ''; ?>>
+                        <option value="30" <?= $diasParados == 30 ? 'selected' : ''; ?>>
                             30 dias ou mais
                         </option>
                     </select>
