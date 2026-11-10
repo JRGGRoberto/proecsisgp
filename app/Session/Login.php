@@ -2,6 +2,7 @@
 
 namespace App\Session;
 
+#[\AllowDynamicProperties]
 class Login
 {
     /**
@@ -100,8 +101,8 @@ class Login
 
         // remove a sessão de usuário
         unset($_SESSION['proecunespar']);
-        session_destroy('proecunespar');
-
+        session_destroy();
+        
         header('location: ../login/login.php');
         exit;
     }

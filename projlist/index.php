@@ -4,23 +4,22 @@ require '../vendor/autoload.php';
 
 use App\Entity\Outros;
 use App\Entity\Palavras;
-use App\Session\Login;
 use App\Entity\ProjMaster;
 use App\Entity\Tipo_exten;
+use App\Session\Login;
 
 // Obriga o usuário a estar logado
 Login::requireLogin();
 $user = Login::getUsuarioLogado();
 
-
 $tipos = Tipo_exten::getRegistros();
 
 // Busca
-$nome_prof = filter_input(INPUT_GET, 'nome_prof');
-$titulo = filter_input(INPUT_GET, 'titulo');
-$campus = filter_input(INPUT_GET, 'campus');
-$palavra = filter_input(INPUT_GET, 'palavra');
-$protocolo = filter_input(INPUT_GET, 'protocolo');
+$nome_prof = htmlspecialchars(filter_input(INPUT_GET, 'nome_prof') ?? '', ENT_QUOTES | ENT_SUBSTITUTE, 'UTF-8');
+$titulo = htmlspecialchars(filter_input(INPUT_GET, 'titulo') ?? '', ENT_QUOTES | ENT_SUBSTITUTE, 'UTF-8');
+$campus = htmlspecialchars(filter_input(INPUT_GET, 'campus') ?? '', ENT_QUOTES | ENT_SUBSTITUTE, 'UTF-8');
+$palavra = htmlspecialchars(filter_input(INPUT_GET, 'palavra') ?? '', ENT_QUOTES | ENT_SUBSTITUTE, 'UTF-8');
+$protocolo = htmlspecialchars(filter_input(INPUT_GET, 'protocolo') ?? '', ENT_QUOTES | ENT_SUBSTITUTE, 'UTF-8');
 
 /*
 $colegiado = filter_input(INPUT_GET, 'colegiado', FILTER_SANITIZE_STRING);
@@ -29,23 +28,19 @@ $linh_ext = filter_input(INPUT_GET, 'linh_ext', FILTER_SANITIZE_STRING);
 */
 $palavOrig = $palavra;
 
-
-
-if (!empty($palavra)) {
+if (strlen($palavra)) {
     $palavra = Palavras::getProjByPalavra($palavra);
 } else {
     $palavra = '';
 }
 
-// $qry = 'select 
-//           ccc.co_id as id, 
+// $qry = 'select
+//           ccc.co_id as id,
 //           ccc.colegiado as nome,
 //           IFNULL(ccc.coord_id, "disabled") coord
 //         from ca_ce_co ccc where ccc.ca_id  = "'.$user['ca_id'].'"';
 
-
 // use App\Entity\Diversos;
-
 
 // $sendColegiado = Diversos::qry($qry);
 $coolSelectSend = '';
@@ -66,13 +61,12 @@ $filtroStatus = filter_input(INPUT_GET, 'filtroStatus');
 $execucao = filter_input(INPUT_GET, 'execucao', FILTER_SANITIZE_NUMBER_INT);
 $finalizados = filter_input(INPUT_GET, 'finalizados', FILTER_SANITIZE_NUMBER_INT);
 $naoIniciados = filter_input(INPUT_GET, 'naoIniciados', FILTER_SANITIZE_NUMBER_INT);
-$emAvaliacao  = filter_input(INPUT_GET, 'emAvaliacao', FILTER_SANITIZE_NUMBER_INT);
+$emAvaliacao = filter_input(INPUT_GET, 'emAvaliacao', FILTER_SANITIZE_NUMBER_INT);
 $vigenIni = filter_input(INPUT_GET, 'vigen_ini');
 $vigenFim = filter_input(INPUT_GET, 'vigen_fim');
-$tipoProj = filter_input(INPUT_GET, 'tipoProj', FILTER_SANITIZE_NUMBER_INT);// echo '<pre>';
+$tipoProj = filter_input(INPUT_GET, 'tipoProj', FILTER_SANITIZE_NUMBER_INT); // echo '<pre>';
 // print_r($vigenIni);
 // echo '</pre>';
-
 
 // echo '<pre>';
 // print_r($vigenFim);
@@ -84,16 +78,16 @@ $tipoProj = filter_input(INPUT_GET, 'tipoProj', FILTER_SANITIZE_NUMBER_INT);// e
 
 // Condições SQL
 $condicoes = [
-    !empty($titulo) ? ' titulo LIKE "%'.str_replace(' ', '%', $titulo).'%"' : null,
-    !empty($palavra) ? $palavra : null,
-    !empty($protocolo) ? ' protocolo LIKE "%'.str_replace(' ', '%', $protocolo).'%"' : null,
-    !empty($campus) ? ' campus LIKE "%'.str_replace(' ', '%', $campus).'%"' : null,
-    !empty($nome_prof) ? ' coord LIKE "%'.str_replace(' ', '%', $nome_prof).'%"' : null,
-    ($tipoProj) ? ' tipo_exten = '.$tipoProj.'' : null,
-    'estado <> 0'
+    strlen($titulo) ? ' titulo LIKE "%'.str_replace(' ', '%', $titulo).'%"' : null,
+    strlen($palavra) ? $palavra : null,
+    strlen($protocolo) ? ' protocolo LIKE "%'.str_replace(' ', '%', $protocolo).'%"' : null,
+    strlen($campus) ? ' campus LIKE "%'.str_replace(' ', '%', $campus).'%"' : null,
+    strlen($nome_prof) ? ' coord LIKE "%'.str_replace(' ', '%', $nome_prof).'%"' : null,
+    strlen($tipoProj) ? ' tipo_exten = '.$tipoProj.'' : null,
+    'estado <> 0',
 ];
 
-//Puxa os estados via get dos checkboxs
+// Puxa os estados via get dos checkboxs
 $estados = [];
 if (isset($_GET['emAvaliacao'])) {
     $estados[] = 1;
@@ -103,23 +97,21 @@ if (isset($_GET['naoIniciados'])) {
 }
 if (isset($_GET['execucao'])) {
     $estados[] = 3;
-}    
-if (isset($_GET['finalizados']))  {
+}
+if (isset($_GET['finalizados'])) {
     $estados[] = 4;
 }
-
 
 // echo '<pre>';
 // print_r($estados);
 // echo '</pre>';
 
-
-//adiciona os filtros do checkbox
+// adiciona os filtros do checkbox
 if (!empty($estados)) {
-    $condicoes[] = 'estado in (' . implode(',', $estados) . ')';
+    $condicoes[] = 'estado in ('.implode(',', $estados).')';
 }
 
-//filtro de vigÊncia
+// filtro de vigÊncia
 if (!empty($vigenIni) && !empty($vigenFim)) {
     // período
     $condicoes[] = "(vigen_ini >= '{$vigenIni}' AND vigen_fim <= '{$vigenFim}')";
@@ -131,15 +123,12 @@ if (!empty($vigenIni) && !empty($vigenFim)) {
     $condicoes[] = "(vigen_ini >= '2020-01-01' AND vigen_fim <= '{$vigenFim}')";
 }
 
-
-
 // array_push($condicoes, '
-//  resultado = "a" 
+//  resultado = "a"
 //  and para_avaliar not in ("0" , "-1")
 //  and ( ( fase_seq = qnt_fases) or (qnt_fases = 0 and fase_seq is null) )
 
 //  ');
-
 
 // echo '<pre>';
 // print_r($condicoes);
@@ -151,8 +140,6 @@ $condicoes = array_filter($condicoes);
 // $where1 = implode(' AND ', $condicoes);
 
 $palavra = $palavOrig;
-
-
 
 if (!empty($condicoes)) {
     $where1 = implode(' AND ', $condicoes);
@@ -180,10 +167,9 @@ if (!empty($condicoes)) {
 
     $qntdProjetos = ProjMaster::getQntdRegistros($where1);
 
-
-    // echo '<pre>';
-    // print_r($where1);
-    // echo '</pre>';
+// echo '<pre>';
+// print_r($where1);
+// echo '</pre>';
 } else {
     // print_r('Não tem nenhum filtro ativo.');
 
@@ -207,7 +193,6 @@ if (!empty($condicoes)) {
     ';
 
     $qntdProjetos = ProjMaster::getQntdRegistros();
-
 }
 
 // print_r($qntdProjetos);
@@ -217,12 +202,9 @@ if (!empty($condicoes)) {
 // echo '</pre>';
 // exit;
 
-
 $projetos = Outros::qry($query);
 
-
-//montar os where dinâmicos de acordo com os filtros ativos pelas condicoes
-
+// montar os where dinâmicos de acordo com os filtros ativos pelas condicoes
 
 // echo '<pre>';
 // print_r($condicoes);

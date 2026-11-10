@@ -33,10 +33,10 @@ if (isset($_POST['nome'])) {
     $obProfessor->ativo = $_POST['ativo'];
     $obProfessor->adm = $_POST['adm'];
     $obProfessor->user = $_POST['user'];
-    if (strlen($_POST['senha']) > 0) {
-        $obProfessor->senha = password_hash($_POST['senha'], PASSWORD_DEFAULT);
-    }
-
+    /*    if (strlen($_POST['senha']) > 0) {
+            $obProfessor->senha = password_hash($_POST['senha'], PASSWORD_DEFAULT);
+        }
+    */
     $obProfessor->cadastrar();
 
     header('location: index.php?status=success');

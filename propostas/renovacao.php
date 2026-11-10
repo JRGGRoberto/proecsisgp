@@ -31,16 +31,22 @@ if (!$obProjeto instanceof Projeto) {
 
 echo '<pre>';
 print_r($obProjeto->titulo);
+echo '<Br>';
 print_r($obProjeto->protocolo);
 echo '</pre>';
 
-if (isset($_POST['titulo'])) {
+if (isset($_POST['vigen_ini'])) {
+    echo 'post feito<BR>';
+    $vigen_ini = $_POST['vigen_ini'];
+    $vigen_fim = $_POST['vigen_fim'];
     $obProjeto->renovacao($vigen_ini, $vigen_fim);
 
     echo 'Novo projeto!';
+    exit;
 }
 ?>  
-    <form method="POST" enctype="multipart/form-data" ></form>    
+    <form method="post" >
+  
         <div class="col-3">
           <div class="form-group">
             <label>Início vigência</label>
@@ -55,5 +61,5 @@ if (isset($_POST['titulo'])) {
           </div>
         </div>
 
-        <input type="submit" value="OK">
+        <button type="submit" class="btn btn-success">Enviar a</button>
     </form>

@@ -56,7 +56,7 @@ foreach ($vinculos as $vinc) {
         if ($user['adm'] == 1) {
             $padsv .= '  RT: '.$vinc->rt.' <a href="../vinc/editar.php?id='.$vinc->id.'">✏️</a> <a href="../vinc/del.php?id='.$vinc->id.'">⛔</a>';
         } else {
-            $padsv .= 'Sem vinculo';
+            $padsv .= 'RT: '.$vinc->rt;
         }
     }
     $padsv .= '<br>';
@@ -202,9 +202,9 @@ if (isset($_POST['nome'])) {
     $obProfessor->adm = $_POST['adm'];
     $obProfessor->updated_at = date('Y-m-d H:i:s');
     $obProfessor->user = $_POST['user'];
-    if (strlen($_POST['senha']) > 0) {
-        $obProfessor->senha = password_hash($_POST['senha'], PASSWORD_DEFAULT);
-    }
+    //   if (strlen($_POST['senha']) > 0) {
+    //       $obProfessor->senha = password_hash($_POST['senha'], PASSWORD_DEFAULT);
+    //   }
     $obProfessor->atualizar();
 
     header('location: index.php?status=success');

@@ -1,4 +1,4 @@
- <?php
+<?php
 $alertaLogin = strlen($alertaLogin) ? '<div class="alert alert-danger">'.$alertaLogin.'</div>' : '';
 
 ?>
@@ -12,9 +12,9 @@ $alertaLogin = strlen($alertaLogin) ? '<div class="alert alert-danger">'.$alerta
         <h2>UNESPAR</h2>
         <img src="../imgs/logo_unespar.png" width="150" height="160">
         <hr>
-        <h3>Sistema para Gerir Projetos </h3>
-        <h4><span style="color: #002661;">PRO</span><span style="color: #007F3D;">EC</span></h4>  
-        <span><span style="color: #002661;">Sis</span><span style="color: #007F3D;">PROEC</span></span>
+        <h3>PLANO DE ATIVIDADES DOCENTES</h3>
+        <h4><span class="badge badge-warning">ePAD</span></h4>  
+        <span><span style="color: #002661;">PRO</span><span style="color: #007F3D;">GRAD</span></span>
 
     </div>
 
@@ -39,6 +39,10 @@ $alertaLogin = strlen($alertaLogin) ? '<div class="alert alert-danger">'.$alerta
           
             
           <button type="submit"  class="btn btn-primary">🔑 Entrar</button>
+
+          <div>&nbsp;</div>
+          <div class="alert alert-warning col"><strong>Atenção</strong><br>
+          Senha válida apenas do AD</div>
           <div>&nbsp;</div>
           <div class="alert alert-info col">Usuário = <strong>nome.sobrenome + @unespar.edu.br</strong><br>
           Senha = (senha do Domínio da Rede Local)</div>
@@ -57,15 +61,10 @@ echo $ip; ?>"
         <input type="hidden" name="moreInformations" id="moreInformations" value="">
       
       </form>
-      <a href="./recuperar.php" class="btn btn-primary btn-sm float-right">📑 Recuperar senha</a>
-<!-- name="acao" value="logar"
-      <br>
-      <a href="../projetostb/" class="btn btn-success" id="projEfet">📑 Propostas efetivadas</a>
-      <label for="projEfet">Acessar projetos que já passaram por todos os crivos estabelecidos</label>
--->
+      <a href="https://senha.unespar.edu.br/" class="btn btn-primary btn-sm float-right">📑 Recuperar senha</a>
 
     </div>
-<script>
+    <script>
   function capturarDadosCliente() {
     const ua = navigator.userAgent;
     
@@ -122,6 +121,7 @@ document.addEventListener('keydown', event => {
 });
 
 </script>
+
   </div>
 
 </div>
