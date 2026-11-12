@@ -52,6 +52,11 @@ $opcoes = [
     'fi' => '<a class="dropdown-item btn-sm" href="./cadastrarf.php?t=2&i='.$obProjeto->id.'&f=fi">Relatório final</a>',
 ];
 
+// Evento não pode ter renovação
+if ($obProjeto->tipo_exten == 2) {
+    unset($opcoes['re']);
+}
+
 function chEstado($op, &$opcoes)
 {
     switch ($op) {

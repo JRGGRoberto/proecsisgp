@@ -10,7 +10,7 @@ use App\Session\Login;
 Login::requireLogin();
 $user = Login::getUsuarioLogado();
 
-if (!(in_array($user['niveln'], [1, 2, 3]) or $user['adm'] == 1)) {
+if (!(in_array($user['config'], [1, 2, 3]) or $user['adm'] == 1)) {
     header('location: ../index.php?status=error');
     exit;
 }
@@ -136,47 +136,47 @@ define('TITLE', 'Atualização de posição');
 if (isset($_POST['selCoord'])) {
     switch ($cent_cood) {
         case 0:
-            if (!(in_array($user[niveln], [1]) or $user[adm] == 1)) {
+            if (!(in_array($user['config'], [1]) or $user['adm'] == 1)) {
                 header('location: ./index.php?hi=cnf&status=error');
                 exit;
             }
 
             $upd = Campi::getRegistro($local);
             $upd->dir_campus_id = $_POST['selCoord'];
-            $upd->user = $user[id];
+            $upd->user = $user['id'];
             $upd->atualizar();
             break;
         case 1:
-            if (!(in_array($user[niveln], [1]) or $user[adm] == 1)) {
+            if (!(in_array($user['config'], [1]) or $user['adm'] == 1)) {
                 header('location: ./index.php?hi=cnf&status=error');
                 exit;
             }
 
             $upd = Campi::getRegistro($local);
             $upd->chef_div_id = $_POST['selCoord'];
-            $upd->user = $user[id];
+            $upd->user = $user['id'];
             $upd->atualizar();
             break;
         case 2:
-            if (!(in_array($user[niveln], [1, 2]) or $user[adm] == 1)) {
+            if (!(in_array($user['config'], [1, 2]) or $user[adm] == 1)) {
                 header('location: ./index.php?hi=cnf&status=error');
                 exit;
             }
 
             $upd = Centro::getRegistro($local);
             $upd->dir_ca_id = $_POST['selCoord'];
-            $upd->user = $user[id];
+            $upd->user = $user['id'];
             $upd->atualizar();
             break;
         case 3:
-            if (!(in_array($user[niveln], [1, 2, 3]) or $user[adm] == 1)) {
+            if (!(in_array($user['config'], [1, 2, 3]) or $user[adm] == 1)) {
                 header('location: ./index.php?hi=cnf&status=error');
                 exit;
             }
 
             $upd = Colegiado::getRegistro($local);
             $upd->coord_id = $_POST['selCoord'];
-            $upd->user = $user[id];
+            $upd->user = $user['id'];
             $upd->atualizar();
             break;
         default: header('location: ../index.php?status=error');
