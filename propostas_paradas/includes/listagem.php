@@ -1,8 +1,8 @@
 <?php
 
 use App\Entity\EmailService;
-$emailService = new EmailService();
 
+$emailService = new EmailService();
 
 $propostasAgrupadas = [];
 
@@ -17,7 +17,6 @@ $resultados = '';
 // echo '</pre>';
 
 foreach ($propostasAgrupadas as $avaliacoes) {
-
     $proj = $avaliacoes[0];
     $ultimaAvaliacao = end($avaliacoes);
 
@@ -36,15 +35,12 @@ foreach ($propostasAgrupadas as $avaliacoes) {
         </small>
         ';
     }
-    $idCard = 'p' . str_replace('-', '', $proj->id_projeto);
-    $idAvaliacoes = 'avaliacoes-' . str_replace('-', '', $proj->id_projeto);
+    $idCard = 'p'.str_replace('-', '', $proj->id_projeto);
+    $idAvaliacoes = 'avaliacoes-'.str_replace('-', '', $proj->id_projeto);
 
     // echo '<pre>';
     // print_r($ultimaAvaliacao);
     // echo '</pre>';
-    
-    
-
 
     $resultados .= '
     <div class="card mt-2">
@@ -99,34 +95,33 @@ foreach ($propostasAgrupadas as $avaliacoes) {
         <tbody>
 ';
 
-        foreach ($avaliacoes as $aval) {
+    foreach ($avaliacoes as $aval) {
+        switch ($aval->resultado) {
+            case 'a':
+                $situacao = 'Aprovado';
+                $badgeSituacao = 'success';
+                $class = 'table-success';
+                break;
 
-            switch ($aval->resultado) {
-                case 'a':
-                    $situacao = 'Aprovado';
-                    $badgeSituacao = 'success';
-                    $class = 'table-success';
-                    break;
+            case 'r':
+                $situacao = 'Solicitação de alterações';
+                $badgeSituacao = 'danger';
+                $class = 'table-danger';
+                break;
 
-                case 'r':
-                    $situacao = 'Solicitação de alterações';
-                    $badgeSituacao = 'danger';
-                    $class = 'table-danger';
-                    break;
+            default:
+                $situacao = 'Em análise';
+                $badgeSituacao = 'warning';
+                $class = 'table-warning';
+        }
 
-                default:
-                    $situacao = 'Em análise';
-                    $badgeSituacao = 'warning';
-                    $class = 'table-warning';
-            }
+        $entrada = date('d/m/Y ', strtotime($aval->created_at));
 
-            $entrada = date('d/m/Y ', strtotime($aval->created_at));
+        $saida = $aval->updated_at
+            ? date('d/m/Y ', strtotime($aval->updated_at))
+            : '-';
 
-            $saida = $aval->updated_at
-                ? date('d/m/Y ', strtotime($aval->updated_at))
-                : '-';
-
-            $resultados .= '
+        $resultados .= '
                 <tr class="'.$class.'">
 
                     <td class="text-nowrap text-center">
@@ -154,9 +149,9 @@ foreach ($propostasAgrupadas as $avaliacoes) {
                     </td>
                 </tr>
             ';
-        }
+    }
 
-        $resultados .= '
+    $resultados .= '
                 </tbody>
             </table>
             <a href="../propostas/visualizar.php?id='.$aval->id_projeto.'&v='.$proj->ver.'&w=1" target="_blank">
@@ -179,7 +174,7 @@ foreach ($propostasAgrupadas as $avaliacoes) {
 include '../includes/paginacao.php';
 
 ?>
-
+<h2>Propostas paradas</h2>
 <div class="card mb-3 mt-3">
     <div class="card-body">
        <form method="get">
@@ -192,7 +187,7 @@ include '../includes/paginacao.php';
                         type="text"
                         name="titulo"
                         class="form-control form-control-sm"
-                        value="<?= $titulo; ?>"
+                        value="<?php echo $titulo; ?>"
                         id="titulo"
                         onchange="showLimpar();"
                     >
@@ -204,7 +199,7 @@ include '../includes/paginacao.php';
                         type="text"
                         name="nome_prof"
                         class="form-control form-control-sm"
-                        value="<?= $nome_prof; ?>"
+                        value="<?php echo $nome_prof; ?>"
                         id="nome_prof"
                         onchange="showLimpar();"
                     >
@@ -216,7 +211,7 @@ include '../includes/paginacao.php';
                         type="text"
                         name="protocolo"
                         class="form-control form-control-sm"
-                        value="<?= $protocolo; ?>"
+                        value="<?php echo $protocolo; ?>"
                         id="protocolo"
                         onchange="showLimpar();"
                     >
@@ -231,12 +226,12 @@ include '../includes/paginacao.php';
                         onchange="showLimpar();"
                     >
                         <option value="">Todas</option>
-                        <option value="1" <?= $fase_seq == 1 ? 'selected' : ''; ?>>Fase 1</option>
-                        <option value="2" <?= $fase_seq == 2 ? 'selected' : ''; ?>>Fase 2</option>
-                        <option value="3" <?= $fase_seq == 3 ? 'selected' : ''; ?>>Fase 3</option>
-                        <option value="4" <?= $fase_seq == 4 ? 'selected' : ''; ?>>Fase 4</option>
-                        <option value="5" <?= $fase_seq == 5 ? 'selected' : ''; ?>>Fase 5</option>
-                        <option value="6" <?= $fase_seq == 6 ? 'selected' : ''; ?>>Fase 6</option>
+                        <option value="1" <?php echo $fase_seq == 1 ? 'selected' : ''; ?>>Fase 1</option>
+                        <option value="2" <?php echo $fase_seq == 2 ? 'selected' : ''; ?>>Fase 2</option>
+                        <option value="3" <?php echo $fase_seq == 3 ? 'selected' : ''; ?>>Fase 3</option>
+                        <option value="4" <?php echo $fase_seq == 4 ? 'selected' : ''; ?>>Fase 4</option>
+                        <option value="5" <?php echo $fase_seq == 5 ? 'selected' : ''; ?>>Fase 5</option>
+                        <option value="6" <?php echo $fase_seq == 6 ? 'selected' : ''; ?>>Fase 6</option>
                     </select>
                 </div>
 
@@ -249,10 +244,10 @@ include '../includes/paginacao.php';
                         onchange="showLimpar();"
                     >
                         <option value="">Todos</option>
-                        <option value="10" <?= $diasParados == 10 ? 'selected' : ''; ?>>
+                        <option value="10" <?php echo $diasParados == 10 ? 'selected' : ''; ?>>
                             10 dias ou mais
                         </option>
-                        <option value="30" <?= $diasParados == 30 ? 'selected' : ''; ?>>
+                        <option value="30" <?php echo $diasParados == 30 ? 'selected' : ''; ?>>
                             30 dias ou mais
                         </option>
                     </select>
@@ -275,14 +270,14 @@ include '../includes/paginacao.php';
 
 <section>
     <div id="accordion">
-        <?= $resultados; ?>
+        <?php echo $resultados; ?>
     </div>
 </section>
 
 <section>
     <div class="row mt-2 align-bottom">
         <div class="col">
-            <?= $paginacao; ?>
+            <?php echo $paginacao; ?>
         </div>
     </div>
 </section>
