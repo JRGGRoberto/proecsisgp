@@ -197,11 +197,18 @@ include '../includes/paginacao.php';
             $formC_obj = Form_c::getRegistroByProj($p->id);
             $formD_obj = Form_d::getRegistroByProj($p->id);
 
-            // =========================
-            // RELATÓRIO FINAL APROVADO
-            // =========================
+            $sqlRelatorioBase = "
+                SELECT
+                    r.id,
+                    r.ver,
+                    r.tipo
+                FROM relats r
+                WHERE r.idproj = '".$p->id."'
+                ORDER BY r.created_at;
+            ";
+            $relatorioBase = Outros::qry($sqlRelatorioBase);
 
-            $sqlRelatorioFinal = "
+            $sqlAvaliacoesRelatorios = "
                 SELECT 
                     ar.id,
                     ar.id_rel,
@@ -231,7 +238,7 @@ include '../includes/paginacao.php';
                 ORDER BY
    		            ar.fase_seq;
             ";
-            $relF = Outros::qry($sqlRelatorioFinal);
+            $avaliacoesRelatorios = Outros::qry($sqlAvaliacoesRelatorios);
 
             // Pegando todos os relatórios do projeto
             // $relatoriosAprovados = array_merge(
@@ -251,6 +258,7 @@ include '../includes/paginacao.php';
             $estado = getEstadoProjeto($estadoOriginal);
             $p->estado = $estado['badge'];
             ?> 
+            
             <!-- PROJETO -->
             <div class="card mb-2 shadow-sm border-0">
                 <div class="card">
@@ -263,7 +271,6 @@ include '../includes/paginacao.php';
                                 </div>
                             </div>
                         </div>
-                       
                     </a>
                     <div class="row">
                         <div class="col-sm"><strong>Coordenador:</strong> <?php echo $p->coord; ?></div>
@@ -277,7 +284,6 @@ include '../includes/paginacao.php';
                     <div class="row">
                         <div class="col-sm"><strong>Tipo de proposta:</strong> <?php echo $tipo_exten; ?></div>
                     </div>
-
                 </div>
             </div>
 
@@ -414,18 +420,22 @@ include '../includes/paginacao.php';
                             </div>
                         <?php } ?>
 
-                        <?php if (!empty($relF)) { ?>
+                        <!-- <?php
+                            echo '<pre>';
+            print_r($relatorioBase);
+            echo '</pre>';
+            ?> -->
+                        <?php if (!empty($relatorioBase) || !empty($avaliacoesRelatorios)) { ?>
                             <div class="border rounded bg-white mb-2">
+
                                 <a
                                     class="d-flex justify-content-between align-items-center px-3 py-2 text-dark"
                                     data-toggle="collapse"
-                                    href="#relF<?php echo $i; ?>"
+                                    href="#relatorios<?php echo $i; ?>"
                                     style="text-decoration: none;"
                                 >
                                     <div class="d-flex align-items-center flex-grow-1">
-                                        <strong>
-                                            Relatórios
-                                        </strong>
+                                        <strong>Relatórios</strong>
                                         <small class="text-muted ml-2">
                                             (clique para selecionar um relatório)
                                         </small>
@@ -433,30 +443,61 @@ include '../includes/paginacao.php';
                                 </a>
 
                                 <div
-                                    id="relF<?php echo $i; ?>"
+                                    id="relatorios<?php echo $i; ?>"
                                     class="collapse"
                                 >
                                     <div class="px-3 pb-2 pt-1">
-                                        <?php foreach ($relF as $index => $rel) { ?>
-                                            <label
-                                                class="d-flex align-items-center border rounded px-3 py-2 mb-1 cursor-pointer"
-                                            >
-                                                <input
-                                                    class="mr-3"
-                                                    type="checkbox"
-                                                    name="vinculos[]"
-                                                    value="forms|<?php echo $rel->id; ?>"
-                                                >
-                                                <div>
-                                                    <div class="font-weight-bold">
-                                                        <?php echo $rel->tipo_relatorio; ?>
+
+                                        <!-- CADASTROS ORIGINAIS -->
+                                        <?php if (!empty($relatorioBase)) { ?>
+                                            <?php foreach ($relatorioBase as $rel) { ?>
+                                                <?php $relBaseTipo = tipoRelatorio($rel->tipo); ?>
+                                                <label class="d-flex align-items-center border rounded px-3 py-2 mb-1 cursor-pointer">
+                                                    <input
+                                                        class="mr-3"
+                                                        type="checkbox"
+                                                        name="vinculos[]"
+                                                        value="relatorios|<?php echo $rel->id; ?>"
+                                                    >
+
+                                                    <div>
+                                                        <div class="font-weight-bold">
+                                                            Cadastro do relatório
+                                                        </div>
+
+                                                        <small class="text-muted">
+                                                            <?php echo $relBaseTipo; ?>
+                                                        </small>
                                                     </div>
-                                                    <small class="text-muted">
-                                                        <?php echo $rel->tipo_instancia; ?>  — <?php echo $rel->fase_seq; ?>/<?php echo $rel->fases; ?>
-                                                    </small>
-                                                </div>
-                                            </label>
+                                                </label>
+                                            <?php } ?>
                                         <?php } ?>
+
+                                        <!-- AVALIAÇÕES -->
+                                        <?php if (!empty($avaliacoesRelatorios)) { ?>
+                                            <?php foreach ($avaliacoesRelatorios as $rel) { ?>
+                                                <label class="d-flex align-items-center border rounded px-3 py-2 mb-1 cursor-pointer">
+                                                    <input
+                                                        class="mr-3"
+                                                        type="checkbox"
+                                                        name="vinculos[]"
+                                                        value="forms|<?php echo $rel->id; ?>"
+                                                    >
+
+                                                    <div>
+                                                        <div class="font-weight-bold">
+                                                            <?php echo $relBaseTipo; ?>
+                                                        </div>
+
+                                                        <small class="text-muted">
+                                                            <?php echo $rel->tipo_instancia; ?>
+                                                            — <?php echo $rel->fase_seq; ?>/<?php echo $rel->fases; ?>
+                                                        </small>
+                                                    </div>
+                                                </label>
+                                            <?php } ?>
+                                        <?php } ?>
+
                                     </div>
                                 </div>
                             </div>
